@@ -56,6 +56,7 @@ if ($login_user_role == 'coach') {
             background: #f8f9fa;
             height: 40vh;
             position: relative;
+            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
         }
 
         .message {
@@ -144,9 +145,8 @@ if ($login_user_role == 'coach') {
         let userTwoId = <?php echo $user_two_id; ?>;
 
         ws.onopen = function() {
-            console.log('WebSocket connection opened.', userTwoId);
+            console.log('WebSocket connection opened.');
         };
-
 
         document.addEventListener("DOMContentLoaded", function() {
             var tab = document.getElementById("successful-wizard-tab");
@@ -202,7 +202,7 @@ if ($login_user_role == 'coach') {
             });
         });
 
-        // Modify renderMessage to include sender's name and profile image
+        // Displays the conversation messages
         function renderMessage(data, isOwnMessage) {
             let chatBox = document.getElementById('chat-box');
             let newMessage = document.createElement('div');
@@ -225,40 +225,9 @@ if ($login_user_role == 'coach') {
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // Modify addNotificationToPanel to include sender's name and profile image
-        // function addNotificationToPanel(notification) {
-        //     if (notification.is_read === 0) { // Only display if message is unread
-        //         const notificationPanel = document.querySelector('.custom-notification-list');
-
-        //         const noUnreadMsg = document.querySelector('.no-unread-msg');
-        //         if (noUnreadMsg) {
-        //             noUnreadMsg.remove();
-        //         }
-
-        //         const notificationItem = document.createElement('li');
-        //         notificationItem.classList.add('notification-hover');
-
-        //         notificationItem.innerHTML = `
-        //         <div class="custom-notification-item d-flex justify-content-between align-items-center">
-        //             <div class="custom-notification-content">
-        //                 <div class="d-flex align-items-center gap-2">
-        //                     <img src="${notification.sender_profile_image}" class="custom-avatar" alt="Avatar">
-        //                     <span class="sender-name">${notification.sender_name}</span>
-        //                 </div>
-        //                 <div class="custom-message mt-2">
-        //                     <span>${notification.message}</span>
-        //                 </div>
-        //             </div>
-        //             <i class="fa fa-times" aria-hidden="true" style="cursor: pointer;" onclick="dismissMessage(${notification.message_id})"></i>
-        //         </div>
-        //         `;
-
-        //         notificationPanel.appendChild(notificationItem);
-        //     }
-        // }
-
+        // Displays the notifications
         function addNotificationToPanel(notification) {
-            if (notification.is_read === 0) { // Only display if message is unread
+            if (notification.is_read === 0) {
                 const notificationPanel = document.querySelector('.custom-notification-list');
 
                 const noUnreadMsg = document.querySelector('.no-unread-msg');
@@ -268,27 +237,24 @@ if ($login_user_role == 'coach') {
 
                 const notificationItem = document.createElement('li');
                 notificationItem.classList.add('notification-hover');
-                notificationItem.id = 'notification-' + notification.message_id; // Set a unique ID based on message_id
+                notificationItem.id = 'notification-' + notification.message_id;
 
                 notificationItem.innerHTML = `
-            <div class="custom-notification-item d-flex justify-content-between align-items-center">
-                <div class="custom-notification-content">
-                    <div class="d-flex align-items-center gap-2">
-                        <img src="${notification.sender_profile_image}" class="custom-avatar" alt="Avatar">
-                        <span class="sender-name">${notification.sender_name}</span>
-                    </div>
-                    <div class="custom-message mt-2">
-                        <span>${notification.message}</span>
-                    </div>
-                </div>
-                <i class="fa fa-times" aria-hidden="true" style="cursor: pointer;" onclick="dismissMessage(${notification.message_id})"></i>
-            </div>
-        `;
-
+                    <div class="custom-notification-item d-flex justify-content-between align-items-center">
+                        <div class="custom-notification-content">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="${notification.sender_profile_image}" class="custom-avatar" alt="Avatar">
+                                <span class="sender-name">${notification.sender_name}</span>
+                            </div>
+                            <div class="custom-message mt-2">
+                                <span>${notification.message}</span>
+                            </div>
+                        </div>
+                        <i class="fa fa-times" aria-hidden="true" style="cursor: pointer;" onclick="dismissMessage(${notification.message_id})"></i>
+                    </div>`;
                 notificationPanel.appendChild(notificationItem);
             }
         }
-
 
         function removeFirstDots(path) {
             if (path.startsWith('../')) {
@@ -299,39 +265,38 @@ if ($login_user_role == 'coach') {
 
         const DEFAULT_IMAGE_URL = 'https://avatar.iran.liara.run/public/33';
 
-
         ws.onmessage = function(event) {
             let data = JSON.parse(event.data);
-            console.log("The received data:", data); // Log the received data
-            // Render the chat message
             if (Array.isArray(data)) {
                 data.forEach(msg => {
                     renderMessage(msg, msg.sender_id === userOneId);
-                    let notificationData = {
-                        sender_profile_image: removeFirstDots(msg.sender_profile_image) || DEFAULT_IMAGE_URL,
-                        sender_name: msg.sender_name,
-                        message: msg.message,
-                        sent_at: msg.sent_at,
-                        is_read: msg.is_read,
-                        message_id: msg.message_id // Ensure this is included
-                    };
-                    addNotificationToPanel(notificationData);
+                    if (msg.is_read === 0 && msg.receiver_id === userOneId) {
+                        let notificationData = {
+                            sender_profile_image: removeFirstDots(msg.sender_profile_image) || DEFAULT_IMAGE_URL,
+                            sender_name: msg.sender_name,
+                            message: msg.message,
+                            sent_at: msg.sent_at,
+                            is_read: msg.is_read,
+                            message_id: msg.message_id
+                        };
+                        addNotificationToPanel(notificationData);
+                    }
                 });
             } else {
-                // Render a single message
                 renderMessage(data, data.sender_id === userOneId);
-                let notificationData = {
-                    sender_profile_image: removeFirstDots(data.sender_profile_image) || DEFAULT_IMAGE_URL,
-                    sender_name: data.sender_name,
-                    message: data.message,
-                    sent_at: data.sent_at,
-                    is_read: data.is_read,
-                    message_id: data.message_id // Ensure this is included
-                };
-                addNotificationToPanel(notificationData);
+                if (data.is_read === 0 && data.receiver_id === userOneId) {
+                    let notificationData = {
+                        sender_profile_image: removeFirstDots(data.sender_profile_image) || DEFAULT_IMAGE_URL,
+                        sender_name: data.sender_name,
+                        message: data.message,
+                        sent_at: data.sent_at,
+                        is_read: data.is_read,
+                        message_id: data.message_id
+                    };
+                    addNotificationToPanel(notificationData);
+                }
             }
         };
-
 
         function sendMessage() {
             let messageInput = document.getElementById('message-input').value;
@@ -351,7 +316,7 @@ if ($login_user_role == 'coach') {
             }
         }
 
-        // This function checks if there are any notifications. If none, it shows the "No unread messages" text.
+        // Checks for notifications
         function checkNotifications() {
             const notificationPanel = document.querySelector('.custom-notification-list');
             if (notificationPanel.children.length === 0) {
@@ -366,7 +331,6 @@ if ($login_user_role == 'coach') {
             }
         }
 
-        // Call checkNotifications on page load or when you load notifications
         document.addEventListener("DOMContentLoaded", function() {
             checkNotifications();
         });
@@ -406,22 +370,19 @@ if ($login_user_role == 'coach') {
                     id: id
                 },
                 success: function(response) {
-                    console.log("Raw response: ", response); // Log the raw response
                     let jsonResponse;
 
                     try {
-                        // Attempt to parse response if it's a string
                         if (typeof response === "string") {
                             jsonResponse = JSON.parse(response);
                         } else {
-                            jsonResponse = response; // Use the object directly
+                            jsonResponse = response;
                         }
 
                         if (jsonResponse.success) {
-                            // Remove the notification from the panel
                             const notificationItem = document.getElementById('notification-' + jsonResponse.id);
                             if (notificationItem) {
-                                notificationItem.remove(); // Remove the notification from the DOM
+                                notificationItem.remove();
                             }
                             checkNotifications();
                         } else {

@@ -14,7 +14,7 @@ $server = IoServer::factory(
             new ChatServer()
         )
     ),
-    8080 // WebSocket server port
+    8080
 );
 
 echo "WebSocket server started on port 8080\n";

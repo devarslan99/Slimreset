@@ -77,12 +77,12 @@ if ($result && mysqli_num_rows($result) > 0) {
                                 <th>Goal</th>
                                 <th>Lbs to goal</th>
                                 <th>Days Left</th>
-                                <th class="text-center" style="color:red;">i</th>
-                                <th class="text-center" style="color:red;">fl</th>
-                                <th class="text-center" style="color:purple;">p</th>
-                                <th class="text-center" style="color:yellow;">c</th>
-                                <th class="text-center" style="color:blue;">w</th>
-                                <th class="text-center" style="color:purple;">b</th>
+                                <th class="text-center" style="color:red;" data-bs-toggle="tooltip" data-bs-placement="top" title="Intolerances">i</th>
+                                <th class="text-center" style="color:red;" data-bs-toggle="tooltip" data-bs-placement="top" title="Food Logs">fl</th>
+                                <th class="text-center" style="color:purple;" data-bs-toggle="tooltip" data-bs-placement="top" title="Protein">p</th>
+                                <th class="text-center" style="color:yellow;" data-bs-toggle="tooltip" data-bs-placement="top" title="Carbs">c</th>
+                                <th class="text-center" style="color:blue;" data-bs-toggle="tooltip" data-bs-placement="top" title="Water">w</th>
+                                <th class="text-center" style="color:purple;" data-bs-toggle="tooltip" data-bs-placement="top" title="Bowel Movements">b</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -170,7 +170,7 @@ if ($result && mysqli_num_rows($result) > 0) {
                                         $row_time = mysqli_fetch_assoc($t_result);
                                         $course_time = $row_time['course_time']; // This will be either 30 or 60
                                         $created_at = $row_time['created_at']; // This should be a timestamp in 'Y-m-d H:i:s' format
-                            
+
                                         // Convert created_at to a DateTime object
                                         $created_at_date = new DateTime($created_at);
 
@@ -223,7 +223,7 @@ if ($result && mysqli_num_rows($result) > 0) {
                                         if (count($matches) === 3) {
                                             $amount = (float) $matches[1]; // The numeric part
                                             $unit = strtolower($matches[2]); // The unit (g or oz)
-                            
+
                                             // Convert grams to ounces if necessary
                                             if ($unit === 'g') {
                                                 $amount_in_oz = $amount * 0.0353; // 1g = 0.0353oz
@@ -247,9 +247,8 @@ if ($result && mysqli_num_rows($result) > 0) {
                                         $p_icon = '../assets/images/warning_red.png';
                                     }
 
-                                    ?>
-                                    <tr role="row" class="odd cursor-pointer" id="customer_<?php echo $user_id; ?>"
-                                        onclick="window.location.href='../clients/summary.php?id=<?php echo $row['id'] ?>'">
+                            ?>
+                                    <tr role="row" class="odd cursor-pointer" id="customer_<?php echo $user_id; ?>" onclick="window.location.href='../clients/summary.php?id=<?php echo $row['id'] ?>'">
                                         <td>
                                             <?php
                                             if (empty($row['profile_image'])) {
@@ -269,12 +268,13 @@ if ($result && mysqli_num_rows($result) > 0) {
                                         <td><?php echo $finalized_date ?></td>
                                         <td></td>
                                         <td><img src="<?php echo $fl_icon; ?>"></td>
+                                        <td><img src="<?php echo $fl_icon; ?>"></td>
                                         <td><img src="<?php echo $p_icon; ?>"></td>
                                         <td><img src="<?php echo $c_icon; ?>"></td>
                                         <td><img src="<?php echo $w_icon; ?>"></td>
                                         <td><img src="<?php echo $bm_icon; ?>"></td>
                                     </tr>
-                                    <?php
+                            <?php
                                 }
                             }
 

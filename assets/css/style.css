@@ -57749,6 +57749,16 @@ html[dir=rtl] body.dark-only .page-wrapper .page-body-wrapper .page-body .card:n
 ==========================**/
 
 /*# sourceMappingURL=style.css.map */
+
+/* Custom styling by dev => saqlain */
 .cursor-pointer{
+    cursor:pointer;
+}
+.new-meal{
+    transition: .3s all ease-in-out;
+}
+.new-meal:hover{
+    background:#946CFC;
+    color: white;
     cursor:pointer;
 }

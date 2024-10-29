@@ -9,7 +9,6 @@
         margin: 0 auto;
     }
 </style>
-
 <?php
 include_once '../database/db_connection.php';
 $user_id = $_GET['id'];
@@ -217,71 +216,6 @@ foreach ($weight_history as $index => $entry) {
                     }
                 }
             }
-        });
-    </script>
-
-    <!-- NUTRIENTS GAUGES SCRIPT -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Doughnut Chart for Calories
-            var caloriesCtx = document.getElementById('calories_gauge').getContext('2d');
-            var caloriesChart = new Chart(caloriesCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Calories Consumed', 'Remaining'],
-                    datasets: [{
-                        label: 'Calories',
-                        data: [<?php echo $total_calories; ?>, 800 - <?php echo $total_calories; ?>],
-                        backgroundColor: ['#FF6384', '#FFCDD2'],
-                        hoverBackgroundColor: ['#FF6384', '#FFCDD2']
-                    }]
-                },
-            });
-
-            // Doughnut Chart for Protein
-            var proteinCtx = document.getElementById('protein_gauge').getContext('2d');
-            var proteinChart = new Chart(proteinCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Protein Consumed', 'Remaining'],
-                    datasets: [{
-                        label: 'Protein',
-                        data: [<?php echo $total_protein; ?>, 10.5 - <?php echo $total_protein; ?>],
-                        backgroundColor: ['#36A2EB', '#AED6F1'],
-                        hoverBackgroundColor: ['#36A2EB', '#AED6F1']
-                    }]
-                },
-            });
-
-            // Doughnut Chart for Water
-            var waterCtx = document.getElementById('water_gauge').getContext('2d');
-            var waterChart = new Chart(waterCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Water Consumed', 'Remaining'],
-                    datasets: [{
-                        label: 'Water',
-                        data: [<?php echo $total_water; ?>, 12 - <?php echo $total_water; ?>],
-                        backgroundColor: ['#4BC0C0', '#D1F2EB'],
-                        hoverBackgroundColor: ['#4BC0C0', '#D1F2EB']
-                    }]
-                },
-            });
-
-            // Doughnut Chart for Bowel Movements
-            var bowelCtx = document.getElementById('bowel_gauge').getContext('2d');
-            var bowelChart = new Chart(bowelCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Bowel Movements', 'Remaining'],
-                    datasets: [{
-                        label: 'Bowel Movements',
-                        data: [<?php echo $total_bowel_movement; ?>, 2 - <?php echo $total_bowel_movement; ?>],
-                        backgroundColor: ['#FFCE56', '#FDEBD0'],
-                        hoverBackgroundColor: ['#FFCE56', '#FDEBD0']
-                    }]
-                },
-            });
         });
     </script>
 </body>

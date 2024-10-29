@@ -90,7 +90,7 @@
                                         <th>Food Name</th>
                                         <th>Food Quantity</th>
                                         <th>Calories</th>
-                                        <th>Protien</th>
+                                        <th>Protein</th>
                                         <th>Fat</th>
                                         <th>Carbs</th>
                                         <th>Sugar</th>

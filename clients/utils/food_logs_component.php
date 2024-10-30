@@ -100,19 +100,24 @@
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
-                        <div class="d-flex justify-content-start align-items-start mb-2 mb-md-0 flex-fill flex-sm-50 flex-md-33 flex-lg-25">
-                            <div class="dropdown">
-                                <button class="btn new-meal dropdown-toggle d-flex align-items-center justify-content-center w-100" style="border: 1px solid #946CFC; border-radius: 50px; padding: 8px 32px 8px 16px;" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    + New Meal
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li><a class="dropdown-item" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="openModal('Lunch')">Lunch</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="openModal('Dinner')">Dinner</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="openModal('Snacks')">Snacks</a></li>
-                                </ul>
+                        
+                        <!-- Display this section only to the client -->
+                        <?php
+                        if (isset($_SESSION['role']) && $_SESSION['role'] === 'client') : ?>
+                            <div class="d-flex justify-content-start align-items-start mb-2 mb-md-0 flex-fill flex-sm-50 flex-md-33 flex-lg-25">
+                                <div class="dropdown">
+                                    <button class="btn new-meal dropdown-toggle d-flex align-items-center justify-content-center w-100" style="border: 1px solid #946CFC; border-radius: 50px; padding: 8px 32px 8px 16px;" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        + New Meal
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="openModal('Lunch')">Lunch</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="openModal('Dinner')">Dinner</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="openModal('Snacks')">Snacks</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
+                        <?php endif; ?>
                     </div>
 
                 </div>
@@ -317,6 +322,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center">
+                                                    Dates
                                                 </th>
                                                 <th class="text-center">
                                                     Logged</th>
@@ -352,7 +358,9 @@
                                                 $calories = $calories_sum[$date] ?? 0;
 
                                                 echo "<tr class='text-center' style='border-bottom:1px solid #000'>";
-                                                echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$display_date}</p></td>";
+                                                echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>
+                                                    <a href='?id={$_GET['id']}&date={$date}'>{$display_date}</a>
+                                                    </p></td>";
                                                 echo "<td class='text-center'><p style='font-size:22px;color:skyblue;'>{$logged_weight}<p></td>";
                                                 echo "<td class='text-center'><p style='font-size:22px;'>{$loss}</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:22px;'>{$calories} Kal</p></td>";
@@ -416,6 +424,7 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log("Food", data)
                 const searchResults = document.getElementById('searchResults');
                 searchResults.innerHTML = ''; // Clear previous results
 

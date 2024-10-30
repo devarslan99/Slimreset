@@ -1,14 +1,22 @@
 <?php
 include_once '../database/db_connection.php';
 
-$user_one_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
+$user_one_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null; //55 => coach, saqlain
 $login_user_role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
 
 $user_two_id = null;
 $row = null;
-
-// Fetch the ID of the coach based on the logged-in client
-if ($login_user_role == 'client') {
+if ($login_user_role == 'coach') {
+    $user_two_id = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
+    $query = "SELECT first_name,role FROM users WHERE id = ?";
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("i", $user_two_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+    }
+} elseif ($login_user_role == 'client') {
     $query = "SELECT coach_id FROM client_coach_assignments WHERE client_id = ?";
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("i", $user_one_id);
@@ -19,42 +27,14 @@ if ($login_user_role == 'client') {
         $row = $result->fetch_assoc();
         $user_two_id = $row['coach_id'];
     }
-}
 
-// Initialize an array for unread messages
-$unreadMessages = [];
-if ($user_one_id && $user_two_id) {
-    // Query to fetch unread messages for the logged-in client from their coach
-    $query = "
-        SELECT 
-            m.id AS message_id,
-            m.message,
-            m.sent_at,
-            u_sender.id AS sender_id,
-            CONCAT(u_sender.first_name, ' ', u_sender.last_name) AS sender_name,
-            u_sender.profile_image AS sender_profile_image
-        FROM 
-            messages m
-        JOIN 
-            users u_sender ON m.sender_id = u_sender.id
-        WHERE 
-            m.is_read = 0 
-            AND m.receiver_id = ? 
-            AND m.sender_id = ?
-        ORDER BY 
-            m.sent_at DESC;
-    ";
-
-    // Prepare and execute the statement to get unread messages for the client
+    $query = "SELECT first_name,role FROM users WHERE id = ?";
     $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("ii", $user_one_id, $user_two_id);
+    $stmt->bind_param("i", $user_two_id);
     $stmt->execute();
     $result = $stmt->get_result();
-
     if ($result->num_rows > 0) {
-        while ($message = $result->fetch_assoc()) {
-            $unreadMessages[] = $message;
-        }
+        $row = $result->fetch_assoc();
     }
 }
 
@@ -172,12 +152,27 @@ if ($user_one_id && $user_two_id) {
                     </svg>
                 </div>
             </div>
+            <style>
+                .notification-counter {
+                    position: absolute;
+                    top: -10px;
+                    right: -8px;
+                    background-color: red;
+                    color: white;
+                    font-size: 0.8rem;
+                    padding: 2px 8px;
+                    border-radius: 50%;
+                    display: none;
+                }
+            </style>
             <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
                 <ul class="nav-menus gap-4">
                     <li class="cart-nav onhover-dropdown"></li>
                     <li class="custom-notification-dropdown onhover-dropdown px-0 py-0">
-                        <div class="d-flex custom-notification align-items-center">
+                        <div class="d-flex custom-notification align-items-center position-relative">
                             <i class="fa fa-bell-o bell-font-size" aria-hidden="true"></i>
+                            <!-- Counter Badge -->
+                            <span id="notification-counter" class="notification-counter">0</span>
                         </div>
                         <ul class="custom-notification-list onhover-show-div" id="notification-list">
                             <!-- Notifications will be dynamically inserted here via JS -->

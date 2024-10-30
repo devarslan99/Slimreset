@@ -50650,9 +50650,9 @@ table.table-bordered thead tr th p {
     font-size: 24px;
 }
 
-.page-wrapper.horizontal-wrapper .page-body-wrapper .page-body {
+/* .page-wrapper.horizontal-wrapper .page-body-wrapper .page-body {
     margin-top: 165px;
-}
+} */
 
 .page-wrapper.horizontal-wrapper .page-body-wrapper .sidebar-main-title {
     display: none !important;

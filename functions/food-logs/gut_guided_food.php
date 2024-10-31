@@ -1,168 +1,139 @@
-<div class="container-fluid">
-    <div class="d-flex flex-wrap justify-content-between">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Categories</title>
+   
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
         <!-- Protein Category -->
-        <div class="category-section flex-fill mb-4">
-            <h3 class="mb-3">Protein</h3>
-            <div class="form-check">
-                <label class="d-block text-secondary select-margin">Select</label>
-                <input class="form-check-input" type="checkbox" id="protein1">
-                <label class="form-check-label" for="protein1">Chicken</label>
+        <div class="col category text-center">
+            <h3>protein</h3>
+            <div class="subheader">rich protein</div>
+            <div class="label-select">select</div>
+            <div class="checkbox-group">
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    chicken
+                </label>
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    chicken
+                </label>
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    chicken
+                </label>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="protein2">
-                <label class="form-check-label" for="protein2">Turkey</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="protein3">
-                <label class="form-check-label" for="protein3">Eggs</label>
-            </div>
-            <div class="mt-3">
-                <div class="form-check">
-                    <label class="d-block text-secondary select-margin">Select</label>
-                    <input class="form-check-input" type="checkbox" id="protein1">
-                    <label class="form-check-label" for="protein1">Chicken</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="protein2">
-                    <label class="form-check-label" for="protein2">Turkey</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="protein3">
-                    <label class="form-check-label" for="protein3">Eggs</label>
-                </div>
+            <div class="subheader">light protein</div>
+            <div class="label-select">select</div>
+            <div class="checkbox-group">
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    chicken
+                </label>
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    chicken
+                </label>
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    chicken
+                </label>
             </div>
         </div>
 
         <!-- Veggies Category -->
-        <div class="category-section flex-fill mb-4">
-            <h3 class="mb-3">Veggies</h3>
-            <div class="form-check">
-                <label class="d-block text-secondary select-margin">Select</label>
-                <input class="form-check-input" type="checkbox" id="veggie1">
-                <label class="form-check-label" for="veggie1">Asparagus</label>
+        <div class="col category text-center">
+            <h3>veggies</h3>
+            <div class="subheader">rich protein</div>
+            <div class="label-select">select</div>
+            <div class="checkbox-group">
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    asparagus
+                </label>
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    broccoli
+                </label>
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    carrot
+                </label>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="veggie2">
-                <label class="form-check-label" for="veggie2">Broccoli</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="veggie3">
-                <label class="form-check-label" for="veggie3">Carrot</label>
-            </div>
-            <div class="mt-3">
-                <div class="form-check">
-                    <label class="d-block text-secondary select-margin">Select</label>
-                    <input class="form-check-input" type="checkbox" id="veggie1">
-                    <label class="form-check-label" for="veggie1">Asparagus</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="veggie2">
-                    <label class="form-check-label" for="veggie2">Broccoli</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="veggie3">
-                    <label class="form-check-label" for="veggie3">Carrot</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Fruit Category -->
-        <div class="category-section flex-fill mb-4">
-            <h3 class="mb-3">Fruit</h3>
-            <div class="form-check">
-                <label class="d-block text-secondary select-margin">Select</label>
-                <input class="form-check-input" type="checkbox" id="fruit1">
-                <label class="form-check-label" for="fruit1">Apples</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="fruit2">
-                <label class="form-check-label" for="fruit2">Bananas</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="fruit3">
-                <label class="form-check-label" for="fruit3">Grapes</label>
-            </div>
-            <div class="mt-3">
-                <div class="form-check">
-                    <label class="d-block text-secondary select-margin">Select</label>
-                    <input class="form-check-input" type="checkbox" id="fruit1">
-                    <label class="form-check-label" for="fruit1">Apples</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="fruit2">
-                    <label class="form-check-label" for="fruit2">Bananas</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="fruit3">
-                    <label class="form-check-label" for="fruit3">Grapes</label>
-                </div>
+            <div class="subheader">light protein</div>
+            <div class="label-select">select</div>
+            <div class="checkbox-group">
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    asparagus
+                </label>
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    broccoli
+                </label>
+                <label class="d-flex align-items-center">
+                    <div class="checkboxes">
+                        <input type="checkbox" class="red">
+                        <input type="checkbox" class="green">
+                        <input type="checkbox" class="yellow">
+                    </div>
+                    carrot
+                </label>
             </div>
         </div>
 
-        <!-- Beverages Category -->
-        <div class="category-section flex-fill mb-4">
-            <h3 class="mb-3">Beverages</h3>
-            <div class="form-check">
-                <label class="d-block text-secondary select-margin">Select</label>
-                <input class="form-check-input" type="checkbox" id="beverage1">
-                <label class="form-check-label" for="beverage1">Water</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="beverage2">
-                <label class="form-check-label" for="beverage2">Juice</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="beverage3">
-                <label class="form-check-label" for="beverage3">Milk</label>
-            </div>
-            <div class="mt-3">
-                <div class="form-check">
-                    <label class="d-block text-secondary select-margin">Select</label>
-                    <input class="form-check-input" type="checkbox" id="beverage1">
-                    <label class="form-check-label" for="beverage1">Water</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="beverage2">
-                    <label class="form-check-label" for="beverage2">Juice</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="beverage3">
-                    <label class="form-check-label" for="beverage3">Milk</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Flavorings Category -->
-        <div class="category-section flex-fill mb-4">
-            <h3 class="mb-3">Flavorings</h3>
-            <div class="form-check">
-                <label class="d-block text-secondary select-margin">Select</label>
-                <input class="form-check-input" type="checkbox" id="flavor1">
-                <label class="form-check-label" for="flavor1">Salt</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="flavor2">
-                <label class="form-check-label" for="flavor2">Pepper</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="flavor3">
-                <label class="form-check-label" for="flavor3">Herbs</label>
-            </div>
-            <div class="mt-3">
-                <div class="form-check">
-                    <label class="d-block text-secondary select-margin">Select</label>
-                    <input class="form-check-input" type="checkbox" id="flavor1">
-                    <label class="form-check-label" for="flavor1">Salt</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flavor2">
-                    <label class="form-check-label" for="flavor2">Pepper</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flavor3">
-                    <label class="form-check-label" for="flavor3">Herbs</label>
-                </div>
-            </div>
-        </div>
+        <!-- Repeat for Fruit, Beverages, etc. as needed -->
     </div>
 </div>
+</body>
+</html>

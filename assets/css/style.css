@@ -57762,3 +57762,10 @@ html[dir=rtl] body.dark-only .page-wrapper .page-body-wrapper .page-body .card:n
     color: white;
     cursor:pointer;
 }
+.custom-switch{
+    font-size:25px;
+    margin: 4px 10px 0px -20px !important;
+}
+.star-margin{
+    margin-left:20px !important;
+}

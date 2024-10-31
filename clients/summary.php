@@ -57,6 +57,64 @@
         margin-top: 20px;
         /* Space above the tab content */
     }
+
+    .category-section {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .responsive-font {
+        font-size: 1rem;
+    }
+
+    @media (max-width: 767.98px) {
+        .responsive-font {
+            font-size: 0.85rem;
+        }
+    }
+
+    .category-section {
+        min-width: 150px;
+        /* Minimum width for each category */
+        flex-grow: 1;
+        /* Allow items to grow */
+    }
+
+    @media (max-width: 576px) {
+
+        /* Small screens */
+        .category-section {
+            flex-basis: 100%;
+            /* 1 item per row */
+        }
+    }
+
+    @media (min-width: 576px) and (max-width: 768px) {
+
+        /* Medium screens */
+        .category-section {
+            flex-basis: 50%;
+            /* 2 items per row */
+        }
+    }
+
+    @media (min-width: 768px) {
+
+        /* Large screens and up */
+        .category-section {
+            flex-basis: 33.33%;
+            /* 3 items per row */
+        }
+    }
+
+    .select-margin {
+        margin-left: -22px !important;
+    }
+
+    #viewAllSection,
+    #gutGuidedSection {
+        transition: opacity 0.3s ease;
+    }
 </style>
 <?php
 include_once '../database/db_connection.php';
@@ -196,62 +254,62 @@ foreach ($weight_history as $index => $entry) {
                                                                     <?php include_once "../clients/utils/food_logs_component.php" ?>
                                                                 </div>
                                                                 <div class="tab-pane fade" id="my-plan" role="tabpanel" aria-labelledby="my-plan-tab">
-                                                                    <div class="d-flex justify-content-center mt-3">
-                                                                        <div class="nav nav-pills mx-2" role="tablist">
-                                                                            <a class="nav-link active" id="choose-food-tab" data-bs-toggle="pill" href="#choose-food" role="tab" aria-controls="choose-food" aria-selected="true">
-                                                                                <h6>Choose Food</h6>
-                                                                            </a>
+                                                                    <div class="container-fluid">
+                                                                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                                                                            <div class="nav nav-pills mx-2" role="tablist">
+                                                                                <a class="nav-link active" id="choose-food-tab" data-bs-toggle="pill" href="#choose-food" role="tab" aria-controls="choose-food" aria-selected="true">
+                                                                                    <h6 class="responsive-font">Choose Food</h6>
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="nav nav-pills mx-2" role="tablist">
+                                                                                <a class="nav-link" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
+                                                                                    <h6 class="responsive-font">My Tracker</h6>
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="nav nav-pills mx-2" role="tablist">
+                                                                                <a class="nav-link" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
+                                                                                    <h6 class="responsive-font">My Planner</h6>
+                                                                                </a>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="nav nav-pills mx-2" role="tablist">
-                                                                            <a class="nav-link" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
-                                                                                <h6>My Tracker</h6>
-                                                                            </a>
-                                                                        </div>
-                                                                        <div class="nav nav-pills mx-2" role="tablist">
-                                                                            <a class="nav-link" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
-                                                                                <h6>My Planner</h6>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="tab-content">
-                                                                        <div class="tab-pane fade active show" id="choose-food" role="tabpanel" aria-labelledby="choose-food-tab">
-                                                                            <!-- Content for Choose Food -->
+
+                                                                        <div class="tab-content mt-5">
                                                                             <div class="tab-pane fade active show" id="choose-food" role="tabpanel" aria-labelledby="choose-food-tab">
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
-                                                                                        <!-- Left Section Content -->
-                                                                                        <h5 class="text-center h1 mt-2">Choose Your Food Preferences</h5>
-                                                                                        <div class="form-group mt-3 d-flex justify-content-center align-items-center">
-                                                                                            <label for="preferenceSwitch" class="form-label me-2 mb-0">View all</label>
-                                                                                            <div class="form-check form-switch me-2">
-                                                                                                <input class="form-check-input" type="checkbox" id="preferenceSwitch" role="switch">
-                                                                                                <label for="preferenceSwitch" class="form-label me-2 mb-0">Gut guided</label>
+                                                                                    <div class="col-lg-8">
+                                                                                        <h1 class="text-center">Choose Your Food Preferences</h1>
+                                                                                        <div class="d-flex justify-content-center align-items-center my-4">
+                                                                                            <label class="form-label me-2 fs-6 responsive-font">View all</label>
+                                                                                            <div class="form-check form-switch">
+                                                                                                <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
+                                                                                                <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
                                                                                             </div>
+                                                                                        </div>
+
+                                                                                        <!-- Food Categories Section for view all-->
+                                                                                        <div id="viewAllSection" style="display: block;">
+                                                                                        <?php include_once '../functions/food-logs/view_all_food.php' ?>
+                                                                                        </div>
+
+                                                                                        <!-- Food Categories Section for gut guided -->
+                                                                                        <div id="gutGuidedSection" style="display: none;">
+                                                                                            <?php include_once '../functions/food-logs/gut_guided_food.php' ?>
                                                                                         </div>
                                                                                     </div>
 
-                                                                                    <div class="col-md-4">
-                                                                                        <!-- Right Section Content -->
-                                                                                        <h5>Selected Foods</h5>
-                                                                                        <ul id="selectedFoodList" class="list-group">
-                                                                                            <!-- Dynamically populated list of selected foods -->
-                                                                                            <li class="list-group-item">Apples</li>
-                                                                                            <li class="list-group-item">Bananas</li>
-                                                                                        </ul>
-                                                                                        <button class="btn btn-danger mt-3">Clear Selection</button>
+                                                                                    <!-- Recipe Column -->
+                                                                                    <div class="col-lg-4">
+                                                                                        <div>
+                                                                                        <?php include_once '../functions/food-logs/recipies.php' ?>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-
-                                                                        </div>
-                                                                        <div class="tab-pane fade" id="my-tracker" role="tabpanel" aria-labelledby="my-tracker-tab">
-                                                                            <!-- Content for My Tracker -->
-                                                                        </div>
-                                                                        <div class="tab-pane fade" id="my-planner" role="tabpanel" aria-labelledby="my-planner-tab">
-                                                                            <!-- Content for My Planner -->
                                                                         </div>
                                                                     </div>
+
                                                                 </div>
+
 
                                                                 <div class="tab-pane fade" id="inquiry-wizard" role="tabpanel">
                                                                     <!-- Inquiry Content -->
@@ -303,6 +361,7 @@ foreach ($weight_history as $index => $entry) {
         // Run on window resize
         window.addEventListener('resize', updateWrapperClass);
     </script>
+
     <!-- WEIGHT TRACKER GAUGE SCRIPT -->
     <script>
         const ctx = document.getElementById('myGauge').getContext('2d');
@@ -382,6 +441,24 @@ foreach ($weight_history as $index => $entry) {
         });
     </script>
 
+    <!-- Script to switch view all to gut guided-->
+    <script>
+        const preferenceSwitch = document.getElementById('preferenceSwitch');
+        const viewAllSection = document.getElementById('viewAllSection');
+        const gutGuidedSection = document.getElementById('gutGuidedSection');
+
+        preferenceSwitch.addEventListener('change', function() {
+            if (preferenceSwitch.checked) {
+                // Show Gut guided section, hide View all section
+                viewAllSection.style.display = 'none';
+                gutGuidedSection.style.display = 'block';
+            } else {
+                // Show View all section, hide Gut guided section
+                viewAllSection.style.display = 'block';
+                gutGuidedSection.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 
 </html>

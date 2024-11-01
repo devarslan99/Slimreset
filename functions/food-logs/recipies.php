@@ -1,3 +1,43 @@
+<style>
+    .view-all-checkboxes input[type="checkbox"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border: 2px solid #000;
+        border-radius: 3px;
+        outline: none;
+        cursor: pointer;
+        position: relative;
+        background-color: transparent;
+    }
+
+    .view-all-checkboxes input[type="checkbox"]:checked {
+        background-color: transparent;
+        border-color: #000;
+    }
+
+    .view-all-checkboxes input[type="checkbox"]:checked::after {
+        content: '✔';
+        font-size: 12px;
+        position: absolute;
+        top: -3px;
+        left: 0px;
+        color: black;
+    }
+
+    .fa-star {
+        color: black;
+        transition: color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .fa-star.active {
+        color: yellow;
+    }
+</style>
+
 <h1 class="text-center">Recipes</h1>
 
 <!-- Dropdowns -->
@@ -33,7 +73,7 @@
 </div>
 
 <!-- Category Checkboxes -->
-<div class="d-flex flex-wrap gap-3">
+<div class="d-flex flex-wrap gap-3 view-all-checkboxes">
     <div class="form-check">
         <input class="form-check-input" type="checkbox" id="breakfast">
         <label class="form-check-label" for="breakfast">Breakfast</label>
@@ -154,3 +194,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    // JavaScript to toggle the star color on click
+    document.querySelectorAll('.fa-star').forEach(star => {
+        star.addEventListener('click', () => {
+            star.classList.toggle('active'); // Toggle yellow color
+        });
+    });
+</script>

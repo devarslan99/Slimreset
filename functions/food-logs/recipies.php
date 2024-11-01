@@ -163,36 +163,6 @@
             </span>
         </div>
     </div>
-    <div class="card m-2" style="width: 8rem;">
-        <img src="https://via.placeholder.com/100" class="card-img-top" alt="Recipe Image">
-        <div class="card-body">
-            <p class="card-text">Veggie Omelette</p>
-            <small>800 kcal, 10g protein</small>
-            <span class="text-end star-margin">
-                <i class="fa fa-star"></i>
-            </span>
-        </div>
-    </div>
-    <div class="card m-2" style="width: 8rem;">
-        <img src="https://via.placeholder.com/100" class="card-img-top" alt="Recipe Image">
-        <div class="card-body">
-            <p class="card-text">Veggie Omelette</p>
-            <small>800 kcal, 10g protein</small>
-            <span class="text-end star-margin">
-                <i class="fa fa-star"></i>
-            </span>
-        </div>
-    </div>
-    <div class="card m-2" style="width: 8rem;">
-        <img src="https://via.placeholder.com/100" class="card-img-top" alt="Recipe Image">
-        <div class="card-body">
-            <p class="card-text">Veggie Omelette</p>
-            <small>800 kcal, 10g protein</small>
-            <span class="text-end star-margin">
-                <i class="fa fa-star"></i>
-            </span>
-        </div>
-    </div>
 </div>
 
 <script>

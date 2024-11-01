@@ -57772,3 +57772,9 @@ html[dir=rtl] body.dark-only .page-wrapper .page-body-wrapper .page-body .card:n
 .main-color{
     color: #946CFC !important;
 }
+.grocery-list{
+    border: 1px solid #946CFC !important;
+    padding :5px 30px;
+    color: #946CFC;
+    font-weight: bold;
+}

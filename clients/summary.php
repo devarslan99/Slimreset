@@ -200,15 +200,7 @@ foreach ($weight_history as $index => $entry) {
                                                                     <div class="horizontal-wizard">
                                                                         <div class="stroke-icon-wizard"></div>
                                                                         <div class="horizontal-wizard-content">
-                                                                            <h6>Weight Tracker</h6>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                                <a class="nav-link" id="bank-wizard-tab" data-bs-toggle="pill" href="#bank-wizard" role="tab" aria-controls="bank-wizard" aria-selected="false" tabindex="-1">
-                                                                    <div class="horizontal-wizard">
-                                                                        <div class="stroke-icon-wizard"></div>
-                                                                        <div class="horizontal-wizard-content">
-                                                                            <h6>Food Logs</h6>
+                                                                            <h6>My Progress</h6>
                                                                         </div>
                                                                     </div>
                                                                 </a>
@@ -220,11 +212,19 @@ foreach ($weight_history as $index => $entry) {
                                                                         </div>
                                                                     </div>
                                                                 </a>
+                                                                <a class="nav-link" id="my-plan-tab" data-bs-toggle="pill" href="#my-plan" role="tab" aria-controls="my-plan" aria-selected="false" tabindex="-1">
+                                                                    <div class="horizontal-wizard">
+                                                                        <div class="stroke-icon-wizard"></div>
+                                                                        <div class="horizontal-wizard-content">
+                                                                            <h6>Recipes</h6>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
                                                                 <a class="nav-link" id="inquiry-wizard-tab" data-bs-toggle="pill" href="#inquiry-wizard" role="tab" aria-controls="inquiry-wizard" aria-selected="false" tabindex="-1">
                                                                     <div class="horizontal-wizard">
                                                                         <div class="stroke-icon-wizard"></div>
                                                                         <div class="horizontal-wizard-content">
-                                                                            <h6>Meal Planner</h6>
+                                                                            <h6>Coaching</h6>
                                                                         </div>
                                                                     </div>
                                                                 </a>
@@ -250,9 +250,6 @@ foreach ($weight_history as $index => $entry) {
                                                                 <div class="tab-pane fade" id="wizard-weight-tracker" role="tabpanel" aria-labelledby="wizard-weight-tracker-tab">
                                                                     <!-- Weight Tracker Content -->
                                                                 </div>
-                                                                <div class="tab-pane fade" id="bank-wizard" role="tabpanel" aria-labelledby="bank-wizard-tab">
-                                                                    <?php include_once "../clients/utils/food_logs_component.php" ?>
-                                                                </div>
                                                                 <div class="tab-pane fade" id="my-plan" role="tabpanel" aria-labelledby="my-plan-tab">
                                                                     <div class="container-fluid">
                                                                         <div class="d-flex flex-wrap justify-content-center gap-2">
@@ -262,13 +259,13 @@ foreach ($weight_history as $index => $entry) {
                                                                                 </a>
                                                                             </div>
                                                                             <div class="nav nav-pills mx-2" role="tablist">
-                                                                                <a class="nav-link" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
-                                                                                    <h6 class="responsive-font">My Tracker</h6>
+                                                                                <a class="nav-link" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
+                                                                                    <h6 class="responsive-font">My Planner</h6>
                                                                                 </a>
                                                                             </div>
                                                                             <div class="nav nav-pills mx-2" role="tablist">
-                                                                                <a class="nav-link" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
-                                                                                    <h6 class="responsive-font">My Planner</h6>
+                                                                                <a class="nav-link" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
+                                                                                    <h6 class="responsive-font">My Tracker</h6>
                                                                                 </a>
                                                                             </div>
                                                                         </div>
@@ -288,7 +285,7 @@ foreach ($weight_history as $index => $entry) {
 
                                                                                         <!-- Food Categories Section for view all-->
                                                                                         <div id="viewAllSection" style="display: block;">
-                                                                                        <?php include_once '../functions/food-logs/view_all_food.php' ?>
+                                                                                            <?php include_once '../functions/food-logs/view_all_food.php' ?>
                                                                                         </div>
 
                                                                                         <!-- Food Categories Section for gut guided -->
@@ -300,10 +297,26 @@ foreach ($weight_history as $index => $entry) {
                                                                                     <!-- Recipe Column -->
                                                                                     <div class="col-lg-4">
                                                                                         <div>
-                                                                                        <?php include_once '../functions/food-logs/recipies.php' ?>
+                                                                                            <?php include_once '../functions/food-logs/recipies.php' ?>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                            </div>
+                                                                            <div class="tab-pane fade" id="my-planner" role="tabpanel" aria-labelledby="my-planner-tab">
+                                                                                <!-- My Planner Content -->
+                                                                                <div class="row">
+                                                                                    <div class="col-lg-8">
+                                                                                        <?php include_once '../functions/food-logs/my-planner.php'  ?>
+                                                                                    </div>
+                                                                                    <!-- Recipe Column -->
+                                                                                    <div class="col-lg-4">
+                                                                                        <h2>Recipes</h2>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="tab-pane fade" id="my-tracker" role="tabpanel" aria-labelledby="my-tracker-tab">
+                                                                                <!-- My Tracker Content -->
+                                                                                <?php include_once '../clients/utils/food_logs_component.php' ?>
                                                                             </div>
                                                                         </div>
                                                                     </div>

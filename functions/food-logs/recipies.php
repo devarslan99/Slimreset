@@ -103,73 +103,92 @@
 <!-- Recipe Cards -->
 <div class="d-flex flex-wrap mt-3">
     <!-- Recipe Card Example -->
-    <div class="card m-2" style="width: 8rem;">
-        <img src="https://via.placeholder.com/100" class="card-img-top" alt="Recipe Image">
-        <div class="card-body">
-            <p class="card-text">Veggie Omelette</p>
-            <small>800 kcal, 10g protein</small>
+    <div class="meal-card-rec">
+        <div class="custom-border rounded">
+            <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+            <div class="meal-name">veggie</div>
+            <div class="meal-name-sub">omelette</div>
+            <div class="meal-info">800 kcal<br>8 oz</div>
             <span class="text-end star-margin">
                 <i class="fa fa-star"></i>
             </span>
         </div>
     </div>
-    <div class="card m-2" style="width: 8rem;">
-        <img src="https://via.placeholder.com/100" class="card-img-top" alt="Recipe Image">
-        <div class="card-body">
-            <p class="card-text">Veggie Omelette</p>
-            <small>800 kcal, 10g protein</small>
+    <div class="meal-card-rec">
+        <div class="custom-border rounded">
+            <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+            <div class="meal-name">veggie</div>
+            <div class="meal-name-sub">omelette</div>
+            <div class="meal-info">800 kcal<br>8 oz</div>
             <span class="text-end star-margin">
                 <i class="fa fa-star"></i>
             </span>
         </div>
     </div>
-    <div class="card m-2" style="width: 8rem;">
-        <img src="https://via.placeholder.com/100" class="card-img-top" alt="Recipe Image">
-        <div class="card-body">
-            <p class="card-text">Veggie Omelette</p>
-            <small>800 kcal, 10g protein</small>
+    <div class="meal-card-rec">
+        <div class="custom-border rounded">
+            <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+            <div class="meal-name">veggie</div>
+            <div class="meal-name-sub">omelette</div>
+            <div class="meal-info">800 kcal<br>8 oz</div>
             <span class="text-end star-margin">
                 <i class="fa fa-star"></i>
             </span>
         </div>
     </div>
-    <div class="card m-2" style="width: 8rem;">
-        <img src="https://via.placeholder.com/100" class="card-img-top" alt="Recipe Image">
-        <div class="card-body">
-            <p class="card-text">Veggie Omelette</p>
-            <small>800 kcal, 10g protein</small>
+    <div class="meal-card-rec">
+        <div class="custom-border rounded">
+            <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+            <div class="meal-name">veggie</div>
+            <div class="meal-name-sub">omelette</div>
+            <div class="meal-info">800 kcal<br>8 oz</div>
             <span class="text-end star-margin">
                 <i class="fa fa-star"></i>
             </span>
         </div>
     </div>
-    <div class="card m-2" style="width: 8rem;">
-        <img src="https://via.placeholder.com/100" class="card-img-top" alt="Recipe Image">
-        <div class="card-body">
-            <p class="card-text">Veggie Omelette</p>
-            <small>800 kcal, 10g protein</small>
+    <div class="meal-card-rec">
+        <div class="custom-border rounded">
+            <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+            <div class="meal-name">veggie</div>
+            <div class="meal-name-sub">omelette</div>
+            <div class="meal-info">800 kcal<br>8 oz</div>
             <span class="text-end star-margin">
                 <i class="fa fa-star"></i>
             </span>
         </div>
     </div>
-    <div class="card m-2" style="width: 8rem;">
-        <img src="https://via.placeholder.com/100" class="card-img-top" alt="Recipe Image">
-        <div class="card-body">
-            <p class="card-text">Veggie Omelette</p>
-            <small>800 kcal, 10g protein</small>
+    <div class="meal-card-rec">
+        <div class="custom-border rounded">
+            <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+            <div class="meal-name">veggie</div>
+            <div class="meal-name-sub">omelette</div>
+            <div class="meal-info">800 kcal<br>8 oz</div>
+            <span class="text-end star-margin">
+                <i class="fa fa-star"></i>
+            </span>
+        </div>
+    </div>
+    <div class="meal-card-rec">
+        <div class="custom-border rounded">
+            <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+            <div class="meal-name">veggie</div>
+            <div class="meal-name-sub">omelette</div>
+            <div class="meal-info">800 kcal<br>8 oz</div>
+            <span class="text-end star-margin">
+                <i class="fa fa-star"></i>
+            </span>
+        </div>
+    </div>
+    <div class="meal-card-rec">
+        <div class="custom-border rounded">
+            <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+            <div class="meal-name">veggie</div>
+            <div class="meal-name-sub">omelette</div>
+            <div class="meal-info">800 kcal<br>8 oz</div>
             <span class="text-end star-margin">
                 <i class="fa fa-star"></i>
             </span>
         </div>
     </div>
 </div>
-
-<script>
-    // JavaScript to toggle the star color on click
-    document.querySelectorAll('.fa-star').forEach(star => {
-        star.addEventListener('click', () => {
-            star.classList.toggle('active'); // Toggle yellow color
-        });
-    });
-</script>

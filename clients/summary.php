@@ -115,6 +115,44 @@
     #gutGuidedSection {
         transition: opacity 0.3s ease;
     }
+
+    .view-all-checkboxes input[type="checkbox"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border: 2px solid #000;
+        border-radius: 3px;
+        outline: none;
+        cursor: pointer;
+        position: relative;
+        background-color: transparent;
+    }
+
+    .view-all-checkboxes input[type="checkbox"]:checked {
+        background-color: transparent;
+        border-color: #000;
+    }
+
+    .view-all-checkboxes input[type="checkbox"]:checked::after {
+        content: '✔';
+        font-size: 12px;
+        position: absolute;
+        top: -3px;
+        left: 0px;
+        color: black;
+    }
+
+    .fa-star {
+        color: black;
+        transition: color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .fa-star.active {
+        color: yellow;
+    }
 </style>
 <?php
 include_once '../database/db_connection.php';
@@ -310,48 +348,186 @@ foreach ($weight_history as $index => $entry) {
                                                                                     </div>
                                                                                     <!-- Recipe Column -->
                                                                                     <div class="col-lg-4">
-                                                                                        <h2>Recipes</h2>
+
+
+                                                                                        <h1 class="text-center">Recipes</h1>
+
+                                                                                        <!-- Dropdowns -->
+                                                                                        <div class="my-3">
+                                                                                            <div class="row g-2">
+                                                                                                <div class="col-12 col-sm-6 col-md-4">
+                                                                                                    <select class="form-select w-100">
+                                                                                                        <option selected>Selects by protein</option>
+                                                                                                        <option>Chicken</option>
+                                                                                                        <option>Turkey</option>
+                                                                                                        <option>Eggs</option>
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                                <div class="col-12 col-sm-6 col-md-4">
+                                                                                                    <select class="form-select w-100">
+                                                                                                        <option selected>Select by veggie</option>
+                                                                                                        <option>Asparagus</option>
+                                                                                                        <option>Broccoli</option>
+                                                                                                        <option>Carrot</option>
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                                <div class="col-12 col-sm-6 col-md-4">
+                                                                                                    <select class="form-select w-100">
+                                                                                                        <option selected>Select by fruit</option>
+                                                                                                        <option>Apples</option>
+                                                                                                        <option>Bananas</option>
+                                                                                                        <option>Grapes</option>
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                        </div>
+
+                                                                                        <!-- Category Checkboxes -->
+                                                                                        <div class="d-flex flex-wrap gap-3 view-all-checkboxes">
+                                                                                            <div class="form-check">
+                                                                                                <input class="form-check-input" type="checkbox" id="breakfast">
+                                                                                                <label class="form-check-label" for="breakfast">Breakfast</label>
+                                                                                            </div>
+                                                                                            <div class="form-check">
+                                                                                                <input class="form-check-input" type="checkbox" id="lunch">
+                                                                                                <label class="form-check-label" for="lunch">Lunch/Dinner</label>
+                                                                                            </div>
+                                                                                            <div class="form-check">
+                                                                                                <input class="form-check-input" type="checkbox" id="snacks">
+                                                                                                <label class="form-check-label" for="snacks">Snacks</label>
+                                                                                            </div>
+                                                                                            <div class="form-check">
+                                                                                                <input class="form-check-input" type="checkbox" id="beverages">
+                                                                                                <label class="form-check-label" for="beverages">Beverages</label>
+                                                                                            </div>
+                                                                                            <div class="form-check">
+                                                                                                <input class="form-check-input" type="checkbox" id="flavourings">
+                                                                                                <label class="form-check-label" for="flavourings">Flavorings</label>
+                                                                                            </div>
+                                                                                            <div class="form-check">
+                                                                                                <input class="form-check-input" type="checkbox" id="dessert">
+                                                                                                <label class="form-check-label" for="dessert">Dessert</label>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <!-- Recipe Cards -->
+                                                                                        <div class="d-flex flex-wrap mt-3">
+                                                                                            <!-- Recipe Card Example -->
+                                                                                            <div class="meal-card-rec">
+                                                                                                <div class="custom-border rounded">
+                                                                                                    <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+                                                                                                    <div class="meal-name">veggie</div>
+                                                                                                    <div class="meal-name-sub">omelette</div>
+                                                                                                    <div class="meal-info">800 kcal<br>8 oz</div>
+                                                                                                    <span class="text-end star-margin">
+                                                                                                        <i class="fa fa-star"></i>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="meal-card-rec">
+                                                                                                <div class="custom-border rounded">
+                                                                                                    <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+                                                                                                    <div class="meal-name">veggie</div>
+                                                                                                    <div class="meal-name-sub">omelette</div>
+                                                                                                    <div class="meal-info">800 kcal<br>8 oz</div>
+                                                                                                    <span class="text-end star-margin">
+                                                                                                        <i class="fa fa-star"></i>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="meal-card-rec">
+                                                                                                <div class="custom-border rounded">
+                                                                                                    <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+                                                                                                    <div class="meal-name">veggie</div>
+                                                                                                    <div class="meal-name-sub">omelette</div>
+                                                                                                    <div class="meal-info">800 kcal<br>8 oz</div>
+                                                                                                    <span class="text-end star-margin">
+                                                                                                        <i class="fa fa-star"></i>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="meal-card-rec">
+                                                                                                <div class="custom-border rounded">
+                                                                                                    <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+                                                                                                    <div class="meal-name">veggie</div>
+                                                                                                    <div class="meal-name-sub">omelette</div>
+                                                                                                    <div class="meal-info">800 kcal<br>8 oz</div>
+                                                                                                    <span class="text-end star-margin">
+                                                                                                        <i class="fa fa-star"></i>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="meal-card-rec">
+                                                                                                <div class="custom-border rounded">
+                                                                                                    <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+                                                                                                    <div class="meal-name">veggie</div>
+                                                                                                    <div class="meal-name-sub">omelette</div>
+                                                                                                    <div class="meal-info">800 kcal<br>8 oz</div>
+                                                                                                    <span class="text-end star-margin">
+                                                                                                        <i class="fa fa-star"></i>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="meal-card-rec">
+                                                                                                <div class="custom-border rounded">
+                                                                                                    <img src="https://placehold.co/100x60" alt="Veggie Omelette">
+                                                                                                    <div class="meal-name">veggie</div>
+                                                                                                    <div class="meal-name-sub">omelette</div>
+                                                                                                    <div class="meal-info">800 kcal<br>8 oz</div>
+                                                                                                    <span class="text-end star-margin">
+                                                                                                        <i class="fa fa-star"></i>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="tab-pane fade" id="my-tracker" role="tabpanel" aria-labelledby="my-tracker-tab">
-                                                                                <!-- My Tracker Content -->
-                                                                                <?php include_once '../clients/utils/food_logs_component.php' ?>
-                                                                            </div>
+
                                                                         </div>
                                                                     </div>
-
                                                                 </div>
-
-
-                                                                <div class="tab-pane fade" id="inquiry-wizard" role="tabpanel">
-                                                                    <!-- Inquiry Content -->
-                                                                </div>
-                                                                <div class="tab-pane fade" id="dev-saq-recipes" role="tabpanel">
-                                                                    <!-- Recipes Content -->
-                                                                </div>
-                                                                <div class="tab-pane fade" id="successful-wizard" role="tabpanel">
-                                                                    <?php include_once("../clients/utils/message_component.php") ?>
+                                                                <div class="tab-pane fade" id="my-tracker" role="tabpanel" aria-labelledby="my-tracker-tab">
+                                                                    <!-- My Tracker Content -->
+                                                                    <?php include_once '../clients/utils/food_logs_component.php' ?>
                                                                 </div>
                                                             </div>
                                                         </div>
+
+                                                    </div>
+
+
+                                                    <div class="tab-pane fade" id="inquiry-wizard" role="tabpanel">
+                                                        <!-- Inquiry Content -->
+                                                    </div>
+                                                    <div class="tab-pane fade" id="dev-saq-recipes" role="tabpanel">
+                                                        <!-- Recipes Content -->
+                                                    </div>
+                                                    <div class="tab-pane fade" id="successful-wizard" role="tabpanel">
+                                                        <?php include_once("../clients/utils/message_component.php") ?>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                            <?php
-                                }
-                            }
-                            ?>
                         </div>
                     </div>
                 </div>
-                <!-- Container-fluid Ends-->
+
+        <?php
+                                }
+                            }
+        ?>
             </div>
-            <?php include_once "../utils/footer.php" ?>
         </div>
+    </div>
+    <!-- Container-fluid Ends-->
+    </div>
+    <?php include_once "../utils/footer.php" ?>
+    </div>
     </div>
     <?php include_once "../utils/scripts.php" ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -470,6 +646,15 @@ foreach ($weight_history as $index => $entry) {
                 viewAllSection.style.display = 'block';
                 gutGuidedSection.style.display = 'none';
             }
+        });
+    </script>
+
+    <!-- JavaScript to toggle the star color on click -->
+    <script>
+        document.querySelectorAll('.fa-star').forEach(star => {
+            star.addEventListener('click', () => {
+                star.classList.toggle('active'); // Toggle yellow color
+            });
         });
     </script>
 </body>

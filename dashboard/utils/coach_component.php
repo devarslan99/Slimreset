@@ -266,7 +266,6 @@ if ($result && mysqli_num_rows($result) > 0) {
                                         <td><?php echo $goal_weight; ?> Lbs</td>
                                         <td><?php echo $lbs_to_goal; ?> Lbs</td>
                                         <td><?php echo $finalized_date ?></td>
-                                        <td></td>
                                         <td><img src="<?php echo $fl_icon; ?>"></td>
                                         <td><img src="<?php echo $fl_icon; ?>"></td>
                                         <td><img src="<?php echo $p_icon; ?>"></td>

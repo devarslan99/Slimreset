@@ -9,53 +9,149 @@
         margin: 0 auto;
     }
 
-    /* Center the sub-tabs and give them spacing */
     #my-plan .nav {
         justify-content: center;
-        /* Center the tabs horizontally */
     }
 
     .nav-link {
-        margin: 0 10px;
-        /* Add spacing between the tabs */
-        padding: 10px 20px;
-        /* Add padding inside each tab */
-        border-radius: 5px;
-        /* Rounded corners for the tabs */
-        background-color: #f8f9fa;
-        /* Default tab color */
-        color: #000;
-        /* Default tab text color */
-        transition: background-color 0.3s, color 0.3s;
-        /* Smooth transition for background and text color */
-    }
+    margin: 0 10px;
+    border-radius: 5px;
+    color: #000;
+    transition: color 0.3s ease-in-out; /* Transition for color change */
+    position: relative; /* For positioning the underline */
+}
 
-    .nav-link.active {
-        background-color: #007bff;
-        /* Active tab color */
-    }
+/* Underline for the active state */
+.nav-link.active::after {
+    content: ""; /* Pseudo-element for the underline */
+    display: block; /* Block display */
+    width: 100%; /* Full width of the link */
+    height: 2px; /* Height of the underline */
+    background-color: #936CFB; /* Color of the underline */
+    position: absolute; /* Positioned absolutely */
+    bottom: -5px; /* Spacing from the text */
+    left: 0; /* Align to the left */
+    transition: background-color 0.3s ease-in-out, width 0.3s ease-in-out; /* Smooth transition for underline */
+}
 
-    /* Target only the h6 inside the active nav-link */
-    .nav-link.active h6 {
-        color: #fff !important;
-        /* Active tab text color */
-    }
+/* Hover effect on the text */
+.nav-link:hover h6 {
+    color: #936CFB; /* Change text color on hover */
+    transition: color 0.3s ease-in-out; /* Smooth transition for text color */
+}
 
-    /* Reset color for h6 in inactive tabs */
-    .nav-link h6 {
-        color: #000;
-        /* Default tab text color */
-    }
+/* Active state styles */
+.nav-link.active {
+    background: none !important; /* No background */
+}
 
-    .nav-link:hover {
-        background-color: #e2e6ea;
-        /* Hover effect */
-    }
+.nav-link.active h6 {
+    color: #946CFC !important; /* Color for active tab text */
+    font-weight: bold; /* Bold text */
+}
 
-    /* Add spacing around the entire tab content */
+/* Default text color */
+.nav-link h6 {
+    color: #000; /* Default color for text */
+}
+
+/* General hover effect for the link */
+.nav-link:hover {
+    color: #936CFB !important; /* Change link color on hover */
+    transition: color 0.3s ease-in-out; /* Smooth transition for color change */
+}
+
+
     .tab-content {
         margin-top: 20px;
-        /* Space above the tab content */
+    }
+
+    .category-section {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .responsive-font {
+        font-size: 1rem;
+    }
+
+    @media (max-width: 767.98px) {
+        .responsive-font {
+            font-size: 0.85rem;
+        }
+    }
+
+    .category-section {
+        min-width: 150px;
+        flex-grow: 1;
+    }
+
+    @media (max-width: 576px) {
+
+        .category-section {
+            flex-basis: 100%;
+        }
+    }
+
+    @media (min-width: 576px) and (max-width: 768px) {
+
+        .category-section {
+            flex-basis: 50%;
+        }
+    }
+
+    @media (min-width: 768px) {
+
+        .category-section {
+            flex-basis: 33.33%;
+        }
+    }
+
+    .select-margin {
+        margin-left: -22px !important;
+    }
+
+    #viewAllSection,
+    #gutGuidedSection {
+        transition: opacity 0.3s ease;
+    }
+
+    .view-all-checkboxes input[type="checkbox"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border: 2px solid #000;
+        border-radius: 3px;
+        outline: none;
+        cursor: pointer;
+        position: relative;
+        background-color: transparent;
+    }
+
+    .view-all-checkboxes input[type="checkbox"]:checked {
+        background-color: transparent;
+        border-color: #000;
+    }
+
+    .view-all-checkboxes input[type="checkbox"]:checked::after {
+        content: '✔';
+        font-size: 12px;
+        position: absolute;
+        top: -3px;
+        left: 0px;
+        color: black;
+    }
+
+    .fa-star {
+        color: black;
+        transition: color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .fa-star.active {
+        color: yellow;
     }
 </style>
 <?php
@@ -113,174 +209,170 @@ foreach ($weight_history as $index => $entry) {
                         <div class="row">
                             <?php
                             if (isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id'])) {
-                                $user_id = $_SESSION['user_id'];
-                                $sql = "SELECT id,first_name,last_name FROM users WHERE id = $user_id";
 
-                                $result = mysqli_query($mysqli, $sql);
-                                if ($result && mysqli_num_rows($result) > 0) {
-                                    $row = mysqli_fetch_assoc($result);
                             ?>
-                                    <div class="col-md-12">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4><?php echo $row['first_name'] ?> <?php echo $row['last_name'] ?></h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="horizontal-wizard-wrapper">
-                                                    <div class="row g-3">
-                                                        <div class="col-12 main-horizontal-header">
-                                                            <div class="nav nav-pills horizontal-options" id="horizontal-wizard-tab" role="tablist" aria-orientation="vertical">
-                                                                <a class="nav-link active" id="wizard-info-tab" data-bs-toggle="pill" href="#wizard-info" role="tab" aria-controls="wizard-info" aria-selected="true">
-                                                                    <div class="horizontal-wizard">
-                                                                        <div class="stroke-icon-wizard"></div>
-                                                                        <div class="horizontal-wizard-content">
-                                                                            <h6>Profile</h6>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                                <a class="nav-link" id="wizard-weight-tracker-tab" data-bs-toggle="pill" href="#wizard-weight-tracker" role="tab" aria-controls="wizard-weight-tracker" aria-selected="false">
-                                                                    <div class="horizontal-wizard">
-                                                                        <div class="stroke-icon-wizard"></div>
-                                                                        <div class="horizontal-wizard-content">
-                                                                            <h6>Weight Tracker</h6>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                                <a class="nav-link" id="bank-wizard-tab" data-bs-toggle="pill" href="#bank-wizard" role="tab" aria-controls="bank-wizard" aria-selected="false" tabindex="-1">
-                                                                    <div class="horizontal-wizard">
-                                                                        <div class="stroke-icon-wizard"></div>
-                                                                        <div class="horizontal-wizard-content">
-                                                                            <h6>Food Logs</h6>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                                <a class="nav-link" id="my-plan-tab" data-bs-toggle="pill" href="#my-plan" role="tab" aria-controls="my-plan" aria-selected="false" tabindex="-1">
-                                                                    <div class="horizontal-wizard">
-                                                                        <div class="stroke-icon-wizard"></div>
-                                                                        <div class="horizontal-wizard-content">
-                                                                            <h6>My Plan</h6>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                                <a class="nav-link" id="inquiry-wizard-tab" data-bs-toggle="pill" href="#inquiry-wizard" role="tab" aria-controls="inquiry-wizard" aria-selected="false" tabindex="-1">
-                                                                    <div class="horizontal-wizard">
-                                                                        <div class="stroke-icon-wizard"></div>
-                                                                        <div class="horizontal-wizard-content">
-                                                                            <h6>Meal Planner</h6>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                                <a class="nav-link" id="successful-wizard-tab" data-bs-toggle="pill" href="#successful-wizard" role="tab" aria-controls="successful-wizard" aria-selected="false" tabindex="-1">
-                                                                    <div class="horizontal-wizard">
-                                                                        <div class="stroke-icon-wizard"></div>
-                                                                        <div class="horizontal-wizard-content">
-                                                                            <h6>Messages</h6>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
+                                <div class="col-md-12">
+                                    <div class="card-body">
+                                        <div class="horizontal-wizard-wrapper">
+                                            <div class="row g-3">
+                                                <div class="col-12 main-horizontal-header">
+                                                    <div class="nav nav-pills horizontal-options" id="horizontal-wizard-tab" role="tablist" aria-orientation="vertical">
+                                                        <a class="nav-link active" id="wizard-info-tab" data-bs-toggle="pill" href="#wizard-info" role="tab" aria-controls="wizard-info" aria-selected="true">
+                                                            <div class="horizontal-wizard">
+                                                                <div class="stroke-icon-wizard"></div>
+                                                                <div class="horizontal-wizard-content">
+                                                                    <h6>Profile</h6>
+                                                                </div>
                                                             </div>
+                                                        </a>
+                                                        <a class="nav-link" id="wizard-weight-tracker-tab" data-bs-toggle="pill" href="#wizard-weight-tracker" role="tab" aria-controls="wizard-weight-tracker" aria-selected="false">
+                                                            <div class="horizontal-wizard">
+                                                                <div class="stroke-icon-wizard"></div>
+                                                                <div class="horizontal-wizard-content">
+                                                                    <h6>My Progress</h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <a class="nav-link" id="my-plan-tab" data-bs-toggle="pill" href="#my-plan" role="tab" aria-controls="my-plan" aria-selected="false" tabindex="-1">
+                                                            <div class="horizontal-wizard">
+                                                                <div class="stroke-icon-wizard"></div>
+                                                                <div class="horizontal-wizard-content">
+                                                                    <h6>My Plan</h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <a class="nav-link" id="my-plan-tab" data-bs-toggle="pill" href="#my-plan" role="tab" aria-controls="my-plan" aria-selected="false" tabindex="-1">
+                                                            <div class="horizontal-wizard">
+                                                                <div class="stroke-icon-wizard"></div>
+                                                                <div class="horizontal-wizard-content">
+                                                                    <h6>Recipes</h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <a class="nav-link" id="inquiry-wizard-tab" data-bs-toggle="pill" href="#inquiry-wizard" role="tab" aria-controls="inquiry-wizard" aria-selected="false" tabindex="-1">
+                                                            <div class="horizontal-wizard">
+                                                                <div class="stroke-icon-wizard"></div>
+                                                                <div class="horizontal-wizard-content">
+                                                                    <h6>Coaching</h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <a class="nav-link" id="successful-wizard-tab" data-bs-toggle="pill" href="#successful-wizard" role="tab" aria-controls="successful-wizard" aria-selected="false" tabindex="-1">
+                                                            <div class="horizontal-wizard">
+                                                                <div class="stroke-icon-wizard"></div>
+                                                                <div class="horizontal-wizard-content">
+                                                                    <h6>Messages</h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                                <hr />
+
+                                                <!-- Main content -->
+                                                <div class="col-12">
+                                                    <div class="tab-content dark-field" id="horizontal-wizard-tabContent">
+                                                        <div class="tab-pane fade active show" id="wizard-info" role="tabpanel" aria-labelledby="wizard-info-tab">
+                                                            <?php include_once "../clients/utils/profile_component.php" ?>
                                                         </div>
-
-                                                        <hr />
-
-                                                        <!-- Main content -->
-                                                        <div class="col-12">
-                                                            <div class="tab-content dark-field" id="horizontal-wizard-tabContent">
-                                                                <div class="tab-pane fade active show" id="wizard-info" role="tabpanel" aria-labelledby="wizard-info-tab">
-                                                                    <?php include_once "../clients/utils/profile_component.php" ?>
-                                                                </div>
-                                                                <div class="tab-pane fade" id="wizard-weight-tracker" role="tabpanel" aria-labelledby="wizard-weight-tracker-tab">
-                                                                    <!-- Weight Tracker Content -->
-                                                                </div>
-                                                                <div class="tab-pane fade" id="bank-wizard" role="tabpanel" aria-labelledby="bank-wizard-tab">
-                                                                    <?php include_once "../clients/utils/food_logs_component.php" ?>
-                                                                </div>
-                                                                <div class="tab-pane fade" id="my-plan" role="tabpanel" aria-labelledby="my-plan-tab">
-                                                                    <div class="d-flex justify-content-center mt-3">
-                                                                        <div class="nav nav-pills mx-2" role="tablist">
-                                                                            <a class="nav-link active" id="choose-food-tab" data-bs-toggle="pill" href="#choose-food" role="tab" aria-controls="choose-food" aria-selected="true">
-                                                                                <h6>Choose Food</h6>
-                                                                            </a>
-                                                                        </div>
-                                                                        <div class="nav nav-pills mx-2" role="tablist">
-                                                                            <a class="nav-link" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
-                                                                                <h6>My Tracker</h6>
-                                                                            </a>
-                                                                        </div>
-                                                                        <div class="nav nav-pills mx-2" role="tablist">
-                                                                            <a class="nav-link" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
-                                                                                <h6>My Planner</h6>
-                                                                            </a>
-                                                                        </div>
+                                                        <div class="tab-pane fade" id="wizard-weight-tracker" role="tabpanel" aria-labelledby="wizard-weight-tracker-tab">
+                                                            <!-- Weight Tracker Content -->
+                                                        </div>
+                                                        <div class="tab-pane fade" id="my-plan" role="tabpanel" aria-labelledby="my-plan-tab">
+                                                            <div class="container-fluid">
+                                                                <div class="d-flex flex-wrap justify-content-center gap-2">
+                                                                    <div class="nav nav-pills mx-2" role="tablist">
+                                                                        <a class="nav-link active" id="choose-food-tab" data-bs-toggle="pill" href="#choose-food" role="tab" aria-controls="choose-food" aria-selected="true">
+                                                                            <h6 class="responsive-font">Choose Food</h6>
+                                                                        </a>
                                                                     </div>
-                                                                    <div class="tab-content">
-                                                                        <div class="tab-pane fade active show" id="choose-food" role="tabpanel" aria-labelledby="choose-food-tab">
-                                                                            <!-- Content for Choose Food -->
-                                                                            <div class="tab-pane fade active show" id="choose-food" role="tabpanel" aria-labelledby="choose-food-tab">
-                                                                                <div class="row">
-                                                                                    <div class="col-md-8">
-                                                                                        <!-- Left Section Content -->
-                                                                                        <h5 class="text-center h1 mt-2">Choose Your Food Preferences</h5>
-                                                                                        <div class="form-group mt-3 d-flex justify-content-center align-items-center">
-                                                                                            <label for="preferenceSwitch" class="form-label me-2 mb-0">View all</label>
-                                                                                            <div class="form-check form-switch me-2">
-                                                                                                <input class="form-check-input" type="checkbox" id="preferenceSwitch" role="switch">
-                                                                                                <label for="preferenceSwitch" class="form-label me-2 mb-0">Gut guided</label>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
+                                                                    <div class="nav nav-pills mx-2" role="tablist">
+                                                                        <a class="nav-link" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
+                                                                            <h6 class="responsive-font">My Planner</h6>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="nav nav-pills mx-2" role="tablist">
+                                                                        <a class="nav-link" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
+                                                                            <h6 class="responsive-font">My Tracker</h6>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
 
-                                                                                    <div class="col-md-4">
-                                                                                        <!-- Right Section Content -->
-                                                                                        <h5>Selected Foods</h5>
-                                                                                        <ul id="selectedFoodList" class="list-group">
-                                                                                            <!-- Dynamically populated list of selected foods -->
-                                                                                            <li class="list-group-item">Apples</li>
-                                                                                            <li class="list-group-item">Bananas</li>
-                                                                                        </ul>
-                                                                                        <button class="btn btn-danger mt-3">Clear Selection</button>
+                                                                <div class="tab-content mt-5">
+                                                                    <div class="tab-pane fade active show" id="choose-food" role="tabpanel" aria-labelledby="choose-food-tab">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-9">
+                                                                                <h1 class="text-center">Choose Your Food Preferences</h1>
+                                                                                <div class="d-flex justify-content-center align-items-center my-4">
+                                                                                    <label class="form-label me-2 fs-6 responsive-font">View all</label>
+                                                                                    <div class="form-check form-switch">
+                                                                                        <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
+                                                                                        <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
                                                                                     </div>
+                                                                                </div>
+
+                                                                                <!-- Food Categories Section for view all-->
+                                                                                <div id="viewAllSection" style="display: block;">
+                                                                                    <?php include_once '../functions/food-logs/view_all_food.php' ?>
+                                                                                </div>
+
+                                                                                <!-- Food Categories Section for gut guided -->
+                                                                                <div id="gutGuidedSection" style="display: none;">
+                                                                                    <?php include_once '../functions/food-logs/gut_guided_food.php' ?>
                                                                                 </div>
                                                                             </div>
 
-                                                                        </div>
-                                                                        <div class="tab-pane fade" id="my-tracker" role="tabpanel" aria-labelledby="my-tracker-tab">
-                                                                            <!-- Content for My Tracker -->
-                                                                        </div>
-                                                                        <div class="tab-pane fade" id="my-planner" role="tabpanel" aria-labelledby="my-planner-tab">
-                                                                            <!-- Content for My Planner -->
+                                                                            <!-- Recipe Column -->
+                                                                            <div class="col-lg-3">
+                                                                                <div>
+                                                                                    <?php include_once '../functions/food-logs/recipies.php' ?>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                    <div class="tab-pane fade" id="my-planner" role="tabpanel" aria-labelledby="my-planner-tab">
+                                                                        <!-- My Planner Content -->
+                                                                        <?php include_once '../functions/food-logs/my-planner.php'  ?>
+                                                                    </div>
 
-                                                                <div class="tab-pane fade" id="inquiry-wizard" role="tabpanel">
-                                                                    <!-- Inquiry Content -->
-                                                                </div>
-                                                                <div class="tab-pane fade" id="dev-saq-recipes" role="tabpanel">
-                                                                    <!-- Recipes Content -->
-                                                                </div>
-                                                                <div class="tab-pane fade" id="successful-wizard" role="tabpanel">
-                                                                    <?php include_once("../clients/utils/message_component.php") ?>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="tab-pane fade" id="my-tracker" role="tabpanel" aria-labelledby="my-tracker-tab">
+                                                            <!-- My Tracker Content -->
+                                                            <?php include_once '../clients/utils/food_logs_component.php' ?>
+                                                        </div>
                                                     </div>
                                                 </div>
+
+                                            </div>
+
+
+                                            <div class="tab-pane fade" id="inquiry-wizard" role="tabpanel">
+                                                <!-- Inquiry Content -->
+                                            </div>
+                                            <div class="tab-pane fade" id="dev-saq-recipes" role="tabpanel">
+                                                <!-- Recipes Content -->
+                                            </div>
+                                            <div class="tab-pane fade" id="successful-wizard" role="tabpanel">
+                                                <?php include_once("../clients/utils/message_component.php") ?>
                                             </div>
                                         </div>
                                     </div>
-
-                            <?php
-                                }
-                            }
-                            ?>
+                                </div>
                         </div>
                     </div>
                 </div>
-                <!-- Container-fluid Ends-->
             </div>
-            <?php include_once "../utils/footer.php" ?>
+        <?php } ?>
         </div>
+    </div>
+    </div>
+    <!-- Container-fluid Ends-->
+    </div>
+    <?php include_once "../utils/footer.php" ?>
+    </div>
     </div>
     <?php include_once "../utils/scripts.php" ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -303,6 +395,7 @@ foreach ($weight_history as $index => $entry) {
         // Run on window resize
         window.addEventListener('resize', updateWrapperClass);
     </script>
+
     <!-- WEIGHT TRACKER GAUGE SCRIPT -->
     <script>
         const ctx = document.getElementById('myGauge').getContext('2d');
@@ -382,6 +475,33 @@ foreach ($weight_history as $index => $entry) {
         });
     </script>
 
+    <!-- Script to switch view all to gut guided-->
+    <script>
+        const preferenceSwitch = document.getElementById('preferenceSwitch');
+        const viewAllSection = document.getElementById('viewAllSection');
+        const gutGuidedSection = document.getElementById('gutGuidedSection');
+
+        preferenceSwitch.addEventListener('change', function() {
+            if (preferenceSwitch.checked) {
+                // Show Gut guided section, hide View all section
+                viewAllSection.style.display = 'none';
+                gutGuidedSection.style.display = 'block';
+            } else {
+                // Show View all section, hide Gut guided section
+                viewAllSection.style.display = 'block';
+                gutGuidedSection.style.display = 'none';
+            }
+        });
+    </script>
+
+    <!-- JavaScript to toggle the star color on click -->
+    <script>
+        document.querySelectorAll('.fa-star').forEach(star => {
+            star.addEventListener('click', () => {
+                star.classList.toggle('active'); // Toggle yellow color
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -179,6 +179,23 @@ if ($login_user_role == 'coach') {
                         </ul>
                     </li>
 
+                    <?php
+                    if (isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id'])) {
+                        $user_id = $_SESSION['user_id'];
+                        $sql = "SELECT id,first_name,last_name FROM users WHERE id = $user_id";
+
+                        $result = mysqli_query($mysqli, $sql);
+                        if ($result && mysqli_num_rows($result) > 0) {
+                            $row = mysqli_fetch_assoc($result);
+                    ?>
+
+                            <div class="card-header">
+                                <h4><?php echo $row['first_name'] ?> <?php echo $row['last_name'] ?></h4>
+                            </div>
+
+                    <?php }
+                    } ?>
+
                     <li class="profile-nav onhover-dropdown px-0 py-0">
                         <div class="d-flex profile-media align-items-center">
                             <a href="../dashboard/profile.php">

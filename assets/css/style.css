@@ -256,7 +256,7 @@ body.dark-only.box-layout {
 ==========================**/
 
 .font-outfit {
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
 }
 
 .f-light {
@@ -4853,10 +4853,18 @@ button:focus {
     1.2 Typography CSS start
 ==========================**/
 
+/* Define the Garet font family */
+@font-face {
+    font-family: 'Garet';
+    src: url('../../fonts/garet-book-webfont.woff') format('woff'),
+         url('../../fonts/garet-book-webfont.woff') format('woff2')
+}
+
+
 body {
     font-size: 14px;
     overflow-x: hidden;
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
     color: #3D434A;
     background-color: #F4F7F9;
 }
@@ -7805,7 +7813,7 @@ a.badge:hover.badge-dark:hover {
 
 .badge {
     padding: 0.44em 0.7em;
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
     font-weight: 500;
 }
 
@@ -8983,7 +8991,7 @@ body.modal-open .select2-container--open .select2-dropdown {
 }
 
 .page-body-wrapper .card .sub-title {
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
     font-weight: normal;
     font-weight: 500;
     color: #9B9B9B;
@@ -9342,7 +9350,7 @@ body.modal-open .select2-container--open .select2-dropdown {
 
 .timeline-calendar .custom-calendar .time-line .fc-timegrid-col .fc-timegrid-col-frame .fc-timegrid-event-harness .fc-v-event .fc-event-main .fc-sticky .fc-task-text-box .fc-task-text {
     color: #3D434A;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     font-size: 14px;
     font-weight: 500;
 }
@@ -11066,7 +11074,7 @@ table.dataTable.display tbody tr.even .badge {
 }
 
 .dropdown .dropdown-menu {
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
 }
 
 .docs-toggles .dropdown .dropdown-toggle {
@@ -14027,14 +14035,14 @@ textarea {
 .icon-hover-bottom span,
 .icon-hover-bottom label,
 .icon-hover-bottom .btn {
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
 }
 
 .icon-hover-bottom .form-group input {
     display: inline-block;
     width: 300px;
     background-color: #fff;
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
 }
 
 .fa-fa-icon-show-div,
@@ -18350,7 +18358,7 @@ th {
 }
 
 .bootstrap-touchspin .input-group {
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
 }
 
 .bootstrap-touchspin .input-group .btn {
@@ -20884,7 +20892,7 @@ input[type=number] {
     background: rgba(49, 49, 49, 0.7);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
     color: #fff;
-    font: 10px "Outfit", sans-serif, sans-serif;
+    font: 10px "Garet", sans-serif, sans-serif;
     text-align: left;
     white-space: nowrap;
     padding: 5px;
@@ -20897,7 +20905,7 @@ input[type=number] {
 
 .chart-sparkline .jqsfield {
     color: #fff;
-    font: 10px "Outfit", sans-serif, sans-serif;
+    font: 10px "Garet", sans-serif, sans-serif;
     text-align: left;
 }
 
@@ -22618,7 +22626,7 @@ p.data-attributes svg {
 }
 
 .list-persons p {
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
 }
 
 .list-persons .profile-mail {
@@ -24835,7 +24843,7 @@ p.data-attributes svg {
     margin-bottom: 10px;
     font-size: 14px;
     font-weight: 500;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
 }
 
 @media (max-width: 1870px) {
@@ -26159,7 +26167,7 @@ p.data-attributes svg {
 .dashboard-4 div.dataTables_wrapper .dataTables_info {
     padding-left: 24px;
     color: #8D8D8D;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     font-weight: 500;
 }
 
@@ -26177,7 +26185,7 @@ p.data-attributes svg {
 .dashboard-3 div.dataTables_wrapper .dataTables_paginate,
 .dashboard-4 div.dataTables_wrapper .dataTables_paginate {
     margin-right: 24px;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     color: #8D8D8D;
     border: none;
 }
@@ -26320,7 +26328,7 @@ p.data-attributes svg {
 .dashboard-4 div.dataTables_wrapper table.dataTable thead>tr>th {
     border: none !important;
     text-transform: capitalize;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     font-weight: 700;
     padding-top: 9px;
     color: #3D434A;
@@ -26379,7 +26387,7 @@ p.data-attributes svg {
 .dashboard-2 div.dataTables_wrapper table.dataTable tbody>tr>td,
 .dashboard-3 div.dataTables_wrapper table.dataTable tbody>tr>td,
 .dashboard-4 div.dataTables_wrapper table.dataTable tbody>tr>td {
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     font-weight: 500;
     border-bottom: 1px dashed rgba(106, 113, 133, 0.3);
 }
@@ -26605,7 +26613,7 @@ p.data-attributes svg {
 .default-dashboard .overview .apexcharts-canvas svg .apexcharts-inner .apexcharts-pie .apexcharts-datalabels-group .apexcharts-datalabel-value {
     font-size: 14px;
     font-weight: 500;
-    font-family: "Outfit", sans-serif !important;
+    font-family: "Garet", sans-serif !important;
     fill: #8D8D8D !important;
 }
 
@@ -28997,7 +29005,7 @@ p.data-attributes svg {
     margin-bottom: 0;
     margin-top: 5px;
     font-size: 20px;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
 }
 
 .product-box .product-details h6 {
@@ -32515,7 +32523,7 @@ p.data-attributes svg {
 ==========================**/
 
 .invoice-1 body {
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     display: block;
     color: #000248;
 }
@@ -33642,7 +33650,7 @@ section .title p {
 }
 
 .faq-section .d-flex .flex-grow-1 h3 {
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     font-size: 18px;
     font-weight: 600;
     color: #3D434A;
@@ -34417,7 +34425,7 @@ section .title p {
 
 .landing-home .home-bg .home-text .main-title .d-flex .flex-grow-1 p {
     font-size: 18px;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     color: #48A3D7;
     font-weight: 500;
 }
@@ -34430,7 +34438,7 @@ section .title p {
 
 .landing-home .home-bg .home-text h2 {
     color: #fff;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     font-size: calc(23px + 45 * (100vw - 768px) / 1152);
     font-weight: 600;
     margin-bottom: 10px;
@@ -34533,7 +34541,7 @@ section .title p {
 
 .landing-home .home-bg .home-text p {
     font-size: 17px;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     font-weight: 400;
     color: rgba(255, 255, 255, 0.62);
     margin-bottom: 34px;
@@ -34551,7 +34559,7 @@ section .title p {
     padding: 10px 12px;
     font-size: 16px;
     font-weight: 500;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     margin-right: 10px;
     -webkit-transition: all 0.4s;
     transition: all 0.4s;
@@ -40074,7 +40082,7 @@ html {
 .user-profile .follow .follow-num {
     font-size: 20px;
     color: #9B9B9B;
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
     font-weight: 500;
 }
 
@@ -40118,7 +40126,7 @@ html {
 }
 
 .user-profile .like-comment span {
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
 }
 
 .user-profile .social-media a {
@@ -47737,7 +47745,7 @@ hr {
     font-weight: 600;
     text-align: left;
     letter-spacing: 0.7px;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     border: 1px dashed #efefef;
     border-radius: 0;
     border-top-left-radius: 5px;
@@ -48425,7 +48433,7 @@ table.table-bordered thead tr th p {
 }
 
 .icon-lists {
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
 }
 
 .pl-navs-inline {
@@ -49692,7 +49700,7 @@ table.table-bordered thead tr th p {
 }
 
 .page-wrapper .page-header .header-wrapper .nav-right .bookmark-flip .bookmark-dropdown .bookmark-content span {
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.5px;
@@ -49826,7 +49834,7 @@ table.table-bordered thead tr th p {
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 0.3px;
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
 }
 
 .page-wrapper .page-header .header-wrapper .nav-right .onhover-show-div li+li {
@@ -49960,7 +49968,7 @@ table.table-bordered thead tr th p {
 .page-wrapper .page-header .header-wrapper .nav-right .cart-dropdown .qty-box .input-group input,
 .page-wrapper .page-header .header-wrapper .nav-right .cart-dropdown .qty-box .input-group .btn {
     font-size: 10px;
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
     font-weight: 700;
 }
 
@@ -49981,7 +49989,7 @@ table.table-bordered thead tr th p {
 }
 
 .page-wrapper .page-header .header-wrapper .nav-right .cart-dropdown .total h6 {
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
     font-weight: 500;
     font-size: 12px;
     line-height: 14px;
@@ -50203,7 +50211,7 @@ table.table-bordered thead tr th p {
 .page-wrapper .page-body-wrapper .page-title nav .breadcrumb li {
     font-size: 13px;
     letter-spacing: 1px;
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
 }
 
 .page-wrapper .page-body-wrapper .page-title nav .breadcrumb .breadcrumb-item+.breadcrumb-item:before {
@@ -50521,7 +50529,7 @@ table.table-bordered thead tr th p {
     color: rgba(43, 43, 43, 0.6);
     letter-spacing: 0.06em;
     font-weight: 500;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
@@ -51120,7 +51128,7 @@ table.table-bordered thead tr th p {
     font-size: 10px;
     letter-spacing: 0.7px;
     font-weight: 600;
-    font-family: "Outfit", sans-serif, sans-serif;
+    font-family: "Garet", sans-serif, sans-serif;
     border-radius: 10px;
 }
 
@@ -51295,7 +51303,7 @@ table.table-bordered thead tr th p {
     display: block;
     letter-spacing: 0.06em;
     font-weight: 500;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
     cursor: pointer;
 }
 
@@ -51340,7 +51348,7 @@ table.table-bordered thead tr th p {
     display: block;
     letter-spacing: 0.06em;
     font-weight: 500;
-    font-family: "Outfit", sans-serif;
+    font-family: "Garet", sans-serif;
 }
 
 [dir=rtl] .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links .simplebar-wrapper .simplebar-mask .simplebar-content-wrapper .simplebar-content>li .mega-menu-container .mega-box .link-section .submenu-content.opensubmegamenu li a {

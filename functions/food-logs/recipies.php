@@ -101,7 +101,7 @@
 </div>
 
 <!-- Recipe Cards -->
-<div class="d-flex flex-wrap mt-3">
+<div class="d-flex flex-wrap mt-3 gap-2">
     <!-- Recipe Card Example -->
     <div class="meal-card-rec">
         <div class="custom-border rounded">

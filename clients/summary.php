@@ -9,53 +9,61 @@
         margin: 0 auto;
     }
 
-    /* Center the sub-tabs and give them spacing */
     #my-plan .nav {
         justify-content: center;
-        /* Center the tabs horizontally */
     }
 
     .nav-link {
-        margin: 0 10px;
-        /* Add spacing between the tabs */
-        padding: 10px 20px;
-        /* Add padding inside each tab */
-        border-radius: 5px;
-        /* Rounded corners for the tabs */
-        background-color: #f8f9fa;
-        /* Default tab color */
-        color: #000;
-        /* Default tab text color */
-        transition: background-color 0.3s, color 0.3s;
-        /* Smooth transition for background and text color */
-    }
+    margin: 0 10px;
+    border-radius: 5px;
+    color: #000;
+    transition: color 0.3s ease-in-out; /* Transition for color change */
+    position: relative; /* For positioning the underline */
+}
 
-    .nav-link.active {
-        background-color: #007bff;
-        /* Active tab color */
-    }
+/* Underline for the active state */
+.nav-link.active::after {
+    content: ""; /* Pseudo-element for the underline */
+    display: block; /* Block display */
+    width: 100%; /* Full width of the link */
+    height: 2px; /* Height of the underline */
+    background-color: #936CFB; /* Color of the underline */
+    position: absolute; /* Positioned absolutely */
+    bottom: -5px; /* Spacing from the text */
+    left: 0; /* Align to the left */
+    transition: background-color 0.3s ease-in-out, width 0.3s ease-in-out; /* Smooth transition for underline */
+}
 
-    /* Target only the h6 inside the active nav-link */
-    .nav-link.active h6 {
-        color: #fff !important;
-        /* Active tab text color */
-    }
+/* Hover effect on the text */
+.nav-link:hover h6 {
+    color: #936CFB; /* Change text color on hover */
+    transition: color 0.3s ease-in-out; /* Smooth transition for text color */
+}
 
-    /* Reset color for h6 in inactive tabs */
-    .nav-link h6 {
-        color: #000;
-        /* Default tab text color */
-    }
+/* Active state styles */
+.nav-link.active {
+    background: none !important; /* No background */
+}
 
-    .nav-link:hover {
-        background-color: #e2e6ea;
-        /* Hover effect */
-    }
+.nav-link.active h6 {
+    color: #946CFC !important; /* Color for active tab text */
+    font-weight: bold; /* Bold text */
+}
 
-    /* Add spacing around the entire tab content */
+/* Default text color */
+.nav-link h6 {
+    color: #000; /* Default color for text */
+}
+
+/* General hover effect for the link */
+.nav-link:hover {
+    color: #936CFB !important; /* Change link color on hover */
+    transition: color 0.3s ease-in-out; /* Smooth transition for color change */
+}
+
+
     .tab-content {
         margin-top: 20px;
-        /* Space above the tab content */
     }
 
     .category-section {
@@ -75,35 +83,27 @@
 
     .category-section {
         min-width: 150px;
-        /* Minimum width for each category */
         flex-grow: 1;
-        /* Allow items to grow */
     }
 
     @media (max-width: 576px) {
 
-        /* Small screens */
         .category-section {
             flex-basis: 100%;
-            /* 1 item per row */
         }
     }
 
     @media (min-width: 576px) and (max-width: 768px) {
 
-        /* Medium screens */
         .category-section {
             flex-basis: 50%;
-            /* 2 items per row */
         }
     }
 
     @media (min-width: 768px) {
 
-        /* Large screens and up */
         .category-section {
             flex-basis: 33.33%;
-            /* 3 items per row */
         }
     }
 

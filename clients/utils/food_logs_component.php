@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-8">
                 <h2 class="text-center mb-3">
-                    Let's track your meal
+                    Let's track your day
                 </h2>
                 <div class="row">
                     <?php
@@ -64,7 +64,7 @@
                             $remaining = $metric['max'] - $metric['total'];
                     ?>
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                                <div class="d-flex flex-column align-items-center justify-content-center p-3" style="min-width: 200px; border-radius: 20px; border: 1px solid #946CFC; text-align: center;">
+                                <div class="d-flex flex-column align-items-center justify-content-center p-1" style="min-width: 200px; border-radius: 20px; border: 1px solid #946CFC; text-align: center;">
                                     <span style="font-size: 20px; display: block;"><?php echo $metric['label']; ?></span>
                                     <h1 class="my-2" style="font-weight: bold;">
                                         <?php echo $metric['total'] . ' ' . $metric['unit']; ?>
@@ -82,26 +82,26 @@
                     }
                     ?>
                 </div>
-                <div class="col-md-12 mt-5">
+                <div class="col-md-12 mt-3 ">
                     <div class="row">
-                        <div class="col-md-12 mb-5">
-                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-                                <div class="d-flex justify-content-start align-items-start mb-2 mb-md-0 flex-fill flex-sm-50 flex-md-33 flex-lg-25">
-                                    <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>" class="btn btn-primary mx-2">
-                                        <i class="fa fa-angle-left"></i>
+                        <div class="col-md-12 mb-3">
+                            <div class="">
+                                <div class="main-color text-center my-3">
+                                    <i class="fa fa-calendar me-2 fw-bold fs-4"></i>
+                                    <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
+                                        <i class="fa fa-angle-left fw-bold fs-4"></i>
                                     </a>
-                                    <h3 class="text-center mx-2">
-                                        <?php echo date('l M d, Y', strtotime($selected_date)); ?>
+                                    <h3 class="text-center mx-2 d-inline main-color">
+                                        <?php echo date('M d, Y', strtotime($selected_date)); ?>
                                     </h3>
                                     <input type="hidden" value="<?php echo $selected_date; ?>" id="selected_date">
-                                    <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $next_date; ?>" class="btn btn-primary mx-2">
-                                        <i class="fa fa-angle-right"></i>
+                                    <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $next_date; ?>">
+                                        <i class="fa fa-angle-right fw-bold fs-4"></i>
                                     </a>
                                 </div>
                             </div>
-
                         </div>
-
+                        <!-- Food logs data -->
                         <div class="row">
                             <?php
                             $user_id = $_GET['id'];
@@ -277,6 +277,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Weight tracker -->
             <div class="col-md-4">
                 <div class="row">
                     <h2 class="text-center mb-3" style="color:#946cfc;">

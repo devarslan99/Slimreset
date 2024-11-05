@@ -2,6 +2,7 @@
 <html lang="en">
 
 <?php include_once "../utils/header.php" ?>
+
 <style>
     #myGauge {
         max-width: 400px;
@@ -14,53 +15,47 @@
     }
 
     .nav-link {
-    margin: 0 10px;
-    border-radius: 5px;
-    color: #000;
-    transition: color 0.3s ease-in-out; /* Transition for color change */
-    position: relative; /* For positioning the underline */
-}
+        margin: 0 10px;
+        border-radius: 5px;
+        color: #000;
+        transition: color 0.3s ease-in-out;
+        position: relative
+    }
 
-/* Underline for the active state */
-.nav-link.active::after {
-    content: ""; /* Pseudo-element for the underline */
-    display: block; /* Block display */
-    width: 100%; /* Full width of the link */
-    height: 2px; /* Height of the underline */
-    background-color: #936CFB; /* Color of the underline */
-    position: absolute; /* Positioned absolutely */
-    bottom: -5px; /* Spacing from the text */
-    left: 0; /* Align to the left */
-    transition: background-color 0.3s ease-in-out, width 0.3s ease-in-out; /* Smooth transition for underline */
-}
+    .nav-link.active::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: #936CFB;
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        transition: background-color 0.3s ease-in-out, width 0.3s ease-in-out;
+    }
 
-/* Hover effect on the text */
-.nav-link:hover h6 {
-    color: #936CFB; /* Change text color on hover */
-    transition: color 0.3s ease-in-out; /* Smooth transition for text color */
-}
+    .nav-link:hover h6 {
+        color: #936CFB;
+        transition: color 0.3s ease-in-out;
+    }
 
-/* Active state styles */
-.nav-link.active {
-    background: none !important; /* No background */
-}
+    .nav-link.active {
+        background: none !important;
+    }
 
-.nav-link.active h6 {
-    color: #946CFC !important; /* Color for active tab text */
-    font-weight: bold; /* Bold text */
-}
+    .nav-link.active h6 {
+        color: #946CFC !important;
+        font-weight: bold;
+    }
 
-/* Default text color */
-.nav-link h6 {
-    color: #000; /* Default color for text */
-}
+    .nav-link h6 {
+        color: #000;
+    }
 
-/* General hover effect for the link */
-.nav-link:hover {
-    color: #936CFB !important; /* Change link color on hover */
-    transition: color 0.3s ease-in-out; /* Smooth transition for color change */
-}
-
+    .nav-link:hover {
+        color: #936CFB !important;
+        transition: color 0.3s ease-in-out;
+    }
 
     .tab-content {
         margin-top: 20px;
@@ -154,6 +149,7 @@
         color: yellow;
     }
 </style>
+
 <?php
 include_once '../database/db_connection.php';
 $user_id = $_GET['id'];
@@ -198,7 +194,7 @@ foreach ($weight_history as $index => $entry) {
 
 <body>
     <?php include_once "../utils/loader.php" ?>
-    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <div class="page-wrapper compact-wrapper" style="background: #ffffff !important;" id="pageWrapper">
         <?php include_once "../utils/navbar.php" ?>
         <div class="page-body-wrapper">
             <?php include_once "../utils/sidebar.php" ?>
@@ -335,20 +331,17 @@ foreach ($weight_history as $index => $entry) {
                                                                         <!-- My Planner Content -->
                                                                         <?php include_once '../functions/food-logs/my-planner.php'  ?>
                                                                     </div>
-
+                                                                    <div class="tab-pane fade" id="my-tracker" role="tabpanel" aria-labelledby="my-tracker-tab">
+                                                                        <!-- My Tracker Content -->
+                                                                        <?php include_once '../clients/utils/food_logs_component.php' ?>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="my-tracker" role="tabpanel" aria-labelledby="my-tracker-tab">
-                                                            <!-- My Tracker Content -->
-                                                            <?php include_once '../clients/utils/food_logs_component.php' ?>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                             </div>
-
-
                                             <div class="tab-pane fade" id="inquiry-wizard" role="tabpanel">
                                                 <!-- Inquiry Content -->
                                             </div>
@@ -426,24 +419,37 @@ foreach ($weight_history as $index => $entry) {
         });
     </script>
 
-    <!-- Redirecting to food logs if we have date -->
+    <!-- Redirecting to food logs if we have date and adjusting of my tracker view page -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const urlParams = new URLSearchParams(window.location.search);
+
             if (urlParams.has('date')) {
-                document.querySelector('.nav-link.active').classList.remove('active');
-                document.querySelector('.tab-pane.active.show').classList.remove('active', 'show');
+                // Deactivate any active parent tabs
+                document.querySelectorAll('.nav-link.active').forEach(link => link.classList.remove('active'));
+                document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
 
-                const foodLogsTab = document.getElementById('bank-wizard-tab');
-                const foodLogsContent = document.getElementById('bank-wizard');
+                // Activate "My Plan" tab (parent tab)
+                const myPlanTabLink = document.querySelector('#my-plan-tab');
+                const myPlanTabContent = document.querySelector('#my-plan');
 
-                if (foodLogsTab && foodLogsContent) {
-                    foodLogsTab.classList.add('active');
-                    foodLogsContent.classList.add('active', 'show');
+                if (myPlanTabLink && myPlanTabContent) {
+                    myPlanTabLink.classList.add('active');
+                    myPlanTabContent.classList.add('active', 'show');
+                }
+
+                // Activate "My Tracker" tab inside "My Plan"
+                const myTrackerTabLink = document.querySelector('#my-tracker-tab');
+                const myTrackerTabContent = document.querySelector('#my-tracker');
+
+                if (myTrackerTabLink && myTrackerTabContent) {
+                    myTrackerTabLink.classList.add('active');
+                    myTrackerTabContent.classList.add('active', 'show');
                 }
             }
-        })
+        });
     </script>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

@@ -220,15 +220,15 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         <div class="my-3">
             <div class="row g-2">
                 <div class="col-12 col-sm-6 col-md-4">
-                    <select class="form-select w-100">
-                        <option selected>Selects by protein</option>
+                    <select class="custom-select w-100">
+                        <option selected>Select by protein</option>
                         <option>Chicken</option>
                         <option>Turkey</option>
                         <option>Eggs</option>
                     </select>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
-                    <select class="form-select w-100">
+                    <select class="custom-select w-100">
                         <option selected>Select by veggie</option>
                         <option>Asparagus</option>
                         <option>Broccoli</option>
@@ -236,7 +236,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     </select>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
-                    <select class="form-select w-100">
+                    <select class="custom-select w-100">
                         <option selected>Select by fruit</option>
                         <option>Apples</option>
                         <option>Bananas</option>
@@ -244,35 +244,33 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     </select>
                 </div>
             </div>
-
-
         </div>
 
         <!-- Category Checkboxes -->
-        <div class="d-flex flex-wrap gap-3 view-all-checkboxes">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="breakfast">
-                <label class="form-check-label" for="breakfast">Breakfast</label>
+        <div class="d-flex flex-wrap gap-3 recipe-checkboxes">
+            <div class="custom-checkbox">
+                <input type="checkbox" id="breakfast">
+                <label for="breakfast">Breakfast</label>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="lunch">
-                <label class="form-check-label" for="lunch">Lunch/Dinner</label>
+            <div class="custom-checkbox">
+                <input type="checkbox" id="lunch">
+                <label for="lunch">Lunch/Dinner</label>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="snacks">
-                <label class="form-check-label" for="snacks">Snacks</label>
+            <div class="custom-checkbox">
+                <input type="checkbox" id="snacks">
+                <label for="snacks">Snacks</label>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="beverages">
-                <label class="form-check-label" for="beverages">Beverages</label>
+            <div class="custom-checkbox">
+                <input type="checkbox" id="beverages">
+                <label for="beverages">Beverages</label>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="flavourings">
-                <label class="form-check-label" for="flavourings">Flavorings</label>
+            <div class="custom-checkbox">
+                <input type="checkbox" id="flavourings">
+                <label for="flavourings">Flavorings</label>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="dessert">
-                <label class="form-check-label" for="dessert">Dessert</label>
+            <div class="custom-checkbox">
+                <input type="checkbox" id="dessert">
+                <label for="dessert">Dessert</label>
             </div>
         </div>
 
@@ -290,63 +288,63 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     $(document).ready(function() {
         // Dummy details of meals for the right side (meal cards)
         const mealData = [{
-                image: 'https://placehold.co/100x60',
+                image: 'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
                 name: 'Veggie',
                 subName: 'Omelette',
                 calories: '800 kcal',
                 size: '8 oz'
             },
             {
-                image: 'https://placehold.co/100x60',
+                image: 'https://images.pexels.com/photos/10261265/pexels-photo-10261265.jpeg',
                 name: 'Chicken',
                 subName: 'Salad',
                 calories: '650 kcal',
                 size: '7 oz'
             },
             {
-                image: 'https://placehold.co/100x60',
+                image: 'https://images.unsplash.com/photo-1543353071-873f17a7a088',
                 name: 'Beef',
                 subName: 'Burger',
                 calories: '900 kcal',
                 size: '9 oz'
             },
             {
-                image: 'https://placehold.co/100x60',
+                image: 'https://images.unsplash.com/photo-1495195129352-aeb325a55b65',
                 name: 'Fruit',
                 subName: 'Smoothie',
                 calories: '250 kcal',
                 size: '12 oz'
             },
             {
-                image: 'https://placehold.co/100x60',
+                image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd',
                 name: 'Pasta',
                 subName: 'Primavera',
                 calories: '700 kcal',
                 size: '10 oz'
             },
             {
-                image: 'https://placehold.co/100x60',
+                image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061',
                 name: 'Greek',
                 subName: 'Yogurt',
                 calories: '200 kcal',
                 size: '5 oz'
             },
             {
-                image: 'https://placehold.co/100x60',
+                image: 'https://images.unsplash.com/photo-1525351484163-7529414344d8',
                 name: 'Steak',
                 subName: 'Frites',
                 calories: '1200 kcal',
                 size: '14 oz'
             },
             {
-                image: 'https://placehold.co/100x60',
+                image: 'https://images.pexels.com/photos/4050291/pexels-photo-4050291.jpeg',
                 name: 'Avocado',
                 subName: 'Toast',
                 calories: '300 kcal',
                 size: '6 oz'
             },
             {
-                image: 'https://placehold.co/100x60',
+                image: 'https://images.pexels.com/photos/4413724/pexels-photo-4413724.jpeg',
                 name: 'Tomato',
                 subName: 'Soup',
                 calories: '150 kcal',
@@ -359,7 +357,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             const mealCard = `
                 <div class="meal-card-rec">
                     <div class="custom-border rounded">
-                        <img src="${meal.image}" alt="${meal.name} ${meal.subName}">
+                        <img class="recipe-img-card" src="${meal.image}" alt="${meal.name} ${meal.subName}">
                         <div class="meal-name">${meal.name}</div>
                         <div class="meal-name-sub">${meal.subName}</div>
                         <div class="meal-info">${meal.calories}<br>${meal.size}</div>

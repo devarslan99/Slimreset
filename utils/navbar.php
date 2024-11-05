@@ -75,20 +75,44 @@ if ($login_user_role == 'coach') {
     <div class="col-4 col-xl-4 page-title">
         <h4 class="f-w-700">
             <?php
-            if ($_SERVER['REQUEST_URI'] == "/dashboard/dashboard.php") {
+            if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/dashboard.php") {
                 echo "Dashboard";
-            } else if ($_SERVER['REQUEST_URI'] == "/users/create.php") {
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/create.php") {
                 echo "Users";
             } else if (strpos($_SERVER['REQUEST_URI'], "/clients/view_details.php?id=") !== false) {
                 echo "Clients";
-            } else if (strpos($_SERVER['REQUEST_URI'], "/users/edit.php?id=") !== false) {
+            } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/users/edit.php?id=") !== false) {
                 echo "Users";
-            } else if ($_SERVER['REQUEST_URI'] == "/users/view.php") {
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/view.php") {
                 echo "Users";
-            } else if ($_SERVER['REQUEST_URI'] == "/clients/view.php") {
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/view.php") {
                 echo "Clients";
-            } else if ($_SERVER['REQUEST_URI'] == "/dashboard/account.php") {
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/account.php") {
                 echo "Account";
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/summary.php") {
+                echo "My Profile";
+            } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/clients/summary.php") !== false) {
+                echo "My Profile";
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/invite_clients.php") {
+                echo "Clients";
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/assign.php") {
+                echo "Coach";
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/view.php") {
+                echo "Coach";
+            } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/coach/edit.php?id=") !== false) {
+                echo "Coach";
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/create.php") {
+                echo "Food Category";
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/view.php") {
+                echo "Food Category";
+            } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_category/edit.php?id=") !== false) {
+                echo "Food Category";
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/create.php") {
+                echo "Food Recommendation";
+            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/view.php") {
+                echo "Food Recommendation";
+            } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_recommendation/edit.php?id=") !== false) {
+                echo "Food Recommendation";
             }
 
             ?>
@@ -98,39 +122,83 @@ if ($login_user_role == 'coach') {
                 <li class="breadcrumb-item"><a href="../dashboard/dashboard.php"> <i data-feather="home"> </i></a></li>
                 <li class="breadcrumb-item f-w-400">
                     <?php
-                    if ($_SERVER['REQUEST_URI'] == "/dashboard/dashboard.php") {
+                    if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/dashboard.php") {
                         echo "Dashboard";
-                    } else if ($_SERVER['REQUEST_URI'] == "/users/create.php") {
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/create.php") {
                         echo "Users";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "/users/edit.php?id=") !== false) {
+                    } else if (strpos($_SERVER['REQUEST_URI'], "projects/slimreset/users/edit.php?id=") !== false) {
                         echo "Users";
-                    } else if ($_SERVER['REQUEST_URI'] == "/users/view.php") {
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/view.php") {
                         echo "Users";
-                    } else if ($_SERVER['REQUEST_URI'] == "/dashboard/account.php") {
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/account.php") {
                         echo "Account";
-                    } else if ($_SERVER['REQUEST_URI'] == "/clients/view.php") {
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/view.php") {
                         echo "Clients";
                     } else if (strpos($_SERVER['REQUEST_URI'], "/clients/view_details.php?id=") !== false) {
                         echo "Clients";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/summary.php") {
+                        echo "My Profile";
+                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/clients/summary.php") !== false) {
+                        echo "My Profile";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/invite_clients.php") {
+                        echo "Clients";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/assign.php") {
+                        echo "Coach";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/view.php") {
+                        echo "Coach";
+                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/coach/edit.php?id=") !== false) {
+                        echo "Coach";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/create.php") {
+                        echo "Food Category";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/view.php") {
+                        echo "Food Category";
+                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_category/edit.php?id=") !== false) {
+                        echo "Food Category";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/create.php") {
+                        echo "Food Recommendation";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/view.php") {
+                        echo "Food Recommendation";
+                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_recommendation/edit.php?id=") !== false) {
+                        echo "Food Recommendation";
                     }
                     ?>
                 </li>
                 <li class="breadcrumb-item f-w-400 active">
                     <?php
-                    if ($_SERVER['REQUEST_URI'] == "/dashboard/dashboard.php") {
+                    if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/dashboard.php") {
                         echo "Home";
-                    } else if ($_SERVER['REQUEST_URI'] == "/users/create.php") {
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/create.php") {
                         echo "Create Users";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "/users/edit.php?id=") !== false) {
+                    } else if (strpos($_SERVER['REQUEST_URI'], "projects/slimreset/users/edit.php?id=") !== false) {
                         echo "Edit Users";
-                    } else if ($_SERVER['REQUEST_URI'] == "/users/view.php") {
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/view.php") {
                         echo "View Users";
-                    } else if ($_SERVER['REQUEST_URI'] == "/dashboard/account.php") {
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/account.php") {
                         echo "Account Settings";
-                    } else if ($_SERVER['REQUEST_URI'] == "/clients/view.php") {
-                        echo "Clients";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/view.php") {
+                        echo "View Clients";
                     } else if (strpos($_SERVER['REQUEST_URI'], "/clients/view_details.php?id=") !== false) {
                         echo "Clients";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/invite_clients.php") {
+                        echo "Invite clients";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/assign.php") {
+                        echo "Add";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/view.php") {
+                        echo "View";
+                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/coach/edit.php?id=") !== false) {
+                        echo "Edit";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/create.php") {
+                        echo "Add";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/view.php") {
+                        echo "View";
+                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_category/edit.php?id=") !== false) {
+                        echo "Edit";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/create.php") {
+                        echo "Add";
+                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/view.php") {
+                        echo "View";
+                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_recommendation/edit.php?id=") !== false) {
+                        echo "Edit";
                     }
                     ?>
                 </li>
@@ -168,7 +236,7 @@ if ($login_user_role == 'coach') {
             <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
                 <ul class="nav-menus gap-4">
                     <li class="cart-nav onhover-dropdown"></li>
-                    <li class="custom-notification-dropdown onhover-dropdown px-0 py-0">
+                    <li class="custom-notification-dropdown onhover-dropdown px-0 py-0 d-none">
                         <div class="d-flex custom-notification align-items-center position-relative">
                             <i class="fa fa-bell-o bell-font-size" aria-hidden="true"></i>
                             <!-- Counter Badge -->
@@ -221,3 +289,22 @@ if ($login_user_role == 'coach') {
         </div>
     </div>
 </div>
+
+
+<!-- Script to display notification icon on summary page -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const notificationDropdown = document.querySelector(".custom-notification-dropdown");
+
+        function toggleNotificationVisibility() {
+            const path = window.location.pathname;
+            if (path.includes("summary.php")) {
+                notificationDropdown.classList.remove("d-none");
+            } else {
+                notificationDropdown.classList.add("d-none");
+            }
+        }
+        toggleNotificationVisibility();
+        window.addEventListener("popstate", toggleNotificationVisibility);
+    });
+</script>

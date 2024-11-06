@@ -75,9 +75,12 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
     .meal-card img {
-        max-width: 100%;
+        width: 100%;
         border-radius: 5px;
+        height: 50px;
+        object-fit:cover;
     }
+
 
     .meal-name {
         font-weight: bold;
@@ -502,21 +505,19 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     const targetMealCard = evt.to.querySelector('.meal-card');
 
                     if (targetMealCard) {
-                        // Remove the empty slot indicator (+ sign) if present
-                        const addMore = targetMealCard.querySelector('.add-more');
-                        if (addMore) {
-                            addMore.remove();
-                        }
+                        // Keep the existing label in the meal card
+                        const existingLabel = targetMealCard.querySelector('.meal-card-title');
 
-                        // Populate the .meal-card with structured content
+                        // Populate the .meal-card with structured content, retaining the label
                         targetMealCard.innerHTML = `
-                        <div class="custom-border rounded">
-                            <img src="${imageSrc}" alt="${mealName}">
-                            <div class="meal-name">${mealName}</div>
-                            <div class="meal-name-sub">${mealSubName}</div>
-                            <div class="meal-info">${mealInfo}</div>
-                        </div>
-                    `;
+                            ${existingLabel ? existingLabel.outerHTML : ''} <!-- Keep existing label -->
+                            <div class="custom-border rounded">
+                                <img src="${imageSrc}" alt="${mealName}">
+                                <div class="meal-name">${mealName}</div>
+                                <div class="meal-name-sub">${mealSubName}</div>
+                                <div class="meal-info">${mealInfo}</div>
+                            </div>
+                        `;
                     }
 
                     // Remove the dragged item from its original location to keep single instance

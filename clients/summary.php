@@ -341,7 +341,7 @@ foreach ($weight_history as $index => $entry) {
                                                         </div>
                                                         <div class="tab-pane fade" id="recipes" role="tabpanel" aria-labelledby="recipes-tab">
                                                             <!-- Recipes Content -->
-                                                            <?php include_once '../functions/food-logs/recipies.php' ?>
+                                                            <?php include_once '../functions/recipes/my-recipes.php' ?>
                                                         </div>
 
                                                         <!-- Coaching Tab Content -->

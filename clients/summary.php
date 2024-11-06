@@ -273,7 +273,7 @@ foreach ($weight_history as $index => $entry) {
                                                             <?php include_once "../clients/utils/profile_component.php" ?>
                                                         </div>
                                                         <div class="tab-pane fade" id="wizard-weight-tracker" role="tabpanel" aria-labelledby="wizard-weight-tracker-tab">
-                                                            <!-- Weight Tracker Content -->
+                                                            <?php include_once '../functions/food-logs/my-progress.php' ?>
                                                         </div>
                                                         <div class="tab-pane fade" id="my-plan" role="tabpanel" aria-labelledby="my-plan-tab">
                                                             <div class="container-fluid">
@@ -506,6 +506,51 @@ foreach ($weight_history as $index => $entry) {
             star.addEventListener('click', () => {
                 star.classList.toggle('active'); // Toggle yellow color
             });
+        });
+    </script>
+
+    <script>
+        const ctxchart = document.getElementById('weightChart').getContext('2d');
+        const weightChart = new Chart(ctxchart, {
+            type: 'line',
+            data: {
+                labels: [
+                    'Jun-14', 'Jun-23', 'Jul-02', 'Jul-11', 'Jul-20',
+                    'Jul-29', 'Aug-07', 'Aug-16', 'Aug-25'
+                ],
+                datasets: [{
+                    label: 'Weight (lbs)',
+                    data: [215, 211, 208, 205, 203, 200, 198, 195, 194],
+                    borderColor: '#3e95cd',
+                    fill: true,
+                    backgroundColor: 'rgba(62, 149, 205, 0.2)',
+                    tension: 0.2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        suggestedMin: 190,
+                        suggestedMax: 215,
+                        title: {
+                            display: true,
+                            text: 'Weight (lbs)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
         });
     </script>
 </body>

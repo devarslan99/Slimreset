@@ -26,7 +26,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         border-radius: 30px;
         width: 500px;
         height:250px;
-        display: flex;
+        display: none;
         flex-direction: column;
         justify-content: space-between;
         gap: 5px;

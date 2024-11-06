@@ -53,7 +53,7 @@
 
         .border-bottom-row-gut-guided {
             border-bottom: 2px solid #B9BDC6;
-            width: 56%;
+            width: fit-content;
         }
     </style>
 

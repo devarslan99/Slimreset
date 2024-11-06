@@ -62,7 +62,19 @@ if ($login_user_role == 'coach') {
         margin-top: 0px !important;
     }
 </style>
-
+<style>
+    .notification-counter {
+        position: absolute;
+        top: -10px;
+        right: -8px;
+        background-color: red;
+        color: white;
+        font-size: 0.8rem;
+        padding: 2px 8px;
+        border-radius: 50%;
+        display: none;
+    }
+</style>
 <div class="page-header row">
     <div class="header-logo-wrapper col-auto">
         <div class="logo-wrapper">
@@ -220,22 +232,32 @@ if ($login_user_role == 'coach') {
                     </svg>
                 </div>
             </div>
-            <style>
-                .notification-counter {
-                    position: absolute;
-                    top: -10px;
-                    right: -8px;
-                    background-color: red;
-                    color: white;
-                    font-size: 0.8rem;
-                    padding: 2px 8px;
-                    border-radius: 50%;
-                    display: none;
-                }
-            </style>
+
             <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
                 <ul class="nav-menus gap-4">
                     <li class="cart-nav onhover-dropdown"></li>
+                    <style>
+                        .onhover-dropdown:hover .onhover-show-div {
+                            display: block;
+                        }
+                    </style>
+                    <li class="onhover-dropdown">
+                        <button class="btn btn-primary rounded-pill px-3" style="background-color: #946CFC; border: none;">
+                            + new entry
+                        </button>
+                        <div class="dropdown-menu onhover-show-div p-3" style="background-color: #946CFC; border-radius: 10px; width: 150px;">
+                            <h5 class="text-white mb-3">add entry</h5>
+                            <ul class="list-unstyled text-white">
+                                <li>weight</li>
+                                <li>meal</li>
+                                <li>food</li>
+                                <li>water</li>
+                                <li>bowel</li>
+                                <li>activity</li>
+                            </ul>
+                        </div>
+                    </li>
+
                     <li class="custom-notification-dropdown onhover-dropdown px-0 py-0 d-none">
                         <div class="d-flex custom-notification align-items-center position-relative">
                             <i class="fa fa-bell-o bell-font-size" aria-hidden="true"></i>

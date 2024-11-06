@@ -6,6 +6,98 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 ?>
 
 <style>
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .popup-content {
+        position: relative;
+        background-color: #fff;
+        padding: 20px 30px;
+        border-radius: 30px;
+        width: 500px;
+        height:250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 5px;
+    }
+
+    .close-popup {
+        position: absolute;
+        right: 25px;
+        top: 5px;
+        cursor: pointer;
+        color: #333;
+        font-weight: bold;
+        background-color: #946cfc;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        color: #fff;
+        border-radius: 50%;
+    }
+
+
+    .meal-detail
+    {
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
+        margin-top: 20px;
+    }
+
+    .meal-detail .ingredients,
+    .meal-detail .details
+    {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+    }
+
+    .meal-detail .ingredients h2
+    {
+        font-weight: 700;
+        color: #946cfc;
+        font-size: 2em;
+        margin: 0;
+    }
+
+    .view-recipe
+    {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .view-recipe .star
+    {
+        font-size: 1.9em;
+        color: #eaea0c;
+        cursor: pointer;
+    }
+
+    .view-recipe-btn
+    {
+        text-decoration: none;
+        font-size: 1.2em;
+        background-color: #e7e7113b;
+        padding: 12px;
+        border-radius: 20px;
+        color: #946cfc;
+        font-weight: 800;
+    }
     .day-header {
         font-weight: bold;
         color: #6b4ce6;
@@ -207,6 +299,31 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $next_date; ?>">
                         <i class="fa fa-angle-right fw-bold fs-4"></i>
                     </a>
+                </div>
+            </div>
+
+            <!-- pop up box -->
+            <div class="popup-overlay" id="popup-overlay">
+                <div class="popup-content">
+                    <div class="close-popup" onclick="closePopup()">X</div>
+                    <div class="meal-detail">
+                        <div class="ingredients">
+                            <h2>veggie omelette</h2>
+                            <strong>ingredients</strong>
+                            <span>egg</span>
+                            <span>your choice of veg</span>
+                        </div>
+                        <div class="details">
+                            <div><strong>calories</strong> 120 kcal</div>
+                            <div><strong>protein</strong> 1.5 oz</div>
+                            <div><strong>prep</strong> 5 min</div>
+                            <div><strong>cook</strong> 20 min</div>
+                        </div>
+                    </div>
+                    <div class="view-recipe">
+                        <span class="star">★</span>
+                        <a href="#" class="view-recipe-btn">view full recipe</a>
+                    </div>
                 </div>
             </div>
 
@@ -511,7 +628,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         // Populate the .meal-card with structured content, retaining the label
                         targetMealCard.innerHTML = `
                             ${existingLabel ? existingLabel.outerHTML : ''} <!-- Keep existing label -->
-                            <div class="custom-border rounded">
+                            <div class="custom-border rounded meal-box">
                                 <img src="${imageSrc}" alt="${mealName}">
                                 <div class="meal-name">${mealName}</div>
                                 <div class="meal-name-sub">${mealSubName}</div>
@@ -526,4 +643,29 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             });
         });
     }
+
+        // pop up box
+        function showPopup() {
+                document.getElementById('popup-overlay').style.display = 'flex';
+            }
+
+            // Function to close the popup
+            function closePopup() {
+                document.getElementById('popup-overlay').style.display = 'none';
+            }
+
+            // Event listener for meal-box click
+            $(document).on('click', '.meal-box', function(event) {
+                showPopup();
+                event.stopPropagation(); // Prevents triggering from any other part
+            });
+
+            // Close the popup when clicking outside of it
+            $(document).on('click', '#popup-overlay', function(event) {
+                if (event.target.id === 'popup-overlay') {
+                    closePopup();
+                }
+         });
+
+
 </script>

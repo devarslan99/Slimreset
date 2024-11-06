@@ -237,7 +237,7 @@ foreach ($weight_history as $index => $entry) {
                                                                 </div>
                                                             </div>
                                                         </a>
-                                                        <a class="nav-link" id="my-plan-tab" data-bs-toggle="pill" href="#my-plan" role="tab" aria-controls="my-plan" aria-selected="false" tabindex="-1">
+                                                        <a class="nav-link" id="recipes-tab" data-bs-toggle="pill" href="#recipes" role="tab" aria-controls="recipes" aria-selected="false" tabindex="-1">
                                                             <div class="horizontal-wizard">
                                                                 <div class="stroke-icon-wizard"></div>
                                                                 <div class="horizontal-wizard-content">
@@ -245,6 +245,7 @@ foreach ($weight_history as $index => $entry) {
                                                                 </div>
                                                             </div>
                                                         </a>
+
                                                         <a class="nav-link" id="inquiry-wizard-tab" data-bs-toggle="pill" href="#inquiry-wizard" role="tab" aria-controls="inquiry-wizard" aria-selected="false" tabindex="-1">
                                                             <div class="horizontal-wizard">
                                                                 <div class="stroke-icon-wizard"></div>
@@ -338,18 +339,22 @@ foreach ($weight_history as $index => $entry) {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="tab-pane fade" id="recipes" role="tabpanel" aria-labelledby="recipes-tab">
+                                                            <!-- Recipes Content -->
+                                                            <?php include_once '../functions/food-logs/recipies.php' ?>
+                                                        </div>
+
+                                                        <!-- Coaching Tab Content -->
+                                                        <div class="tab-pane fade" id="inquiry-wizard" role="tabpanel">
+                                                            <!-- Inquiry Content -->
+                                                        </div>
+
+                                                        <!-- Messages Tab Content -->
+                                                        <div class="tab-pane fade" id="successful-wizard" role="tabpanel">
+                                                            <?php include_once("../clients/utils/message_component.php") ?>
+                                                        </div>
                                                     </div>
                                                 </div>
-
-                                            </div>
-                                            <div class="tab-pane fade" id="inquiry-wizard" role="tabpanel">
-                                                <!-- Inquiry Content -->
-                                            </div>
-                                            <div class="tab-pane fade" id="dev-saq-recipes" role="tabpanel">
-                                                <!-- Recipes Content -->
-                                            </div>
-                                            <div class="tab-pane fade" id="successful-wizard" role="tabpanel">
-                                                <?php include_once("../clients/utils/message_component.php") ?>
                                             </div>
                                         </div>
                                     </div>
@@ -357,10 +362,9 @@ foreach ($weight_history as $index => $entry) {
                         </div>
                     </div>
                 </div>
+            <?php } ?>
             </div>
-        <?php } ?>
         </div>
-    </div>
     </div>
     <!-- Container-fluid Ends-->
     </div>

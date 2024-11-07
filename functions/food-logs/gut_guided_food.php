@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Categories</title>
     <style>
+        .category-section{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
         .checkboxes input[type="checkbox"] {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -53,7 +59,6 @@
 
         .border-bottom-row-gut-guided {
             border-bottom: 2px solid #B9BDC6;
-            width: 56%;
         }
     </style>
 

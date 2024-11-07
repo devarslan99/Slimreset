@@ -37,7 +37,7 @@ if ($login_user_role == 'coach') {
         $row = $result->fetch_assoc();
     }
 }
-
+$selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 ?>
 
 <style>
@@ -79,6 +79,94 @@ if ($login_user_role == 'coach') {
         background: none !important;
     }
 </style>
+<style>
+    .menu {
+        ul {
+            list-style: none;
+            margin: 0;
+
+            li,
+            li a {
+                color: #000000;
+                cursor: pointer;
+                transition: color 200ms;
+                text-decoration: none;
+                white-space: nowrap;
+
+                &:hover {
+                    color: #946CFC;
+                }
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+
+            .link {
+                &::before {
+                    padding-right: 0;
+                    display: none;
+                }
+            }
+        }
+
+        >ul {
+            display: flex;
+            height: var(--menu-height);
+            align-items: center;
+            background-color: none !important;
+
+            li {
+                position: relative;
+
+                ul {
+                    visibility: hidden;
+                    opacity: 0;
+                    padding: 10px;
+                    min-width: 160px;
+                    background-color: #ffffff;
+                    position: absolute;
+                    top: 50px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    transition: opacity 200ms, visibility 200ms;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+                    li {
+                        margin: 0;
+                        padding: 8px 16px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-start;
+                        height: 30px;
+                        padding-right: 40px;
+
+                        ul {
+                            top: 0;
+                            left: 100%;
+                            transform: translate(0);
+                        }
+
+                        &:hover {
+                            color: #946CFC;
+                        }
+                    }
+                }
+
+                &:hover {
+                    >ul {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+    }
+</style>
+
 <div class="page-header row">
     <div class="header-logo-wrapper col-auto">
         <div class="logo-wrapper">
@@ -242,23 +330,34 @@ if ($login_user_role == 'coach') {
                     <li class="cart-nav onhover-dropdown"></li>
 
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'client') : ?>
-                        <li class="new-entry-bg-none profile-nav onhover-dropdown px-0 py-0">
-                            <button class="btn btn-primary rounded-pill px-3" style="background-color: #946CFC; border: none;">
-                                + new entry
-                            </button>
-                            <!-- Dropdown Menu -->
-                            <ul class="profile-dropdown onhover-show-div">
-                                <li><a href="#"><span>Weight</span></a></li>
-                                <li style="padding: 5px 0 0 10px !important;">
-                                    <!-- "Meal" item with nested dropdown -->
-                                    <a href="#" class="meal-link"><span>Meal</span></a>
-                                    <ul class="nested-dropdown">
-                                        <li><a href="#"><span>Food</span></a></li>
-                                        <li><a href="#"><span>Water</span></a></li>
+                        <li class="menu new-entry-bg-none">
+                            <ul>
+                                <li>
+                                    <button class="btn btn-primary rounded-pill px-3" style="background-color: #946CFC; border: none;">
+                                        + new entry
+                                    </button>
+                                    <ul class="rounded-2">
+                                        <li><a class="dropdown-item" href="#" onclick="openWeightModal('weightModal')">Weight</a></li>
+                                        <li>
+                                            Meal
+                                            <ul>
+                                                <li class="link">Food
+                                                    <ul>
+                                                        <li><a class="dropdown-item" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
+                                                        <li><a class="dropdown-item" href="#" onclick="openModal('Lunch')">Lunch</a></li>
+                                                        <li><a class="dropdown-item" href="#" onclick="openModal('Dinner')">Dinner</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="#" onclick="openModal('Snacks')">Snacks</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#" onclick="openWaterModal('waterModal')">Water</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" onclick="openBowelMovementsModal('bowelMovementsModal')">Bowel</a></li>
+                                        <li class="link">Activity</li>
                                     </ul>
                                 </li>
-                                <li><a href="#"><span>Bowel</span></a></li>
-                                <li><a href="#"><span>Activity</span></a></li>
                             </ul>
                         </li>
                     <?php endif; ?>
@@ -318,6 +417,287 @@ if ($login_user_role == 'coach') {
     </div>
 </div>
 
+<!--Food Modal -->
+<div class="modal fade" id="foodModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add Food</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="food_type">
+                <input type="text" id="foodSearch" class="form-control" placeholder="Search for food..." oninput="fetchFoodData()">
+                <!-- Display search results -->
+                <ul class="list-group mt-3" id="searchResults"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Weight modal  -->
+<div class="modal fade" id="weightModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add Weight</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="mb-2 mt-2" id="weight-form">
+                    <label>Record Weight (Lbs)</label>
+                    <input type="number" class="form-control" placeholder="Enter Your Weight For The Mentioned Date" name="weight">
+                    <button type="submit" class="btn btn-primary mt-2">Record
+                        Weight</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- bowel movements modal  -->
+<div class="modal fade" id="bowelMovementsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add Bowel Movements</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="mb-2 mt-2" id="bowel-form">
+                    <label>Record Bowel Movements</label>
+                    <input type="number" class="form-control" placeholder="Enter Number of Bowel Movements For The Mentioned Date" name="bowel">
+                    <button type="submit" class="btn btn-primary mt-2">Record
+                        Bowel Movement</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Weight modal  -->
+<div class="modal fade" id="waterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add Water</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="mb-2 mt-2" id="water-form">
+                    <label>Record Water Consumed</label>
+                    <input type="number" class="form-control" placeholder="Enter Oz of Water Consumed For The Mentioned Date" name="water">
+                    <button type="submit" class="btn btn-primary mt-2">Record
+                        Water Consumption</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/js/jquery.min.js"></script>
+
+<!-- SCRIPT TO SEARCH AND ADD FOOD -->
+<script>
+    // Open modal with selected food type
+    function openModal(foodOption) {
+        document.getElementById('modalTitle').innerText = "Add " + foodOption;
+        document.getElementById('foodSearch').value = ''; // Clear search input
+        document.getElementById('searchResults').innerHTML = ''; // Clear previous results
+        var modal = new bootstrap.Modal(document.getElementById('foodModal'));
+        document.getElementById('food_type').value = foodOption; // Clear search input
+        modal.show();
+    }
+
+    // Fetch food data from Edamam API
+    function fetchFoodData() {
+        const query = document.getElementById('foodSearch').value;
+        if (query.length < 3) return; // Avoid too many requests for short queries
+
+        fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=f73b06f6&app_key=562df73d9c2324199c25a9b8088540ba&ingr=${query}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const searchResults = document.getElementById('searchResults');
+                searchResults.innerHTML = ''; // Clear previous results
+
+                // Edamam stores food items in the 'parsed' and 'hints' arrays
+                const foodItems = [...data.parsed, ...data.hints.map(hint => hint.food)];
+                const validFoodItems = foodItems.filter(item => item.nutrients && Object.keys(item.nutrients).length > 0);
+                validFoodItems.forEach(item => {
+                    const li = document.createElement('li');
+                    li.classList.add('list-group-item');
+                    li.innerHTML = item.label || `${item.food.label}`;
+                    li.onclick = () => selectFoodItem(item, li); // Pass the selected item and the li element
+                    searchResults.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching food data:', error));
+    }
+
+    // Select food item and display its details directly beneath the clicked item
+    function selectFoodItem(food, listItem) {
+        // Remove any existing expanded sections
+        const existingExpandedRow = document.querySelector('.expanded-row');
+        if (existingExpandedRow) existingExpandedRow.remove();
+
+        // Create the expanded row to show details
+        const expandedRow = document.createElement('div');
+        expandedRow.classList.add('expanded-row');
+
+        // Add content to expanded row
+        expandedRow.innerHTML = `
+                    <h6>${food.label}</h6>
+                    <p>Enter amount:</p>
+                    <input type="number" id="foodAmount" class="form-control mb-2" value="1" placeholder="Amount" onchange="updateNutritionValues()">
+
+                    <!-- Dropdown for weighing unit -->
+                    <select id="weighingUnit" class="form-control mb-2" onchange="updateNutritionValues()">
+                    </select>
+
+                    <!-- Display nutritional info -->
+                    <div id="nutritionInfo">
+                        <p>Calories: <span id="calories">${food.nutrients.ENERC_KCAL || '0'}</span></p>
+                        <p>Total Fat: <span id="fat">${food.nutrients.FAT || '0g'}</span></p>
+                        <p>Sat. Fat: <span id="satFat">${food.nutrients.FASAT || '0g'}</span></p>
+                        <p>Cholest.: <span id="cholesterol">${food.nutrients.CHOLE || '0mg'}</span></p>
+                        <p>Sodium: <span id="sodium">${food.nutrients.NA || '0mg'}</span></p>
+                        <p>Carb.: <span id="carbs">${food.nutrients.CHOCDF || '0g'}</span></p>
+                        <p>Fiber: <span id="fiber">${food.nutrients.FIBTG || '0g'}</span></p>
+                        <p>Sugars: <span id="sugars">${food.nutrients.SUGAR || '0g'}</span></p>
+                        <p>Protein: <span id="protein">${food.nutrients.PROCNT || '0g'}</span></p>
+                    </div>
+
+                    <!-- Button to add food to the database -->
+                    <button type="button" class="btn btn-success mt-3" onclick="addFoodToDatabase('${food.foodId}', '${food.label}')">Add Food</button>
+                `;
+
+        // Insert the expanded row directly after the selected list item
+        listItem.insertAdjacentElement('afterend', expandedRow);
+
+        // Store the default calories per serving in a global variable for calculations
+        expandedRow.dataset.caloriesPerServing = food.nutrients.ENERC_KCAL || 0;
+        expandedRow.dataset.defaultServingSize = food.servingSize || 1; // Default serving size in the dataset
+        expandedRow.dataset.defaultWeightGrams = food.servingWeight || 100; // Default weight in grams
+
+        // Store nutritional data in the row for dynamic calculations
+        expandedRow.dataset.fat = food.nutrients.FAT || 0;
+        expandedRow.dataset.saturatedFat = food.nutrients.FASAT || 0;
+        expandedRow.dataset.cholesterol = food.nutrients.CHOLE || 0;
+        expandedRow.dataset.sodium = food.nutrients.NA || 0;
+        expandedRow.dataset.carbs = food.nutrients.CHOCDF || 0;
+        expandedRow.dataset.fiber = food.nutrients.FIBTG || 0;
+        expandedRow.dataset.sugars = food.nutrients.SUGAR || 0;
+        expandedRow.dataset.protein = food.nutrients.PROCNT || 0;
+
+        // Populate the weighingUnit dropdown dynamically
+        populateWeighingUnits(food);
+    }
+
+    // Populate weighing units dynamically
+    function populateWeighingUnits(food) {
+        const unitSelect = document.getElementById('weighingUnit');
+        unitSelect.innerHTML = ''; // Clear previous options
+
+        // Default to "grams" if no specific serving units are available
+        let units = ['g', 'oz', 'lb'];
+
+        if (food.servingUnit) {
+            units = [food.servingUnit, 'g', 'oz', 'lb'];
+        }
+
+        units.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit;
+            option.text = unit.charAt(0).toUpperCase() + unit.slice(1);
+            unitSelect.appendChild(option);
+        });
+    }
+
+    // Update nutritional values dynamically based on selected unit and amount
+    function updateNutritionValues() {
+        const amount = document.getElementById('foodAmount').value || 1;
+        const unit = document.getElementById('weighingUnit').value;
+        const expandedRow = document.querySelector('.expanded-row');
+
+        if (!expandedRow) return;
+
+        const caloriesPerServing = expandedRow.dataset.caloriesPerServing;
+        const defaultServingSize = expandedRow.dataset.defaultServingSize;
+        const defaultWeightGrams = expandedRow.dataset.defaultWeightGrams;
+
+        // Conversion factors for other units
+        const unitToGrams = {
+            g: 1,
+            oz: 28.35,
+            lb: 453.59
+        };
+
+        // Calculate the factor to adjust based on the selected unit and amount
+        const weightInGrams = unitToGrams[unit] * amount;
+
+        // Scaling factor for nutritional values
+        const scalingFactor = weightInGrams / defaultWeightGrams;
+
+        // Dynamically update all nutritional values
+        document.getElementById('calories').innerText = (caloriesPerServing * scalingFactor).toFixed(2);
+        document.getElementById('fat').innerText = (expandedRow.dataset.fat * scalingFactor).toFixed(2) + 'g';
+        document.getElementById('satFat').innerText = (expandedRow.dataset.saturatedFat * scalingFactor).toFixed(2) + 'g';
+        document.getElementById('cholesterol').innerText = (expandedRow.dataset.cholesterol * scalingFactor).toFixed(2) + 'mg';
+        document.getElementById('sodium').innerText = (expandedRow.dataset.sodium * scalingFactor).toFixed(2) + 'mg';
+        document.getElementById('carbs').innerText = (expandedRow.dataset.carbs * scalingFactor).toFixed(2) + 'g';
+        document.getElementById('fiber').innerText = (expandedRow.dataset.fiber * scalingFactor).toFixed(2) + 'g';
+        document.getElementById('sugars').innerText = (expandedRow.dataset.sugars * scalingFactor).toFixed(2) + 'g';
+        document.getElementById('protein').innerText = (expandedRow.dataset.protein * scalingFactor).toFixed(2) + 'g';
+    }
+
+    // Add the selected food to the database
+    function addFoodToDatabase(foodId, label) {
+        var food_type = document.getElementById('food_type').value;
+        var selected_date = document.getElementById('selected_date').value;
+        const foodData = {
+            foodId: foodId, // Include food_id
+            label: label, // Include label
+            food_type: food_type,
+            amount: document.getElementById('foodAmount').value,
+            unit: document.getElementById('weighingUnit').value,
+            calories: document.getElementById('calories').innerText,
+            totalFat: document.getElementById('fat').innerText,
+            satFat: document.getElementById('satFat').innerText,
+            cholesterol: document.getElementById('cholesterol').innerText,
+            sodium: document.getElementById('sodium').innerText,
+            carbs: document.getElementById('carbs').innerText,
+            fiber: document.getElementById('fiber').innerText,
+            sugars: document.getElementById('sugars').innerText,
+            protein: document.getElementById('protein').innerText,
+            selected_date: selected_date,
+        };
+
+        // Send food data to the server (you'll need to define the actual endpoint)
+        fetch('../functions/food_history/store.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(foodData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status == "success") {
+                    location.reload();
+                } else {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
 
 <!-- Script to display notification icon on summary page -->
 <script>
@@ -334,5 +714,247 @@ if ($login_user_role == 'coach') {
         }
         toggleNotificationVisibility();
         window.addEventListener("popstate", toggleNotificationVisibility);
+    });
+</script>
+
+<!-- weight script -->
+<script>
+    $(document).ready(function() {
+        $('#weight-form').on('submit', function(e) {
+            e.preventDefault();
+            var weight = $('input[name="weight"]').val();
+            var selected_date = document.getElementById('selected_date').value;
+
+            $.ajax({
+                url: '../functions/weight/store.php',
+                type: 'POST',
+                data: {
+                    weight: weight,
+                    selected_date: selected_date
+                },
+                success: function(response) {
+                    if (response === 'Success') {
+                        Swal.fire({
+                            title: 'Success',
+                            text: "Weight Recorded",
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ok'
+                        });
+                        location.reload();
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: "Failed to Record Weight",
+                            icon: 'error',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: "An error occurred while processing your request. Please try again.",
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+<!-- Script to open weight modal and store weight -->
+<script>
+    // Function to open the weight modal
+    function openWeightModal() {
+        $('#weightModal').modal('show');
+    }
+
+    $(document).ready(function() {
+        $('#weight-form').on('submit', function(e) {
+            e.preventDefault();
+
+            // Get weight and selected_date values
+            var weight = $('input[name="weight"]').val();
+            var selected_date = document.getElementById('selected_date').value;
+
+            if (!weight || !selected_date) {
+                Swal.fire({
+                    title: 'Error',
+                    text: "Please enter both weight and date.",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Ok'
+                });
+                return;
+            }
+
+            $.ajax({
+                url: '../functions/weight/store.php',
+                type: 'POST',
+                data: {
+                    weight: weight,
+                    selected_date: selected_date
+                },
+                success: function(response) {
+                    if (response === 'Success') {
+                        Swal.fire({
+                            title: 'Success',
+                            text: "Weight Recorded",
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Ok'
+                        }).then(() => {
+                            $('#weightModal').modal('hide');
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: "Failed to Record Weight",
+                            icon: 'error',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: "An error occurred while processing your request. Please try again.",
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Ok'
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+<!-- Script to open bowel movements modal and store bowel movements -->
+<script>
+    function openBowelMovementsModal() {
+        $('#bowelMovementsModal').modal('show');
+    }
+
+    $(document).ready(function() {
+        $('#bowel-form').on('submit', function(e) {
+            e.preventDefault();
+            var bowel = $('input[name="bowel"]').val();
+            var selected_date = document.getElementById('selected_date').value;
+
+            $.ajax({
+                url: '../functions/bowel/store.php',
+                type: 'POST',
+                data: {
+                    bowel: bowel,
+                    selected_date: selected_date
+                },
+                success: function(response) {
+                    if (response === 'Success') {
+                        Swal.fire({
+                            title: 'Success',
+                            text: "Bowel Movement Recorded",
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Ok'
+                        }).then(() => {
+                            // Hide the modal only after the success alert is shown
+                            $('#weightModal').modal('hide');
+                            // Reload the page after user confirms the success alert
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: "Failed to Record Bowel Movement",
+                            icon: 'error',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: "An error occurred while processing your request. Please try again.",
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Ok'
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+<!-- Script to open water modal and store bowel movements -->
+<script>
+    function openWaterModal() {
+        $('#waterModal').modal('show');
+    }
+    $(document).ready(function() {
+        $('#water-form').on('submit', function(e) {
+            e.preventDefault();
+            var water = $('input[name="water"]').val();
+            var selected_date = document.getElementById('selected_date').value;
+
+            $.ajax({
+                url: '../functions/water/store.php',
+                type: 'POST',
+                data: {
+                    water: water,
+                    selected_date: selected_date
+                },
+                success: function(response) {
+                    if (response === 'Success') {
+                        Swal.fire({
+                            title: 'Success',
+                            text: "Water Consumption Recorded",
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ok'
+                        });
+                        location.reload();
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: "Failed to Record Water Consumption",
+                            icon: 'error',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: "An error occurred while processing your request. Please try again.",
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                    });
+                }
+            });
+        });
     });
 </script>

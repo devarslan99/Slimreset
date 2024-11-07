@@ -14,7 +14,7 @@
                         return number_format($value, 2);
                     }
                 }
-                return $value; // Return the original value if it's not numeric
+                return $value;
             }
             $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             function displayFoodItems($mealType, $selected_date)
@@ -53,28 +53,6 @@
             $prev_date = date('Y-m-d', strtotime($selected_date . ' -1 day'));
             $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             ?>
-
-            <!-- DATE BUTTONS -->
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Add Food
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="openModal('Lunch')">Lunch</a>
-                            </li>
-                            <li><a class="dropdown-item" href="#" onclick="openModal('Dinner')">Dinner</a>
-                            </li>
-                            <li><a class="dropdown-item" href="#" onclick="openModal('Snacks')">Snacks</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <hr />
-            </div>
 
             <!-- Display Breakfast -->
             <div class="col-md-12">
@@ -120,7 +98,7 @@
                                         <th>Food Name</th>
                                         <th>Food Quantity</th>
                                         <th>Calories</th>
-                                        <th>Protien</th>
+                                        <th>Protein</th>
                                         <th>Fat</th>
                                         <th>Carbs</th>
                                         <th>Sugar</th>

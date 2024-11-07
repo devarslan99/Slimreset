@@ -74,6 +74,10 @@ if ($login_user_role == 'coach') {
         border-radius: 50%;
         display: none;
     }
+
+    .new-entry-bg-none {
+        background: none !important;
+    }
 </style>
 <div class="page-header row">
     <div class="header-logo-wrapper col-auto">
@@ -236,27 +240,29 @@ if ($login_user_role == 'coach') {
             <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
                 <ul class="nav-menus gap-4">
                     <li class="cart-nav onhover-dropdown"></li>
-                    <style>
-                        .onhover-dropdown:hover .onhover-show-div {
-                            display: block;
-                        }
-                    </style>
-                    <li class="onhover-dropdown">
-                        <button class="btn btn-primary rounded-pill px-3" style="background-color: #946CFC; border: none;">
-                            + new entry
-                        </button>
-                        <div class="dropdown-menu onhover-show-div p-3" style="background-color: #946CFC; border-radius: 10px; width: 150px;">
-                            <h5 class="text-white mb-3">add entry</h5>
-                            <ul class="list-unstyled text-white">
-                                <li>weight</li>
-                                <li>meal</li>
-                                <li>food</li>
-                                <li>water</li>
-                                <li>bowel</li>
-                                <li>activity</li>
+
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'client') : ?>
+                        <li class="new-entry-bg-none profile-nav onhover-dropdown px-0 py-0">
+                            <button class="btn btn-primary rounded-pill px-3" style="background-color: #946CFC; border: none;">
+                                + new entry
+                            </button>
+                            <!-- Dropdown Menu -->
+                            <ul class="profile-dropdown onhover-show-div">
+                                <li><a href="#"><span>Weight</span></a></li>
+                                <li style="padding: 5px 0 0 10px !important;">
+                                    <!-- "Meal" item with nested dropdown -->
+                                    <a href="#" class="meal-link"><span>Meal</span></a>
+                                    <ul class="nested-dropdown">
+                                        <li><a href="#"><span>Food</span></a></li>
+                                        <li><a href="#"><span>Water</span></a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#"><span>Bowel</span></a></li>
+                                <li><a href="#"><span>Activity</span></a></li>
                             </ul>
-                        </div>
-                    </li>
+                        </li>
+                    <?php endif; ?>
+
 
                     <li class="custom-notification-dropdown onhover-dropdown px-0 py-0 d-none">
                         <div class="d-flex custom-notification align-items-center position-relative">

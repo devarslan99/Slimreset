@@ -51,8 +51,7 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="food_type">
-                    <input type="text" id="foodSearch" class="form-control" placeholder="Search for food..."
-                        oninput="fetchFoodData()">
+                    <input type="text" id="foodSearch" class="form-control" placeholder="Search for food..." oninput="fetchFoodData()">
                     <!-- Display search results -->
                     <ul class="list-group mt-3" id="searchResults"></ul>
                 </div>
@@ -63,58 +62,58 @@
     <?php include_once "../utils/scripts.php" ?>
     <!-- SCRIPT TO SEARCH AND ADD FOOD -->
     <script>
-            // Open modal with selected food type
-            function openModal(foodOption) {
-                document.getElementById('modalTitle').innerText = "Add " + foodOption;
-                document.getElementById('foodSearch').value = ''; // Clear search input
-                document.getElementById('searchResults').innerHTML = ''; // Clear previous results
-                var modal = new bootstrap.Modal(document.getElementById('foodModal'));
-                document.getElementById('food_type').value = foodOption; // Clear search input
-                modal.show();
-            }
+        // Open modal with selected food type
+        function openModal(foodOption) {
+            document.getElementById('modalTitle').innerText = "Add " + foodOption;
+            document.getElementById('foodSearch').value = ''; // Clear search input
+            document.getElementById('searchResults').innerHTML = ''; // Clear previous results
+            var modal = new bootstrap.Modal(document.getElementById('foodModal'));
+            document.getElementById('food_type').value = foodOption; // Clear search input
+            modal.show();
+        }
 
-            // Fetch food data from Edamam API
-            function fetchFoodData() {
-                const query = document.getElementById('foodSearch').value;
-                if (query.length < 3) return; // Avoid too many requests for short queries
+        // Fetch food data from Edamam API
+        function fetchFoodData() {
+            const query = document.getElementById('foodSearch').value;
+            if (query.length < 3) return; // Avoid too many requests for short queries
 
-                fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=f73b06f6&app_key=562df73d9c2324199c25a9b8088540ba&ingr=${query}`, {
+            fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=f73b06f6&app_key=562df73d9c2324199c25a9b8088540ba&ingr=${query}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        const searchResults = document.getElementById('searchResults');
-                        searchResults.innerHTML = ''; // Clear previous results
+                .then(response => response.json())
+                .then(data => {
+                    const searchResults = document.getElementById('searchResults');
+                    searchResults.innerHTML = ''; // Clear previous results
 
-                        // Edamam stores food items in the 'parsed' and 'hints' arrays
-                        const foodItems = [...data.parsed, ...data.hints.map(hint => hint.food)];
-                        const validFoodItems = foodItems.filter(item => item.nutrients && Object.keys(item.nutrients).length > 0);
-                        validFoodItems.forEach(item => {
-                            const li = document.createElement('li');
-                            li.classList.add('list-group-item');
-                            li.innerHTML = item.label || `${item.food.label}`;
-                            li.onclick = () => selectFoodItem(item, li); // Pass the selected item and the li element
-                            searchResults.appendChild(li);
-                        });
-                    })
-                    .catch(error => console.error('Error fetching food data:', error));
-            }
+                    // Edamam stores food items in the 'parsed' and 'hints' arrays
+                    const foodItems = [...data.parsed, ...data.hints.map(hint => hint.food)];
+                    const validFoodItems = foodItems.filter(item => item.nutrients && Object.keys(item.nutrients).length > 0);
+                    validFoodItems.forEach(item => {
+                        const li = document.createElement('li');
+                        li.classList.add('list-group-item');
+                        li.innerHTML = item.label || `${item.food.label}`;
+                        li.onclick = () => selectFoodItem(item, li); // Pass the selected item and the li element
+                        searchResults.appendChild(li);
+                    });
+                })
+                .catch(error => console.error('Error fetching food data:', error));
+        }
 
-            // Select food item and display its details directly beneath the clicked item
-            function selectFoodItem(food, listItem) {
-                // Remove any existing expanded sections
-                const existingExpandedRow = document.querySelector('.expanded-row');
-                if (existingExpandedRow) existingExpandedRow.remove();
+        // Select food item and display its details directly beneath the clicked item
+        function selectFoodItem(food, listItem) {
+            // Remove any existing expanded sections
+            const existingExpandedRow = document.querySelector('.expanded-row');
+            if (existingExpandedRow) existingExpandedRow.remove();
 
-                // Create the expanded row to show details
-                const expandedRow = document.createElement('div');
-                expandedRow.classList.add('expanded-row');
+            // Create the expanded row to show details
+            const expandedRow = document.createElement('div');
+            expandedRow.classList.add('expanded-row');
 
-                // Add content to expanded row
-                expandedRow.innerHTML = `
+            // Add content to expanded row
+            expandedRow.innerHTML = `
             <h6>${food.label}</h6>
             <p>Enter amount:</p>
             <input type="number" id="foodAmount" class="form-control mb-2" value="1" placeholder="Amount" onchange="updateNutritionValues()">
@@ -140,133 +139,132 @@
             <button type="button" class="btn btn-success mt-3" onclick="addFoodToDatabase('${food.foodId}', '${food.label}')">Add Food</button>
         `;
 
-                // Insert the expanded row directly after the selected list item
-                listItem.insertAdjacentElement('afterend', expandedRow);
+            // Insert the expanded row directly after the selected list item
+            listItem.insertAdjacentElement('afterend', expandedRow);
 
-                // Store the default calories per serving in a global variable for calculations
-                expandedRow.dataset.caloriesPerServing = food.nutrients.ENERC_KCAL || 0;
-                expandedRow.dataset.defaultServingSize = food.servingSize || 1; // Default serving size in the dataset
-                expandedRow.dataset.defaultWeightGrams = food.servingWeight || 100; // Default weight in grams
+            // Store the default calories per serving in a global variable for calculations
+            expandedRow.dataset.caloriesPerServing = food.nutrients.ENERC_KCAL || 0;
+            expandedRow.dataset.defaultServingSize = food.servingSize || 1; // Default serving size in the dataset
+            expandedRow.dataset.defaultWeightGrams = food.servingWeight || 100; // Default weight in grams
 
-                // Store nutritional data in the row for dynamic calculations
-                expandedRow.dataset.fat = food.nutrients.FAT || 0;
-                expandedRow.dataset.saturatedFat = food.nutrients.FASAT || 0;
-                expandedRow.dataset.cholesterol = food.nutrients.CHOLE || 0;
-                expandedRow.dataset.sodium = food.nutrients.NA || 0;
-                expandedRow.dataset.carbs = food.nutrients.CHOCDF || 0;
-                expandedRow.dataset.fiber = food.nutrients.FIBTG || 0;
-                expandedRow.dataset.sugars = food.nutrients.SUGAR || 0;
-                expandedRow.dataset.protein = food.nutrients.PROCNT || 0;
+            // Store nutritional data in the row for dynamic calculations
+            expandedRow.dataset.fat = food.nutrients.FAT || 0;
+            expandedRow.dataset.saturatedFat = food.nutrients.FASAT || 0;
+            expandedRow.dataset.cholesterol = food.nutrients.CHOLE || 0;
+            expandedRow.dataset.sodium = food.nutrients.NA || 0;
+            expandedRow.dataset.carbs = food.nutrients.CHOCDF || 0;
+            expandedRow.dataset.fiber = food.nutrients.FIBTG || 0;
+            expandedRow.dataset.sugars = food.nutrients.SUGAR || 0;
+            expandedRow.dataset.protein = food.nutrients.PROCNT || 0;
 
-                // Populate the weighingUnit dropdown dynamically
-                populateWeighingUnits(food);
+            // Populate the weighingUnit dropdown dynamically
+            populateWeighingUnits(food);
+        }
+
+        // Populate weighing units dynamically
+        function populateWeighingUnits(food) {
+            const unitSelect = document.getElementById('weighingUnit');
+            unitSelect.innerHTML = ''; // Clear previous options
+
+            // Default to "grams" if no specific serving units are available
+            let units = ['g', 'oz', 'lb'];
+
+            if (food.servingUnit) {
+                units = [food.servingUnit, 'g', 'oz', 'lb'];
             }
 
-            // Populate weighing units dynamically
-            function populateWeighingUnits(food) {
-                const unitSelect = document.getElementById('weighingUnit');
-                unitSelect.innerHTML = ''; // Clear previous options
+            units.forEach(unit => {
+                const option = document.createElement('option');
+                option.value = unit;
+                option.text = unit.charAt(0).toUpperCase() + unit.slice(1);
+                unitSelect.appendChild(option);
+            });
+        }
 
-                // Default to "grams" if no specific serving units are available
-                let units = ['g', 'oz', 'lb'];
+        // Update nutritional values dynamically based on selected unit and amount
+        function updateNutritionValues() {
+            const amount = document.getElementById('foodAmount').value || 1;
+            const unit = document.getElementById('weighingUnit').value;
+            const expandedRow = document.querySelector('.expanded-row');
 
-                if (food.servingUnit) {
-                    units = [food.servingUnit, 'g', 'oz', 'lb'];
-                }
+            if (!expandedRow) return;
 
-                units.forEach(unit => {
-                    const option = document.createElement('option');
-                    option.value = unit;
-                    option.text = unit.charAt(0).toUpperCase() + unit.slice(1);
-                    unitSelect.appendChild(option);
-                });
-            }
+            const caloriesPerServing = expandedRow.dataset.caloriesPerServing;
+            const defaultServingSize = expandedRow.dataset.defaultServingSize;
+            const defaultWeightGrams = expandedRow.dataset.defaultWeightGrams;
 
-            // Update nutritional values dynamically based on selected unit and amount
-            function updateNutritionValues() {
-                const amount = document.getElementById('foodAmount').value || 1;
-                const unit = document.getElementById('weighingUnit').value;
-                const expandedRow = document.querySelector('.expanded-row');
+            // Conversion factors for other units
+            const unitToGrams = {
+                g: 1,
+                oz: 28.35,
+                lb: 453.59
+            };
 
-                if (!expandedRow) return;
+            // Calculate the factor to adjust based on the selected unit and amount
+            const weightInGrams = unitToGrams[unit] * amount;
 
-                const caloriesPerServing = expandedRow.dataset.caloriesPerServing;
-                const defaultServingSize = expandedRow.dataset.defaultServingSize;
-                const defaultWeightGrams = expandedRow.dataset.defaultWeightGrams;
+            // Scaling factor for nutritional values
+            const scalingFactor = weightInGrams / defaultWeightGrams;
 
-                // Conversion factors for other units
-                const unitToGrams = {
-                    g: 1,
-                    oz: 28.35,
-                    lb: 453.59
-                };
+            // Dynamically update all nutritional values
+            document.getElementById('calories').innerText = (caloriesPerServing * scalingFactor).toFixed(2);
+            document.getElementById('fat').innerText = (expandedRow.dataset.fat * scalingFactor).toFixed(2) + 'g';
+            document.getElementById('satFat').innerText = (expandedRow.dataset.saturatedFat * scalingFactor).toFixed(2) + 'g';
+            document.getElementById('cholesterol').innerText = (expandedRow.dataset.cholesterol * scalingFactor).toFixed(2) + 'mg';
+            document.getElementById('sodium').innerText = (expandedRow.dataset.sodium * scalingFactor).toFixed(2) + 'mg';
+            document.getElementById('carbs').innerText = (expandedRow.dataset.carbs * scalingFactor).toFixed(2) + 'g';
+            document.getElementById('fiber').innerText = (expandedRow.dataset.fiber * scalingFactor).toFixed(2) + 'g';
+            document.getElementById('sugars').innerText = (expandedRow.dataset.sugars * scalingFactor).toFixed(2) + 'g';
+            document.getElementById('protein').innerText = (expandedRow.dataset.protein * scalingFactor).toFixed(2) + 'g';
+        }
 
-                // Calculate the factor to adjust based on the selected unit and amount
-                const weightInGrams = unitToGrams[unit] * amount;
+        // Add the selected food to the database
+        function addFoodToDatabase(foodId, label) {
+            var food_type = document.getElementById('food_type').value;
+            var selected_date = document.getElementById('selected_date').value;
+            const foodData = {
+                foodId: foodId, // Include food_id
+                label: label, // Include label
+                food_type: food_type,
+                amount: document.getElementById('foodAmount').value,
+                unit: document.getElementById('weighingUnit').value,
+                calories: document.getElementById('calories').innerText,
+                totalFat: document.getElementById('fat').innerText,
+                satFat: document.getElementById('satFat').innerText,
+                cholesterol: document.getElementById('cholesterol').innerText,
+                sodium: document.getElementById('sodium').innerText,
+                carbs: document.getElementById('carbs').innerText,
+                fiber: document.getElementById('fiber').innerText,
+                sugars: document.getElementById('sugars').innerText,
+                protein: document.getElementById('protein').innerText,
+                selected_date: selected_date,
+            };
 
-                // Scaling factor for nutritional values
-                const scalingFactor = weightInGrams / defaultWeightGrams;
-
-                // Dynamically update all nutritional values
-                document.getElementById('calories').innerText = (caloriesPerServing * scalingFactor).toFixed(2);
-                document.getElementById('fat').innerText = (expandedRow.dataset.fat * scalingFactor).toFixed(2) + 'g';
-                document.getElementById('satFat').innerText = (expandedRow.dataset.saturatedFat * scalingFactor).toFixed(2) + 'g';
-                document.getElementById('cholesterol').innerText = (expandedRow.dataset.cholesterol * scalingFactor).toFixed(2) + 'mg';
-                document.getElementById('sodium').innerText = (expandedRow.dataset.sodium * scalingFactor).toFixed(2) + 'mg';
-                document.getElementById('carbs').innerText = (expandedRow.dataset.carbs * scalingFactor).toFixed(2) + 'g';
-                document.getElementById('fiber').innerText = (expandedRow.dataset.fiber * scalingFactor).toFixed(2) + 'g';
-                document.getElementById('sugars').innerText = (expandedRow.dataset.sugars * scalingFactor).toFixed(2) + 'g';
-                document.getElementById('protein').innerText = (expandedRow.dataset.protein * scalingFactor).toFixed(2) + 'g';
-            }
-
-            // Add the selected food to the database
-            function addFoodToDatabase(foodId, label) {
-                var food_type = document.getElementById('food_type').value;
-                var selected_date = document.getElementById('selected_date').value;
-                const foodData = {
-                    foodId: foodId, // Include food_id
-                    label: label,   // Include label
-                    food_type: food_type,
-                    amount: document.getElementById('foodAmount').value,
-                    unit: document.getElementById('weighingUnit').value,
-                    calories: document.getElementById('calories').innerText,
-                    totalFat: document.getElementById('fat').innerText,
-                    satFat: document.getElementById('satFat').innerText,
-                    cholesterol: document.getElementById('cholesterol').innerText,
-                    sodium: document.getElementById('sodium').innerText,
-                    carbs: document.getElementById('carbs').innerText,
-                    fiber: document.getElementById('fiber').innerText,
-                    sugars: document.getElementById('sugars').innerText,
-                    protein: document.getElementById('protein').innerText,
-                    selected_date: selected_date,
-                };
-
-                // Send food data to the server (you'll need to define the actual endpoint)
-                fetch('../functions/food_history/store.php', {
+            // Send food data to the server (you'll need to define the actual endpoint)
+            fetch('../functions/food_history/store.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(foodData),
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status == "success") {
-                            location.reload();
-                        } else {
-                            location.reload();
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            }
-
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status == "success") {
+                        location.reload();
+                    } else {
+                        location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
     </script>
     <!-- SCRIPT TO DELETE FOOD ITEM -->
     <script>
-        $(document).ready(function () {
-            $('.delete a').click(function (e) {
+        $(document).ready(function() {
+            $('.delete a').click(function(e) {
                 e.preventDefault();
                 var deleteId = $(this).data('food-id');
                 var table_name = 'food_items';
@@ -287,7 +285,7 @@
                                 id: deleteId,
                                 table_name: table_name
                             },
-                            success: function (response) {
+                            success: function(response) {
                                 if (response === 'Success') {
                                     Swal.fire({
                                         title: 'Success',
@@ -311,7 +309,7 @@
                                     });
                                 }
                             },
-                            error: function (xhr, status, error) {
+                            error: function(xhr, status, error) {
                                 Swal.fire({
                                     title: 'Error',
                                     text: "An error occurred while processing your request. Please try again.",
@@ -330,12 +328,19 @@
     </script>
     <!-- SCRIPT TO RECORD WEIGHT -->
     <script>
-        $(document).ready(function () {
-            $('#weight-form').on('submit', function (e) {
+        $(document).ready(function() {
+            $('#weight-form-dashboard').on('submit', function(e) {
                 e.preventDefault();
-                var weight = $('input[name="weight"]').val();
+                var weight = $('input[name="weight-dashboard"]').val();
                 var selected_date = document.getElementById('selected_date').value;
+                if (!weight) {
+                    $('#weight-error').text("Weight cannot be empty").show();
+                    setTimeout(function() {
+                        $('#weight-error').fadeOut();
+                    }, 5000);
 
+                    return;
+                }
                 $.ajax({
                     url: '../functions/weight/store.php',
                     type: 'POST',
@@ -343,7 +348,7 @@
                         weight: weight,
                         selected_date: selected_date
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response === 'Success') {
                             Swal.fire({
                                 title: 'Success',
@@ -367,7 +372,7 @@
                             });
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         Swal.fire({
                             title: 'Error',
                             text: "An error occurred while processing your request. Please try again.",
@@ -384,12 +389,19 @@
     </script>
     <!-- SCRIPT TO RECORD BOWEL MOVEMENT -->
     <script>
-        $(document).ready(function () {
-            $('#bowel-form').on('submit', function (e) {
+        $(document).ready(function() {
+            $('#bowel-form-dashboard').on('submit', function(e) {
                 e.preventDefault();
-                var bowel = $('input[name="bowel"]').val();
+                var bowel = $('input[name="bowel-dashboard"]').val();
                 var selected_date = document.getElementById('selected_date').value;
+                if (!bowel) {
+                    $('#bowel-error').text("Bowel Movements cannot be empty").show();
+                    setTimeout(function() {
+                        $('#bowel-error').fadeOut();
+                    }, 5000);
 
+                    return;
+                }
                 $.ajax({
                     url: '../functions/bowel/store.php',
                     type: 'POST',
@@ -397,7 +409,7 @@
                         bowel: bowel,
                         selected_date: selected_date
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response === 'Success') {
                             Swal.fire({
                                 title: 'Success',
@@ -421,7 +433,7 @@
                             });
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         Swal.fire({
                             title: 'Error',
                             text: "An error occurred while processing your request. Please try again.",
@@ -438,12 +450,19 @@
     </script>
     <!-- SCRIPT TO RECORD WATER CONSUMPTION -->
     <script>
-        $(document).ready(function () {
-            $('#water-form').on('submit', function (e) {
+        $(document).ready(function() {
+            $('#water-form-dashboard').on('submit', function(e) {
                 e.preventDefault();
-                var water = $('input[name="water"]').val();
+                var water = $('input[name="water-dashboard"]').val();
                 var selected_date = document.getElementById('selected_date').value;
+                if (!water) {
+                    $('#water-error').text("Water cannot be empty").show();
+                    setTimeout(function() {
+                        $('#water-error').fadeOut();
+                    }, 5000);
 
+                    return;
+                }
                 $.ajax({
                     url: '../functions/water/store.php',
                     type: 'POST',
@@ -451,7 +470,7 @@
                         water: water,
                         selected_date: selected_date
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response === 'Success') {
                             Swal.fire({
                                 title: 'Success',
@@ -475,7 +494,7 @@
                             });
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         Swal.fire({
                             title: 'Error',
                             text: "An error occurred while processing your request. Please try again.",
@@ -509,27 +528,26 @@
 
         // Run on window resize
         window.addEventListener('resize', updateWrapperClass);
-
     </script>
     <!-- SCRIPT FOR MODAL -->
     <script>
-        $(document).ready(function () {
-            $('.edit-link').on('click', function () {
+        $(document).ready(function() {
+            $('.edit-link').on('click', function() {
                 var id = $(this).data('id');
                 $('#ItemId').val(id);
                 $('#editModal').modal('show');
             });
 
-            $('#saveChanges').on('click', function () {
+            $('#saveChanges').on('click', function() {
                 var formData = $('#assign_coach_form').serialize();
                 $.ajax({
                     type: 'POST',
                     url: '../functions/clients/assign_coach.php',
                     data: formData,
-                    success: function (response) {
+                    success: function(response) {
                         location.reload();
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         alert('An error occurred: ' + error);
                     }
                 });

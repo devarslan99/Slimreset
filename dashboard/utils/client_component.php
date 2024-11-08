@@ -27,7 +27,7 @@
                 if ($result && mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
                         $total_calories += floatval($row['calories']);
-                        ?>
+            ?>
                         <tr role="row" class="odd" id="customer_<?php echo $row['id']; ?>">
                             <td><?php echo $serial_number; ?></td>
                             <td><?php echo $row['label']; ?></td>
@@ -39,12 +39,11 @@
                             <td><?php echo formatValue($row['sugars']); ?></td>
                             <td>
                                 <ul class="action">
-                                    <li class='delete'><a href="#" data-food-id="<?php echo $row['id']; ?>"><i
-                                                class='icon-trash'></i></a></li>
+                                    <li class='delete'><a href="#" data-food-id="<?php echo $row['id']; ?>"><i class='icon-trash'></i></a></li>
                                 </ul>
                             </td>
                         </tr>
-                        <?php
+            <?php
                         $serial_number++;
                     }
                 }
@@ -179,8 +178,7 @@
         <div class="row">
             <div class="col-md-3">
                 <center>
-                    <a href="?date=<?php echo $prev_date; ?>" class="btn btn-primary"><i
-                            class="fa fa-angle-left"></i></a>
+                    <a href="?date=<?php echo $prev_date; ?>" class="btn btn-primary"><i class="fa fa-angle-left"></i></a>
                 </center>
             </div>
             <div class="col-md-6">
@@ -191,8 +189,7 @@
             </div>
             <div class="col-md-3">
                 <center>
-                    <a href="?date=<?php echo $next_date; ?>" class="btn btn-primary"><i
-                            class="fa fa-angle-right"></i></a>
+                    <a href="?date=<?php echo $next_date; ?>" class="btn btn-primary"><i class="fa fa-angle-right"></i></a>
                 </center>
             </div>
         </div>
@@ -222,26 +219,26 @@
                     }
                     ?>
 
-                    <form class="mb-2 mt-2" id="weight-form">
+                    <form class="mb-2 mt-2" id="weight-form-dashboard">
                         <label>Record Weight (Lbs)</label>
-                        <input type="number" class="form-control" placeholder="Enter Your Weight For The Mentioned Date"
-                            name="weight">
+                        <input type="number" class="form-control" placeholder="Enter Your Weight For The Mentioned Date" name="weight-dashboard">
+                        <div id="weight-error" style="color: red; font-size: 0.9rem; display: none;padding-top:5px">Weight cannot be empty</div>
                         <button type="submit" class="btn btn-primary mt-2">Record
                             Weight</button>
                     </form>
 
-                    <form class="mb-2 mt-2" id="bowel-form">
+                    <form class="mb-2 mt-2" id="bowel-form-dashboard">
                         <label>Record Bowel Movements</label>
-                        <input type="number" class="form-control"
-                            placeholder="Enter Number of Bowel Movements For The Mentioned Date" name="bowel">
+                        <input type="number" class="form-control" placeholder="Enter Number of Bowel Movements For The Mentioned Date" name="bowel-dashboard">
+                        <div id="bowel-error" style="color: red; font-size: 0.9rem; display: none;padding-top:5px">Bowel Movements cannot be empty</div>
                         <button type="submit" class="btn btn-primary mt-2">Record
                             Bowel Movement</button>
                     </form>
 
-                    <form class="mb-2 mt-2" id="water-form">
+                    <form class="mb-2 mt-2" id="water-form-dashboard">
                         <label>Record Water Consumed</label>
-                        <input type="number" class="form-control"
-                            placeholder="Enter Oz of Water Consumed For The Mentioned Date" name="water">
+                        <input type="number" class="form-control" placeholder="Enter Oz of Water Consumed For The Mentioned Date" name="water-dashboard">
+                        <div id="water-error" style="color: red; font-size: 0.9rem; display: none;padding-top:5px">Water cannot be empty</div>
                         <button type="submit" class="btn btn-primary mt-2">Record
                             Water Consumption</button>
                     </form>

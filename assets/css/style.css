@@ -48136,7 +48136,7 @@ input:focus {
     padding: 15px;
     bottom: 0;
     left: 0;
-    margin-left: 252px;
+    /* margin-left: 252px;   */
     -webkit-transition: 0.5s;
     transition: 0.5s;
 }
@@ -57785,4 +57785,7 @@ html[dir=rtl] body.dark-only .page-wrapper .page-body-wrapper .page-body .card:n
     padding :5px 30px;
     color: #946CFC;
     font-weight: bold;
+}
+.bg-shadow-none{
+    box-shadow : none !important
 }

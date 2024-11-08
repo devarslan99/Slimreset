@@ -302,11 +302,13 @@ foreach ($weight_history as $index => $entry) {
                                                                             <div class="col-lg-9">
                                                                                 <h1 class="text-center">Choose Your Food Preferences</h1>
                                                                                 <div class="d-flex justify-content-center align-items-center my-4">
-                                                                                    <label class="form-label me-2 fs-6 responsive-font">View all</label>
-                                                                                    <div class="form-check form-switch">
-                                                                                        <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
-                                                                                        <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
-                                                                                    </div>
+                                                                                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
+                                                                                        <label class="form-label me-2 fs-6 responsive-font">View all</label>
+                                                                                        <div class="form-check form-switch">
+                                                                                            <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
+                                                                                            <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
+                                                                                        </div>
+                                                                                    <?php endif; ?>
                                                                                 </div>
 
                                                                                 <!-- Food Categories Section for view all-->

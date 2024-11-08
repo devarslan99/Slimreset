@@ -157,7 +157,7 @@
                                         <th>Food Name</th>
                                         <th>Food Quantity</th>
                                         <th>Calories</th>
-                                        <th>Protien</th>
+                                        <th>Protein</th>
                                         <th>Fat</th>
                                         <th>Carbs</th>
                                         <th>Sugar</th>
@@ -176,21 +176,18 @@
     </div>
     <div class="col-md-4">
         <div class="row">
-            <div class="col-md-3">
-                <center>
-                    <a href="?date=<?php echo $prev_date; ?>" class="btn btn-primary"><i class="fa fa-angle-left"></i></a>
-                </center>
-            </div>
-            <div class="col-md-6">
-                <h3 class="text-center">
-                    <?php echo date('l M d, Y', strtotime($selected_date)); ?>
+            <div class="main-color text-center my-3">
+                <i class="fa fa-calendar me-2 fw-bold fs-4"></i>
+                <a href="?date=<?php echo $prev_date; ?>">
+                    <i class="fa fa-angle-left fw-bold fs-4"></i>
+                </a>
+                <h3 class="text-center mx-2 d-inline main-color">
+                    <?php echo date('M d, Y', strtotime($selected_date)); ?>
                 </h3>
                 <input type="hidden" value="<?php echo $selected_date; ?>" id="selected_date">
-            </div>
-            <div class="col-md-3">
-                <center>
-                    <a href="?date=<?php echo $next_date; ?>" class="btn btn-primary"><i class="fa fa-angle-right"></i></a>
-                </center>
+                <a href="?date=<?php echo $next_date; ?>">
+                    <i class="fa fa-angle-right fw-bold fs-4"></i>
+                </a>
             </div>
         </div>
         <div class="row mt-2">

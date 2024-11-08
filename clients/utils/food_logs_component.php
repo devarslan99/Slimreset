@@ -1,4 +1,12 @@
-<div class="row">
+<style>
+    @media (min-width: 1200px) {
+        .lg-border-left-my-tracker {
+            border-left: 5px solid #ddd;
+        }
+    }
+</style>
+
+<div class="row ">
     <div class="container">
         <div class="row">
             <div class="col-lg">
@@ -24,10 +32,10 @@
                     if ($result) {
                         $row = mysqli_fetch_assoc($result);
 
-                        $total_calories = $row['total_calories'] ?? 0;
-                        $total_protein = $row['total_protein'] ?? 0;
-                        $total_water = $row['total_water'] ?? 0;
-                        $total_bowel_movement = $row['total_bowel_movement'] ?? 0;
+                        $total_calories = number_format((float) ($row['total_calories'] ?? 0), 2, '.', '');
+                        $total_protein = number_format((float) ($row['total_protein'] ?? 0), 2, '.', '');
+                        $total_water = number_format((float) ($row['total_water'] ?? 0), 2, '.', '');
+                        $total_bowel_movement = number_format((float) ($row['total_bowel_movement'] ?? 0), 2, '.', '');
 
                         $metrics = [
                             [
@@ -80,6 +88,7 @@
                     } else {
                         echo "Error executing query: " . mysqli_error($mysqli);
                     }
+
                     ?>
                 </div>
                 <div class="col-md-12 mt-3 ">
@@ -87,19 +96,19 @@
                         <div class="col-md-12 mb-3">
                             <div class="">
                                 <div class="main-color text-center my-3">
-                                <i class="fa fa-calendar me-2 fw-bold fs-4" id="calendar-icon" style="cursor: pointer;"></i>
-                                <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
-                                    <i class="fa fa-angle-left fw-bold fs-4"></i>
-                                </a>
-                                <h3 class="text-center mx-2 d-inline main-color">
-                                    <?php echo date('M d, Y', strtotime($selected_date)); ?>
-                                </h3>
-                                <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $next_date; ?>">
-                                    <i class="fa fa-angle-right fw-bold fs-4"></i>
-                                </a>
+                                    <i class="fa fa-calendar me-2 fw-bold fs-4" id="calendar-icon" style="cursor: pointer;"></i>
+                                    <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
+                                        <i class="fa fa-angle-left fw-bold fs-4"></i>
+                                    </a>
+                                    <h3 class="text-center mx-2 d-inline main-color">
+                                        <?php echo date('M d, Y', strtotime($selected_date)); ?>
+                                    </h3>
+                                    <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $next_date; ?>">
+                                        <i class="fa fa-angle-right fw-bold fs-4"></i>
+                                    </a>
 
-                                <!-- Hidden input field for Flatpickr calendar -->
-                                <input type='text' id="datepicker" style="display:none; width:0px;height:0px;outline:none;border:none;display:'block">
+                                    <!-- Hidden input field for Flatpickr calendar -->
+                                    <input type='text' id="datepicker" style="display:none; width:0px;height:0px;outline:none;border:none;display:'block">
 
                                 </div>
                             </div>
@@ -159,9 +168,9 @@
 
                             <!-- Display Breakfast -->
                             <div class="col-md-12">
-                                <h2 style="color:#946cfc;">Breakfast</h2>
+                                <h2 style="color: #946cfc;">Breakfast</h2>
                                 <hr />
-                                <div class="card">
+                                <div class="card bg-shadow-none">
                                     <div class="card-body">
                                         <div class="table-responsive theme-scrollbar">
                                             <div id="basic-1_wrapper" class="dataTables_wrapper no-footer">
@@ -191,7 +200,7 @@
                             <div class="col-md-12">
                                 <h2 style="color:#946cfc;">Lunch</h2>
                                 <hr />
-                                <div class="card">
+                                <div class="card bg-shadow-none">
                                     <div class="card-body">
                                         <div class="table-responsive theme-scrollbar">
                                             <div id="basic-1_wrapper" class="dataTables_wrapper no-footer">
@@ -221,7 +230,7 @@
                             <div class="col-md-12">
                                 <h2 style="color:#946cfc;">Dinner</h2>
                                 <hr />
-                                <div class="card">
+                                <div class="card bg-shadow-none">
                                     <div class="card-body">
                                         <div class="table-responsive theme-scrollbar">
                                             <div id="basic-1_wrapper" class="dataTables_wrapper no-footer">
@@ -251,7 +260,7 @@
                             <div class="col-md-12">
                                 <h2 style="color:#946cfc;">Snacks</h2>
                                 <hr />
-                                <div class="card">
+                                <div class="card bg-shadow-none">
                                     <div class="card-body">
                                         <div class="table-responsive theme-scrollbar">
                                             <div id="basic-1_wrapper" class="dataTables_wrapper no-footer">
@@ -259,10 +268,9 @@
                                                     <thead>
                                                         <th>#</th>
                                                         <th>Food Name</th>
-                                                        <th>Food Quantity
-                                                        </th>
+                                                        <th>Food Quantity </th>
                                                         <th>Calories</th>
-                                                        <th>Protien</th>
+                                                        <th>Protein</th>
                                                         <th>Fat</th>
                                                         <th>Carbs</th>
                                                         <th>Sugar</th>
@@ -281,79 +289,102 @@
                 </div>
             </div>
             <!-- Weight tracker -->
-            <div class="col-md-4">
+            <div class="col-xl-4 lg-border-left-my-tracker">
                 <div class="row">
-                    <h2 class="text-center mb-3" style="color:#946cfc;">
+                    <h2 class="text-center mb-3">
                         Weight Tracker</h2>
                     <div class="row mt-2">
-                        <div class="card">
+                        <div class="card bg-shadow-none">
                             <div class="card-body">
                                 <div class="">
                                     <?php
                                     $percentage = ($goal_weight > 0) ? ($current_weight / $goal_weight) * 100 : 0;
                                     ?>
-                                    <h2 class="text-center mt-3">
-                                        <?php echo $current_weight; ?>lb
-                                        / <?php echo $goal_weight; ?> lb
-                                    </h2>
+                                    <h1 class="text-center h1 fw-bold mt-3 main-color">
+                                        <?php echo $current_weight; ?>lbs
+                                    </h1>
                                     <p class="text-center mt-2">
-                                        <?php echo $goal_weight - $current_weight ?>lbs
-                                        to go!
+                                        <?php echo $goal_weight; ?> goal weight
                                     </p>
                                 </div>
-
+                                <div class="row text-center my-4 justify-content-center">
+                                    <div class="col-auto">
+                                        <div class="stat-item">
+                                            <span class="fw-bold h4"><?php echo $weight_lost; ?>lbs</span>
+                                            <p class="mb-0">lost</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto position-relative">
+                                        <div class="vertical-line"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="stat-item">
+                                            <span class="fw-bold h4"><?php echo $weight_to_goal; ?>lbs</span>
+                                            <p class="mb-0">to go</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto position-relative">
+                                        <div class="vertical-line"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="stat-item">
+                                            <span class="fw-bold h4"><?php echo $days_left; ?>d</span>
+                                            <p class="mb-0">to go</p>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="table-container">
                                     <table style="width:100%;margin-top:20px;">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">
-                                                    Dates
+                                                    Days
                                                 </th>
                                                 <th class="text-center">
-                                                    Logged</th>
+                                                    Weight
+                                                </th>
                                                 <th class="text-center">
-                                                    Loss/Day</th>
+                                                    Loss</th>
+                                                <th class="text-center">
+                                                    Protein</th>
                                                 <th class="text-center">
                                                     Calories</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $last_8_days = [];
-                                            for ($i = 0; $i < 8; $i++) {
+                                            $last_5_days = [];
+                                            $last_5_weights = array_slice($weights, -5);
+                                            $last_5_dates = array_slice($dates, -5);
+                                            for ($i = 0; $i < 5; $i++) {
                                                 $date = date('Y-m-d', strtotime("-$i days"));
-                                                $last_8_days[] = $date;
+                                                $last_5_days[] = $date;
                                             }
-
-                                            // Create a map of logged weights by date for easy lookup
                                             $logged_weights = [];
                                             foreach ($weight_history as $entry) {
                                                 $log_date = date('Y-m-d', strtotime($entry['created_at']));
                                                 $logged_weights[$log_date] = $entry['weight'];
                                             }
-
-                                            // Loop through the last 8 days and display data
-                                            foreach ($last_8_days as $index => $date) {
-                                                $day_of_month = date('d', strtotime($date)); // Get day of the month
+                                            foreach ($last_5_days as $index => $date) {
+                                                $day_of_month = date('d', strtotime($date));
                                                 $day_name = date('D', strtotime($date));
                                                 $display_date = $day_of_month . "<br/>" . $day_name;
-                                                $logged_weight = isset($logged_weights[$date]) ? $logged_weights[$date] . 'lb' : '-';
-                                                $loss = $index > 0 && isset($logged_weights[$last_8_days[$index - 1]]) ?
-                                                    round($logged_weights[$last_8_days[$index - 1]] - ($logged_weights[$date] ?? 0), 2) . ' lb' : '-';
-                                                $calories = $calories_sum[$date] ?? 0;
+                                                $logged_weight = isset($logged_weights[$date]) ? $logged_weights[$date] : '-';
+                                                $loss = $index > 0 && isset($logged_weights[$last_5_days[$index - 1]]) ?
+                                                    round($logged_weights[$last_5_days[$index - 1]] - ($logged_weights[$date] ?? 0), 2) : '-';
+                                                $protein = isset($protein_data[$date]) ? $protein_data[$date] : '-';
+                                                $calories = $calories_sum[$date] ?? '-';
 
                                                 echo "<tr class='text-center' style='border-bottom:1px solid #000'>";
-                                                echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>
-                                                    <a href='?id={$_GET['id']}&date={$date}'>{$display_date}</a>
-                                                    </p></td>";
-                                                echo "<td class='text-center'><p style='font-size:22px;color:skyblue;'>{$logged_weight}<p></td>";
-                                                echo "<td class='text-center'><p style='font-size:22px;'>{$loss}</p></td>";
-                                                echo "<td class='text-center'><p style='font-size:22px;'>{$calories} Kal</p></td>";
+                                                echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$display_date}</p></td>";
+                                                echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$logged_weight}</p></td>";
+                                                echo "<td class='text-center'><p style='font-size:22px'>{$loss}</p></td>";
+                                                echo "<td class='text-center'><p style='font-size:22px;'>{$protein}</p></td>";
+                                                echo "<td class='text-center'><p style='font-size:22px;'>{$calories}</p></td>";
                                                 echo "</tr>";
                                             }
                                             ?>
                                         </tbody>
-
                                     </table>
                                 </div>
                             </div>
@@ -366,25 +397,25 @@
 </div>
 
 <!-- WEIGHT TRACKER AND FOOD LOGS-->
- 
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-$(document).ready(function() {
-    // Initialize Flatpickr
-    flatpickr("#datepicker", {
-        dateFormat: "Y-m-d",  // Set the date format to YYYY-MM-DD
-        onChange: function(selectedDates, dateStr, instance) {
-            // When a date is selected, update the URL with the selected date
-            var userId = "<?php echo $_GET['id']; ?>";  // Get the user ID from the URL
-            window.location.href = "?id=" + userId + "&date=" + dateStr;  // Redirect to the new URL with the selected date
-        }
-    });
+    $(document).ready(function() {
+        // Initialize Flatpickr
+        flatpickr("#datepicker", {
+            dateFormat: "Y-m-d", // Set the date format to YYYY-MM-DD
+            onChange: function(selectedDates, dateStr, instance) {
+                // When a date is selected, update the URL with the selected date
+                var userId = "<?php echo $_GET['id']; ?>"; // Get the user ID from the URL
+                window.location.href = "?id=" + userId + "&date=" + dateStr; // Redirect to the new URL with the selected date
+            }
+        });
 
-    // Toggle calendar popup on calendar icon click
-    $("#calendar-icon").click(function() {
-        $("#datepicker").toggle();  // Show the hidden datepicker input
-        // Open the calendar automatically when the user clicks on the calendar icon
-        $("#datepicker").focus();  // Focus to trigger the Flatpickr calendar
+        // Toggle calendar popup on calendar icon click
+        $("#calendar-icon").click(function() {
+            $("#datepicker").toggle(); // Show the hidden datepicker input
+            // Open the calendar automatically when the user clicks on the calendar icon
+            $("#datepicker").focus(); // Focus to trigger the Flatpickr calendar
+        });
     });
-});
 </script>

@@ -44,7 +44,20 @@ while ($row = $result->fetch_assoc()) {
 }
 
 $course_end_date = date('Y-m-d', strtotime("$account_creation_date +$course_time days"));
-$formatted_end_date = date('M d', strtotime($course_end_date));
+
+$weight_lost = 0;
+if (!empty($weights)) {
+    $oldest_weight = $weights[0];
+    $current_weight = end($weights);
+
+    $weight_lost = $oldest_weight - $current_weight;
+}
+
+$weight_to_goal = $current_weight - $goal_weight;
+
+$current_date = new DateTime();
+$end_date = new DateTime($course_end_date);
+$days_left = $current_date < $end_date ? $current_date->diff($end_date)->days : 0;
 
 function formatDate($dateString)
 {
@@ -52,7 +65,65 @@ function formatDate($dateString)
     return $date->format('F j, Y');
 }
 
+
+// Fetch protein data for the last 5 days
+$last_5_days = [];
+for ($i = 0; $i < 5; $i++) {
+    $date = date('Y-m-d', strtotime("-$i days"));
+    $last_5_days[] = $date;
+}
+
+$placeholders = implode(',', array_fill(0, count($last_5_days), '?'));
+
+$query_protein = "
+    SELECT 
+        DATE(created_at) AS record_date, 
+        SUM(protein) AS total_protein 
+    FROM 
+        food_items 
+    WHERE 
+        user_id = ? 
+        AND DATE(created_at) IN ($placeholders)
+    GROUP BY 
+        record_date
+";
+
+$stmt_protein = $mysqli->prepare($query_protein);
+$params = array_merge([$user_id], $last_5_days);
+$stmt_protein->bind_param(str_repeat('s', count($params)), ...$params);
+$stmt_protein->execute();
+$result_protein = $stmt_protein->get_result();
+
+$protein_data = [];
+while ($row = $result_protein->fetch_assoc()) {
+    $protein_data[$row['record_date']] = $row['total_protein'];
+}
 ?>
+
+<style>
+    .stat-item {
+        font-size: 1rem;
+        line-height: 1.2;
+    }
+
+    .vertical-line {
+        width: 1px;
+        height: 50px;
+        background-color: transparent;
+        border-right: 3px dashed #ccc;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    @media (min-width: 992px) {
+
+        /* lg breakpoint */
+        .lg-border-left {
+            border-left: 5px solid #ddd;
+        }
+    }
+</style>
 
 <div class="container">
     <div class="row">
@@ -66,12 +137,6 @@ function formatDate($dateString)
                         <div id="chartContainer">
                             <canvas id="weightChart"></canvas>
                         </div>
-                        <h4 class="main-color">
-                            Weight loss/per day
-                        </h4>
-                        <h5 class="mt-3">
-                            You are losing 0.5 to 1lb per day
-                        </h5>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -94,25 +159,19 @@ function formatDate($dateString)
                         </div>
                         <div class="mb-4">
                             <h4 class="main-color">
-                                Stabilization begins
+                                Weight loss/per day
                             </h4>
                             <h5 class="mt-3">
-                                November 1st, 2024
+                                You are losing 0.5 to 1lb per day
                             </h5>
                         </div>
-                        <h4 class="main-color">
-                            Maintenance begins
-                        </h4>
-                        <h5 class="mt-3">
-                            November 1st, 2024
-                        </h5>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Weight tracker -->
-        <div class="col-lg-4 lg-mt-col">
+        <div class="col-lg-4 lg-mt-col lg-border-left">
             <div class="row">
                 <h2 class="text-center">
                     Weight Tracker</h2>
@@ -123,27 +182,53 @@ function formatDate($dateString)
                                 <?php
                                 $percentage = ($goal_weight > 0) ? ($current_weight / $goal_weight) * 100 : 0;
                                 ?>
-                                <h2 class="text-center mt-3">
-                                    <?php echo $current_weight; ?>lb
-                                    / <?php echo $goal_weight; ?> lb
-                                </h2>
+                                <h1 class="text-center h1 fw-bold mt-3 main-color">
+                                    <?php echo $current_weight; ?>lbs
+                                </h1>
                                 <p class="text-center mt-2">
-                                    <?php echo $goal_weight - $current_weight ?>lbs
-                                    to go!
+                                    <?php echo $goal_weight; ?> goal weight
                                 </p>
                             </div>
-
+                            <div class="row text-center my-4 justify-content-center">
+                                <div class="col-auto">
+                                    <div class="stat-item">
+                                        <span class="fw-bold h4"><?php echo $weight_lost; ?>lbs</span>
+                                        <p class="mb-0">lost</p>
+                                    </div>
+                                </div>
+                                <div class="col-auto position-relative">
+                                    <div class="vertical-line"></div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="stat-item">
+                                        <span class="fw-bold h4"><?php echo $weight_to_goal; ?>lbs</span>
+                                        <p class="mb-0">to go</p>
+                                    </div>
+                                </div>
+                                <div class="col-auto position-relative">
+                                    <div class="vertical-line"></div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="stat-item">
+                                        <span class="fw-bold h4"><?php echo $days_left; ?>d</span>
+                                        <p class="mb-0">to go</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-container">
                                 <table style="width:100%;margin-top:20px;">
                                     <thead>
                                         <tr>
                                             <th class="text-center">
-                                                Dates
+                                                Days
                                             </th>
                                             <th class="text-center">
-                                                Logged</th>
+                                                Weight
+                                            </th>
                                             <th class="text-center">
-                                                Loss/Day</th>
+                                                Loss</th>
+                                            <th class="text-center">
+                                                Protein</th>
                                             <th class="text-center">
                                                 Calories</th>
                                         </tr>
@@ -151,6 +236,8 @@ function formatDate($dateString)
                                     <tbody>
                                         <?php
                                         $last_5_days = [];
+                                        $last_5_weights = array_slice($weights, -5);
+                                        $last_5_dates = array_slice($dates, -5);
                                         for ($i = 0; $i < 5; $i++) {
                                             $date = date('Y-m-d', strtotime("-$i days"));
                                             $last_5_days[] = $date;
@@ -164,22 +251,22 @@ function formatDate($dateString)
                                             $day_of_month = date('d', strtotime($date));
                                             $day_name = date('D', strtotime($date));
                                             $display_date = $day_of_month . "<br/>" . $day_name;
-                                            $logged_weight = isset($logged_weights[$date]) ? $logged_weights[$date] . 'lb' : '-';
+                                            $logged_weight = isset($logged_weights[$date]) ? $logged_weights[$date] : '-';
                                             $loss = $index > 0 && isset($logged_weights[$last_5_days[$index - 1]]) ?
-                                                round($logged_weights[$last_5_days[$index - 1]] - ($logged_weights[$date] ?? 0), 2) . ' lb' : '-';
-                                            $calories = $calories_sum[$date] ?? 0;
+                                                round($logged_weights[$last_5_days[$index - 1]] - ($logged_weights[$date] ?? 0), 2) : '-';
+                                            $protein = isset($protein_data[$date]) ? $protein_data[$date] : '-';
+                                            $calories = $calories_sum[$date] ?? '-';
 
                                             echo "<tr class='text-center' style='border-bottom:1px solid #000'>";
                                             echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$display_date}</p></td>";
-                                            echo "<td class='text-center'><p style='font-size:22px;color:skyblue;'>{$logged_weight}<p></td>";
-                                            echo "<td class='text-center'><p style='font-size:22px;'>{$loss}</p></td>";
-                                            echo "<td class='text-center'><p style='font-size:22px;'>{$calories} Kal</p></td>";
+                                            echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$logged_weight}</p></td>";
+                                            echo "<td class='text-center'><p style='font-size:22px'>{$loss}</p></td>";
+                                            echo "<td class='text-center'><p style='font-size:22px;'>{$protein}</p></td>";
+                                            echo "<td class='text-center'><p style='font-size:22px;'>{$calories}</p></td>";
                                             echo "</tr>";
                                         }
                                         ?>
                                     </tbody>
-
-
                                 </table>
                             </div>
                         </div>
@@ -189,6 +276,7 @@ function formatDate($dateString)
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>

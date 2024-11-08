@@ -197,14 +197,9 @@ function formatDate($dateString)
     const accountCreationDate = '<?php echo !empty($account_creation_date) ? date('M d', strtotime($account_creation_date)) : "Jan 01"; ?>';
     const courseEndDate = '<?php echo !empty($course_end_date) ? date('M d', strtotime($course_end_date)) : "Dec 31"; ?>';
 
-    const weights = [currentWeight, <?php echo implode(",", $weights); ?>, goalWeight];
+    const weights = [<?php echo implode(",", $weights); ?>];
 
-    const dates = [<?php
-                    echo ($dates[0] !== date('M d', strtotime($account_creation_date)))
-                        ? '"' . date('M d', strtotime($account_creation_date)) . '",'
-                        : '';
-                    echo '"' . implode('","', $dates) . '"';
-                    ?>, courseEndDate];
+    const dates = [<?php echo '"' . implode('","', $dates) . '"'; ?>];
 
     const ctxchart = document.getElementById('weightChart').getContext('2d');
     const weightChart = new Chart(ctxchart, {

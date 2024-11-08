@@ -6,6 +6,205 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 ?>
 
 <style>
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .popup-content {
+        position: relative;
+        background-color: #fff;
+        padding: 20px 30px;
+        border-radius: 30px;
+        width: 500px;
+        height:250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 5px;
+    }
+
+    .close-popup {
+        position: absolute;
+        right: 25px;
+        top: 5px;
+        cursor: pointer;
+        color: #333;
+        font-weight: bold;
+        background-color: #946cfc;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        color: #fff;
+        border-radius: 50%;
+    }
+
+
+    .meal-detail
+    {
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
+        margin-top: 20px;
+    }
+
+    .meal-detail .ingredients,
+    .meal-detail .details
+    {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+    }
+
+    .meal-detail .ingredients h2
+    {
+        font-weight: 700;
+        color: #946cfc;
+        font-size: 2em;
+        margin: 0;
+    }
+
+    .view-recipe
+    {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .view-recipe .star
+    {
+        font-size: 1.9em;
+        color: #eaea0c;
+        cursor: pointer;
+    }
+
+    .view-recipe-btn
+    {
+        text-decoration: none;
+        font-size: 1.2em;
+        background-color: #e7e7113b;
+        padding: 12px;
+        border-radius: 20px;
+        color: #946cfc;
+        font-weight: 800;
+    }
+    /* Grocery Popup Overlay */
+    .grocery-popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    /* Grocery Popup Content */
+    .grocery-popup-content {
+        position: relative;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 20px;
+        width: 700px;
+        max-width: 90%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Close Button */
+    .grocery-close-popup {
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        cursor: pointer;
+        color: #fff;
+        font-weight: bold;
+        background-color: #946cfc;
+        width: 25px;
+        height: 25px;
+        text-align: center;
+        line-height: 25px;
+        border-radius: 50%;
+    }
+
+    /* Grocery List Styles */
+    .grocery-list-title {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: #946cfc;
+        margin-bottom: 20px;
+    }
+
+    /* Two-column Layout */
+    .grocery-columns {
+        display: flex;
+        gap: 20px;
+    }
+
+    /* Aisle Section in Each Column */
+    .grocery-column {
+        flex: 1;
+    }
+
+    .grocery-aisle h3 {
+        font-weight: bold;
+        font-style: italic;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .grocery-aisle ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .grocery-aisle li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1em;
+    }
+
+    .grocery-aisle li span strong {
+        font-weight: bold;
+    }
+
+    /* PDF Icon */
+    .grocery-pdf-icon {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .grocery-pdf-icon{
+        cursor: pointer;
+        font-size: 32px;
+        color: #946cfc;
+    }
+
+    .grocery-pdf-icon img {
+        filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.3));
+    }
+
     .day-header {
         font-weight: bold;
         color: #6b4ce6;
@@ -75,8 +274,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
     .meal-card img {
-        max-width: 100%;
+        width: 100%;
         border-radius: 5px;
+        height: 50px;
+        object-fit:cover;
     }
 
     .meal-name {
@@ -169,6 +370,13 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     .custom-border {
         border: 1px solid #946CFC;
     }
+    .AddToCart i{
+        font-size: 18px;
+        cursor: pointer;
+    }
+    .AddToCart i:hover{
+        color: #00BF63;
+    }
 </style>
 
 <div class="row">
@@ -204,6 +412,98 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $next_date; ?>">
                         <i class="fa fa-angle-right fw-bold fs-4"></i>
                     </a>
+                </div>
+            </div>
+
+            <!-- pop up box For Recipe -->
+            <div class="popup-overlay" id="popup-overlay">
+                <div class="popup-content">
+                    <div class="close-popup" onclick="closePopup()">X</div>
+                    <div class="meal-detail">
+                        <div class="ingredients">
+                            <h2>veggie omelette</h2>
+                            <strong>ingredients</strong>
+                            <span>egg</span>
+                            <span>your choice of veg</span>
+                        </div>
+                        <div class="details">
+                            <div><strong>calories</strong> 120 kcal</div>
+                            <div><strong>protein</strong> 1.5 oz</div>
+                            <div><strong>prep</strong> 5 min</div>
+                            <div><strong>cook</strong> 20 min</div>
+                        </div>
+                    </div>
+                    <div class="view-recipe">
+                        <span class="star">★</span>
+                        <a href="#" class="view-recipe-btn">view full recipe</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Grocery List Popup Overlay -->
+            <div class="grocery-popup-overlay" id="grocery-popup-overlay">
+                <div class="grocery-popup-content">
+                    <div class="grocery-close-popup" onclick="closeGroceryPopup()">X</div>
+                    
+                    <!-- Grocery List Content -->
+                    <div class="grocery-list-box">
+                        <h2 class="grocery-list-title">grocery list</h2>
+                        
+                        <!-- Columns for Aisles -->
+                        <div class="grocery-columns">
+                            <!-- Left Column -->
+                            <div class="grocery-column">
+                                <div class="grocery-aisle">
+                                    <h3>vegetable aisle</h3>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>eggs, <strong>3</strong></span>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>chicken breast, <strong>3</strong></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="grocery-aisle">
+                                    <h3>vegetable aisle</h3>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>eggs, <strong>3</strong></span>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>chicken breast, <strong>3</strong></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- Right Column -->
+                            <div class="grocery-column">
+                                <div class="grocery-aisle">
+                                    <h3>vegetable aisle</h3>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>eggs, <strong>3</strong></span>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>chicken breast, <strong>3</strong></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PDF Icon -->
+                        <div class="grocery-pdf-icon">
+                            <i class="fa fa-file-pdf-o"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -424,7 +724,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         <div class="day-header">day ${dayData.day}</div>
                         <div class="date-text">${dayData.date}</div>
                         <div class="cal-info">${dayData.kcal} kcal<br>${dayData.oz}</div>
-                        <div><i class="fa fa-shopping-cart text-muted"></i></div>
+                        <div class="AddToCart" onclick="showGroceryPopup()"><i class="fa fa-shopping-cart"></i></div>
                     </div>
                     <div class="meal-section" id="day${dayData.day}-breakfast">
                         <div class="meal-card">${isFirstColumn ? '<div class="breakfast-label meal-card-title">Breakfast</div>' : ''}
@@ -502,21 +802,19 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     const targetMealCard = evt.to.querySelector('.meal-card');
 
                     if (targetMealCard) {
-                        // Remove the empty slot indicator (+ sign) if present
-                        const addMore = targetMealCard.querySelector('.add-more');
-                        if (addMore) {
-                            addMore.remove();
-                        }
+                        // Keep the existing label in the meal card
+                        const existingLabel = targetMealCard.querySelector('.meal-card-title');
 
-                        // Populate the .meal-card with structured content
+                        // Populate the .meal-card with structured content, retaining the label
                         targetMealCard.innerHTML = `
-                        <div class="custom-border rounded">
-                            <img src="${imageSrc}" alt="${mealName}">
-                            <div class="meal-name">${mealName}</div>
-                            <div class="meal-name-sub">${mealSubName}</div>
-                            <div class="meal-info">${mealInfo}</div>
-                        </div>
-                    `;
+                            ${existingLabel ? existingLabel.outerHTML : ''} <!-- Keep existing label -->
+                            <div class="custom-border rounded meal-box">
+                                <img src="${imageSrc}" alt="${mealName}">
+                                <div class="meal-name">${mealName}</div>
+                                <div class="meal-name-sub">${mealSubName}</div>
+                                <div class="meal-info">${mealInfo}</div>
+                            </div>
+                        `;
                     }
 
                     // Remove the dragged item from its original location to keep single instance
@@ -525,4 +823,50 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             });
         });
     }
+
+        // pop up box for recipe 
+        function showPopup() {
+                document.getElementById('popup-overlay').style.display = 'flex';
+            }
+
+            // Function to close the popup
+            function closePopup() {
+                document.getElementById('popup-overlay').style.display = 'none';
+            }
+
+            // Event listener for meal-box click
+            $(document).on('click', '.meal-box', function(event) {
+                showPopup();
+                event.stopPropagation(); // Prevents triggering from any other part
+            });
+
+            // Close the popup when clicking outside of it
+            $(document).on('click', '#popup-overlay', function(event) {
+                if (event.target.id === 'popup-overlay') {
+                    closePopup();
+                }
+         });
+
+
+        // Function to show the grocery popup
+        function showGroceryPopup(e) {
+                document.getElementById('grocery-popup-overlay').style.display = 'flex';
+                console.log(e)
+            }
+
+            // Function to close the grocery popup
+            function closeGroceryPopup() {
+                document.getElementById('grocery-popup-overlay').style.display = 'none';
+            }
+
+            // Close the grocery popup when clicking outside of it
+            document.addEventListener('click', function(event) {
+                const overlay = document.getElementById('grocery-popup-overlay');
+                if (event.target === overlay) {
+                    closeGroceryPopup();
+                }
+        });
+
+
+
 </script>

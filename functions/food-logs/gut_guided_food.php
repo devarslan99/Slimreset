@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Categories</title>
     <style>
+        .category-section{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
         .checkboxes input[type="checkbox"] {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -53,8 +59,7 @@
 
         .border-bottom-row-gut-guided {
             border-bottom: 2px solid #B9BDC6;
-            width: 56%;
-        }
+        } 
     </style>
 
 </head>
@@ -67,8 +72,8 @@
             <div class="category-section flex-fill mb-4">
                 <h3 class="">Protein</h3>
                 <h3 class="my-3 main-color">rich protein</h3>
-                <div class="label-select mb-2">select</div>
                 <div class="checkbox-group">
+                    <div class="label-select mb-2">select</div>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
                             <input type="checkbox" class="red-checkbox">
@@ -95,8 +100,8 @@
                     </label>
                 </div>
                 <h3 class="my-3 main-color">light protein</h3>
-                <div class="label-select mb-2">select</div>
                 <div class="checkbox-group">
+                    <div class="label-select mb-2">select</div>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
                             <input type="checkbox" class="red-checkbox">
@@ -128,8 +133,8 @@
             <div class="category-section flex-fill mb-4">
                 <h3 class="">veggies</h3>
                 <h3 class="my-3 main-color">rich protein</h3>
-                <div class="label-select mb-2">select</div>
                 <div class="checkbox-group">
+                    <div class="label-select mb-2">select</div>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
                             <input type="checkbox" class="red-checkbox">
@@ -156,8 +161,8 @@
                     </label>
                 </div>
                 <h3 class="my-3 main-color">light protein</h3>
-                <div class="label-select mb-2">select</div>
                 <div class="checkbox-group">
+                    <div class="label-select mb-2">select</div>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
                             <input type="checkbox" class="red-checkbox">
@@ -189,8 +194,8 @@
             <div class="category-section flex-fill mb-4">
                 <h3 class="">veggies</h3>
                 <h3 class="my-3 main-color">rich protein</h3>
-                <div class="label-select mb-2">select</div>
                 <div class="checkbox-group">
+                    <div class="label-select mb-2">select</div>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
                             <input type="checkbox" class="red-checkbox">
@@ -217,8 +222,8 @@
                     </label>
                 </div>
                 <h3 class="my-3 main-color">light protein</h3>
-                <div class="label-select mb-2">select</div>
                 <div class="checkbox-group">
+                    <div class="label-select mb-2">select</div>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
                             <input type="checkbox" class="red-checkbox">
@@ -250,8 +255,8 @@
             <div class="category-section flex-fill mb-4">
                 <h3 class="">veggies</h3>
                 <h3 class="my-3 main-color">rich protein</h3>
-                <div class="label-select mb-2">select</div>
                 <div class="checkbox-group">
+                    <div class="label-select mb-2">select</div>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
                             <input type="checkbox" class="red-checkbox">
@@ -278,8 +283,8 @@
                     </label>
                 </div>
                 <h3 class="my-3 main-color">light protein</h3>
-                <div class="label-select mb-2">select</div>
                 <div class="checkbox-group">
+                    <div class="label-select mb-2">select</div>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
                             <input type="checkbox" class="red-checkbox">

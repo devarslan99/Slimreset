@@ -407,17 +407,19 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     </span>
                 </div>
                 <div class="main-color text-center my-3">
-                    <i class="fa fa-calendar me-2 fw-bold fs-4"></i>
+                    <i class="fa fa-calendar me-2 fw-bold fs-4" id="calendar-icon" style="cursor: pointer;"></i>
                     <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
                         <i class="fa fa-angle-left fw-bold fs-4"></i>
                     </a>
                     <h3 class="text-center mx-2 d-inline main-color">
                         <?php echo date('M d, Y', strtotime($selected_date)); ?>
                     </h3>
-                    <input type="hidden" value="<?php echo $selected_date; ?>" id="selected_date">
                     <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $next_date; ?>">
                         <i class="fa fa-angle-right fw-bold fs-4"></i>
                     </a>
+
+                    <!-- Hidden input field for Flatpickr calendar -->
+                    <input type='text' id="datepicker" style="display:none; width:0px;height:0px;outline:none;border:none;display:'block">
                 </div>
             </div>
 
@@ -590,6 +592,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <script>
     $(document).ready(function() {
@@ -892,5 +895,26 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             // Convert to PDF
             html2pdf().set(options).from(element).save();
         }
+
+
+        // calender date picker
+        $(document).ready(function() {
+            // Initialize Flatpickr
+            flatpickr("#datepicker", {
+                dateFormat: "Y-m-d", // Set the date format to YYYY-MM-DD
+                onChange: function(selectedDates, dateStr, instance) {
+                    // When a date is selected, update the URL with the selected date
+                    var userId = "<?php echo $_GET['id']; ?>"; // Get the user ID from the URL
+                    window.location.href = "?id=" + userId + "&date=" + dateStr; // Redirect to the new URL with the selected date
+                }
+            });
+
+            // Toggle calendar popup on calendar icon click
+            $("#calendar-icon").click(function() {
+                $("#datepicker").toggle(); // Show the hidden datepicker input
+                // Open the calendar automatically when the user clicks on the calendar icon
+                $("#datepicker").focus(); // Focus to trigger the Flatpickr calendar
+            });
+        });
 
 </script>

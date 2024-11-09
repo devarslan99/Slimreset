@@ -182,7 +182,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     </div>
     <div class="col-6 col-xl-4 d-none d-md-block">
         <nav>
-            <ul class="d-flex align-items-center gap-2">
+            <ul class="d-flex align-items-center gap-4">
                 <li><a class="bread-crum-Link" href="../dashboard/dashboard.php">Dashboard</a></li>
                 <?php
                 $role = $_SESSION['role'];

@@ -336,26 +336,26 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                                     <button class="btn btn-primary rounded-pill px-3" style="background-color: #946CFC; border: none;">
                                         + new entry
                                     </button>
-                                    <ul class="rounded-2">
-                                        <li><a class="dropdown-item" href="#" onclick="openWeightModal('weightModal')">Weight</a></li>
-                                        <li>
+                                    <ul class="rounded-2 main-bg">
+                                        <li><a class="dropdown-item text-white" href="#" onclick="openWeightModal('weightModal')">Weight</a></li>
+                                        <li class="text-white">
                                             Meal
-                                            <ul>
-                                                <li class="link">Food
-                                                    <ul>
-                                                        <li><a class="dropdown-item" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
-                                                        <li><a class="dropdown-item" href="#" onclick="openModal('Lunch')">Lunch</a></li>
-                                                        <li><a class="dropdown-item" href="#" onclick="openModal('Dinner')">Dinner</a>
+                                            <ul class="main-bg">
+                                                <li class="link text-white">Food
+                                                    <ul class="main-bg">
+                                                        <li><a class="dropdown-item text-white" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
+                                                        <li><a class="dropdown-item text-white" href="#" onclick="openModal('Lunch')">Lunch</a></li>
+                                                        <li><a class="dropdown-item text-white" href="#" onclick="openModal('Dinner')">Dinner</a>
                                                         </li>
-                                                        <li><a class="dropdown-item" href="#" onclick="openModal('Snacks')">Snacks</a>
+                                                        <li><a class="dropdown-item text-white" href="#" onclick="openModal('Snacks')">Snacks</a>
                                                         </li>
                                                     </ul>
                                                 </li>
-                                                <li><a class="dropdown-item" href="#" onclick="openWaterModal('waterModal')">Water</a></li>
+                                                <li><a class="dropdown-item text-white" href="#" onclick="openWaterModal('waterModal')">Water</a></li>
                                             </ul>
                                         </li>
-                                        <li><a class="dropdown-item" href="#" onclick="openBowelMovementsModal('bowelMovementsModal')">Bowel</a></li>
-                                        <li class="link">Activity</li>
+                                        <li><a class="dropdown-item text-white" href="#" onclick="openBowelMovementsModal('bowelMovementsModal')">Bowel</a></li>
+                                        <li class="link text-white">Activity</li>
                                     </ul>
                                 </li>
                             </ul>

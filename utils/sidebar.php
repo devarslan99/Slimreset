@@ -1,4 +1,4 @@
-<div class="sidebar-wrapper" data-layout="stroke-svg">
+<div class="sidebar-wrapper d-block d-md-none" data-layout="stroke-svg">
     <div>
         <div class="logo-wrapper">
             <a href="../dashboard/dashboard.php">

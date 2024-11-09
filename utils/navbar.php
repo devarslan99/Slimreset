@@ -176,137 +176,37 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             </a>
         </div>
     </div>
-    <div class="col-4 col-xl-4 page-title">
-        <h4 class="f-w-700">
-            <?php
-            if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/dashboard.php") {
-                echo "Dashboard";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/create.php") {
-                echo "Users";
-            } else if (strpos($_SERVER['REQUEST_URI'], "/clients/view_details.php?id=") !== false) {
-                echo "Clients";
-            } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/users/edit.php?id=") !== false) {
-                echo "Users";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/view.php") {
-                echo "Users";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/view.php") {
-                echo "Clients";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/account.php") {
-                echo "Account";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/summary.php") {
-                echo "My Profile";
-            } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/clients/summary.php") !== false) {
-                echo "My Profile";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/invite_clients.php") {
-                echo "Clients";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/assign.php") {
-                echo "Coach";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/view.php") {
-                echo "Coach";
-            } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/coach/edit.php?id=") !== false) {
-                echo "Coach";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/create.php") {
-                echo "Food Category";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/view.php") {
-                echo "Food Category";
-            } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_category/edit.php?id=") !== false) {
-                echo "Food Category";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/create.php") {
-                echo "Food Recommendation";
-            } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/view.php") {
-                echo "Food Recommendation";
-            } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_recommendation/edit.php?id=") !== false) {
-                echo "Food Recommendation";
-            }
-
-            ?>
-        </h4>
+    <div class="col-6 col-xl-4 d-none d-md-block">
         <nav>
-            <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
-                <li class="breadcrumb-item"><a href="../dashboard/dashboard.php"> <i data-feather="home"> </i></a></li>
-                <li class="breadcrumb-item f-w-400">
-                    <?php
-                    if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/dashboard.php") {
-                        echo "Dashboard";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/create.php") {
-                        echo "Users";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "projects/slimreset/users/edit.php?id=") !== false) {
-                        echo "Users";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/view.php") {
-                        echo "Users";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/account.php") {
-                        echo "Account";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/view.php") {
-                        echo "Clients";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "/clients/view_details.php?id=") !== false) {
-                        echo "Clients";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/summary.php") {
-                        echo "My Profile";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/clients/summary.php") !== false) {
-                        echo "My Profile";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/invite_clients.php") {
-                        echo "Clients";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/assign.php") {
-                        echo "Coach";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/view.php") {
-                        echo "Coach";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/coach/edit.php?id=") !== false) {
-                        echo "Coach";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/create.php") {
-                        echo "Food Category";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/view.php") {
-                        echo "Food Category";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_category/edit.php?id=") !== false) {
-                        echo "Food Category";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/create.php") {
-                        echo "Food Recommendation";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/view.php") {
-                        echo "Food Recommendation";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_recommendation/edit.php?id=") !== false) {
-                        echo "Food Recommendation";
-                    }
-                    ?>
-                </li>
-                <li class="breadcrumb-item f-w-400 active">
-                    <?php
-                    if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/dashboard.php") {
-                        echo "Home";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/create.php") {
-                        echo "Create Users";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "projects/slimreset/users/edit.php?id=") !== false) {
-                        echo "Edit Users";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/users/view.php") {
-                        echo "View Users";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/dashboard/account.php") {
-                        echo "Account Settings";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/view.php") {
-                        echo "View Clients";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "/clients/view_details.php?id=") !== false) {
-                        echo "Clients";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/clients/invite_clients.php") {
-                        echo "Invite clients";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/assign.php") {
-                        echo "Add";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/coach/view.php") {
-                        echo "View";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/coach/edit.php?id=") !== false) {
-                        echo "Edit";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/create.php") {
-                        echo "Add";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_category/view.php") {
-                        echo "View";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_category/edit.php?id=") !== false) {
-                        echo "Edit";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/create.php") {
-                        echo "Add";
-                    } else if ($_SERVER['REQUEST_URI'] == "/projects/slimreset/food_recommendation/view.php") {
-                        echo "View";
-                    } else if (strpos($_SERVER['REQUEST_URI'], "/projects/slimreset/food_recommendation/edit.php?id=") !== false) {
-                        echo "Edit";
-                    }
-                    ?>
-                </li>
-            </ol>
+            <ul class="d-flex align-items-center gap-2">
+                <li><a href="../dashboard/dashboard.php">Dashboard</a></li>
+                <?php
+                $role = $_SESSION['role'];
+                if ($role == "admin") {
+                ?>
+                    <li><a href="../users/create.php">Add User</a></li>
+                    <li><a href="../users/view.php">View Users</a></li>
+                    <li><a href="../coach/assign.php">Assign Coach</a></li>
+                    <li><a href="../coach/view.php">View Coach</a></li>
+                    <li><a href="../food_category/create.php">Add Food Category</a></li>
+                    <li><a href="../food_category/view.php">View Food Category</a></li>
+                    <li><a href="../food_recommendation/create.php">Add Food Recommendation</a></li>
+                    <li><a href="../food_recommendation/view.php">View Food Recommendation</a></li>
+                    <li><a href="../functions/logout.php">Logout</a></li>
+                <?php
+                } else if ($role == "client") {
+                ?>
+                    <li><a href="../clients/summary.php?id=<?php echo $_SESSION['user_id'] ?>">My Profile</a></li>
+                <?php
+                } else if ($role == "coach") {
+                ?>
+                    <li><a href="../clients/invite_clients.php">Invite Clients</a></li>
+                    <li><a href="../clients/view.php">My Clients</a></li>
+                    <li><a href="../functions/logout.php">Logout</a></li>
+                <?php
+                }
+                ?>
+            </ul>
         </nav>
     </div>
 

@@ -80,10 +80,10 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     }
 </style>
 <style>
-    .bread-crum-Link
-    {
-        color:#333;
+    .bread-crum-Link {
+        color: #333;
     }
+
     .menu {
         ul {
             list-style: none;
@@ -170,7 +170,67 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         }
     }
 </style>
+<style>
+    /* Container for navbar with arrows */
+    .navbar-container {
+        display: flex;
+        align-items: center;
+    }
 
+    /* Scrollable navigation container */
+    .scrollable-nav {
+        overflow-x: auto;
+        white-space: nowrap;
+        flex-grow: 1;
+        padding: 0 10px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .scrollable-nav::-webkit-scrollbar {
+        display: none;
+        /* Webkit */
+    }
+
+    /* Navigation list styling */
+    .scrollable-nav ul {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    /* Arrow button styling */
+    .scroll-btn {
+        background-color: transparent;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    /* Responsive section */
+    .responsive-section {
+        /* display: flex; */
+        flex-basis: 0;
+        /* Ensures it can grow and shrink */
+        flex-grow: 1;
+        /* Takes up available space */
+        overflow-x: auto;
+        /* Enables horizontal scrolling when content overflows */
+        padding: 1rem;
+        transition: width 0.3s ease;
+    }
+
+    /* Hide the responsive section on smaller screens */
+    @media (max-width: 991.98px) {
+        .responsive-section {
+            display: none;
+            /* Hide on screens smaller than lg */
+        }
+    }
+</style>
 <div class="page-header row">
     <div class="header-logo-wrapper col-auto">
         <div class="logo-wrapper">
@@ -180,37 +240,49 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             </a>
         </div>
     </div>
-    <div class="col-6 col-xl-4 d-none d-md-block">
+    <div class="responsive-section">
         <nav>
-            <ul class="d-flex align-items-center gap-4">
-                <li><a class="bread-crum-Link" href="../dashboard/dashboard.php">Dashboard</a></li>
-                <?php
-                $role = $_SESSION['role'];
-                if ($role == "admin") {
-                ?>
-                    <li><a class="bread-crum-Link" href="../users/create.php">Add User</a></li>
-                    <li><a class="bread-crum-Link" href="../users/view.php">View Users</a></li>
-                    <li><a class="bread-crum-Link" href="../coach/assign.php">Assign Coach</a></li>
-                    <li><a class="bread-crum-Link" href="../coach/view.php">View Coach</a></li>
-                    <li><a class="bread-crum-Link" href="../food_category/create.php">Add Food Category</a></li>
-                    <li><a class="bread-crum-Link" href="../food_category/view.php">View Food Category</a></li>
-                    <li><a class="bread-crum-Link" href="../food_recommendation/create.php">Add Food Recommendation</a></li>
-                    <li><a class="bread-crum-Link" href="../food_recommendation/view.php">View Food Recommendation</a></li>
-                    <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
-                <?php
-                } else if ($role == "client") {
-                ?>
-                    <li><a class="bread-crum-Link" href="../clients/summary.php?id=<?php echo $_SESSION['user_id'] ?>">My Profile</a></li>
-                <?php
-                } else if ($role == "coach") {
-                ?>
-                    <li><a class="bread-crum-Link" href="../clients/invite_clients.php">Invite Clients</a></li>
-                    <li><a class="bread-crum-Link" href="../clients/view.php">My Clients</a></li>
-                    <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
-                <?php
-                }
-                ?>
-            </ul>
+            <div class="navbar-container">
+                <!-- Left Arrow -->
+                <!-- <button class="scroll-btn left-arrow" onclick="scrollNav('left')">&#8592;</button> -->
+
+                <!-- Scrollable Navigation Menu -->
+                <div class="scrollable-nav">
+                    <ul class="d-flex align-items-center gap-4">
+                        <li><a class="bread-crum-Link" href="../dashboard/dashboard.php">Dashboard</a></li>
+                        <?php
+                        $role = $_SESSION['role'];
+                        if ($role == "admin") {
+                        ?>
+                            <li><a class="bread-crum-Link" href="../users/create.php">Add User</a></li>
+                            <li><a class="bread-crum-Link" href="../users/view.php">View Users</a></li>
+                            <li><a class="bread-crum-Link" href="../coach/assign.php">Assign Coach</a></li>
+                            <li><a class="bread-crum-Link" href="../coach/view.php">View Coach</a></li>
+                            <li><a class="bread-crum-Link" href="../food_category/create.php">Add Food Category</a></li>
+                            <li><a class="bread-crum-Link" href="../food_category/view.php">View Food Category</a></li>
+                            <li><a class="bread-crum-Link" href="../food_recommendation/create.php">Add Food Recommendation</a></li>
+                            <li><a class="bread-crum-Link" href="../food_recommendation/view.php">View Food Recommendation</a></li>
+                            <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
+                        <?php
+                        } else if ($role == "client") {
+                        ?>
+                            <li><a class="bread-crum-Link" href="../clients/summary.php?id=<?php echo $_SESSION['user_id'] ?>">My Profile</a></li>
+                        <?php
+                        } else if ($role == "coach") {
+                        ?>
+                            <li><a class="bread-crum-Link" href="../clients/invite_clients.php">Invite Clients</a></li>
+                            <li><a class="bread-crum-Link" href="../clients/view.php">My Clients</a></li>
+                            <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
+                        <?php
+                        }
+                        ?>
+                    </ul>
+                </div>
+
+                <!-- Right Arrow -->
+                <!-- <button class="scroll-btn right-arrow" onclick="scrollNav('right')">&#8594;</button> -->
+            </div>
+
         </nav>
     </div>
 
@@ -862,4 +934,23 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             });
         });
     });
+</script>
+
+<script>
+    function scrollNav(direction) {
+        const nav = document.querySelector('.scrollable-nav');
+        const scrollAmount = 200; // Adjust for scroll speed
+
+        if (direction === 'left') {
+            nav.scrollBy({
+                left: -scrollAmount,
+                behavior: 'smooth'
+            });
+        } else {
+            nav.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    }
 </script>

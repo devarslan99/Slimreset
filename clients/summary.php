@@ -197,7 +197,6 @@ foreach ($weight_history as $index => $entry) {
     <div class="page-wrapper compact-wrapper" style="background: #ffffff !important;" id="pageWrapper">
         <?php include_once "../utils/navbar.php" ?>
         <div class="page-body-wrapper">
-            <?php include_once "../utils/sidebar.php" ?>
             <div class="page-body">
                 <!-- Container-fluid starts-->
                 <div class="container-fluid">

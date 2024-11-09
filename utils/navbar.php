@@ -327,7 +327,8 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
             <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
                 <ul class="nav-menus gap-4">
-                    <li class="cart-nav onhover-dropdown"></li>
+                    <li class="cart-nav onhover-dropdown bg-none" style="background: none !important;"></li>
+                    <li class="cart-nav onhover-dropdown bg-none" style="background: none !important;"></li>
 
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'client') : ?>
                         <li class="menu new-entry-bg-none">

@@ -261,8 +261,8 @@ while ($row = $result_protein->fetch_assoc()) {
                                             echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$display_date}</p></td>";
                                             echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$logged_weight}</p></td>";
                                             echo "<td class='text-center'><p style='font-size:22px'>{$loss}</p></td>";
-                                            echo "<td class='text-center'><p style='font-size:22px;'>{$protein}</p></td>";
-                                            echo "<td class='text-center'><p style='font-size:22px;'>{$calories}</p></td>";
+                                            echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($protein ?? 0), 2, '.', '') . "</p></td>";
+                                            echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($calories ?? 0), 2, '.', '') . "</p></td>";
                                             echo "</tr>";
                                         }
                                         ?>

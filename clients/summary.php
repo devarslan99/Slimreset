@@ -426,35 +426,49 @@ foreach ($weight_history as $index => $entry) {
 
     <!-- Redirecting to food logs if we have date and adjusting of my tracker view page -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const urlParams = new URLSearchParams(window.location.search);
+        function saveActiveTab(tabId) {
+            localStorage.setItem('activeTab', tabId);
+        }
 
-            if (urlParams.has('date')) {
-                // Deactivate any active parent tabs
+        // Function to activate the saved tab if there is a date in the URL
+        function activateSavedTab() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeTabId = localStorage.getItem('activeTab');
+
+            if (urlParams.has('date') && activeTabId) {
                 document.querySelectorAll('.nav-link.active').forEach(link => link.classList.remove('active'));
                 document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
 
-                // Activate "My Plan" tab (parent tab)
-                const myPlanTabLink = document.querySelector('#my-plan-tab');
-                const myPlanTabContent = document.querySelector('#my-plan');
+                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker') {
+                    const myPlanTabLink = document.querySelector('#my-plan-tab');
+                    const myPlanTabContent = document.querySelector('#my-plan');
 
-                if (myPlanTabLink && myPlanTabContent) {
-                    myPlanTabLink.classList.add('active');
-                    myPlanTabContent.classList.add('active', 'show');
+                    if (myPlanTabLink && myPlanTabContent) {
+                        myPlanTabLink.classList.add('active');
+                        myPlanTabContent.classList.add('active', 'show');
+                    }
                 }
 
-                // Activate "My Tracker" tab inside "My Plan"
-                const myTrackerTabLink = document.querySelector('#my-tracker-tab');
-                const myTrackerTabContent = document.querySelector('#my-tracker');
+                const targetTabLink = document.querySelector(`#${activeTabId}-tab`);
+                const targetTabContent = document.querySelector(`#${activeTabId}`);
 
-                if (myTrackerTabLink && myTrackerTabContent) {
-                    myTrackerTabLink.classList.add('active');
-                    myTrackerTabContent.classList.add('active', 'show');
+                if (targetTabLink && targetTabContent) {
+                    targetTabLink.classList.add('active');
+                    targetTabContent.classList.add('active', 'show');
                 }
             }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const tabId = this.getAttribute('aria-controls');
+                    saveActiveTab(tabId);
+                });
+            });
+            activateSavedTab();
         });
     </script>
-
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

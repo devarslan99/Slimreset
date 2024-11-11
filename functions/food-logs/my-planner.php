@@ -417,7 +417,8 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     </a>
 
                     <!-- Hidden input field for Flatpickr calendar -->
-                    <input type='text' id="datepicker" style="display:none; width:0px;height:0px;outline:none;border:none;display:'block">
+                    <input type='text' id="datepicker" style="display: none; width: 0px; height: 0px; outline: none; border: none; display: block;">
+
                 </div>
             </div>
 

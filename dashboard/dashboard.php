@@ -222,6 +222,7 @@
         function addFoodToDatabase(foodId, label) {
             var food_type = document.getElementById('food_type').value;
             var selected_date = document.getElementById('selected_date').value;
+            var modal = bootstrap.Modal.getInstance(document.getElementById('foodModal'));
             const foodData = {
                 foodId: foodId, // Include food_id
                 label: label, // Include label
@@ -251,9 +252,13 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.status == "success") {
-                        location.reload();
+                        modal.hide();
+                        Swal.fire("Success", "Food added successfully!", "success")
+                            .then(() => {
+                                showMealPlanModal();
+                            });
                     } else {
-                        location.reload();
+                        swal("Error", "Failed to add food.", "error");
                     }
                 })
                 .catch(error => {

@@ -167,18 +167,21 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             }
         }
     }
+
     @media (max-width: 650px) {
-    .menu > ul li ul ul ul {
-        top: 60px; 
-        left: -10px;
+        .menu>ul li ul ul ul {
+            top: 60px;
+            left: -10px;
+        }
     }
-}
-@media (max-width: 400px) {
-    .menu, 
-    .menu .btn {
-        display: none;
+
+    @media (max-width: 400px) {
+
+        .menu,
+        .menu .btn {
+            display: none;
+        }
     }
-}
 
 
 
@@ -228,6 +231,73 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         .responsive-section {
             display: none;
         }
+    }
+
+    /* Overlay */
+    .meal-plan-popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    /* Popup Content */
+    .meal-plan-popup-content {
+        position: relative;
+        background-color: #fff;
+        padding: 30px 20px;
+        border-radius: 20px;
+        width: 400px;
+        max-width: 90%;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Title */
+    .meal-plan-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    /* Close Button */
+    .meal-plan-close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #333;
+    }
+
+    /* Buttons */
+    .meal-plan-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 15px;
+    }
+
+    .meal-plan-buttons button {
+        background-color: transparent;
+        border: none;
+        color: #333;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .meal-plan-buttons button:hover {
+        color: #946CFC;
+        /* Matches theme color */
     }
 </style>
 <div class="page-header row">
@@ -305,6 +375,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                                     <button class="btn btn-primary rounded-pill px-3" style="background-color: #946CFC; border: none;">
                                         + new entry
                                     </button>
+                                    <input type="hidden" value="<?php echo $selected_date; ?>" id="selected_date">
                                     <ul class="rounded-2 main-bg">
                                         <li><a class="dropdown-item text-white" href="#" onclick="openWeightModal('weightModal')">Weight</a></li>
                                         <li class="text-white">
@@ -464,7 +535,35 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     </div>
 </div>
 
+<!-- Pop-up modal, appears after adding the meal-->
+<div class="meal-plan-popup-overlay" id="meal-plan-popup-overlay">
+    <div class="meal-plan-popup-content">
+        <div class="meal-plan-close" onclick="closeMealPlanPopup()">X</div>
+
+        <div class="meal-plan-message-box">
+            <h2 class="meal-plan-title">Did you eat based on today’s plan?</h2>
+        </div>
+
+        <div class="meal-plan-buttons">
+            <button onclick="confirmMealPlan()">yes, confirm</button>
+            <button onclick="customMealPlan()">no, custom meal</button>
+        </div>
+    </div>
+</div>
+
+
 <script src="../assets/js/jquery.min.js"></script>
+
+<!-- Script to open and close pop-up modal -->
+<script>
+    function showMealPlanModal() {
+        $('#meal-plan-popup-overlay').css('display', 'flex');
+    }
+
+    $('.meal-plan-buttons button, .meal-plan-close').on('click', function() {
+        location.reload();
+    })
+</script>
 
 <!-- SCRIPT TO SEARCH AND ADD FOOD -->
 <script>
@@ -628,6 +727,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     function addFoodToDatabase(foodId, label) {
         var food_type = document.getElementById('food_type').value;
         var selected_date = document.getElementById('selected_date').value;
+        var modal = bootstrap.Modal.getInstance(document.getElementById('foodModal'));
         const foodData = {
             foodId: foodId, // Include food_id
             label: label, // Include label
@@ -657,9 +757,13 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             .then(response => response.json())
             .then(data => {
                 if (data.status == "success") {
-                    location.reload();
+                    modal.hide();
+                    Swal.fire("Success", "Food added successfully!", "success")
+                        .then(() => {
+                            showMealPlanModal();
+                        });
                 } else {
-                    location.reload();
+                    swal("Error", "Failed to add food.", "error");
                 }
             })
             .catch(error => {
@@ -683,61 +787,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         }
         toggleNotificationVisibility();
         window.addEventListener("popstate", toggleNotificationVisibility);
-    });
-</script>
-
-<!-- weight script -->
-<script>
-    $(document).ready(function() {
-        $('#weight-form').on('submit', function(e) {
-            e.preventDefault();
-            var weight = $('input[name="weight"]').val();
-            var selected_date = document.getElementById('selected_date').value;
-
-            $.ajax({
-                url: '../functions/weight/store.php',
-                type: 'POST',
-                data: {
-                    weight: weight,
-                    selected_date: selected_date
-                },
-                success: function(response) {
-                    if (response === 'Success') {
-                        Swal.fire({
-                            title: 'Success',
-                            text: "Weight Recorded",
-                            icon: 'success',
-                            showCancelButton: false,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Ok'
-                        });
-                        location.reload();
-                    } else {
-                        Swal.fire({
-                            title: 'Error',
-                            text: "Failed to Record Weight",
-                            icon: 'error',
-                            showCancelButton: false,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Ok'
-                        });
-                    }
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        title: 'Error',
-                        text: "An error occurred while processing your request. Please try again.",
-                        icon: 'error',
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Ok'
-                    });
-                }
-            });
-        });
     });
 </script>
 
@@ -839,9 +888,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'Ok'
                         }).then(() => {
-                            // Hide the modal only after the success alert is shown
                             $('#weightModal').modal('hide');
-                            // Reload the page after user confirms the success alert
                             location.reload();
                         });
                     } else {
@@ -898,8 +945,10 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
                             confirmButtonText: 'Ok'
+                        }).then(() => {
+                            $('#waterModal').modal('hide');
+                            location.reload();
                         });
-                        location.reload();
                     } else {
                         Swal.fire({
                             title: 'Error',

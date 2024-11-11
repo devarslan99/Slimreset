@@ -18,6 +18,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         align-items: center;
         z-index: 1000;
     }
+    
 
     .popup-content {
         position: relative;

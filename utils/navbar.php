@@ -61,8 +61,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     .onhover-show-div li+li {
         margin-top: 0px !important;
     }
-</style>
-<style>
+
     .notification-counter {
         position: absolute;
         top: -10px;
@@ -78,8 +77,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     .new-entry-bg-none {
         background: none !important;
     }
-</style>
-<style>
+
     .bread-crum-Link {
         color: #333;
     }
@@ -150,7 +148,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
                         ul {
                             top: 0;
-                            left: 100%;
+                            left: 70%;
                             transform: translate(0);
                         }
 
@@ -169,15 +167,26 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             }
         }
     }
-</style>
-<style>
-    /* Container for navbar with arrows */
+    @media (max-width: 650px) {
+    .menu > ul li ul ul ul {
+        top: 60px; 
+        left: -10px;
+    }
+}
+@media (max-width: 400px) {
+    .menu, 
+    .menu .btn {
+        display: none;
+    }
+}
+
+
+
     .navbar-container {
         display: flex;
         align-items: center;
     }
 
-    /* Scrollable navigation container */
     .scrollable-nav {
         overflow-x: auto;
         white-space: nowrap;
@@ -189,10 +198,8 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
     .scrollable-nav::-webkit-scrollbar {
         display: none;
-        /* Webkit */
     }
 
-    /* Navigation list styling */
     .scrollable-nav ul {
         display: flex;
         align-items: center;
@@ -202,7 +209,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         list-style: none;
     }
 
-    /* Arrow button styling */
     .scroll-btn {
         background-color: transparent;
         border: none;
@@ -210,24 +216,17 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         cursor: pointer;
     }
 
-    /* Responsive section */
     .responsive-section {
-        /* display: flex; */
         flex-basis: 0;
-        /* Ensures it can grow and shrink */
         flex-grow: 1;
-        /* Takes up available space */
         overflow-x: auto;
-        /* Enables horizontal scrolling when content overflows */
         padding: 1rem;
         transition: width 0.3s ease;
     }
 
-    /* Hide the responsive section on smaller screens */
     @media (max-width: 991.98px) {
         .responsive-section {
             display: none;
-            /* Hide on screens smaller than lg */
         }
     }
 </style>
@@ -243,10 +242,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     <div class="responsive-section">
         <nav>
             <div class="navbar-container">
-                <!-- Left Arrow -->
-                <!-- <button class="scroll-btn left-arrow" onclick="scrollNav('left')">&#8592;</button> -->
-
-                <!-- Scrollable Navigation Menu -->
                 <div class="scrollable-nav">
                     <ul class="d-flex align-items-center gap-4">
                         <li><a class="bread-crum-Link" href="../dashboard/dashboard.php">Dashboard</a></li>
@@ -278,9 +273,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                         ?>
                     </ul>
                 </div>
-
-                <!-- Right Arrow -->
-                <!-- <button class="scroll-btn right-arrow" onclick="scrollNav('right')">&#8594;</button> -->
             </div>
 
         </nav>
@@ -307,7 +299,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                     <li class="cart-nav onhover-dropdown bg-none" style="background: none !important;"></li>
 
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'client') : ?>
-                        <li class="menu new-entry-bg-none">
+                        <li class="menu new-entry-bg-none ">
                             <ul>
                                 <li>
                                     <button class="btn btn-primary rounded-pill px-3" style="background-color: #946CFC; border: none;">

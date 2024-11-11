@@ -729,8 +729,8 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         var selected_date = document.getElementById('selected_date').value;
         var modal = bootstrap.Modal.getInstance(document.getElementById('foodModal'));
         const foodData = {
-            foodId: foodId, // Include food_id
-            label: label, // Include label
+            foodId: foodId,
+            label: label,
             food_type: food_type,
             amount: document.getElementById('foodAmount').value,
             unit: document.getElementById('weighingUnit').value,

@@ -348,6 +348,21 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         </nav>
     </div>
 
+    <style>
+        /* Custom CSS class for responsive toggle icon visibility */
+        .toggle-icon-responsive {
+            display: none !important;
+            /* Hide by default */
+        }
+
+        @media (max-width: 991px) {
+            .toggle-icon-responsive {
+                display: block !important;
+                /* Show when screen width is 991px or less */
+            }
+        }
+    </style>
+
     <div class="header-wrapper col m-0">
         <div class="row">
             <div class="header-logo-wrapper col-auto p-0">
@@ -356,12 +371,14 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                         <img class="img-fluid" src="../assets/images/logo/logo.png" alt="">
                     </a>
                 </div>
-                <div class="toggle-sidebar">
+                <!-- Add custom class for responsive display -->
+                <div class="toggle-sidebar toggle-icon-responsive">
                     <svg class="stroke-icon sidebar-toggle status_toggle middle">
                         <use href="../assets/svg/icon-sprite.svg#toggle-icon"></use>
                     </svg>
                 </div>
             </div>
+
 
             <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
                 <ul class="nav-menus gap-4">

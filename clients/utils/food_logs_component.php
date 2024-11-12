@@ -95,8 +95,8 @@
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <div class="">
-                                <div class="main-color text-center my-3">
-                                    <i class="fa fa-calendar me-2 fw-bold fs-4" id="calendar-icon" style="cursor: pointer;"></i>
+                            <div class="main-color text-center my-3">
+                                    <i class="fa fa-calendar me-2 fw-bold fs-4" id="calendar-icon-2" style="cursor: pointer;"></i>
                                     <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
                                         <i class="fa fa-angle-left fw-bold fs-4"></i>
                                     </a>
@@ -108,7 +108,7 @@
                                     </a>
 
                                     <!-- Hidden input field for Flatpickr calendar -->
-                                    <input type='text' id="datepicker" style="display:none; width:0px;height:0px;outline:none;border:none;display:'block">
+                                    <input type='text' id="datepicker-2" style="display:none; width:0px;height:0px;outline:none;border:none;display:'block">
 
                                 </div>
                             </div>
@@ -400,7 +400,7 @@
 <script>
     $(document).ready(function() {
         // Initialize Flatpickr
-        flatpickr("#datepicker", {
+        flatpickr("#datepicker-2", {
             dateFormat: "Y-m-d", // Set the date format to YYYY-MM-DD
             onChange: function(selectedDates, dateStr, instance) {
                 // When a date is selected, update the URL with the selected date
@@ -410,10 +410,10 @@
         });
 
         // Toggle calendar popup on calendar icon click
-        $("#calendar-icon").click(function() {
-            $("#datepicker").toggle(); // Show the hidden datepicker input
+        $("#calendar-icon-2").click(function() {
+            $("#datepicker-2").toggle(); // Show the hidden datepicker input
             // Open the calendar automatically when the user clicks on the calendar icon
-            $("#datepicker").focus(); // Focus to trigger the Flatpickr calendar
+            $("#datepicker-2").focus(); // Focus to trigger the Flatpickr calendar
         });
     });
 </script>

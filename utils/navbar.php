@@ -62,6 +62,101 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         margin-top: 0px !important;
     }
 
+</style>
+
+<style>
+    .bread-crum-Link
+    {
+        color:#333;
+    }
+    .menu {
+        ul {
+            list-style: none;
+            margin: 0;
+
+            li,
+            li a {
+                color: #000000;
+                cursor: pointer;
+                transition: color 200ms;
+                text-decoration: none;
+                white-space: nowrap;
+
+                &:hover {
+                    color: #946CFC;
+                }
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+
+            .link {
+                &::before {
+                    padding-right: 0;
+                    display: none;
+                }
+            }
+        }
+
+        >ul {
+            display: flex;
+            height: var(--menu-height);
+            align-items: center;
+            background-color: none !important;
+
+            li {
+                position: relative;
+
+                ul {
+                    visibility: hidden;
+                    opacity: 0;
+                    padding: 10px;
+                    min-width: 160px;
+                    background-color: #ffffff;
+                    position: absolute;
+                    top: 50px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    transition: opacity 200ms, visibility 200ms;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+                    li {
+                        margin: 0;
+                        padding: 8px 16px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-start;
+                        height: 30px;
+                        padding-right: 40px;
+
+                        ul {
+                            top: 0;
+                            left: 100%;
+                            transform: translate(0);
+                        }
+
+                        &:hover {
+                            color: #946CFC;
+                        }
+                    }
+                }
+
+                &:hover {
+                    >ul {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<style>
     .notification-counter {
         position: absolute;
         top: -10px;
@@ -309,6 +404,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             </a>
         </div>
     </div>
+    
     <div class="responsive-section">
         <nav>
             <div class="navbar-container">
@@ -379,14 +475,15 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                 </div>
             </div>
 
-
             <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
                 <ul class="nav-menus gap-4">
                     <li class="cart-nav onhover-dropdown bg-none" style="background: none !important;"></li>
                     <li class="cart-nav onhover-dropdown bg-none" style="background: none !important;"></li>
 
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'client') : ?>
+
                         <li class="menu new-entry-bg-none ">
+
                             <ul>
                                 <li>
                                     <button class="btn btn-primary rounded-pill px-3" style="background-color: #946CFC; border: none;">
@@ -552,6 +649,8 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     </div>
 </div>
 
+<script src="../assets/js/jquery.min.js"></script>
+
 <!-- Pop-up modal, appears after adding the meal-->
 <div class="meal-plan-popup-overlay" id="meal-plan-popup-overlay">
     <div class="meal-plan-popup-content">
@@ -582,6 +681,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     })
 </script>
 
+>>>>>>> origin/main
 <!-- SCRIPT TO SEARCH AND ADD FOOD -->
 <script>
     // Open modal with selected food type
@@ -744,6 +844,9 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     function addFoodToDatabase(foodId, label) {
         var food_type = document.getElementById('food_type').value;
         var selected_date = document.getElementById('selected_date').value;
+        const foodData = {
+            foodId: foodId, // Include food_id
+            label: label, // Include label
         var modal = bootstrap.Modal.getInstance(document.getElementById('foodModal'));
         const foodData = {
             foodId: foodId,
@@ -774,6 +877,9 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             .then(response => response.json())
             .then(data => {
                 if (data.status == "success") {
+                    location.reload();
+                } else {
+                    location.reload();
                     modal.hide();
                     Swal.fire("Success", "Food added successfully!", "success")
                         .then(() => {
@@ -806,6 +912,62 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         window.addEventListener("popstate", toggleNotificationVisibility);
     });
 </script>
+
+<!-- weight script -->
+<script>
+    $(document).ready(function() {
+        $('#weight-form').on('submit', function(e) {
+            e.preventDefault();
+            var weight = $('input[name="weight"]').val();
+            var selected_date = document.getElementById('selected_date').value;
+
+            $.ajax({
+                url: '../functions/weight/store.php',
+                type: 'POST',
+                data: {
+                    weight: weight,
+                    selected_date: selected_date
+                },
+                success: function(response) {
+                    if (response === 'Success') {
+                        Swal.fire({
+                            title: 'Success',
+                            text: "Weight Recorded",
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ok'
+                        });
+                        location.reload();
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: "Failed to Record Weight",
+                            icon: 'error',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: "An error occurred while processing your request. Please try again.",
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 
 <!-- Script to open weight modal and store weight -->
 <script>
@@ -905,6 +1067,9 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'Ok'
                         }).then(() => {
+                            // Hide the modal only after the success alert is shown
+                            $('#weightModal').modal('hide');
+                            // Reload the page after user confirms the success alert
                             $('#weightModal').modal('hide');
                             location.reload();
                         });
@@ -962,6 +1127,8 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
                             confirmButtonText: 'Ok'
+                        });
+                        location.reload();
                         }).then(() => {
                             $('#waterModal').modal('hide');
                             location.reload();
@@ -992,7 +1159,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             });
         });
     });
-</script>
+=======
 
 <script>
     function scrollNav(direction) {

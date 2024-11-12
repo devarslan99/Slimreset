@@ -13,7 +13,7 @@
                 <h2 class="text-center mb-3">
                     Let's track your day
                 </h2>
-                <div class="row">
+                <div class="row" style="padding-right: 10px">
                     <?php
                     $user_id = $_GET['id'];
                     $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
@@ -71,7 +71,7 @@
                         foreach ($metrics as $metric) {
                             $remaining = $metric['max'] - $metric['total'];
                     ?>
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" style="padding-left:0;">
                                 <div class="d-flex flex-column align-items-center justify-content-center p-1" style="min-width: 200px; border-radius: 20px; border: 1px solid #946CFC; text-align: center;">
                                     <span style="font-size: 20px; display: block;"><?php echo $metric['label']; ?></span>
                                     <h1 class="my-2" style="font-weight: bold;">
@@ -95,8 +95,8 @@
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <div class="">
-                                <div class="main-color text-center my-3">
-                                    <i class="fa fa-calendar me-2 fw-bold fs-4" id="calendar-icon" style="cursor: pointer;"></i>
+                            <div class="main-color text-center my-3">
+                                    <i class="fa fa-calendar me-2 fw-bold fs-4" id="calendar-icon-2" style="cursor: pointer;"></i>
                                     <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
                                         <i class="fa fa-angle-left fw-bold fs-4"></i>
                                     </a>
@@ -108,7 +108,7 @@
                                     </a>
 
                                     <!-- Hidden input field for Flatpickr calendar -->
-                                    <input type='text' id="datepicker" style="display:none; width:0px;height:0px;outline:none;border:none;display:'block">
+                                    <input type='text' id="datepicker-2" style="display:none; width:0px;height:0px;outline:none;border:none;display:'block">
 
                                 </div>
                             </div>
@@ -380,8 +380,6 @@
                                                 echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$display_date}</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$logged_weight}</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:22px'>{$loss}</p></td>";
-                                                echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($protein ?? 0), 2, '.', '') . "</p></td>";
-                                                echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($calories ?? 0), 2, '.', '') . "</p></td>";
                                                 echo "</tr>";
                                             }
                                             ?>
@@ -403,7 +401,7 @@
 <script>
     $(document).ready(function() {
         // Initialize Flatpickr
-        flatpickr("#datepicker", {
+        flatpickr("#datepicker-2", {
             dateFormat: "Y-m-d", // Set the date format to YYYY-MM-DD
             onChange: function(selectedDates, dateStr, instance) {
                 // When a date is selected, update the URL with the selected date
@@ -413,10 +411,10 @@
         });
 
         // Toggle calendar popup on calendar icon click
-        $("#calendar-icon").click(function() {
-            $("#datepicker").toggle(); // Show the hidden datepicker input
+        $("#calendar-icon-2").click(function() {
+            $("#datepicker-2").toggle(); // Show the hidden datepicker input
             // Open the calendar automatically when the user clicks on the calendar icon
-            $("#datepicker").focus(); // Focus to trigger the Flatpickr calendar
+            $("#datepicker-2").focus(); // Focus to trigger the Flatpickr calendar
         });
     });
 </script>

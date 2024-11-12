@@ -13,7 +13,7 @@
                 <h2 class="text-center mb-3">
                     Let's track your day
                 </h2>
-                <div class="row">
+                <div class="row" style="padding-right: 10px">
                     <?php
                     $user_id = $_GET['id'];
                     $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
@@ -71,7 +71,7 @@
                         foreach ($metrics as $metric) {
                             $remaining = $metric['max'] - $metric['total'];
                     ?>
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" style="padding-left:0;">
                                 <div class="d-flex flex-column align-items-center justify-content-center p-1" style="min-width: 200px; border-radius: 20px; border: 1px solid #946CFC; text-align: center;">
                                     <span style="font-size: 20px; display: block;"><?php echo $metric['label']; ?></span>
                                     <h1 class="my-2" style="font-weight: bold;">

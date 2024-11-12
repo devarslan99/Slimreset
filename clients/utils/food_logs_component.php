@@ -368,7 +368,8 @@
                                             foreach ($last_5_days as $index => $date) {
                                                 $day_of_month = date('d', strtotime($date));
                                                 $day_name = date('D', strtotime($date));
-                                                $display_date = $day_of_month . "<br/>" . $day_name;
+                                                $display_date = "<a href='?id=" . $_GET['id'] . "&date={$date}'>{$day_of_month}<br/>{$day_name}</a>";
+
                                                 $logged_weight = isset($logged_weights[$date]) ? $logged_weights[$date] : '-';
                                                 $loss = $index > 0 && isset($logged_weights[$last_5_days[$index - 1]]) ?
                                                     round($logged_weights[$last_5_days[$index - 1]] - ($logged_weights[$date] ?? 0), 2) : '-';

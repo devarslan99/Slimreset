@@ -494,9 +494,9 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                                         <li><a class="dropdown-item text-white" href="#" onclick="openWeightModal('weightModal')">Weight</a></li>
                                         <li class="text-white">
                                             Meal
-                                            <ul class="main-bg">
+                                            <ul class="rounded-2 main-bg">
                                                 <li class="link text-white">Food
-                                                    <ul class="main-bg">
+                                                    <ul class="rounded-2 main-bg">
                                                         <li><a class="dropdown-item text-white" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
                                                         <li><a class="dropdown-item text-white" href="#" onclick="openModal('Lunch')">Lunch</a></li>
                                                         <li><a class="dropdown-item text-white" href="#" onclick="openModal('Dinner')">Dinner</a>

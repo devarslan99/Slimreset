@@ -396,14 +396,14 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 </div>
 
                 <div class="col-auto d-none d-sm-inline-flex">
-                    <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold">
+                    <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold cursor-pointer" onclick="showGroceryPopup2()">
                         <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
                         Grocery List
                     </span>
                 </div>
 
                 <div class="col-12 text-center d-sm-none">
-                    <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold">
+                    <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold" onclick="showGroceryPopup2()">
                         <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
                         Grocery List
                     </span>
@@ -518,59 +518,47 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 </div>
             </div>
 
-            <!-- Grocery List Popup Overlay -->
-            <div class="grocery-popup-overlay" id="grocery-popup-overlay">
+            <!-- 2nd Grocery List Popup Box -->
+            <div class="grocery-popup-overlay" id="grocery-popup-overlay-2">
                 <div class="grocery-popup-content">
-                    <div class="grocery-close-popup" onclick="closeGroceryPopup()">X</div>
-
+                    <div class="grocery-close-popup" onclick="closeGroceryPopup2()">X</div>
+                    
                     <!-- Grocery List Content -->
                     <div class="grocery-list-box">
-                        <h2 class="grocery-list-title">grocery list</h2>
-
+                        <h2 class="grocery-list-title">Grocery List</h2>
+                        
                         <!-- Columns for Aisles -->
                         <div class="grocery-columns">
                             <!-- Left Column -->
                             <div class="grocery-column">
                                 <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
+                                    <h3>Vegetable Aisle</h3>
                                     <ul>
                                         <li>
                                             <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
+                                            <span>Eggs, <strong>3</strong></span>
                                         </li>
                                         <li>
                                             <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
+                                            <span>Chicken Breast, <strong>3</strong></span>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
-                                    <ul>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <!-- Repeat as needed -->
                             </div>
-
+                            
                             <!-- Right Column -->
                             <div class="grocery-column">
                                 <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
+                                    <h3>Vegetable Aisle</h3>
                                     <ul>
                                         <li>
                                             <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
+                                            <span>Eggs, <strong>3</strong></span>
                                         </li>
                                         <li>
                                             <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
+                                            <span>Chicken Breast, <strong>3</strong></span>
                                         </li>
                                     </ul>
                                 </div>
@@ -579,7 +567,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                         <!-- PDF Icon -->
                         <div class="grocery-pdf-icon">
-                            <i class="fa fa-file-pdf-o" onclick="downloadPDF()"></i>
+                            <i class="fa fa-file-pdf-o" onclick="downloadPDF2()"></i>
                         </div>
                     </div>
                 </div>
@@ -795,15 +783,36 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             }
         ];
 
+        // Function to generate days data with formatted date
+        function generateDaysData() {
+            const daysData = [];
+            const today = new Date();
+
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+
+                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+                daysData.push({
+                    day: i + 1, 
+                    date: formattedDate,
+                    kcal: 2500,
+                    oz: 32 
+                });
+            }
+            return daysData;
+        }
+
         // Function to create HTML for each day column
         function createDayColumn(dayData, isFirstColumn) {
             return `
                 <div class="col-lg-2 col-md-4 col-sm-6 col-6 mb-4 day-column" style="max-width: 150px;">
                     <div class="text-center">
                         ${isFirstColumn ? '<div class="nutrition-label">nutrition</div>' : ''}
-                        <div class="day-header">day ${dayData.day}</div>
-                        <div class="date-text">${dayData.date}</div>
-                        <div class="cal-info">${dayData.kcal} kcal<br>${dayData.oz}</div>
+                        <div class="day-header">day ${dayData.day}</div> <!-- Day number -->
+                        <div class="date-text">${dayData.date}</div> <!-- Formatted date like 'Nov 11' -->
+                        <div class="cal-info">${dayData.kcal} kcal<br>${dayData.oz} oz</div>
                         <div class="AddToCart" onclick="showGroceryPopup()"><i class="fa fa-shopping-cart"></i></div>
                     </div>
                     <div class="meal-section" id="day${dayData.day}-breakfast">
@@ -838,10 +847,23 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             `;
         }
 
-        // Append all day columns to the main container
-        daysData.forEach((day, index) => {
-            $('#empty-card-slots').append(createDayColumn(day, index === 0));
-        });
+        // Generate and append the columns with dates
+        function displayDates() {
+            const daysData = generateDaysData(); // Generate the date data
+
+            // Clear any existing content
+            $('#empty-card-slots').empty();
+
+            // Append the new columns
+            daysData.forEach((day, index) => {
+                $('#empty-card-slots').append(createDayColumn(day, index === 0)); // Add date and day info
+            });
+        }
+        // Initial load of the columns
+        displayDates();
+        // Optional: Refresh the dates daily at midnight
+        setInterval(displayDates, 24 * 60 * 60 * 1000); // Refresh every 24 hours
+
 
         // Initialize Sortable after all elements have been created
         initializeSortable();
@@ -929,16 +951,13 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 
     // Function to show the grocery popup
-    function showGroceryPopup(e) {
+    function showGroceryPopup() {
         document.getElementById('grocery-popup-overlay').style.display = 'flex';
-        console.log(e)
     }
-
     // Function to close the grocery popup
     function closeGroceryPopup() {
         document.getElementById('grocery-popup-overlay').style.display = 'none';
     }
-
     // Close the grocery popup when clicking outside of it
     document.addEventListener('click', function(event) {
         const overlay = document.getElementById('grocery-popup-overlay');
@@ -947,6 +966,23 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         }
     });
 
+
+    // 2nd Function to show the grocery popup
+    function showGroceryPopup2() {
+         document.getElementById('grocery-popup-overlay-2').style.display = 'flex';
+        }
+
+        function closeGroceryPopup2() {
+            document.getElementById('grocery-popup-overlay-2').style.display = 'none';
+        }
+
+        // Close the 2nd grocery popup when clicking outside of it
+        document.addEventListener('click', function(event) {
+            const overlay2 = document.getElementById('grocery-popup-overlay-2');
+            if (event.target === overlay2) {
+                closeGroceryPopup2();
+            }
+    });
 
     // function to download grocery list as a PDF 
     function downloadPDF() {
@@ -975,6 +1011,20 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         html2pdf().set(options).from(element).save();
     }
 
+    // / 2nd function to download grocery list as a PDF 
+    function downloadPDF2() {
+        const element = document.querySelector('#grocery-popup-overlay-2 .grocery-list-box');
+
+        const options = {
+            margin: 1,
+            filename: 'grocery_list_2.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(options).from(element).save();
+    }
 
     // calender date picker
     $(document).ready(function() {
@@ -1003,14 +1053,15 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 
         // Function to show the grocery popup
-        function showGroceryPopup(e) {
+        function showGroceryPopup() {
                 document.getElementById('grocery-popup-overlay').style.display = 'flex';
-                console.log(e)
+                document.getElementById('grocery-popup-overlay-2').style.display = 'flex';
             }
 
             // Function to close the grocery popup
             function closeGroceryPopup() {
                 document.getElementById('grocery-popup-overlay').style.display = 'none';
+                document.getElementById('grocery-popup-overlay-2').style.display = 'none';
             }
 
             // Close the grocery popup when clicking outside of it
@@ -1020,7 +1071,22 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     closeGroceryPopup();
                 }
         });
+        
+        function showGroceryPopup2() {
+                document.getElementById('grocery-popup-overlay-2').style.display = 'flex';
+            }
 
+            function closeGroceryPopup2() {
+                document.getElementById('grocery-popup-overlay-2').style.display = 'none';
+            }
+
+            // Close the 2nd grocery popup when clicking outside of it
+            document.addEventListener('click', function(event) {
+                const overlay2 = document.getElementById('grocery-popup-overlay-2');
+                if (event.target === overlay2) {
+                    closeGroceryPopup2();
+                }
+        });
 
         // function to download grocery list as a PDF 
         function downloadPDF() {

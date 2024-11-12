@@ -1,0 +1,50 @@
+   .protein-1
+    {
+        position:relative;
+
+    }
+    .like-icon
+    {
+        position: absolute;
+        top: -10px;
+        width: 20px;
+        height: 20px;
+        background: #2ed52e;
+        text-align: center;
+        line-height: 20px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 12px;
+        /* display:none; */
+    }
+    .protein-1:hover .like-icon
+    {
+        display:flex;
+    }
+    .dis-like-icon
+    {
+        position: relative;
+        top: -10px;
+        /* width: 20px;
+        height: 20px;
+        background: red;
+        text-align: center;
+        line-height: 22px;
+        border-radius: 50%;
+        color: #fff;
+        font-size:14px */
+    }
+    .excla-icon
+    {
+        position: relative;
+        top: -10px;
+        width: 20px;
+        height: 20px;
+        background: orange;
+        text-align: center;
+        line-height: 23px;
+        border-radius: 50%;
+        color:#fff;
+    }
+
+    

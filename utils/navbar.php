@@ -61,24 +61,9 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     .onhover-show-div li+li {
         margin-top: 0px !important;
     }
-</style>
-<style>
-    .notification-counter {
-        position: absolute;
-        top: -10px;
-        right: -8px;
-        background-color: red;
-        color: white;
-        font-size: 0.8rem;
-        padding: 2px 8px;
-        border-radius: 50%;
-        display: none;
-    }
 
-    .new-entry-bg-none {
-        background: none !important;
-    }
 </style>
+
 <style>
     .bread-crum-Link
     {
@@ -171,6 +156,245 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     }
 </style>
 
+<style>
+    .notification-counter {
+        position: absolute;
+        top: -10px;
+        right: -8px;
+        background-color: red;
+        color: white;
+        font-size: 0.8rem;
+        padding: 2px 8px;
+        border-radius: 50%;
+        display: none;
+    }
+
+    .new-entry-bg-none {
+        background: none !important;
+    }
+
+    .bread-crum-Link {
+        color: #333;
+    }
+
+    .menu {
+        ul {
+            list-style: none;
+            margin: 0;
+
+            li,
+            li a {
+                color: #000000;
+                cursor: pointer;
+                transition: color 200ms;
+                text-decoration: none;
+                white-space: nowrap;
+
+                &:hover {
+                    color: #946CFC;
+                }
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+
+            .link {
+                &::before {
+                    padding-right: 0;
+                    display: none;
+                }
+            }
+        }
+
+        >ul {
+            display: flex;
+            height: var(--menu-height);
+            align-items: center;
+            background-color: none !important;
+
+            li {
+                position: relative;
+
+                ul {
+                    visibility: hidden;
+                    opacity: 0;
+                    padding: 10px;
+                    min-width: 160px;
+                    background-color: #ffffff;
+                    position: absolute;
+                    top: 50px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    transition: opacity 200ms, visibility 200ms;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+                    li {
+                        margin: 0;
+                        padding: 8px 16px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-start;
+                        height: 30px;
+                        padding-right: 40px;
+
+                        ul {
+                            top: 0;
+                            left: 70%;
+                            transform: translate(0);
+                        }
+
+                        &:hover {
+                            color: #946CFC;
+                        }
+                    }
+                }
+
+                &:hover {
+                    >ul {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+    }
+
+    @media (max-width: 650px) {
+        .menu>ul li ul ul ul {
+            top: 60px;
+            left: -10px;
+        }
+    }
+
+    @media (max-width: 400px) {
+
+        .menu,
+        .menu .btn {
+            display: none;
+        }
+    }
+
+
+
+    .navbar-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .scrollable-nav {
+        overflow-x: auto;
+        white-space: nowrap;
+        flex-grow: 1;
+        padding: 0 10px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .scrollable-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollable-nav ul {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .scroll-btn {
+        background-color: transparent;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .responsive-section {
+        flex-basis: 0;
+        flex-grow: 1;
+        overflow-x: auto;
+        padding: 1rem;
+        transition: width 0.3s ease;
+    }
+
+    @media (max-width: 991.98px) {
+        .responsive-section {
+            display: none;
+        }
+    }
+
+    /* Overlay */
+    .meal-plan-popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    /* Popup Content */
+    .meal-plan-popup-content {
+        position: relative;
+        background-color: #fff;
+        padding: 30px 20px;
+        border-radius: 20px;
+        width: 400px;
+        max-width: 90%;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Title */
+    .meal-plan-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    /* Close Button */
+    .meal-plan-close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #333;
+    }
+
+    /* Buttons */
+    .meal-plan-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 15px;
+    }
+
+    .meal-plan-buttons button {
+        background-color: transparent;
+        border: none;
+        color: #333;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .meal-plan-buttons button:hover {
+        color: #946CFC;
+        /* Matches theme color */
+    }
+</style>
 <div class="page-header row">
     <div class="header-logo-wrapper col-auto">
         <div class="logo-wrapper">
@@ -211,8 +435,59 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                 }
                 ?>
             </ul>
+    <div class="responsive-section">
+        <nav>
+            <div class="navbar-container">
+                <div class="scrollable-nav">
+                    <ul class="d-flex align-items-center gap-4">
+                        <li><a class="bread-crum-Link" href="../dashboard/dashboard.php">Dashboard</a></li>
+                        <?php
+                        $role = $_SESSION['role'];
+                        if ($role == "admin") {
+                        ?>
+                            <li><a class="bread-crum-Link" href="../users/create.php">Add User</a></li>
+                            <li><a class="bread-crum-Link" href="../users/view.php">View Users</a></li>
+                            <li><a class="bread-crum-Link" href="../coach/assign.php">Assign Coach</a></li>
+                            <li><a class="bread-crum-Link" href="../coach/view.php">View Coach</a></li>
+                            <li><a class="bread-crum-Link" href="../food_category/create.php">Add Food Category</a></li>
+                            <li><a class="bread-crum-Link" href="../food_category/view.php">View Food Category</a></li>
+                            <li><a class="bread-crum-Link" href="../food_recommendation/create.php">Add Food Recommendation</a></li>
+                            <li><a class="bread-crum-Link" href="../food_recommendation/view.php">View Food Recommendation</a></li>
+                            <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
+                        <?php
+                        } else if ($role == "client") {
+                        ?>
+                            <li><a class="bread-crum-Link" href="../clients/summary.php?id=<?php echo $_SESSION['user_id'] ?>">My Profile</a></li>
+                        <?php
+                        } else if ($role == "coach") {
+                        ?>
+                            <li><a class="bread-crum-Link" href="../clients/invite_clients.php">Invite Clients</a></li>
+                            <li><a class="bread-crum-Link" href="../clients/view.php">My Clients</a></li>
+                            <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
+                        <?php
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div>
+
         </nav>
     </div>
+
+    <style>
+        /* Custom CSS class for responsive toggle icon visibility */
+        .toggle-icon-responsive {
+            display: none !important;
+            /* Hide by default */
+        }
+
+        @media (max-width: 991px) {
+            .toggle-icon-responsive {
+                display: block !important;
+                /* Show when screen width is 991px or less */
+            }
+        }
+    </style>
 
     <div class="header-wrapper col m-0">
         <div class="row">
@@ -222,7 +497,8 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                         <img class="img-fluid" src="../assets/images/logo/logo.png" alt="">
                     </a>
                 </div>
-                <div class="toggle-sidebar">
+                <!-- Add custom class for responsive display -->
+                <div class="toggle-sidebar toggle-icon-responsive">
                     <svg class="stroke-icon sidebar-toggle status_toggle middle">
                         <use href="../assets/svg/icon-sprite.svg#toggle-icon"></use>
                     </svg>
@@ -235,12 +511,15 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                     <li class="cart-nav onhover-dropdown bg-none" style="background: none !important;"></li>
 
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'client') : ?>
-                        <li class="menu new-entry-bg-none">
+
+                        <li class="menu new-entry-bg-none ">
+
                             <ul>
                                 <li>
                                     <button class="btn btn-primary rounded-pill px-3" style="background-color: #946CFC; border: none;">
                                         + new entry
                                     </button>
+                                    <input type="hidden" value="<?php echo $selected_date; ?>" id="selected_date">
                                     <ul class="rounded-2 main-bg">
                                         <li><a class="dropdown-item text-white" href="#" onclick="openWeightModal('weightModal')">Weight</a></li>
                                         <li class="text-white">
@@ -402,6 +681,37 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
 <script src="../assets/js/jquery.min.js"></script>
 
+<!-- Pop-up modal, appears after adding the meal-->
+<div class="meal-plan-popup-overlay" id="meal-plan-popup-overlay">
+    <div class="meal-plan-popup-content">
+        <div class="meal-plan-close" onclick="closeMealPlanPopup()">X</div>
+
+        <div class="meal-plan-message-box">
+            <h2 class="meal-plan-title">Did you eat based on today’s plan?</h2>
+        </div>
+
+        <div class="meal-plan-buttons">
+            <button onclick="confirmMealPlan()">yes, confirm</button>
+            <button onclick="customMealPlan()">no, custom meal</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="../assets/js/jquery.min.js"></script>
+
+<!-- Script to open and close pop-up modal -->
+<script>
+    function showMealPlanModal() {
+        $('#meal-plan-popup-overlay').css('display', 'flex');
+    }
+
+    $('.meal-plan-buttons button, .meal-plan-close').on('click', function() {
+        location.reload();
+    })
+</script>
+
+>>>>>>> origin/main
 <!-- SCRIPT TO SEARCH AND ADD FOOD -->
 <script>
     // Open modal with selected food type
@@ -567,6 +877,10 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         const foodData = {
             foodId: foodId, // Include food_id
             label: label, // Include label
+        var modal = bootstrap.Modal.getInstance(document.getElementById('foodModal'));
+        const foodData = {
+            foodId: foodId,
+            label: label,
             food_type: food_type,
             amount: document.getElementById('foodAmount').value,
             unit: document.getElementById('weighingUnit').value,
@@ -596,6 +910,13 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                     location.reload();
                 } else {
                     location.reload();
+                    modal.hide();
+                    Swal.fire("Success", "Food added successfully!", "success")
+                        .then(() => {
+                            showMealPlanModal();
+                        });
+                } else {
+                    swal("Error", "Failed to add food.", "error");
                 }
             })
             .catch(error => {
@@ -676,6 +997,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         });
     });
 </script>
+
 
 <!-- Script to open weight modal and store weight -->
 <script>
@@ -778,6 +1100,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                             // Hide the modal only after the success alert is shown
                             $('#weightModal').modal('hide');
                             // Reload the page after user confirms the success alert
+                            $('#weightModal').modal('hide');
                             location.reload();
                         });
                     } else {
@@ -836,6 +1159,10 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                             confirmButtonText: 'Ok'
                         });
                         location.reload();
+                        }).then(() => {
+                            $('#waterModal').modal('hide');
+                            location.reload();
+                        });
                     } else {
                         Swal.fire({
                             title: 'Error',
@@ -862,4 +1189,23 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             });
         });
     });
+=======
+
+<script>
+    function scrollNav(direction) {
+        const nav = document.querySelector('.scrollable-nav');
+        const scrollAmount = 200; // Adjust for scroll speed
+
+        if (direction === 'left') {
+            nav.scrollBy({
+                left: -scrollAmount,
+                behavior: 'smooth'
+            });
+        } else {
+            nav.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    }
 </script>

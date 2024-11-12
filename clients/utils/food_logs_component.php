@@ -379,8 +379,6 @@
                                                 echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$display_date}</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$logged_weight}</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:22px'>{$loss}</p></td>";
-                                                echo "<td class='text-center'><p style='font-size:22px;'>{$protein}</p></td>";
-                                                echo "<td class='text-center'><p style='font-size:22px;'>{$calories}</p></td>";
                                                 echo "</tr>";
                                             }
                                             ?>

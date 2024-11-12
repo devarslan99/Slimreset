@@ -127,13 +127,20 @@ $created_by_null = mysqli_fetch_assoc($result_created_by_null)['total'];
                                     <th>Email</th>
                                     <th>Address</th>
                                     <th>Contact Number</th>
-                                    <th>Action</th>
+                                    <!-- <th>Action</th> -->
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                 include_once '../database/db_connection.php';
-                                $sql = "SELECT * FROM users WHERE role = 'client' AND created_at IS NULL";
+                                $sql = "SELECT users.*
+                                FROM users
+                                LEFT JOIN client_coach_assignments 
+                                    ON users.id = client_coach_assignments.client_id 
+                                    OR users.id = client_coach_assignments.coach_id
+                                WHERE client_coach_assignments.client_id IS NULL 
+                                      AND client_coach_assignments.coach_id IS NULL
+                                      AND users.role = 'client'";
                                 $result = mysqli_query($mysqli, $sql);
                                 $serial_number = 1;
                                 if ($result && mysqli_num_rows($result) > 0) {
@@ -158,12 +165,12 @@ $created_by_null = mysqli_fetch_assoc($result_created_by_null)['total'];
                                             <td>
                                                 <?php echo $row['contact_no']; ?>
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 <ul class="action">
                                                     <li class='edit'><a href='javascript:void(0);' class='edit-link' data-id='<?php echo $row['id']; ?>'><i class='icon-pencil'></i></a>
                                                     </li>
                                                 </ul>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                 <?php
                                         $serial_number++;

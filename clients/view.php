@@ -23,8 +23,7 @@
                                     <div class="card-body">
                                         <div class="table-responsive theme-scrollbar">
                                             <div id="basic-1_wrapper" class="dataTables_wrapper no-footer">
-                                                <table class="display dataTable no-footer" id="basic-1" role="grid"
-                                                    aria-describedby="basic-1_info">
+                                                <table class="display dataTable no-footer" id="basic-1" role="grid" aria-describedby="basic-1_info">
                                                     <thead>
                                                         <tr role="row">
                                                             <th>Sr</th>
@@ -39,42 +38,55 @@
                                                     <tbody>
                                                         <?php
                                                         include_once '../database/db_connection.php';
-                                                        $sql = "SELECT id, first_name,last_name, email, address, contact_no FROM users WHERE role = 'client'";
-                                                        $result = mysqli_query($mysqli, $sql);
-                                                        $serial_number = 1;
-                                                        if ($result && mysqli_num_rows($result) > 0) {
-                                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                                ?>
-                                                                <tr role="row" class="odd"
-                                                                    id="customer_<?php echo $row['id']; ?>">
-                                                                    <td>
-                                                                        <?php echo $serial_number; ?>
-                                                                    </td>
-                                                                    <td>
-                                                                        <?php echo $row['first_name']; ?>
-                                                                    </td>
-                                                                    <td>
-                                                                        <?php echo $row['last_name']; ?>
-                                                                    </td>
-                                                                    <td>
-                                                                        <?php echo $row['email']; ?>
-                                                                    </td>
-                                                                    <td>
-                                                                        <?php echo $row['address']; ?>
-                                                                    </td>
-                                                                    <td>
-                                                                        <?php echo $row['contact_no']; ?>
-                                                                    </td>
-                                                                    <td>
-                                                                        <ul class="action">
-                                                                            <li class='edit'><a
-                                                                                    href='../clients/summary.php?id=<?php echo $row['id']; ?>'><i
-                                                                                        class='icon-eye'></i></a></li>
-                                                                        </ul>
-                                                                    </td>
-                                                                </tr>
-                                                                <?php
-                                                                $serial_number++;
+                                                        $coach_id = $_SESSION['user_id'];
+                                                        $client_ids = [];
+
+                                                        // Step 1: Get all client IDs for the given coach
+                                                        $query = "SELECT client_id FROM client_coach_assignments WHERE coach_id = ?";
+                                                        $stmt = $mysqli->prepare($query);
+                                                        $stmt->bind_param("i", $coach_id);
+                                                        $stmt->execute();
+                                                        $result = $stmt->get_result();
+
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            $client_ids[] = $row['client_id'];
+                                                        }
+                                                        if (!empty($client_ids)) {
+                                                            $client_ids_str = implode(",", $client_ids);
+                                                            $sql = "SELECT id, first_name,last_name, email, address, contact_no FROM users WHERE id IN ($client_ids_str)";
+                                                            $result = mysqli_query($mysqli, $sql);
+                                                            $serial_number = 1;
+                                                            if ($result && mysqli_num_rows($result) > 0) {
+                                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                        ?>
+                                                                    <tr role="row" class="odd" id="customer_<?php echo $row['id']; ?>">
+                                                                        <td>
+                                                                            <?php echo $serial_number; ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php echo $row['first_name']; ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php echo $row['last_name']; ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php echo $row['email']; ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php echo $row['address']; ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php echo $row['contact_no']; ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <ul class="action">
+                                                                                <li class='edit'><a href='../clients/summary.php?id=<?php echo $row['id']; ?>'><i class='icon-eye'></i></a></li>
+                                                                            </ul>
+                                                                        </td>
+                                                                    </tr>
+                                                        <?php
+                                                                    $serial_number++;
+                                                                }
                                                             }
                                                         }
                                                         // Free result set
@@ -117,7 +129,6 @@
 
         // Run on window resize
         window.addEventListener('resize', updateWrapperClass);
-
     </script>
 </body>
 

@@ -26,7 +26,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         padding: 20px 30px;
         border-radius: 30px;
         width: 500px;
-        height:250px;
+        height: 250px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -50,8 +50,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
 
-    .meal-detail
-    {
+    .meal-detail {
         display: flex;
         justify-content: space-between;
         height: 100%;
@@ -59,38 +58,33 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
     .meal-detail .ingredients,
-    .meal-detail .details
-    {
+    .meal-detail .details {
         display: flex;
         flex-direction: column;
         gap: 10px;
 
     }
 
-    .meal-detail .ingredients h2
-    {
+    .meal-detail .ingredients h2 {
         font-weight: 700;
         color: #946cfc;
         font-size: 2em;
         margin: 0;
     }
 
-    .view-recipe
-    {
+    .view-recipe {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    .view-recipe .star
-    {
+    .view-recipe .star {
         font-size: 1.9em;
         color: #eaea0c;
         cursor: pointer;
     }
 
-    .view-recipe-btn
-    {
+    .view-recipe-btn {
         text-decoration: none;
         font-size: 1.2em;
         background-color: #e7e7113b;
@@ -196,7 +190,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         justify-content: flex-end;
     }
 
-    .grocery-pdf-icon i{
+    .grocery-pdf-icon i {
         cursor: pointer;
         font-size: 32px;
         color: #946cfc;
@@ -222,15 +216,19 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     {
         padding-right:0px;
     }
+
+    .col-lg-9 {
+        padding-right: 0px;
+    }
+
     .day-column {
         position: relative;
         border-left: 2px solid #ddd;
         /* padding: 0 20px 0 20px; */
-        margin-right: -2px;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .day-column::after {
@@ -242,10 +240,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         width: 4px;
         background-color: #ddd;
     }
-    .meal-section
-    {
+
+    .meal-section {
         width: 100%;
-        padding:0px 5px;
+        padding: 0px 5px;
     }
     .meal-card,
     .empty-card {
@@ -284,7 +282,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         width: 100%;
         border-radius: 5px;
         height: 50px;
-        object-fit:cover;
+        object-fit: cover;
     }
 
     .meal-name {
@@ -377,11 +375,14 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     .custom-border {
         border: 1px solid #946CFC;
     }
-    .AddToCart i{
+
+
+    .AddToCart i {
         font-size: 18px;
         cursor: pointer;
     }
-    .AddToCart i:hover{
+
+    .AddToCart i:hover {
         color: #00BF63;
     }
 </style>
@@ -420,7 +421,8 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     </a>
 
                     <!-- Hidden input field for Flatpickr calendar -->
-                    <input type='text' id="datepicker" style="display:none; width:0px;height:0px;outline:none;border:none;display:'block">
+
+                    <input type='text' id="datepicker" style="display: none; width: 0px; height: 0px; outline: none; border: none; display: block;">
                 </div>
             </div>
 
@@ -490,6 +492,73 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 </div>
                             </div>
                             
+                            <!-- Right Column -->
+                            <div class="grocery-column">
+                                <div class="grocery-aisle">
+                                    <h3>vegetable aisle</h3>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>eggs, <strong>3</strong></span>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>chicken breast, <strong>3</strong></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PDF Icon -->
+                        <div class="grocery-pdf-icon">
+                            <i class="fa fa-file-pdf-o" onclick="downloadPDF()"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grocery List Popup Overlay -->
+            <div class="grocery-popup-overlay" id="grocery-popup-overlay">
+                <div class="grocery-popup-content">
+                    <div class="grocery-close-popup" onclick="closeGroceryPopup()">X</div>
+
+                    <!-- Grocery List Content -->
+                    <div class="grocery-list-box">
+                        <h2 class="grocery-list-title">grocery list</h2>
+
+                        <!-- Columns for Aisles -->
+                        <div class="grocery-columns">
+                            <!-- Left Column -->
+                            <div class="grocery-column">
+                                <div class="grocery-aisle">
+                                    <h3>vegetable aisle</h3>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>eggs, <strong>3</strong></span>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>chicken breast, <strong>3</strong></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="grocery-aisle">
+                                    <h3>vegetable aisle</h3>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>eggs, <strong>3</strong></span>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" checked>
+                                            <span>chicken breast, <strong>3</strong></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
                             <!-- Right Column -->
                             <div class="grocery-column">
                                 <div class="grocery-aisle">
@@ -835,15 +904,89 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         });
     }
 
-        // function to show the recipe POP-UP
-        function showPopup() {
-                document.getElementById('popup-overlay').style.display = 'flex';
-            }
+    // function to show the recipe POP-UP
+    function showPopup() {
+        document.getElementById('popup-overlay').style.display = 'flex';
+    }
 
-            // Function to close the popup
-            function closePopup() {
-                document.getElementById('popup-overlay').style.display = 'none';
+    // Function to close the popup
+    function closePopup() {
+        document.getElementById('popup-overlay').style.display = 'none';
+    }
+
+    // Event listener for meal-box click
+    $(document).on('click', '.meal-box', function(event) {
+        showPopup();
+        event.stopPropagation(); // Prevents triggering from any other part
+    });
+
+    // Close the popup when clicking outside of it
+    $(document).on('click', '#popup-overlay', function(event) {
+        if (event.target.id === 'popup-overlay') {
+            closePopup();
+        }
+    });
+
+
+    // Function to show the grocery popup
+    function showGroceryPopup(e) {
+        document.getElementById('grocery-popup-overlay').style.display = 'flex';
+        console.log(e)
+    }
+
+    // Function to close the grocery popup
+    function closeGroceryPopup() {
+        document.getElementById('grocery-popup-overlay').style.display = 'none';
+    }
+
+    // Close the grocery popup when clicking outside of it
+    document.addEventListener('click', function(event) {
+        const overlay = document.getElementById('grocery-popup-overlay');
+        if (event.target === overlay) {
+            closeGroceryPopup();
+        }
+    });
+
+
+    // function to download grocery list as a PDF 
+    function downloadPDF() {
+        // Select the HTML element to be converted to PDF
+        const element = document.querySelector('.grocery-list-box');
+
+        // Set up options for html2pdf
+        const options = {
+            margin: 1,
+            filename: 'grocery_list.pdf',
+            image: {
+                type: 'jpeg',
+                quality: 0.98
+            },
+            html2canvas: {
+                scale: 2
+            },
+            jsPDF: {
+                unit: 'in',
+                format: 'a4',
+                orientation: 'portrait'
             }
+        };
+
+        // Convert to PDF
+        html2pdf().set(options).from(element).save();
+    }
+
+
+    // calender date picker
+    $(document).ready(function() {
+        // Initialize Flatpickr
+        flatpickr("#datepicker", {
+            dateFormat: "Y-m-d", // Set the date format to YYYY-MM-DD
+            onChange: function(selectedDates, dateStr, instance) {
+                // When a date is selected, update the URL with the selected date
+                var userId = "<?php echo $_GET['id']; ?>"; // Get the user ID from the URL
+                window.location.href = "?id=" + userId + "&date=" + dateStr; // Redirect to the new URL with the selected date
+            }
+        });
 
             // Event listener for meal-box click
             $(document).on('click', '.meal-box', function(event) {
@@ -918,4 +1061,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             });
         });
 
+        // Toggle calendar popup on calendar icon click
+        $("#calendar-icon").click(function() {
+            $("#datepicker").toggle(); // Show the hidden datepicker input
+            // Open the calendar automatically when the user clicks on the calendar icon
+            $("#datepicker").focus(); // Focus to trigger the Flatpickr calendar
+        });
+    });
 </script>

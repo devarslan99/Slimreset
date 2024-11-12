@@ -197,7 +197,6 @@ foreach ($weight_history as $index => $entry) {
     <div class="page-wrapper compact-wrapper" style="background: #ffffff !important;" id="pageWrapper">
         <?php include_once "../utils/navbar.php" ?>
         <div class="page-body-wrapper">
-            <?php include_once "../utils/sidebar.php" ?>
             <div class="page-body">
                 <!-- Container-fluid starts-->
                 <div class="container-fluid">
@@ -237,7 +236,7 @@ foreach ($weight_history as $index => $entry) {
                                                                 </div>
                                                             </div>
                                                         </a>
-                                                        <a class="nav-link" id="my-plan-tab" data-bs-toggle="pill" href="#my-plan" role="tab" aria-controls="my-plan" aria-selected="false" tabindex="-1">
+                                                        <a class="nav-link" id="recipes-tab" data-bs-toggle="pill" href="#recipes" role="tab" aria-controls="recipes" aria-selected="false" tabindex="-1">
                                                             <div class="horizontal-wizard">
                                                                 <div class="stroke-icon-wizard"></div>
                                                                 <div class="horizontal-wizard-content">
@@ -245,6 +244,7 @@ foreach ($weight_history as $index => $entry) {
                                                                 </div>
                                                             </div>
                                                         </a>
+
                                                         <a class="nav-link" id="inquiry-wizard-tab" data-bs-toggle="pill" href="#inquiry-wizard" role="tab" aria-controls="inquiry-wizard" aria-selected="false" tabindex="-1">
                                                             <div class="horizontal-wizard">
                                                                 <div class="stroke-icon-wizard"></div>
@@ -273,7 +273,7 @@ foreach ($weight_history as $index => $entry) {
                                                             <?php include_once "../clients/utils/profile_component.php" ?>
                                                         </div>
                                                         <div class="tab-pane fade" id="wizard-weight-tracker" role="tabpanel" aria-labelledby="wizard-weight-tracker-tab">
-                                                            <!-- Weight Tracker Content -->
+                                                            <?php include_once '../functions/food-logs/my-progress.php' ?>
                                                         </div>
                                                         <div class="tab-pane fade" id="my-plan" role="tabpanel" aria-labelledby="my-plan-tab">
                                                             <div class="container-fluid">
@@ -301,11 +301,13 @@ foreach ($weight_history as $index => $entry) {
                                                                             <div class="col-lg-9">
                                                                                 <h1 class="text-center">Choose Your Food Preferences</h1>
                                                                                 <div class="d-flex justify-content-center align-items-center my-4">
-                                                                                    <label class="form-label me-2 fs-6 responsive-font">View all</label>
-                                                                                    <div class="form-check form-switch">
-                                                                                        <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
-                                                                                        <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
-                                                                                    </div>
+                                                                                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
+                                                                                        <label class="form-label me-2 fs-6 responsive-font">View all</label>
+                                                                                        <div class="form-check form-switch">
+                                                                                            <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
+                                                                                            <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
+                                                                                        </div>
+                                                                                    <?php endif; ?>
                                                                                 </div>
 
                                                                                 <!-- Food Categories Section for view all-->
@@ -338,18 +340,22 @@ foreach ($weight_history as $index => $entry) {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="tab-pane fade" id="recipes" role="tabpanel" aria-labelledby="recipes-tab">
+                                                            <!-- Recipes Content -->
+                                                            <?php include_once '../functions/recipes/my-recipes.php' ?>
+                                                        </div>
+
+                                                        <!-- Coaching Tab Content -->
+                                                        <div class="tab-pane fade" id="inquiry-wizard" role="tabpanel">
+                                                            <!-- Inquiry Content -->
+                                                        </div>
+
+                                                        <!-- Messages Tab Content -->
+                                                        <div class="tab-pane fade" id="successful-wizard" role="tabpanel">
+                                                            <?php include_once("../clients/utils/message_component.php") ?>
+                                                        </div>
                                                     </div>
                                                 </div>
-
-                                            </div>
-                                            <div class="tab-pane fade" id="inquiry-wizard" role="tabpanel">
-                                                <!-- Inquiry Content -->
-                                            </div>
-                                            <div class="tab-pane fade" id="dev-saq-recipes" role="tabpanel">
-                                                <!-- Recipes Content -->
-                                            </div>
-                                            <div class="tab-pane fade" id="successful-wizard" role="tabpanel">
-                                                <?php include_once("../clients/utils/message_component.php") ?>
                                             </div>
                                         </div>
                                     </div>
@@ -357,10 +363,9 @@ foreach ($weight_history as $index => $entry) {
                         </div>
                     </div>
                 </div>
+            <?php } ?>
             </div>
-        <?php } ?>
         </div>
-    </div>
     </div>
     <!-- Container-fluid Ends-->
     </div>
@@ -373,7 +378,7 @@ foreach ($weight_history as $index => $entry) {
         function updateWrapperClass() {
             const pageWrapper = document.getElementById('pageWrapper');
 
-            if (window.innerWidth <= 768) { // Assuming mobile screen width is 768px or less
+            if (window.innerWidth <= 991) { // Assuming mobile screen width is 768px or less
                 pageWrapper.classList.remove('horizontal-wrapper');
                 pageWrapper.classList.add('compact-wrapper');
             } else {
@@ -421,35 +426,49 @@ foreach ($weight_history as $index => $entry) {
 
     <!-- Redirecting to food logs if we have date and adjusting of my tracker view page -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const urlParams = new URLSearchParams(window.location.search);
+        function saveActiveTab(tabId) {
+            localStorage.setItem('activeTab', tabId);
+        }
 
-            if (urlParams.has('date')) {
-                // Deactivate any active parent tabs
+        // Function to activate the saved tab if there is a date in the URL
+        function activateSavedTab() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeTabId = localStorage.getItem('activeTab');
+
+            if (urlParams.has('date') && activeTabId) {
                 document.querySelectorAll('.nav-link.active').forEach(link => link.classList.remove('active'));
                 document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
 
-                // Activate "My Plan" tab (parent tab)
-                const myPlanTabLink = document.querySelector('#my-plan-tab');
-                const myPlanTabContent = document.querySelector('#my-plan');
+                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker') {
+                    const myPlanTabLink = document.querySelector('#my-plan-tab');
+                    const myPlanTabContent = document.querySelector('#my-plan');
 
-                if (myPlanTabLink && myPlanTabContent) {
-                    myPlanTabLink.classList.add('active');
-                    myPlanTabContent.classList.add('active', 'show');
+                    if (myPlanTabLink && myPlanTabContent) {
+                        myPlanTabLink.classList.add('active');
+                        myPlanTabContent.classList.add('active', 'show');
+                    }
                 }
 
-                // Activate "My Tracker" tab inside "My Plan"
-                const myTrackerTabLink = document.querySelector('#my-tracker-tab');
-                const myTrackerTabContent = document.querySelector('#my-tracker');
+                const targetTabLink = document.querySelector(`#${activeTabId}-tab`);
+                const targetTabContent = document.querySelector(`#${activeTabId}`);
 
-                if (myTrackerTabLink && myTrackerTabContent) {
-                    myTrackerTabLink.classList.add('active');
-                    myTrackerTabContent.classList.add('active', 'show');
+                if (targetTabLink && targetTabContent) {
+                    targetTabLink.classList.add('active');
+                    targetTabContent.classList.add('active', 'show');
                 }
             }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const tabId = this.getAttribute('aria-controls');
+                    saveActiveTab(tabId);
+                });
+            });
+            activateSavedTab();
         });
     </script>
-
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

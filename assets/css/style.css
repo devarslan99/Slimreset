@@ -48136,7 +48136,7 @@ input:focus {
     padding: 15px;
     bottom: 0;
     left: 0;
-    margin-left: 252px;
+    /* margin-left: 252px;   */
     -webkit-transition: 0.5s;
     transition: 0.5s;
 }
@@ -57780,9 +57780,15 @@ html[dir=rtl] body.dark-only .page-wrapper .page-body-wrapper .page-body .card:n
 .main-color{
     color: #946CFC !important;
 }
+.main-bg{
+    background: #946CFC !important;
+}
 .grocery-list{
     border: 1px solid #946CFC !important;
     padding :5px 30px;
     color: #946CFC;
     font-weight: bold;
+}
+.bg-shadow-none{
+    box-shadow : none !important
 }

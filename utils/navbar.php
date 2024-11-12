@@ -395,6 +395,21 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         /* Matches theme color */
     }
 </style>
+<style>
+        /* Custom CSS class for responsive toggle icon visibility */
+        .toggle-icon-responsive {
+            display: none !important;
+            /* Hide by default */
+        }
+
+        @media (max-width: 991px) {
+            .toggle-icon-responsive {
+                display: block !important;
+                /* Show when screen width is 991px or less */
+            }
+        }
+</style>
+
 <div class="page-header row">
     <div class="header-logo-wrapper col-auto">
         <div class="logo-wrapper">
@@ -404,7 +419,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             </a>
         </div>
     </div>
-    
+
     <div class="responsive-section">
         <nav>
             <div class="navbar-container">
@@ -443,21 +458,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
         </nav>
     </div>
-
-    <style>
-        /* Custom CSS class for responsive toggle icon visibility */
-        .toggle-icon-responsive {
-            display: none !important;
-            /* Hide by default */
-        }
-
-        @media (max-width: 991px) {
-            .toggle-icon-responsive {
-                display: block !important;
-                /* Show when screen width is 991px or less */
-            }
-        }
-    </style>
 
     <div class="header-wrapper col m-0">
         <div class="row">

@@ -31,6 +31,80 @@
         border-bottom: 2px solid #B9BDC6;
         width: 10em;
     }
+
+    .like-icon
+    {
+        position: relative;
+        top: -10px; 
+        width: 20px;
+        height: 20px;
+        background: #2ed52e;
+        text-align: center;
+        line-height: 20px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 12px;
+        display:none;
+    } 
+    #like-label:hover
+    {
+        color:#2ed52e;
+    }
+    #like-label:hover + .like-icon
+    {
+        display:inline-block;
+    }
+    .dis-like-icon
+    {
+        position: relative;
+        top: -10px; 
+        width: 20px;
+        height: 20px;
+        background: red;
+        text-align: center;
+        line-height: 20px;
+        border-radius: 50%;
+        color: #fff;
+        display:none;
+    }
+    .dis-like-icon i
+    {
+        font-size: 12px;
+    }
+    #dislike-label:hover
+    {
+        color:red;
+    }
+    #dislike-label:hover + .dis-like-icon
+    {
+        display:inline-block;
+    }
+    .excla-icon
+    {
+        position: relative;
+        top: -10px; 
+        width: 20px;
+        height: 20px;
+        background: orange;
+        text-align: center;
+        line-height: 20px;
+        border-radius: 50%;
+        color: #fff;
+        display:none;
+    }
+    .excla-icon i
+    {
+        font-size: 12px;
+    }
+    #excla-label:hover
+    {
+        color:orange;
+    }
+    #excla-label:hover + .excla-icon
+    {
+        display:inline-block;
+    }
+
 </style>
 
 <div class="container-fluid">
@@ -42,17 +116,20 @@
                 <label class="d-block text-secondary select-margin">Select</label>
                 <div class="d-relative">
                     <input class="form-check-input" type="checkbox" id="protein1">
-                    <label class="form-check-label" for="protein1">Chicken</label>
+                    <label class="form-check-label" id="excla-label" for="protein1">Chicken</label>
+                    <span class="excla-icon"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
                     <span class="d-absolute"></span>
                 </div>
             </div>
             <div class="form-check border-bottom-row my-2">
                 <input class="form-check-input" type="checkbox" id="protein2">
-                <label class="form-check-label" for="protein2">Turkey</label>
+                <label class="form-check-label" id="like-label" for="protein2">Turkey</label>
+                <span class="like-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
             </div>
             <div class="form-check border-bottom-row my-2">
                 <input class="form-check-input" type="checkbox" id="protein3">
-                <label class="form-check-label" for="protein3">Eggs</label>
+                <label class="form-check-label" id="dislike-label" for="protein3">Eggs</label>
+                <span class="dis-like-icon"><i class="fa fa-times" aria-hidden="true"></i></span>
             </div>
             <div class="mt-3">
                 <div class="form-check border-bottom-row my-2">

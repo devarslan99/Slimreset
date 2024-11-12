@@ -113,7 +113,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         background-color: #fff;
         padding: 30px;
         border-radius: 20px;
-        width: 700px;
+        width: 600px;
         max-width: 90%;
         display: flex;
         flex-direction: column;
@@ -151,36 +151,13 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         gap: 20px;
     }
 
-    /* Aisle Section in Each Column */
-    .grocery-column {
-        flex: 1;
-    }
-
-    .grocery-aisle h3 {
-        font-weight: bold;
-        font-style: italic;
-        color: #333;
-        margin-bottom: 10px;
-    }
-
-    .grocery-aisle ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .grocery-aisle li {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 1em;
-    }
-
-    .grocery-aisle li span strong {
-        font-weight: bold;
+    .label-name{
+        margin-bottom: 4px;
+        background: #946cfc;
+        color: #fff;
+        padding: 2px 5px;
+        text-align: center;
+        border-radius: 4px;
     }
 
     /* PDF Icon */
@@ -455,57 +432,88 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             <div class="grocery-popup-overlay" id="grocery-popup-overlay">
                 <div class="grocery-popup-content">
                     <div class="grocery-close-popup" onclick="closeGroceryPopup()">X</div>
-                    
                     <!-- Grocery List Content -->
                     <div class="grocery-list-box">
                         <h2 class="grocery-list-title">grocery list</h2>
                         
-                        <!-- Columns for Aisles -->
-                        <div class="grocery-columns">
-                            <!-- Left Column -->
-                            <div class="grocery-column">
-                                <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
-                                    <ul>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
-                                        </li>
-                                    </ul>
+                        <div class="list-box">
+                            <span class="label-name">
+                                Breakfast
+                            </span>
+                            
+                            <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
+                                <h3 class="fw-bold mb-0">Cheese Pizza</h3>
+                                <p class="text-muted mb-0">Nov 12</p>
+                            </div>
+
+                            <div class="row">
+                                <!-- Left Column with Calories and Total Fat -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="left">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Calories</h5>
+                                            <p class="mb-0">2.74g</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold  mb-1">Total Fat</h5>
+                                            <p class="mb-0">0.74g</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
-                                    <ul>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
-                                        </li>
-                                    </ul>
+
+                                <!-- Right Column with Carbohydrates and Protein -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="right ">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Carbohydrates</h5>
+                                            <p class="mb-0">15g</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Protein</h5>
+                                            <p class="mb-0">8g</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="list-box">
+                            <span class="label-name">
+                                Breakfast
+                            </span>
                             
-                            <!-- Right Column -->
-                            <div class="grocery-column">
-                                <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
-                                    <ul>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
-                                        </li>
-                                    </ul>
+                            <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
+                                <h3 class="fw-bold mb-0">Cheese Pizza</h3>
+                                <p class="text-muted mb-0">Nov 12</p>
+                            </div>
+
+                            <div class="row">
+                                <!-- Left Column with Calories and Total Fat -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="left">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Calories</h5>
+                                            <p class="mb-0">2.74g</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold  mb-1">Total Fat</h5>
+                                            <p class="mb-0">0.74g</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column with Carbohydrates and Protein -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="right ">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Carbohydrates</h5>
+                                            <p class="mb-0">15g</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Protein</h5>
+                                            <p class="mb-0">8g</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

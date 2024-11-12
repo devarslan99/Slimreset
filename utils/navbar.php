@@ -404,37 +404,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             </a>
         </div>
     </div>
-    <div class="col-6 col-xl-4 d-none d-md-block">
-        <nav>
-            <ul class="d-flex align-items-center gap-4">
-                <li><a class="bread-crum-Link" href="../dashboard/dashboard.php">Dashboard</a></li>
-                <?php
-                $role = $_SESSION['role'];
-                if ($role == "admin") {
-                ?>
-                    <li><a class="bread-crum-Link" href="../users/create.php">Add User</a></li>
-                    <li><a class="bread-crum-Link" href="../users/view.php">View Users</a></li>
-                    <li><a class="bread-crum-Link" href="../coach/assign.php">Assign Coach</a></li>
-                    <li><a class="bread-crum-Link" href="../coach/view.php">View Coach</a></li>
-                    <li><a class="bread-crum-Link" href="../food_category/create.php">Add Food Category</a></li>
-                    <li><a class="bread-crum-Link" href="../food_category/view.php">View Food Category</a></li>
-                    <li><a class="bread-crum-Link" href="../food_recommendation/create.php">Add Food Recommendation</a></li>
-                    <li><a class="bread-crum-Link" href="../food_recommendation/view.php">View Food Recommendation</a></li>
-                    <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
-                <?php
-                } else if ($role == "client") {
-                ?>
-                    <li><a class="bread-crum-Link" href="../clients/summary.php?id=<?php echo $_SESSION['user_id'] ?>">My Profile</a></li>
-                <?php
-                } else if ($role == "coach") {
-                ?>
-                    <li><a class="bread-crum-Link" href="../clients/invite_clients.php">Invite Clients</a></li>
-                    <li><a class="bread-crum-Link" href="../clients/view.php">My Clients</a></li>
-                    <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
-                <?php
-                }
-                ?>
-            </ul>
+    
     <div class="responsive-section">
         <nav>
             <div class="navbar-container">

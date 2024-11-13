@@ -356,12 +356,19 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     .AddToCart i {
         font-size: 18px;
+        color:gray;
+    }
+    
+    .AddToCart i.black-icon {
+        color: black; 
+        transition: color 0.3s ease; 
+    }
+    
+    .black-icon:hover {
+        color: #00BF63 !important; 
         cursor: pointer;
     }
 
-    .AddToCart i:hover {
-        color: #00BF63;
-    }
 </style>
 
 <div class="row">
@@ -821,7 +828,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         <div class="day-header">day ${dayData.day}</div> <!-- Day number -->
                         <div class="date-text">${dayData.date}</div> <!-- Formatted date like 'Nov 11' -->
                         <div class="cal-info">${dayData.kcal} kcal<br>${dayData.oz} oz</div>
-                        <div class="AddToCart" onclick="showGroceryPopup()"><i class="fa fa-shopping-cart"></i></div>
+                        <div class="AddToCart"><i class="fa fa-shopping-cart" id="cartIcon"></i></div>
                     </div>
                     <div class="meal-section" id="day${dayData.day}-breakfast">
                         <div class="meal-card">${isFirstColumn ? '<div class="breakfast-label meal-card-title">Breakfast</div>' : ''}
@@ -929,9 +936,29 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                     // Remove the dragged item from its original location to keep single instance
                     draggedItem.remove();
+
+                    const dayColumn = evt.to.closest('.day-column'); // Look for the parent .day-column of the dropped meal section
+                    if (dayColumn) {
+                        const addToCartIcon = dayColumn.querySelector('.AddToCart');
+                        if (addToCartIcon) {
+                            addToCartIcon.style.display = 'block'; // Show the cart icon
+                            
+                            // Change the icon color to black and add the "black-icon" class
+                            const cartIcon = addToCartIcon.querySelector('i');
+                            if (cartIcon) {
+                                cartIcon.style.color = 'black'; // Change the icon color to black
+                                cartIcon.classList.add('black-icon'); // Add the class for hover effect
+                            }
+                            
+                            cartIcon.addEventListener('click', function() {
+                                showGroceryPopup(); // Trigger the popup function when the icon is clicked
+                            });
+                        }
+                    }
+                    console.log(`Meal card "${mealName}" has been dropped into the section!`);
                 }
             });
-        });
+        });        
     }
 
     // function to show the recipe POP-UP

@@ -18,7 +18,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         align-items: center;
         z-index: 1000;
     }
-    
+
 
     .popup-content {
         position: relative;
@@ -93,6 +93,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         color: #946cfc;
         font-weight: 800;
     }
+
     /* Grocery Popup Overlay */
     .grocery-popup-overlay {
         position: fixed;
@@ -184,7 +185,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
     /* PDF Icon */
-    .grocery-pdf-icon{
+    .grocery-pdf-icon {
         margin-top: 20px;
         display: flex;
         justify-content: flex-end;
@@ -195,6 +196,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         font-size: 32px;
         color: #946cfc;
     }
+
     .day-header {
         font-weight: bold;
         color: #6b4ce6;
@@ -212,9 +214,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         color: #000;
         font-size: 0.9rem;
     }
-    .col-lg-9
-    {
-        padding-right:0px;
+
+    .col-lg-9 {
+        padding-right: 0px;
     }
 
     .col-lg-9 {
@@ -245,6 +247,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         width: 100%;
         padding: 0px 5px;
     }
+
     .meal-card,
     .empty-card {
         border: none;
@@ -328,7 +331,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         padding: 2px 6px;
         border-radius: 2px;
         position: absolute;
-        left: -69px;
+        left: -66px;
         top: 70px;
         transform: rotate(-90deg);
     }
@@ -341,7 +344,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         padding: 2px 6px;
         border-radius: 2px;
         position: absolute;
-        left: -56px;
+        left: -55px;
         top: 70px;
         transform: rotate(-90deg);
     }
@@ -354,7 +357,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         padding: 2px 6px;
         border-radius: 2px;
         position: absolute;
-        left: -58px;
+        left: -57px;
         top: 70px;
         transform: rotate(-90deg);
     }
@@ -367,7 +370,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         padding: 2px 6px;
         border-radius: 2px;
         position: absolute;
-        left: -56px;
+        left: -55px;
         top: 70px;
         transform: rotate(-90deg);
     }
@@ -450,16 +453,16 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     </div>
                 </div>
             </div>
-            
+
             <!-- Grocery List Popup Overlay -->
             <div class="grocery-popup-overlay" id="grocery-popup-overlay">
                 <div class="grocery-popup-content">
                     <div class="grocery-close-popup" onclick="closeGroceryPopup()">X</div>
-                    
+
                     <!-- Grocery List Content -->
                     <div class="grocery-list-box">
                         <h2 class="grocery-list-title">grocery list</h2>
-                        
+
                         <!-- Columns for Aisles -->
                         <div class="grocery-columns">
                             <!-- Left Column -->
@@ -491,7 +494,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                     </ul>
                                 </div>
                             </div>
-                            
+
                             <!-- Right Column -->
                             <div class="grocery-column">
                                 <div class="grocery-aisle">
@@ -666,7 +669,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 <script>
     $(document).ready(function() {
-        // Dummy details of meals for the right side (meal cards)
         const mealData = [{
                 image: 'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
                 name: 'Veggie',
@@ -731,8 +733,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 size: '8 oz'
             }
         ];
- 
-        // Append meal cards to #meal-cards
+        
         $.each(mealData, function(index, meal) {
             const mealCard = `
                 <div class="meal-card-rec">
@@ -745,12 +746,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             <i class="fa fa-star"></i>
                         </span>
                     </div>
-                </div>
-            `;
+                </div>`;
             $('#meal-cards').append(mealCard);
         });
-
-        // Sample data for the left side (days and empty cards)
+        
         const daysData = [{
                 day: 1,
                 date: "Oct 5",
@@ -795,40 +794,38 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             }
         ];
 
-        // Function to create HTML for each day column
-        function createDayColumn(dayData, isFirstColumn) {
+        function createDayColumn(dayData) {
             return `
                 <div class="col-lg-2 col-md-4 col-sm-6 col-6 mb-4 day-column" style="max-width: 150px;">
                     <div class="text-center">
-                        ${isFirstColumn ? '<div class="nutrition-label">nutrition</div>' : ''}
                         <div class="day-header">day ${dayData.day}</div>
                         <div class="date-text">${dayData.date}</div>
                         <div class="cal-info">${dayData.kcal} kcal<br>${dayData.oz}</div>
                         <div class="AddToCart" onclick="showGroceryPopup()"><i class="fa fa-shopping-cart"></i></div>
                     </div>
                     <div class="meal-section" id="day${dayData.day}-breakfast">
-                        <div class="meal-card">${isFirstColumn ? '<div class="breakfast-label meal-card-title">Breakfast</div>' : ''}
+                        <div class="meal-card">
                             <div class="add-more">
                                 <div class="plus-sign">+</div>
                             </div>
                         </div>
                     </div>
                     <div class="meal-section" id="day${dayData.day}-lunch">
-                        <div class="meal-card">${isFirstColumn ? '<div class="lunch-label meal-card-title">Lunch</div>' : ''}
+                        <div class="meal-card">
                             <div class="add-more">
                                 <div class="plus-sign">+</div>
                             </div>
                         </div>
                     </div>
                     <div class="meal-section" id="day${dayData.day}-dinner">
-                        <div class="meal-card">${isFirstColumn ? '<div class="dinner-label meal-card-title">Dinner</div>' : ''}
+                        <div class="meal-card">
                             <div class="add-more">
                                 <div class="plus-sign">+</div>
                             </div>
                         </div>
                     </div>
                     <div class="meal-section" id="day${dayData.day}-snack">
-                        <div class="meal-card">${isFirstColumn ? '<div class="snack-label meal-card-title">Snack</div>' : ''}
+                        <div class="meal-card">
                             <div class="add-more">
                                 <div class="plus-sign">+</div>
                             </div>
@@ -838,12 +835,39 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             `;
         }
 
-        // Append all day columns to the main container
-        daysData.forEach((day, index) => {
-            $('#empty-card-slots').append(createDayColumn(day, index === 0));
+        function updateLabels() {
+            $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
+
+            let previousOffsetTop = null;
+
+            $('.day-column').each(function() {
+                const currentOffsetTop = $(this).offset().top;
+                if (currentOffsetTop !== previousOffsetTop) {
+                    addLabels($(this));
+                }
+                previousOffsetTop = currentOffsetTop;
+            });
+        }
+
+        function addLabels($dayColumn) {
+            $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
+
+            $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-breakfast .meal-card').prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
+            $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-lunch .meal-card').prepend('<div class="lunch-label meal-card-title">Lunch</div>');
+            $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-dinner .meal-card').prepend('<div class="dinner-label meal-card-title">Dinner</div>');
+            $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-snack .meal-card').prepend('<div class="snack-label meal-card-title">Snack</div>');
+        }
+
+        daysData.forEach((day) => {
+            $('#empty-card-slots').append(createDayColumn(day));
         });
 
-        // Initialize Sortable after all elements have been created
+        updateLabels();
+
+        $(window).on('resize', function() {
+            updateLabels();
+        });
+        
         initializeSortable();
     });
 
@@ -988,37 +1012,37 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             }
         });
 
-            // Event listener for meal-box click
-            $(document).on('click', '.meal-box', function(event) {
-                showPopup();
-                event.stopPropagation(); // Prevents triggering from any other part
-            });
+        // Event listener for meal-box click
+        $(document).on('click', '.meal-box', function(event) {
+            showPopup();
+            event.stopPropagation(); // Prevents triggering from any other part
+        });
 
-            // Close the popup when clicking outside of it
-            $(document).on('click', '#popup-overlay', function(event) {
-                if (event.target.id === 'popup-overlay') {
-                    closePopup();
-                }
-         });
+        // Close the popup when clicking outside of it
+        $(document).on('click', '#popup-overlay', function(event) {
+            if (event.target.id === 'popup-overlay') {
+                closePopup();
+            }
+        });
 
 
         // Function to show the grocery popup
         function showGroceryPopup(e) {
-                document.getElementById('grocery-popup-overlay').style.display = 'flex';
-                console.log(e)
-            }
+            document.getElementById('grocery-popup-overlay').style.display = 'flex';
+            console.log(e)
+        }
 
-            // Function to close the grocery popup
-            function closeGroceryPopup() {
-                document.getElementById('grocery-popup-overlay').style.display = 'none';
-            }
+        // Function to close the grocery popup
+        function closeGroceryPopup() {
+            document.getElementById('grocery-popup-overlay').style.display = 'none';
+        }
 
-            // Close the grocery popup when clicking outside of it
-            document.addEventListener('click', function(event) {
-                const overlay = document.getElementById('grocery-popup-overlay');
-                if (event.target === overlay) {
-                    closeGroceryPopup();
-                }
+        // Close the grocery popup when clicking outside of it
+        document.addEventListener('click', function(event) {
+            const overlay = document.getElementById('grocery-popup-overlay');
+            if (event.target === overlay) {
+                closeGroceryPopup();
+            }
         });
 
 
@@ -1026,16 +1050,25 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         function downloadPDF() {
             // Select the HTML element to be converted to PDF
             const element = document.querySelector('.grocery-list-box');
-            
+
             // Set up options for html2pdf
             const options = {
-                margin:       1,
-                filename:     'grocery_list.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+                margin: 1,
+                filename: 'grocery_list.pdf',
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    scale: 2
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
             };
-            
+
             // Convert to PDF
             html2pdf().set(options).from(element).save();
         }

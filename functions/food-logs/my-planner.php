@@ -137,6 +137,33 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         border-radius: 50%;
     }
 
+    .grocery-list-box {
+        max-height: 60vh;
+        overflow-y: auto; 
+        padding-right: 15px;
+        margin-top: 20px;
+    }
+
+    /* Custom scrollbar styles for webkit browsers */
+    .grocery-list-box::-webkit-scrollbar {
+        width: 8px; 
+    }
+
+    .grocery-list-box::-webkit-scrollbar-track {
+        background-color: #f1f1f1; 
+        border-radius: 10px; 
+    }
+
+    .grocery-list-box::-webkit-scrollbar-thumb {
+        background-color: #946cfc;
+        border-radius: 10px; 
+        border: 2px solid #f1f1f1; 
+    }
+
+    .grocery-list-box::-webkit-scrollbar-thumb:hover {
+        background-color: #7f4bc9;
+    }
+
     /* Grocery List Styles */
     .grocery-list-title {
         font-size: 1.8em;
@@ -153,7 +180,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     .label-name{
         margin-bottom: 4px;
-        background: #946cfc;
+        background: blue;
         color: #fff;
         padding: 2px 5px;
         text-align: center;
@@ -538,9 +565,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 <div class="grocery-popup-content">
                     <div class="grocery-close-popup" onclick="closeGroceryPopup2()">X</div>
                     
+                    <h2 class="grocery-list-title">Grocery List</h2>
                     <!-- Grocery List Content -->
                     <div class="grocery-list-box">
-                        <h2 class="grocery-list-title">Grocery List</h2>
                         
                         <!-- Columns for Aisles -->
                         <div class="grocery-columns">
@@ -841,7 +868,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 <div class="text-center">
                     ${isFirstColumn ? '<div class="nutrition-label">nutrition</div>' : ''}
                     <div class="day-header">day ${dayData.day}</div> <!-- Day number -->
-                    <div class="date-text">${dayData.date}</div> <!-- Formatted date like 'Nov 11' -->
+                    <div class="date-text" data-date="${dayData.date}">${dayData.date}</div>
                     <div class="cal-info">${dayData.kcal}kcal<br>${dayData.oz} oz</div>
                     <div class="AddToCart"><i class="fa fa-shopping-cart" id="cartIcon"></i></div>
                 </div>
@@ -900,6 +927,59 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     });
 
     let mealDataArray = [];
+
+    // Function to populate the grocery list
+    function populateGroceryList(mealDataArray) {
+        const groceryListBox = document.querySelector('.grocery-list-box');
+        groceryListBox.innerHTML = ''; // Clear any previous content
+
+        mealDataArray.forEach(meal => {
+            console.log('meal', meal); // Log each meal to verify the data
+            // Create and append the meal HTML
+            const mealHTML = `
+                <div class="list-box">
+                    <span class="label-name">${meal.label}</span> <!-- Dynamic label -->
+                    <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="fw-bold mb-0">${meal.mealName} ${meal.mealSubName}</h3>
+                        <p class="text-muted mb-0">${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                    </div>
+                    <div class="row">
+                        <!-- Left Column with Calories and Total Fat -->
+                        <div class="col-md-6 mb-3">
+                            <div class="left">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Calories</h5>
+                                    <p class="mb-0">${meal.mealInfo.calories || 'N/A'}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Total Fat</h5>
+                                    <p class="mb-0">${meal.mealInfo.fats || 'N/A'}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Right Column with Carbohydrates and Protein -->
+                        <div class="col-md-6 mb-3">
+                            <div class="right">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Carbohydrates</h5>
+                                    <p class="mb-0">${meal.mealInfo.carbs || 'N/A'}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Protein</h5>
+                                    <p class="mb-0">${meal.mealInfo.protein || 'N/A'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            groceryListBox.innerHTML += mealHTML; // Append the meal HTML to the grocery list box
+        });
+    }
+
+    // Call the function to populate the grocery list
+    populateGroceryList(mealDataArray);
+
 
     function initializeSortable() {
         // Make the meal cards (right side, recipes) draggable
@@ -971,6 +1051,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                     mealDataArray.push(mealData); 
                     console.log('Meal data array:', mealDataArray);
+
+                    // Now, call populateGroceryList to update the UI with the new meal data
+                    populateGroceryList(mealDataArray);
 
                     const dayColumn = evt.to.closest('.day-column'); 
                     if (dayColumn) {
@@ -1223,52 +1306,4 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         });
     });
 
-    // Function to populate the grocery list in the popup
-    function populateGroceryList(mealDataArray) {
-    const groceryListBox = document.querySelector('.grocery-list-box');
-    groceryListBox.innerHTML = ''; // Clear any previous content
-
-    mealDataArray.forEach(meal => {
-        const mealHTML = `
-            <div class="list-box">
-                <span class="label-name">Breakfast</span>
-                <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
-                    <h3 class="fw-bold mb-0">${meal.mealName} ${meal.mealSubName}</h3>
-                    <p class="text-muted mb-0">${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
-                </div>
-                <div class="row">
-                    <!-- Left Column with Calories and Total Fat -->
-                    <div class="col-md-6 mb-3">
-                        <div class="left">
-                            <div class="d-flex justify-content-between">
-                                <h5 class="fw-bold mb-1">Calories</h5>
-                                <p class="mb-0">${meal.mealInfo.calories}</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <h5 class="fw-bold mb-1">Total Fat</h5>
-                                <p class="mb-0">${meal.mealInfo.fats}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Right Column with Carbohydrates and Protein -->
-                    <div class="col-md-6 mb-3">
-                        <div class="right">
-                            <div class="d-flex justify-content-between">
-                                <h5 class="fw-bold mb-1">Carbohydrates</h5>
-                                <p class="mb-0">${meal.mealInfo.carbs}</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <h5 class="fw-bold mb-1">Protein</h5>
-                                <p class="mb-0">${meal.mealInfo.protein}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        groceryListBox.innerHTML += mealHTML; // Append the generated meal HTML to the grocery list box
-    });
-    }
-    populateGroceryList(mealDataArray) 
 </script>

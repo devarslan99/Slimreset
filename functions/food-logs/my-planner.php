@@ -733,7 +733,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 size: '8 oz'
             }
         ];
-        
+
         $.each(mealData, function(index, meal) {
             const mealCard = `
                 <div class="meal-card-rec">
@@ -749,7 +749,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 </div>`;
             $('#meal-cards').append(mealCard);
         });
-        
+
         const daysData = [{
                 day: 1,
                 date: "Oct 5",
@@ -867,7 +867,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         $(window).on('resize', function() {
             updateLabels();
         });
-        
+
         initializeSortable();
     });
 

@@ -753,50 +753,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             $('#meal-cards').append(mealCard);
         });
 
-        // Sample data for the left side (days and empty cards)
-        const daysData = [{
-                day: 1,
-                date: "Oct 5",
-                kcal: 800,
-                oz: "10.5 oz"
-            },
-            {
-                day: 2,
-                date: "Oct 6",
-                kcal: 850,
-                oz: "11 oz"
-            },
-            {
-                day: 3,
-                date: "Oct 7",
-                kcal: 780,
-                oz: "9 oz"
-            },
-            {
-                day: 4,
-                date: "Oct 8",
-                kcal: 790,
-                oz: "10 oz"
-            },
-            {
-                day: 5,
-                date: "Oct 9",
-                kcal: 820,
-                oz: "10.8 oz"
-            },
-            {
-                day: 6,
-                date: "Oct 10",
-                kcal: 750,
-                oz: "9.5 oz"
-            },
-            {
-                day: 7,
-                date: "Oct 11",
-                kcal: 830,
-                oz: "11 oz"
-            }
-        ];
+
 
         // Function to generate days data with formatted date
         function generateDaysData() {
@@ -812,8 +769,8 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 daysData.push({
                     day: i + 1, 
                     date: formattedDate,
-                    kcal: 2500,
-                    oz: 32 
+                    kcal: 00,
+                    oz: 00 
                 });
             }
             return daysData;
@@ -827,7 +784,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         ${isFirstColumn ? '<div class="nutrition-label">nutrition</div>' : ''}
                         <div class="day-header">day ${dayData.day}</div> <!-- Day number -->
                         <div class="date-text">${dayData.date}</div> <!-- Formatted date like 'Nov 11' -->
-                        <div class="cal-info">${dayData.kcal} kcal<br>${dayData.oz} oz</div>
+                        <div class="cal-info">${dayData.kcal}kcal<br>${dayData.oz} oz</div>
                         <div class="AddToCart"><i class="fa fa-shopping-cart" id="cartIcon"></i></div>
                     </div>
                     <div class="meal-section" id="day${dayData.day}-breakfast">

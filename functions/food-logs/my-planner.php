@@ -670,68 +670,126 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 <script>
     $(document).ready(function() {
         // Dummy details of meals for the right side (meal cards)
-        const mealData = [{
+        const mealData = [
+            {
                 image: 'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
                 name: 'Veggie',
                 subName: 'Omelette',
-                calories: '800 kcal',
-                size: '8 oz'
+                mealInfo: {
+                    protein: '10g',
+                    calories: '800 kcal',
+                    fats: '8g',
+                    carbs: '15g',
+                    size: '8 oz'
+                }
             },
             {
                 image: 'https://images.pexels.com/photos/10261265/pexels-photo-10261265.jpeg',
                 name: 'Chicken',
                 subName: 'Salad',
-                calories: '650 kcal',
-                size: '7 oz'
+                mealInfo: {
+                    protein: '40g',
+                    calories: '650 kcal',
+                    fats: '10g',
+                    carbs: '12g',
+                    size: '7 oz'
+                }
             },
             {
                 image: 'https://images.unsplash.com/photo-1543353071-873f17a7a088',
                 name: 'Beef',
                 subName: 'Burger',
-                calories: '900 kcal',
-                size: '9 oz'
+                mealInfo: {
+                    protein: '50g',
+                    calories: '900 kcal',
+                    fats: '20g',
+                    carbs: '40g',
+                    size: '9 oz'
+                }
             },
             {
                 image: 'https://images.unsplash.com/photo-1495195129352-aeb325a55b65',
                 name: 'Fruit',
                 subName: 'Smoothie',
-                calories: '250 kcal',
-                size: '12 oz'
+                mealInfo: {
+                    protein: '5g',
+                    calories: '250 kcal',
+                    fats: '2g',
+                    carbs: '30g',
+                    size: '12 oz'
+                }
             },
             {
                 image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd',
                 name: 'Pasta',
                 subName: 'Primavera',
-                calories: '700 kcal',
-                size: '10 oz'
+                mealInfo: {
+                    protein: '15g',
+                    calories: '700 kcal',
+                    fats: '12g',
+                    carbs: '85g',
+                    size: '10 oz'
+                }
             },
             {
                 image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061',
                 name: 'Greek',
                 subName: 'Yogurt',
-                calories: '200 kcal',
-                size: '5 oz'
+                mealInfo: {
+                    protein: '15g',
+                    calories: '200 kcal',
+                    fats: '5g',
+                    carbs: '20g',
+                    size: '5 oz'
+                }
             },
             {
                 image: 'https://images.unsplash.com/photo-1525351484163-7529414344d8',
                 name: 'Steak',
                 subName: 'Frites',
-                calories: '1200 kcal',
-                size: '14 oz'
+                mealInfo: {
+                    protein: '80g',
+                    calories: '1200 kcal',
+                    fats: '50g',
+                    carbs: '15g',
+                    size: '14 oz'
+                }
             },
             {
                 image: 'https://images.pexels.com/photos/4050291/pexels-photo-4050291.jpeg',
                 name: 'Avocado',
                 subName: 'Toast',
-                calories: '300 kcal',
-                size: '6 oz'
+                mealInfo: {
+                    protein: '4g',
+                    calories: '300 kcal',
+                    fats: '25g',
+                    carbs: '20g',
+                    size: '6 oz'
+                }
             },
             {
                 image: 'https://images.pexels.com/photos/4413724/pexels-photo-4413724.jpeg',
                 name: 'Tomato',
                 subName: 'Soup',
-                calories: '150 kcal',
-                size: '8 oz'
+                mealInfo: {
+                    protein: '5g',
+                    calories: '150 kcal',
+                    fats: '4g',
+                    carbs: '20g',
+                    size: '8 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/3778698/pexels-photo-3778698.jpeg',
+                name: 'Salmon',
+                subName: 'Filet',
+                mealInfo: {
+                    protein: '30g',
+                    calories: '600 kcal',
+                    fats: '28g',
+                    carbs: '5g',
+                    size: '6 oz'
+                }
             }
         ];
  
@@ -743,7 +801,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         <img class="recipe-img-card" src="${meal.image}" alt="${meal.name} ${meal.subName}">
                         <div class="meal-name">${meal.name}</div>
                         <div class="meal-name-sub">${meal.subName}</div>
-                        <div class="meal-info">${meal.calories}<br>${meal.size}</div>
+                        <div class="meal-info">${meal.mealInfo.calories}<br>${meal.mealInfo.size}</div>
                         <span class="text-end star-margin">
                             <i class="fa fa-star"></i>
                         </span>
@@ -841,6 +899,8 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         initializeSortable();
     });
 
+    let mealDataArray = [];
+
     function initializeSortable() {
         // Make the meal cards (right side, recipes) draggable
         Sortable.create(document.getElementById('meal-cards'), {
@@ -870,7 +930,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     const imageSrc = draggedItem.querySelector('img').src;
                     const mealName = draggedItem.querySelector('.meal-name').textContent;
                     const mealSubName = draggedItem.querySelector('.meal-name-sub') ? draggedItem.querySelector('.meal-name-sub').textContent : '';
-                    const mealInfo = draggedItem.querySelector('.meal-info').innerHTML;
+
+                    // Extract the nutritional information from the meal-info div
+                    const mealInfoDiv = draggedItem.querySelector('.meal-info');
+                    const mealInfo = extractMealInfo(mealInfoDiv);
 
                     // Find the existing empty .meal-card in the target section
                     const targetMealCard = evt.to.querySelector('.meal-card');
@@ -886,13 +949,24 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 <img src="${imageSrc}" alt="${mealName}">
                                 <div class="meal-name">${mealName}</div>
                                 <div class="meal-name-sub">${mealSubName}</div>
-                                <div class="meal-info">${mealInfo}</div>
+                                <div class="meal-info">${mealInfo.calories}<br>${mealInfo.size}</div> <!-- Display only calories and size -->
                             </div>
                         `;
                     }
 
                     // Remove the dragged item from its original location to keep single instance
                     draggedItem.remove();
+
+                    // Capture the meal card data and add it to the array
+                    const mealData = {
+                        imageSrc,
+                        mealName,
+                        mealSubName,
+                        mealInfo // Include all nutritional data here
+                    };
+
+                    mealDataArray.push(mealData); // Add the meal data to the array
+                    console.log('Meal data array:', mealDataArray);
 
                     const dayColumn = evt.to.closest('.day-column'); // Look for the parent .day-column of the dropped meal section
                     if (dayColumn) {
@@ -917,6 +991,25 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             });
         });        
     }
+
+    // Function to extract meal info from the HTML
+    function extractMealInfo(mealInfoDiv) {
+        // Extract the nutritional values from the meal-info div
+        const infoText = mealInfoDiv.innerText || mealInfoDiv.textContent;
+
+        const infoLines = infoText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        
+        const mealInfo = {
+            calories: infoLines.find(line => line.includes('kcal')) || '',
+            size: infoLines.find(line => line.includes('oz')) || '',
+            protein: infoLines.find(line => line.includes('protein')) || '',  // Add protein information
+            fats: infoLines.find(line => line.includes('fats')) || '',        // Add fats information
+            carbs: infoLines.find(line => line.includes('carbs')) || ''       // Add carbs information
+        };
+
+        return mealInfo;
+    }
+
 
     // function to show the recipe POP-UP
     function showPopup() {

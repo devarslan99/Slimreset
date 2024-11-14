@@ -65,11 +65,7 @@
         color: #000;
     }
 
-    .nav-link:hover {
-        color: #936CFB !important;
-        transition: color 0.3s ease-in-out;
-    }
-
+    .nav-link:hover h6,
     .nav-link:hover h1 {
         color: #936CFB !important;
         transition: color 0.3s ease-in-out;

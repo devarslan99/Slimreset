@@ -500,7 +500,7 @@ foreach ($weight_history as $index => $entry) {
                 document.querySelectorAll('.nav-link.active').forEach(link => link.classList.remove('active'));
                 document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
 
-                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker') {
+                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker' || activeTabId === 'choose-food' ) {
                     const myPlanTabLink = document.querySelector('#my-plan-tab');
                     const myPlanTabContent = document.querySelector('#my-plan');
 

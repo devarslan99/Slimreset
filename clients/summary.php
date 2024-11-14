@@ -70,6 +70,11 @@
         transition: color 0.3s ease-in-out;
     }
 
+    .nav-link:hover h1 {
+        color: #936CFB !important;
+        transition: color 0.3s ease-in-out;
+    }
+
     .tab-content {
         margin-top: 20px;
     }
@@ -160,6 +165,27 @@
 
     .fa-star.active {
         color: yellow;
+    }
+
+    .btn
+    {
+        padding:0;
+        font-weight:bold;
+    }
+    .btn:hover
+    {
+        color:#936CFB;
+    }
+
+    .line
+    {
+        color:#ccc;
+    }
+
+    .phase-tab
+    {
+        font-weight:600;
+        gap:5px
     }
 </style>
 
@@ -328,14 +354,25 @@ foreach ($weight_history as $index => $entry) {
                                                                         <div class="row">
                                                                             <div class="col-lg-9">
                                                                                 <h1 class="text-center">Choose Your Food Preferences</h1>
-                                                                                <div class="d-flex justify-content-center align-items-center my-4">
-                                                                                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
-                                                                                        <label class="form-label me-2 fs-6 responsive-font">View all</label>
-                                                                                        <div class="form-check form-switch">
-                                                                                            <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
-                                                                                            <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
-                                                                                        </div>
-                                                                                    <?php endif; ?>
+                                                                                <div class="d-flex justify-content-between align-items-center px-5">
+                                                                                    <div class="d-flex justify-content-center align-items-center my-4">
+                                                                                        <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
+                                                                                            <label class="form-label me-2 fs-6 responsive-font">View all</label>
+                                                                                            <div class="form-check form-switch">
+                                                                                                <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
+                                                                                                <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
+                                                                                            </div>
+                                                                                        <?php endif; ?>
+                                                                                    </div>
+                                                                                    <div class="d-flex align-items-center phase-tab">
+                                                                                        <button class="btn tab-button" data-phase="1">Phase 1</button>
+                                                                                        <span class="line">|</span>
+                                                                                        <button class="btn tab-button" data-phase="2">Phase 2</button>
+                                                                                        <span class="line">|</span>
+                                                                                        <button class="btn tab-button" data-phase="3">Phase 3</button>
+                                                                                        <span class="line">|</span>
+                                                                                        <button class="btn tab-button" data-phase="4">Phase 4</button>
+                                                                                    </div>
                                                                                 </div>
 
                                                                                 <!-- Food Categories Section for view all-->

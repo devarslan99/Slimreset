@@ -74,12 +74,12 @@
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" style="padding-left:0;">
                                 <div class="d-flex flex-column align-items-center justify-content-center p-1" style="min-width: 200px; border-radius: 20px; border: 1px solid #946CFC; text-align: center;">
                                     <span style="font-size: 20px; display: block;"><?php echo $metric['label']; ?></span>
-                                    <h1 class="my-2" style="font-weight: bold;">
+                                    <h1 class="my-2" style="font-weight: 800;color:#000;">
                                         <?php echo $metric['total'] . ' ' . $metric['unit']; ?>
                                     </h1>
-                                    <span class="my-2" style="font-size: 20px; display: block;">of <?php echo $metric['max'] . ' ' . $metric['unit']; ?></span>
+                                    <span class="my-2" style="font-size: 20px; display: block;">of <span style="font-weight: bold;color:#000"><?php echo $metric['max']; ?></span> <?php echo $metric['unit']; ?></span>
                                     <span style="font-size: 20px; font-weight: 500; color: <?php echo $metric['color']; ?>; display: block;">
-                                        <?php echo $remaining . ' ' . $metric['unit'] . ' left'; ?>
+                                        <span style="font-weight:800;"> <?php echo $remaining . ' ' . $metric['unit'] . ' left'; ?> </span>
                                     </span>
                                 </div>
                             </div>

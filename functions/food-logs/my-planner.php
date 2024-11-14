@@ -206,6 +206,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         font-size: 0.9rem;
     }
 
+    .day-Name
+    {
+        text-transform: lowercase;
+        font-size:1rem;
+    }
     .date-text {
         font-size: 1rem;
         font-weight: bold;
@@ -849,17 +854,22 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             const date = new Date(today);
             date.setDate(today.getDate() + i);
 
+            // Get the abbreviated day name (e.g., "Thu") and formatted date
+            const dayAbbreviation = date.toLocaleDateString('en-US', { weekday: 'short' });
             const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
             daysData.push({
-                day: i + 1, 
+                day: i + 1,
+                dayAbbreviation: dayAbbreviation, 
                 date: formattedDate,
                 kcal: 00,
-                oz: 00 
+                oz: 00
             });
         }
         return daysData;
     }
+
+
 
     // Function to create HTML for each day column
     function createDayColumn(dayData, isFirstColumn) {
@@ -868,6 +878,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 <div class="text-center">
                     ${isFirstColumn ? '<div class="nutrition-label">nutrition</div>' : ''}
                     <div class="day-header">day ${dayData.day}</div> <!-- Day number -->
+                    <div class="day-Name fs-2">${dayData.dayAbbreviation}</div>
                     <div class="date-text" data-date="${dayData.date}">${dayData.date}</div>
                     <div class="cal-info">${dayData.kcal}kcal<br>${dayData.oz} oz</div>
                     <div class="AddToCart"><i class="fa fa-shopping-cart" id="cartIcon"></i></div>
@@ -904,7 +915,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         `;
     }
 
-        // Generate and append the columns with dates
+    // Generate and append the columns with dates
     function displayDates() {
             const daysData = generateDaysData(); // Generate the date data
 
@@ -934,16 +945,14 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-snack .meal-card').prepend('<div class="snack-label meal-card-title">Snack</div>');
             }
 
+            updateLabels();
+            $(window).on('resize', function() {
+                updateLabels();
+            });
 
             // Append the new columns
             daysData.forEach((day, index) => {
                 $('#empty-card-slots').append(createDayColumn(day, index === 0)); // Add date and day info
-            });
-
-            
-            updateLabels();
-            $(window).on('resize', function() {
-                updateLabels();
             });
         }
         // Initial load of the columns

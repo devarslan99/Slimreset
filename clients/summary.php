@@ -42,7 +42,7 @@
         background-color: #936CFB;
         position: absolute;
         bottom: 15px;
-        left: 32%;
+        left: 55px;
         transition: background-color 0.3s ease-in-out, width 0.3s ease-in-out;
     }
 

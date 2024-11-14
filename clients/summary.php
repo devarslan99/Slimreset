@@ -34,6 +34,18 @@
         transition: background-color 0.3s ease-in-out, width 0.3s ease-in-out;
     }
 
+    .nav-2.active::after {
+        content: "";
+        display: block;
+        width: 50%;
+        height: 2px;
+        background-color: #936CFB;
+        position: absolute;
+        bottom: 15px;
+        left: 32%;
+        transition: background-color 0.3s ease-in-out, width 0.3s ease-in-out;
+    }
+
     .nav-link:hover h6 {
         color: #936CFB;
         transition: color 0.3s ease-in-out;
@@ -43,9 +55,10 @@
         background: none !important;
     }
 
-    .nav-link.active h6 {
+    .nav-link.active h6,
+    .nav-link.active h1  {
         color: #946CFC !important;
-        font-weight: bold;
+        font-weight: 800;
     }
 
     .nav-link h6 {
@@ -279,18 +292,33 @@ foreach ($weight_history as $index => $entry) {
                                                             <div class="container-fluid">
                                                                 <div class="d-flex flex-wrap justify-content-center gap-2">
                                                                     <div class="nav nav-pills mx-2" role="tablist">
-                                                                        <a class="nav-link active" id="choose-food-tab" data-bs-toggle="pill" href="#choose-food" role="tab" aria-controls="choose-food" aria-selected="true">
-                                                                            <h6 class="responsive-font">Choose Food</h6>
+                                                                        <a class="nav-link active nav-2" id="choose-food-tab" data-bs-toggle="pill" href="#choose-food" role="tab" aria-controls="choose-food" aria-selected="true">
+                                                                            <div style="display:flex;align-items:center;gap:10px;">
+                                                                                <h1 class="fs-1 fw-bolder">1</h1>
+                                                                                <div> 
+                                                                                    <h6 class="responsive-font">Choose Food</h6>
+                                                                                </div>
+                                                                            </div>
                                                                         </a>
                                                                     </div>
                                                                     <div class="nav nav-pills mx-2" role="tablist">
-                                                                        <a class="nav-link" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
-                                                                            <h6 class="responsive-font">My Planner</h6>
+                                                                        <a class="nav-link nav-2" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
+                                                                            <div style="display:flex;align-items:center;gap:10px;">
+                                                                                <h1 class="fs-1 fw-bolder">2</h1>
+                                                                                <div> 
+                                                                                    <h6 class="responsive-font">My Planner</h6>
+                                                                                </div>
+                                                                            </div>
                                                                         </a>
                                                                     </div>
                                                                     <div class="nav nav-pills mx-2" role="tablist">
-                                                                        <a class="nav-link" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
-                                                                            <h6 class="responsive-font">My Tracker</h6>
+                                                                        <a class="nav-link nav-2" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
+                                                                            <div style="display:flex;align-items:center;gap:10px;">
+                                                                                <h1 class="fs-1 fw-bolder">3</h1>
+                                                                                <div> 
+                                                                                    <h6 class="responsive-font">My Tracker</h6>
+                                                                                </div>
+                                                                            </div>
                                                                         </a>
                                                                     </div>
                                                                 </div>

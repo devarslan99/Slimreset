@@ -911,9 +911,39 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             // Clear any existing content
             $('#empty-card-slots').empty();
 
+            function updateLabels() {
+                $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
+
+                let previousOffsetTop = null;
+
+                $('.day-column').each(function() {
+                    const currentOffsetTop = $(this).offset().top;
+                    if (currentOffsetTop !== previousOffsetTop) {
+                        addLabels($(this));
+                    }
+                    previousOffsetTop = currentOffsetTop;
+                });
+            }
+
+            function addLabels($dayColumn) {
+                $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
+
+                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-breakfast .meal-card').prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
+                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-lunch .meal-card').prepend('<div class="lunch-label meal-card-title">Lunch</div>');
+                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-dinner .meal-card').prepend('<div class="dinner-label meal-card-title">Dinner</div>');
+                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-snack .meal-card').prepend('<div class="snack-label meal-card-title">Snack</div>');
+            }
+
+
             // Append the new columns
             daysData.forEach((day, index) => {
                 $('#empty-card-slots').append(createDayColumn(day, index === 0)); // Add date and day info
+            });
+
+            
+            updateLabels();
+            $(window).on('resize', function() {
+                updateLabels();
             });
         }
         // Initial load of the columns

@@ -168,6 +168,8 @@
         padding:0;
         font-weight:bold;
         color:#ccc;
+        border:0;
+        outline:none;
     }
     .btn:hover
     {
@@ -185,7 +187,7 @@
         gap:5px
     }
 
-    /* Add some styling for the active button */
+    /* Add some styling for the active phase button */
     .tab-button.active {
         color: #936CFB;
         border:0;
@@ -367,7 +369,7 @@ foreach ($weight_history as $index => $entry) {
                                                                                             </div>
                                                                                         <?php endif; ?>
                                                                                     </div>
-                                                                                    <div class="d-flex align-items-center phase-tab">
+                                                                                    <div class=" align-items-center phase-tab" id="phaseTabs">
                                                                                         <button class="btn tab-button active" data-phase="1">Phase 1</button>
                                                                                         <span class="line">|</span>
                                                                                         <button class="btn tab-button" data-phase="2">Phase 2</button>
@@ -623,6 +625,22 @@ foreach ($weight_history as $index => $entry) {
                     .catch(error => console.error('Error loading content:', error));
             });
         });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const preferenceSwitch = document.getElementById('preferenceSwitch');
+        const phaseTabs = document.getElementById('phaseTabs');
+
+        // Add event listener
+        preferenceSwitch.addEventListener('change', function() {
+            if (preferenceSwitch.checked) {
+                phaseTabs.style.display = 'none';
+            } else {
+                phaseTabs.style.display = 'flex'; 
+            }
+        });
+    });
     </script>
 </body>
 

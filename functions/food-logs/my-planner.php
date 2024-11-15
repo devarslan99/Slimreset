@@ -1096,7 +1096,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         // Populate the .meal-card with structured content, retaining the label
                         targetMealCard.innerHTML = `
                             ${existingLabel ? existingLabel.outerHTML : ''} <!-- Keep existing label -->
-                            <div class="custom-border rounded meal-box">
+                            <div class="custom-border rounded meal-box" onclick="showBox()">
                                 <img src="${imageSrc}" alt="${mealName}">
                                 <div class="meal-name">${mealName}</div>
                                 <div class="meal-name-sub">${mealSubName}</div>
@@ -1174,29 +1174,29 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         return mealInfo;
     }
 
-
     // function to show the recipe POP-UP
-    function showPopup() {
+    function showBox()
+    {
+        console.log("Popup is being triggered"); // Debug log
         document.getElementById('popup-overlay').style.display = 'flex';
-        }
+    }
 
-        // Function to close the popup
-        function closePopup() {
+    // Function to close the popup
+    function closePopup() {
             document.getElementById('popup-overlay').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const popupOverlay = document.getElementById('popup-overlay');
+        if (popupOverlay) {
+            popupOverlay.addEventListener('click', function(event) {
+                if (event.target.id === 'popup-overlay') {
+                    closePopup();
+                }
+            });
         }
-
-        // Event listener for meal-box click
-        $(document).on('click', '.meal-box', function(event) {
-            showPopup();
-            event.stopPropagation(); // Prevents triggering from any other part
-        });
-
-        // Close the popup when clicking outside of it
-        $(document).on('click', '#popup-overlay', function(event) {
-            if (event.target.id === 'popup-overlay') {
-                closePopup();
-            }
     });
+
 
 
     // Function to show the grocery popup

@@ -116,6 +116,12 @@ while ($row = $result_protein->fetch_assoc()) {
         transform: translateY(-50%);
     }
 
+    .border-lines
+    {
+        border-left:3px dotted #000;
+        border-right:3px dotted #000;
+    }
+
     @media (min-width: 992px) {
 
         /* lg breakpoint */
@@ -128,44 +134,31 @@ while ($row = $result_protein->fetch_assoc()) {
 <div class="container">
     <div class="row">
         <div class="col-lg-8">
-            <h2 class="text-center mb-5">
+            <h2 class="text-left mb-5" style="color: #000000;font-weight:bold;">
                 My Progress
             </h2>
             <div class="row">
-                <div class="col-md-8">
-                    <div class="row">
-                        <div id="chartContainer">
-                            <canvas id="weightChart"></canvas>
+                <div class="col-md-12">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="mb-4 text-center flex-fill">
+                            <h4 class="" style="color: #000000;">Start date</h4>
+                            <h5 class="mt-3"><?php echo formatDate($startDate); ?></h5>
+                        </div>
+                        <div class="mb-4 text-center flex-fill border-lines">
+                            <h4 class="" style="color: #000000;">Projected date to goal</h4>
+                            <h5 class="mt-3"><?php echo formatDate($course_end_date); ?></h5>
+                        </div>
+                        <div class="mb-4 text-center flex-fill">
+                            <h4 class="" style="color: #000000;">Weight loss/per day</h4>
+                            <h5 class="mt-3">You are losing 0.5 to 1lb per day</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="mb-4 lg-mt-col">
-                            <h4 class="main-color">
-                                Start date
-                            </h4>
-                            <h5 class="mt-3">
-                                <?php echo formatDate($startDate); ?>
-                            </h5>
-                        </div>
-                        <div class="mb-4">
-                            <h4 class="main-color">
-                                Projected date to goal
-                            </h4>
-                            <h5 class="mt-3">
-                                <?php echo formatDate($course_end_date) ?>
-                            </h5>
-                        </div>
-                        <div class="mb-4">
-                            <h4 class="main-color">
-                                Weight loss/per day
-                            </h4>
-                            <h5 class="mt-3">
-                                You are losing 0.5 to 1lb per day
-                            </h5>
-                        </div>
-                    </div>
+            </div>
+
+            <div class="row">
+                <div id="chartContainer">
+                    <canvas id="weightChart"></canvas>
                 </div>
             </div>
         </div>
@@ -182,7 +175,7 @@ while ($row = $result_protein->fetch_assoc()) {
                                 <?php
                                 $percentage = ($goal_weight > 0) ? ($current_weight / $goal_weight) * 100 : 0;
                                 ?>
-                                <h1 class="text-center h1 fw-bold mt-3 main-color">
+                                <h1 class="text-center h1 fw-bold mt-3 " style="color: #000000;">
                                     <?php echo $current_weight; ?>lbs
                                 </h1>
                                 <p class="text-center mt-2">
@@ -304,6 +297,8 @@ while ($row = $result_protein->fetch_assoc()) {
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: false,

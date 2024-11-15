@@ -114,7 +114,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         background-color: #fff;
         padding: 30px;
         border-radius: 20px;
-        width: 700px;
+        width: 600px;
         max-width: 90%;
         display: flex;
         flex-direction: column;
@@ -138,6 +138,33 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         border-radius: 50%;
     }
 
+    .grocery-list-box {
+        max-height: 60vh;
+        overflow-y: auto;
+        padding-right: 15px;
+        margin-top: 20px;
+    }
+
+    /* Custom scrollbar styles for webkit browsers */
+    .grocery-list-box::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .grocery-list-box::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .grocery-list-box::-webkit-scrollbar-thumb {
+        background-color: #946cfc;
+        border-radius: 10px;
+        border: 2px solid #f1f1f1;
+    }
+
+    .grocery-list-box::-webkit-scrollbar-thumb:hover {
+        background-color: #7f4bc9;
+    }
+
     /* Grocery List Styles */
     .grocery-list-title {
         font-size: 1.8em;
@@ -152,36 +179,13 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         gap: 20px;
     }
 
-    /* Aisle Section in Each Column */
-    .grocery-column {
-        flex: 1;
-    }
-
-    .grocery-aisle h3 {
-        font-weight: bold;
-        font-style: italic;
-        color: #333;
-        margin-bottom: 10px;
-    }
-
-    .grocery-aisle ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .grocery-aisle li {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 1em;
-    }
-
-    .grocery-aisle li span strong {
-        font-weight: bold;
+    .label-name {
+        margin-bottom: 4px;
+        background: blue;
+        color: #fff;
+        padding: 2px 5px;
+        text-align: center;
+        border-radius: 4px;
     }
 
     /* PDF Icon */
@@ -202,6 +206,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         color: #6b4ce6;
         text-transform: uppercase;
         font-size: 0.9rem;
+    }
+
+    .day-Name {
+        text-transform: lowercase;
+        font-size: 1rem;
     }
 
     .date-text {
@@ -382,11 +391,17 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     .AddToCart i {
         font-size: 18px;
-        cursor: pointer;
+        color: gray;
     }
 
-    .AddToCart i:hover {
-        color: #00BF63;
+    .AddToCart i.black-icon {
+        color: black;
+        transition: color 0.3s ease;
+    }
+
+    .black-icon:hover {
+        color: #00BF63 !important;
+        cursor: pointer;
     }
 </style>
 
@@ -399,14 +414,14 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 </div>
 
                 <div class="col-auto d-none d-sm-inline-flex">
-                    <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold">
+                    <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold cursor-pointer" onclick="showGroceryPopup2()">
                         <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
                         Grocery List
                     </span>
                 </div>
 
                 <div class="col-12 text-center d-sm-none">
-                    <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold">
+                    <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold" onclick="showGroceryPopup2()">
                         <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
                         Grocery List
                     </span>
@@ -458,57 +473,88 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             <div class="grocery-popup-overlay" id="grocery-popup-overlay">
                 <div class="grocery-popup-content">
                     <div class="grocery-close-popup" onclick="closeGroceryPopup()">X</div>
-
                     <!-- Grocery List Content -->
                     <div class="grocery-list-box">
                         <h2 class="grocery-list-title">grocery list</h2>
 
-                        <!-- Columns for Aisles -->
-                        <div class="grocery-columns">
-                            <!-- Left Column -->
-                            <div class="grocery-column">
-                                <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
-                                    <ul>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
-                                    <ul>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
-                                        </li>
-                                    </ul>
-                                </div>
+                        <div class="list-box">
+                            <span class="label-name">
+                                Breakfast
+                            </span>
+
+                            <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
+                                <h3 class="fw-bold mb-0">Cheese Pizza</h3>
+                                <p class="text-muted mb-0">Nov 12</p>
                             </div>
 
-                            <!-- Right Column -->
-                            <div class="grocery-column">
-                                <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
-                                    <ul>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
-                                        </li>
-                                    </ul>
+                            <div class="row">
+                                <!-- Left Column with Calories and Total Fat -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="left">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Calories</h5>
+                                            <p class="mb-0">2.74g</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold  mb-1">Total Fat</h5>
+                                            <p class="mb-0">0.74g</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column with Carbohydrates and Protein -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="right ">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Carbohydrates</h5>
+                                            <p class="mb-0">15g</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Protein</h5>
+                                            <p class="mb-0">8g</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-box">
+                            <span class="label-name" data-label="Breakfast">
+                                Breakfast
+                            </span>
+
+                            <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
+                                <h3 class="fw-bold mb-0">Cheese Pizza</h3>
+                                <p class="text-muted mb-0">Nov 12</p>
+                            </div>
+
+                            <div class="row">
+                                <!-- Left Column with Calories and Total Fat -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="left">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Calories</h5>
+                                            <p class="mb-0">2.74g</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold  mb-1">Total Fat</h5>
+                                            <p class="mb-0">0.74g</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column with Carbohydrates and Protein -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="right ">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Carbohydrates</h5>
+                                            <p class="mb-0">15g</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="fw-bold mb-1">Protein</h5>
+                                            <p class="mb-0">8g</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -521,59 +567,47 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 </div>
             </div>
 
-            <!-- Grocery List Popup Overlay -->
-            <div class="grocery-popup-overlay" id="grocery-popup-overlay">
+            <!-- 2nd Grocery List Popup Box -->
+            <div class="grocery-popup-overlay" id="grocery-popup-overlay-2">
                 <div class="grocery-popup-content">
-                    <div class="grocery-close-popup" onclick="closeGroceryPopup()">X</div>
+                    <div class="grocery-close-popup" onclick="closeGroceryPopup2()">X</div>
 
+                    <h2 class="grocery-list-title">Grocery List</h2>
                     <!-- Grocery List Content -->
                     <div class="grocery-list-box">
-                        <h2 class="grocery-list-title">grocery list</h2>
 
                         <!-- Columns for Aisles -->
                         <div class="grocery-columns">
                             <!-- Left Column -->
                             <div class="grocery-column">
                                 <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
+                                    <h3>Vegetable Aisle</h3>
                                     <ul>
                                         <li>
                                             <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
+                                            <span>Eggs, <strong>3</strong></span>
                                         </li>
                                         <li>
                                             <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
+                                            <span>Chicken Breast, <strong>3</strong></span>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
-                                    <ul>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <!-- Repeat as needed -->
                             </div>
 
                             <!-- Right Column -->
                             <div class="grocery-column">
                                 <div class="grocery-aisle">
-                                    <h3>vegetable aisle</h3>
+                                    <h3>Vegetable Aisle</h3>
                                     <ul>
                                         <li>
                                             <input type="checkbox" checked>
-                                            <span>eggs, <strong>3</strong></span>
+                                            <span>Eggs, <strong>3</strong></span>
                                         </li>
                                         <li>
                                             <input type="checkbox" checked>
-                                            <span>chicken breast, <strong>3</strong></span>
+                                            <span>Chicken Breast, <strong>3</strong></span>
                                         </li>
                                     </ul>
                                 </div>
@@ -582,7 +616,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                         <!-- PDF Icon -->
                         <div class="grocery-pdf-icon">
-                            <i class="fa fa-file-pdf-o" onclick="downloadPDF()"></i>
+                            <i class="fa fa-file-pdf-o" onclick="downloadPDF2()"></i>
                         </div>
                     </div>
                 </div>
@@ -669,218 +703,338 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 <script>
     $(document).ready(function() {
+        // Dummy details of meals for the right side (meal cards)
         const mealData = [{
                 image: 'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
                 name: 'Veggie',
                 subName: 'Omelette',
-                calories: '800 kcal',
-                size: '8 oz'
+                mealInfo: {
+                    protein: '10g',
+                    calories: '800 kcal',
+                    fats: '8g',
+                    carbs: '15g',
+                    size: '8 oz'
+                }
             },
             {
                 image: 'https://images.pexels.com/photos/10261265/pexels-photo-10261265.jpeg',
                 name: 'Chicken',
                 subName: 'Salad',
-                calories: '650 kcal',
-                size: '7 oz'
+                mealInfo: {
+                    protein: '40g',
+                    calories: '650 kcal',
+                    fats: '10g',
+                    carbs: '12g',
+                    size: '7 oz'
+                }
             },
             {
                 image: 'https://images.unsplash.com/photo-1543353071-873f17a7a088',
                 name: 'Beef',
                 subName: 'Burger',
-                calories: '900 kcal',
-                size: '9 oz'
+                mealInfo: {
+                    protein: '50g',
+                    calories: '900 kcal',
+                    fats: '20g',
+                    carbs: '40g',
+                    size: '9 oz'
+                }
             },
             {
                 image: 'https://images.unsplash.com/photo-1495195129352-aeb325a55b65',
                 name: 'Fruit',
                 subName: 'Smoothie',
-                calories: '250 kcal',
-                size: '12 oz'
+                mealInfo: {
+                    protein: '5g',
+                    calories: '250 kcal',
+                    fats: '2g',
+                    carbs: '30g',
+                    size: '12 oz'
+                }
             },
             {
                 image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd',
                 name: 'Pasta',
                 subName: 'Primavera',
-                calories: '700 kcal',
-                size: '10 oz'
+                mealInfo: {
+                    protein: '15g',
+                    calories: '700 kcal',
+                    fats: '12g',
+                    carbs: '85g',
+                    size: '10 oz'
+                }
             },
             {
                 image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061',
                 name: 'Greek',
                 subName: 'Yogurt',
-                calories: '200 kcal',
-                size: '5 oz'
+                mealInfo: {
+                    protein: '15g',
+                    calories: '200 kcal',
+                    fats: '5g',
+                    carbs: '20g',
+                    size: '5 oz'
+                }
             },
             {
                 image: 'https://images.unsplash.com/photo-1525351484163-7529414344d8',
                 name: 'Steak',
                 subName: 'Frites',
-                calories: '1200 kcal',
-                size: '14 oz'
+                mealInfo: {
+                    protein: '80g',
+                    calories: '1200 kcal',
+                    fats: '50g',
+                    carbs: '15g',
+                    size: '14 oz'
+                }
             },
             {
                 image: 'https://images.pexels.com/photos/4050291/pexels-photo-4050291.jpeg',
                 name: 'Avocado',
                 subName: 'Toast',
-                calories: '300 kcal',
-                size: '6 oz'
+                mealInfo: {
+                    protein: '4g',
+                    calories: '300 kcal',
+                    fats: '25g',
+                    carbs: '20g',
+                    size: '6 oz'
+                }
             },
             {
                 image: 'https://images.pexels.com/photos/4413724/pexels-photo-4413724.jpeg',
                 name: 'Tomato',
                 subName: 'Soup',
-                calories: '150 kcal',
-                size: '8 oz'
+                mealInfo: {
+                    protein: '5g',
+                    calories: '150 kcal',
+                    fats: '4g',
+                    carbs: '20g',
+                    size: '8 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/3778698/pexels-photo-3778698.jpeg',
+                name: 'Salmon',
+                subName: 'Filet',
+                mealInfo: {
+                    protein: '30g',
+                    calories: '600 kcal',
+                    fats: '28g',
+                    carbs: '5g',
+                    size: '6 oz'
+                }
             }
         ];
 
+        // Append meal cards to #meal-cards
         $.each(mealData, function(index, meal) {
             const mealCard = `
-                <div class="meal-card-rec">
-                    <div class="custom-border rounded">
-                        <img class="recipe-img-card" src="${meal.image}" alt="${meal.name} ${meal.subName}">
-                        <div class="meal-name">${meal.name}</div>
-                        <div class="meal-name-sub">${meal.subName}</div>
-                        <div class="meal-info">${meal.calories}<br>${meal.size}</div>
-                        <span class="text-end star-margin">
-                            <i class="fa fa-star"></i>
-                        </span>
-                    </div>
-                </div>`;
+            <div class="meal-card-rec">
+                <div class="custom-border rounded">
+                    <img class="recipe-img-card" src="${meal.image}" alt="${meal.name} ${meal.subName}">
+                    <div class="meal-name">${meal.name}</div>
+                    <div class="meal-name-sub">${meal.subName}</div>
+                    <div class="meal-info">${meal.mealInfo.calories}<br>${meal.mealInfo.size}</div>
+                    <span class="text-end star-margin">
+                        <i class="fa fa-star"></i>
+                    </span>
+                </div>
+            </div>
+        `;
             $('#meal-cards').append(mealCard);
         });
 
-        const daysData = [{
-                day: 1,
-                date: "Oct 5",
-                kcal: 800,
-                oz: "10.5 oz"
-            },
-            {
-                day: 2,
-                date: "Oct 6",
-                kcal: 850,
-                oz: "11 oz"
-            },
-            {
-                day: 3,
-                date: "Oct 7",
-                kcal: 780,
-                oz: "9 oz"
-            },
-            {
-                day: 4,
-                date: "Oct 8",
-                kcal: 790,
-                oz: "10 oz"
-            },
-            {
-                day: 5,
-                date: "Oct 9",
-                kcal: 820,
-                oz: "10.8 oz"
-            },
-            {
-                day: 6,
-                date: "Oct 10",
-                kcal: 750,
-                oz: "9.5 oz"
-            },
-            {
-                day: 7,
-                date: "Oct 11",
-                kcal: 830,
-                oz: "11 oz"
-            }
-        ];
 
-        function createDayColumn(dayData) {
+
+        // Function to generate days data with formatted date
+        function generateDaysData() {
+            const daysData = [];
+            const today = new Date();
+
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+
+                // Get the abbreviated day name (e.g., "Thu") and formatted date
+                const dayAbbreviation = date.toLocaleDateString('en-US', {
+                    weekday: 'short'
+                });
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+                daysData.push({
+                    day: i + 1,
+                    dayAbbreviation: dayAbbreviation,
+                    date: formattedDate,
+                    kcal: '00',
+                    oz: '00'
+                });
+            }
+            return daysData;
+        }
+
+
+
+        // Function to create HTML for each day column
+        function createDayColumn(dayData, isFirstColumn) {
             return `
-                <div class="col-lg-2 col-md-4 col-sm-6 col-6 mb-4 day-column" style="max-width: 150px;">
-                    <div class="text-center">
-                        <div class="day-header">day ${dayData.day}</div>
-                        <div class="date-text">${dayData.date}</div>
-                        <div class="cal-info">${dayData.kcal} kcal<br>${dayData.oz}</div>
-                        <div class="AddToCart" onclick="showGroceryPopup()"><i class="fa fa-shopping-cart"></i></div>
-                    </div>
-                    <div class="meal-section" id="day${dayData.day}-breakfast">
-                        <div class="meal-card">
-                            <div class="add-more">
-                                <div class="plus-sign">+</div>
-                            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 col-6 mb-4 day-column" style="max-width: 150px;">
+                <div class="text-center">
+                    ${isFirstColumn ? '<div class="nutrition-label">nutrition</div>' : ''}
+                    <div class="day-header">day ${dayData.day}</div> <!-- Day number -->
+                    <div class="day-Name fs-2">${dayData.dayAbbreviation}</div>
+                    <div class="date-text" data-date="${dayData.date}">${dayData.date}</div>
+                    <div class="cal-info">${dayData.kcal}kcal<br>${dayData.oz} oz</div>
+                    <div class="AddToCart"><i class="fa fa-shopping-cart" id="cartIcon"></i></div>
+                </div>
+                <div class="meal-section" id="day${dayData.day}-breakfast" data-label="Breakfast">
+                    <div class="meal-card">${isFirstColumn ? '<div class="breakfast-label meal-card-title">Breakfast</div>' : ''}
+                        <div class="add-more">
+                            <div class="plus-sign">+</div>
                         </div>
                     </div>
-                    <div class="meal-section" id="day${dayData.day}-lunch">
-                        <div class="meal-card">
-                            <div class="add-more">
-                                <div class="plus-sign">+</div>
-                            </div>
+                </div>
+                <div class="meal-section" id="day${dayData.day}-lunch" data-label="Lunch">
+                    <div class="meal-card">${isFirstColumn ? '<div class="lunch-label meal-card-title">Lunch</div>' : ''}
+                        <div class="add-more">
+                            <div class="plus-sign">+</div>
                         </div>
                     </div>
-                    <div class="meal-section" id="day${dayData.day}-dinner">
-                        <div class="meal-card">
-                            <div class="add-more">
-                                <div class="plus-sign">+</div>
-                            </div>
+                </div>
+                <div class="meal-section" id="day${dayData.day}-dinner" data-label="Dinner">
+                    <div class="meal-card">${isFirstColumn ? '<div class="dinner-label meal-card-title">Dinner</div>' : ''}
+                        <div class="add-more">
+                            <div class="plus-sign">+</div>
                         </div>
                     </div>
-                    <div class="meal-section" id="day${dayData.day}-snack">
-                        <div class="meal-card">
-                            <div class="add-more">
-                                <div class="plus-sign">+</div>
+                </div>
+                <div class="meal-section" id="day${dayData.day}-snack" data-label="Snack">
+                    <div class="meal-card">${isFirstColumn ? '<div class="snack-label meal-card-title">Snack</div>' : ''}
+                        <div class="add-more">
+                            <div class="plus-sign">+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        }
+
+        // Generate and append the columns with dates
+        function displayDates() {
+            const daysData = generateDaysData(); // Generate the date data
+
+            // Clear any existing content
+            $('#empty-card-slots').empty();
+
+            function updateLabels() {
+                $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
+
+                let previousOffsetTop = null;
+
+                $('.day-column').each(function() {
+                    const currentOffsetTop = $(this).offset().top;
+                    if (currentOffsetTop !== previousOffsetTop) {
+                        addLabels($(this));
+                    }
+                    previousOffsetTop = currentOffsetTop;
+                });
+            }
+
+            function addLabels($dayColumn) {
+                $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
+
+                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-breakfast .meal-card').prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
+                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-lunch .meal-card').prepend('<div class="lunch-label meal-card-title">Lunch</div>');
+                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-dinner .meal-card').prepend('<div class="dinner-label meal-card-title">Dinner</div>');
+                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-snack .meal-card').prepend('<div class="snack-label meal-card-title">Snack</div>');
+            }
+
+            updateLabels();
+            $(window).on('resize', function() {
+                updateLabels();
+            });
+
+            // Append the new columns
+            daysData.forEach((day, index) => {
+                $('#empty-card-slots').append(createDayColumn(day, index === 0)); // Add date and day info
+            });
+        }
+        // Initial load of the columns
+        displayDates();
+        // Optional: Refresh the dates daily at midnight
+        setInterval(displayDates, 24 * 60 * 60 * 1000); // Refresh every 24 hours
+
+
+        initializeSortable();
+    });
+
+    let mealDataArray = [];
+
+    // Function to populate the grocery list
+    function populateGroceryList(mealDataArray) {
+        const groceryListBox = document.querySelector('.grocery-list-box');
+        groceryListBox.innerHTML = ''; // Clear any previous content
+
+        mealDataArray.forEach(meal => {
+            console.log('meal', meal); // Log each meal to verify the data
+            // Create and append the meal HTML
+            const mealHTML = `
+                <div class="list-box">
+                    <span class="label-name">${meal.label}</span> <!-- Dynamic label -->
+                    <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="fw-bold mb-0">${meal.mealName} ${meal.mealSubName}</h3>
+                        <p class="text-muted mb-0">${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                    </div>
+                    <div class="row">
+                        <!-- Left Column with Calories and Total Fat -->
+                        <div class="col-md-6 mb-3">
+                            <div class="left">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Calories</h5>
+                                    <p class="mb-0">${meal.mealInfo.calories || 'N/A'}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Total Fat</h5>
+                                    <p class="mb-0">${meal.mealInfo.fats || 'N/A'}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Right Column with Carbohydrates and Protein -->
+                        <div class="col-md-6 mb-3">
+                            <div class="right">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Carbohydrates</h5>
+                                    <p class="mb-0">${meal.mealInfo.carbs || 'N/A'}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Protein</h5>
+                                    <p class="mb-0">${meal.mealInfo.protein || 'N/A'}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
-        }
-
-        function updateLabels() {
-            $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
-
-            let previousOffsetTop = null;
-
-            $('.day-column').each(function() {
-                const currentOffsetTop = $(this).offset().top;
-                if (currentOffsetTop !== previousOffsetTop) {
-                    addLabels($(this));
-                }
-                previousOffsetTop = currentOffsetTop;
-            });
-        }
-
-        function addLabels($dayColumn) {
-            $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
-
-            $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-breakfast .meal-card').prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
-            $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-lunch .meal-card').prepend('<div class="lunch-label meal-card-title">Lunch</div>');
-            $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-dinner .meal-card').prepend('<div class="dinner-label meal-card-title">Dinner</div>');
-            $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-snack .meal-card').prepend('<div class="snack-label meal-card-title">Snack</div>');
-        }
-
-        daysData.forEach((day) => {
-            $('#empty-card-slots').append(createDayColumn(day));
+            groceryListBox.innerHTML += mealHTML; // Append the meal HTML to the grocery list box
         });
+    }
 
-        updateLabels();
+    // Call the function to populate the grocery list
+    populateGroceryList(mealDataArray);
 
-        $(window).on('resize', function() {
-            updateLabels();
-        });
-
-        initializeSortable();
-    });
 
     function initializeSortable() {
         // Make the meal cards (right side, recipes) draggable
         Sortable.create(document.getElementById('meal-cards'), {
             group: {
                 name: 'shared',
-                pull: 'clone', // Allows items to be dragged out of this list
-                put: false // Prevents items from being dropped back here
+                pull: 'clone',
+                put: false
             },
             animation: 150,
-            sort: false // Prevent sorting within the right side container
+            sort: false
         });
 
         // Make each meal section (left side, empty slots) a drop target only
@@ -889,18 +1043,24 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             Sortable.create(section, {
                 group: {
                     name: 'shared',
-                    pull: false, // Prevents these items from being dragged out
-                    put: true // Allows items to be dropped in
+                    pull: false,
+                    put: true
                 },
                 animation: 150,
-                sort: false, // Prevent sorting within the meal sections
+                sort: false,
                 onAdd: function(evt) {
                     // Get the data from the dragged element
                     const draggedItem = evt.item;
                     const imageSrc = draggedItem.querySelector('img').src;
                     const mealName = draggedItem.querySelector('.meal-name').textContent;
                     const mealSubName = draggedItem.querySelector('.meal-name-sub') ? draggedItem.querySelector('.meal-name-sub').textContent : '';
-                    const mealInfo = draggedItem.querySelector('.meal-info').innerHTML;
+
+                    // Extract the nutritional information from the meal-info div
+                    const mealInfoDiv = draggedItem.querySelector('.meal-info');
+                    const mealInfo = extractMealInfo(mealInfoDiv);
+
+                    // Capture the section label
+                    const sectionLabel = evt.to.getAttribute('data-label');
 
                     // Find the existing empty .meal-card in the target section
                     const targetMealCard = evt.to.querySelector('.meal-card');
@@ -916,17 +1076,70 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 <img src="${imageSrc}" alt="${mealName}">
                                 <div class="meal-name">${mealName}</div>
                                 <div class="meal-name-sub">${mealSubName}</div>
-                                <div class="meal-info">${mealInfo}</div>
+                                <div class="meal-info">${mealInfo.calories}<br>${mealInfo.size}</div> <!-- Display only calories and size -->
                             </div>
                         `;
                     }
 
                     // Remove the dragged item from its original location to keep single instance
                     draggedItem.remove();
+
+                    // Capture the meal card data and add it to the array
+                    const mealData = {
+                        imageSrc,
+                        mealName,
+                        mealSubName,
+                        mealInfo,
+                        label: sectionLabel
+                    };
+
+                    mealDataArray.push(mealData);
+                    console.log('Meal data array:', mealDataArray);
+
+                    // Now, call populateGroceryList to update the UI with the new meal data
+                    populateGroceryList(mealDataArray);
+
+                    const dayColumn = evt.to.closest('.day-column');
+                    if (dayColumn) {
+                        const addToCartIcon = dayColumn.querySelector('.AddToCart');
+                        if (addToCartIcon) {
+                            addToCartIcon.style.display = 'block';
+
+                            // Change the icon color to black and add the "black-icon" class
+                            const cartIcon = addToCartIcon.querySelector('i');
+                            if (cartIcon) {
+                                cartIcon.style.color = 'black';
+                                cartIcon.classList.add('black-icon');
+                            }
+
+                            cartIcon.addEventListener('click', function() {
+                                showGroceryPopup();
+                            });
+                        }
+                    }
                 }
             });
         });
     }
+
+    // Function to extract meal info from the HTML
+    function extractMealInfo(mealInfoDiv) {
+        // Extract the nutritional values from the meal-info div
+        const infoText = mealInfoDiv.innerText || mealInfoDiv.textContent;
+
+        const infoLines = infoText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+
+        const mealInfo = {
+            calories: infoLines.find(line => line.includes('kcal')) || '',
+            size: infoLines.find(line => line.includes('oz')) || '',
+            protein: infoLines.find(line => line.includes('protein')) || '',
+            fats: infoLines.find(line => line.includes('fats')) || '',
+            carbs: infoLines.find(line => line.includes('carbs')) || ''
+        };
+
+        return mealInfo;
+    }
+
 
     // function to show the recipe POP-UP
     function showPopup() {
@@ -953,16 +1166,13 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 
     // Function to show the grocery popup
-    function showGroceryPopup(e) {
+    function showGroceryPopup() {
         document.getElementById('grocery-popup-overlay').style.display = 'flex';
-        console.log(e)
     }
-
     // Function to close the grocery popup
     function closeGroceryPopup() {
         document.getElementById('grocery-popup-overlay').style.display = 'none';
     }
-
     // Close the grocery popup when clicking outside of it
     document.addEventListener('click', function(event) {
         const overlay = document.getElementById('grocery-popup-overlay');
@@ -971,6 +1181,23 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         }
     });
 
+
+    // 2nd Function to show the grocery popup
+    function showGroceryPopup2() {
+        document.getElementById('grocery-popup-overlay-2').style.display = 'flex';
+    }
+
+    function closeGroceryPopup2() {
+        document.getElementById('grocery-popup-overlay-2').style.display = 'none';
+    }
+
+    // Close the 2nd grocery popup when clicking outside of it
+    document.addEventListener('click', function(event) {
+        const overlay2 = document.getElementById('grocery-popup-overlay-2');
+        if (event.target === overlay2) {
+            closeGroceryPopup2();
+        }
+    });
 
     // function to download grocery list as a PDF 
     function downloadPDF() {
@@ -999,6 +1226,29 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         html2pdf().set(options).from(element).save();
     }
 
+    // / 2nd function to download grocery list as a PDF 
+    function downloadPDF2() {
+        const element = document.querySelector('#grocery-popup-overlay-2 .grocery-list-box');
+
+        const options = {
+            margin: 1,
+            filename: 'grocery_list_2.pdf',
+            image: {
+                type: 'jpeg',
+                quality: 0.98
+            },
+            html2canvas: {
+                scale: 2
+            },
+            jsPDF: {
+                unit: 'in',
+                format: 'a4',
+                orientation: 'portrait'
+            }
+        };
+
+        html2pdf().set(options).from(element).save();
+    }
 
     // calender date picker
     $(document).ready(function() {
@@ -1027,14 +1277,15 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 
         // Function to show the grocery popup
-        function showGroceryPopup(e) {
+        function showGroceryPopup() {
             document.getElementById('grocery-popup-overlay').style.display = 'flex';
-            console.log(e)
+            document.getElementById('grocery-popup-overlay-2').style.display = 'flex';
         }
 
         // Function to close the grocery popup
         function closeGroceryPopup() {
             document.getElementById('grocery-popup-overlay').style.display = 'none';
+            document.getElementById('grocery-popup-overlay-2').style.display = 'none';
         }
 
         // Close the grocery popup when clicking outside of it
@@ -1045,6 +1296,21 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             }
         });
 
+        function showGroceryPopup2() {
+            document.getElementById('grocery-popup-overlay-2').style.display = 'flex';
+        }
+
+        function closeGroceryPopup2() {
+            document.getElementById('grocery-popup-overlay-2').style.display = 'none';
+        }
+
+        // Close the 2nd grocery popup when clicking outside of it
+        document.addEventListener('click', function(event) {
+            const overlay2 = document.getElementById('grocery-popup-overlay-2');
+            if (event.target === overlay2) {
+                closeGroceryPopup2();
+            }
+        });
 
         // function to download grocery list as a PDF 
         function downloadPDF() {

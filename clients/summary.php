@@ -34,6 +34,18 @@
         transition: background-color 0.3s ease-in-out, width 0.3s ease-in-out;
     }
 
+    .nav-2.active::after {
+        content: "";
+        display: block;
+        width: 50%;
+        height: 2px;
+        background-color: #936CFB;
+        position: absolute;
+        bottom: 15px;
+        left: 55px;
+        transition: background-color 0.3s ease-in-out, width 0.3s ease-in-out;
+    }
+
     .nav-link:hover h6 {
         color: #936CFB;
         transition: color 0.3s ease-in-out;
@@ -43,16 +55,18 @@
         background: none !important;
     }
 
-    .nav-link.active h6 {
+    .nav-link.active h6,
+    .nav-link.active h1  {
         color: #946CFC !important;
-        font-weight: bold;
+        font-weight: 800;
     }
 
     .nav-link h6 {
         color: #000;
     }
 
-    .nav-link:hover {
+    .nav-link:hover h6,
+    .nav-link:hover h1 {
         color: #936CFB !important;
         transition: color 0.3s ease-in-out;
     }
@@ -147,6 +161,27 @@
 
     .fa-star.active {
         color: yellow;
+    }
+
+    .btn
+    {
+        padding:0;
+        font-weight:bold;
+    }
+    .btn:hover
+    {
+        color:#936CFB;
+    }
+
+    .line
+    {
+        color:#ccc;
+    }
+
+    .phase-tab
+    {
+        font-weight:600;
+        gap:5px
     }
 </style>
 
@@ -279,18 +314,33 @@ foreach ($weight_history as $index => $entry) {
                                                             <div class="container-fluid">
                                                                 <div class="d-flex flex-wrap justify-content-center gap-2">
                                                                     <div class="nav nav-pills mx-2" role="tablist">
-                                                                        <a class="nav-link active" id="choose-food-tab" data-bs-toggle="pill" href="#choose-food" role="tab" aria-controls="choose-food" aria-selected="true">
-                                                                            <h6 class="responsive-font">Choose Food</h6>
+                                                                        <a class="nav-link active nav-2" id="choose-food-tab" data-bs-toggle="pill" href="#choose-food" role="tab" aria-controls="choose-food" aria-selected="true">
+                                                                            <div style="display:flex;align-items:center;gap:10px;">
+                                                                                <h1 class="fs-1 fw-bolder">1</h1>
+                                                                                <div> 
+                                                                                    <h6 class="responsive-font">Choose Food</h6>
+                                                                                </div>
+                                                                            </div>
                                                                         </a>
                                                                     </div>
                                                                     <div class="nav nav-pills mx-2" role="tablist">
-                                                                        <a class="nav-link" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
-                                                                            <h6 class="responsive-font">My Planner</h6>
+                                                                        <a class="nav-link nav-2" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
+                                                                            <div style="display:flex;align-items:center;gap:10px;">
+                                                                                <h1 class="fs-1 fw-bolder">2</h1>
+                                                                                <div> 
+                                                                                    <h6 class="responsive-font">My Planner</h6>
+                                                                                </div>
+                                                                            </div>
                                                                         </a>
                                                                     </div>
                                                                     <div class="nav nav-pills mx-2" role="tablist">
-                                                                        <a class="nav-link" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
-                                                                            <h6 class="responsive-font">My Tracker</h6>
+                                                                        <a class="nav-link nav-2" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
+                                                                            <div style="display:flex;align-items:center;gap:10px;">
+                                                                                <h1 class="fs-1 fw-bolder">3</h1>
+                                                                                <div> 
+                                                                                    <h6 class="responsive-font">My Tracker</h6>
+                                                                                </div>
+                                                                            </div>
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -300,14 +350,25 @@ foreach ($weight_history as $index => $entry) {
                                                                         <div class="row">
                                                                             <div class="col-lg-9">
                                                                                 <h1 class="text-center">Choose Your Food Preferences</h1>
-                                                                                <div class="d-flex justify-content-center align-items-center my-4">
-                                                                                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
-                                                                                        <label class="form-label me-2 fs-6 responsive-font">View all</label>
-                                                                                        <div class="form-check form-switch">
-                                                                                            <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
-                                                                                            <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
-                                                                                        </div>
-                                                                                    <?php endif; ?>
+                                                                                <div class="d-flex justify-content-between align-items-center px-5">
+                                                                                    <div class="d-flex justify-content-center align-items-center my-4">
+                                                                                        <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
+                                                                                            <label class="form-label me-2 fs-6 responsive-font">View all</label>
+                                                                                            <div class="form-check form-switch">
+                                                                                                <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
+                                                                                                <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
+                                                                                            </div>
+                                                                                        <?php endif; ?>
+                                                                                    </div>
+                                                                                    <div class="d-flex align-items-center phase-tab">
+                                                                                        <button class="btn tab-button" data-phase="1">Phase 1</button>
+                                                                                        <span class="line">|</span>
+                                                                                        <button class="btn tab-button" data-phase="2">Phase 2</button>
+                                                                                        <span class="line">|</span>
+                                                                                        <button class="btn tab-button" data-phase="3">Phase 3</button>
+                                                                                        <span class="line">|</span>
+                                                                                        <button class="btn tab-button" data-phase="4">Phase 4</button>
+                                                                                    </div>
                                                                                 </div>
 
                                                                                 <!-- Food Categories Section for view all-->
@@ -439,7 +500,7 @@ foreach ($weight_history as $index => $entry) {
                 document.querySelectorAll('.nav-link.active').forEach(link => link.classList.remove('active'));
                 document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
 
-                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker') {
+                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker' || activeTabId === 'choose-food' ) {
                     const myPlanTabLink = document.querySelector('#my-plan-tab');
                     const myPlanTabContent = document.querySelector('#my-plan');
 

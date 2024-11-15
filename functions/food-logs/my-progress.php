@@ -179,7 +179,7 @@ while ($row = $result_protein->fetch_assoc()) {
                                     <?php echo $current_weight; ?>lbs
                                 </h1>
                                 <p class="text-center mt-2">
-                                    <?php echo $goal_weight; ?> goal weight
+                                    <strong class="font-weight:800;color:#000;"><?php echo $goal_weight; ?> lbs</strong> goal weight
                                 </p>
                             </div>
                             <div class="row text-center my-4 justify-content-center">

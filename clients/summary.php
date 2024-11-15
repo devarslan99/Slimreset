@@ -163,12 +163,12 @@
         color: yellow;
     }
 
-    .btn
+    .tab-button
     {
         padding:0;
         font-weight:bold;
     }
-    .btn:hover
+    .tab-button:hover
     {
         color:#936CFB;
     }

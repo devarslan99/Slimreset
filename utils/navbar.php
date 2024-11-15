@@ -404,7 +404,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                         <li class="menu new-entry-bg-none ">
                             <ul>
                                 <li>
-                                    <button class="btn btn-primary rounded-pill px-3" style="background-color: #946CFC; border: none;">
+                                    <button class="btn btn-primary rounded-pill px-3 py-2" style="background-color: #946CFC; border: none;">
                                         + new entry
                                     </button>
                                     <input type="hidden" value="<?php echo $selected_date; ?>" id="selected_date">

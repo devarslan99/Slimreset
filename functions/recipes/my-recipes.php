@@ -438,6 +438,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                     if (data.status == "success") {
                         modal.hide();
                         Swal.fire("Success", "Recipe added successfully!", "success")
+                            .then(() => location.reload())
                     } else {
                         swal("Error", "Failed to add recipe.", "error");
                     }

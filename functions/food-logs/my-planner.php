@@ -1096,7 +1096,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         // Populate the .meal-card with structured content, retaining the label
                         targetMealCard.innerHTML = `
                             ${existingLabel ? existingLabel.outerHTML : ''} <!-- Keep existing label -->
-                            <div class="custom-border rounded meal-box" onclick="showBox()">
+                            <div class="custom-border rounded meal-box" data-meal-name="${mealName}" data-meal-subname="${mealSubName}" data-meal-info="${mealInfo}" onclick="showBox(this)">
                                 <img src="${imageSrc}" alt="${mealName}">
                                 <div class="meal-name">${mealName}</div>
                                 <div class="meal-name-sub">${mealSubName}</div>
@@ -1175,11 +1175,32 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
     // function to show the recipe POP-UP
-    function showBox()
-    {
-        console.log("Popup is being triggered"); // Debug log
-        document.getElementById('popup-overlay').style.display = 'flex';
-    }
+function showBox(mealElement) {
+    const mealName = mealElement.getAttribute('data-meal-name');
+    const mealSubName = mealElement.getAttribute('data-meal-subname');
+    const mealInfo = mealElement.getAttribute('data-meal-info');
+    
+    document.getElementById('popup-overlay').style.display = 'flex';
+    const mealDetail = document.querySelector('.meal-detail');
+    
+    mealDetail.innerHTML = ""; // Clear existing content
+    
+    mealDetail.innerHTML = `
+        <div class="ingredients">
+            <h2>${mealName} ${mealSubName}</h2>
+            <strong>ingredients</strong>
+            <span>egg</span>
+            <span>your choice of veg</span>
+        </div>
+        <div class="details">
+            <div><strong>calories</strong> ${mealInfo.calories}</div>
+            <div><strong>protein</strong> 1.5 oz</div>
+            <div><strong>prep</strong> 5 min</div>
+            <div><strong>cook</strong> 20 min</div>
+        </div>
+    `;
+}
+
 
     // Function to close the popup
     function closePopup() {

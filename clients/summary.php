@@ -167,6 +167,7 @@
     {
         padding:0;
         font-weight:bold;
+        color:#ccc;
     }
     .btn:hover
     {
@@ -182,6 +183,12 @@
     {
         font-weight:600;
         gap:5px
+    }
+
+    /* Add some styling for the active button */
+    .tab-button.active {
+        color: #936CFB;
+        border:0;
     }
 </style>
 
@@ -361,7 +368,7 @@ foreach ($weight_history as $index => $entry) {
                                                                                         <?php endif; ?>
                                                                                     </div>
                                                                                     <div class="d-flex align-items-center phase-tab">
-                                                                                        <button class="btn tab-button" data-phase="1">Phase 1</button>
+                                                                                        <button class="btn tab-button active" data-phase="1">Phase 1</button>
                                                                                         <span class="line">|</span>
                                                                                         <button class="btn tab-button" data-phase="2">Phase 2</button>
                                                                                         <span class="line">|</span>
@@ -585,6 +592,35 @@ foreach ($weight_history as $index => $entry) {
         document.querySelectorAll('.fa-star').forEach(star => {
             star.addEventListener('click', () => {
                 star.classList.toggle('active'); // Toggle yellow color
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove 'active' class from all buttons
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+                // Add 'active' class to the clicked button
+                button.classList.add('active');
+
+                // Get the phase number
+                const phase = button.getAttribute('data-phase');
+
+                // Determine the file to load based on the phase
+                const filePath = phase === "1" 
+                    ? '../functions/food-logs/view_all_food.php' 
+                    : `../functions/food-logs/view_all_food_phase_${phase}.php`;
+
+                // Load content for the selected phase
+                fetch(filePath)
+                    .then(response => response.text())
+                    .then(data => {
+                        // Display the phase data in the single container
+                        document.getElementById('viewAllSection').innerHTML = data;
+                    })
+                    .catch(error => console.error('Error loading content:', error));
             });
         });
     </script>

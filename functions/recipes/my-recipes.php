@@ -1,5 +1,18 @@
 <?php
-$selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
+include_once "../database/db_connection.php";
+
+$user_id = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
+
+$recipes = [];
+if ($user_id) {
+    $stmt = mysqli_prepare($mysqli, "SELECT * FROM recipe_items WHERE user_id = ?");
+    mysqli_stmt_bind_param($stmt, "i", $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $recipes = $result ? mysqli_fetch_all($result, MYSQLI_ASSOC) : [];
+    mysqli_stmt_close($stmt);
+}
+$recipes_json = json_encode($recipes);
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +103,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
         .my-recipe-img-card {
             width: 200px;
-            height: 150px;
+            height: 180px;
         }
     </style>
 </head>
@@ -105,7 +118,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                     <input type="checkbox" id="lunch">
                     <label for="lunch" class="mb-0">Lunch/Dinner</label>
                 </div>
-                <input type="hidden" value="<?php echo $selected_date; ?>" id="selected_date-recipe">
                 <button class="btn btn-primary rounded-pill py-2" onclick="openRecipeModal('recipeModal')" style="background-color: #946CFC; border: none;">
                     Add Recipe
                 </button>
@@ -144,82 +156,10 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             </div>
         </div>
 
+        <!-- Recipe Card -->
         <div class="row">
-            <!-- Recipe Card -->
             <div class="d-flex flex-wrap mt-3 gap-3">
-                <!-- Recipe Card Example -->
-                <div class="meal-card-rec">
-                    <div class="custom-border rounded">
-                        <img class="my-recipe-img-card" src="https://images.unsplash.com/photo-1525351484163-7529414344d8" alt="Veggie Omelette">
-                        <div class="meal-name">veggie</div>
-                        <div class="meal-name-sub">omelette</div>
-                        <div class="meal-info">800 kcal<br>8 oz</div>
-                    </div>
-                </div>
-                <div class="meal-card-rec">
-                    <div class="custom-border rounded">
-                        <img class="my-recipe-img-card" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061" alt="Veggie Omelette">
-                        <div class="meal-name">veggie</div>
-                        <div class="meal-name-sub">omelette</div>
-                        <div class="meal-info">800 kcal<br>8 oz</div>
-                    </div>
-                </div>
-                <div class="meal-card-rec">
-                    <div class="custom-border rounded">
-                        <img class="my-recipe-img-card" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Veggie Omelette">
-                        <div class="meal-name">veggie</div>
-                        <div class="meal-name-sub">omelette</div>
-                        <div class="meal-info">800 kcal<br>8 oz</div>
-                    </div>
-                </div>
-                <div class="meal-card-rec">
-                    <div class="custom-border rounded">
-                        <img class="my-recipe-img-card" src="https://images.unsplash.com/photo-1495195129352-aeb325a55b65" alt="Veggie Omelette">
-                        <div class="meal-name">veggie</div>
-                        <div class="meal-name-sub">omelette</div>
-                        <div class="meal-info">800 kcal<br>8 oz</div>
-                    </div>
-                </div>
-                <div class="meal-card-rec">
-                    <div class="custom-border rounded">
-                        <img class="my-recipe-img-card" src="https://images.unsplash.com/photo-1543353071-873f17a7a088" alt="Veggie Omelette">
-                        <div class="meal-name">veggie</div>
-                        <div class="meal-name-sub">omelette</div>
-                        <div class="meal-info">800 kcal<br>8 oz</div>
-                    </div>
-                </div>
-                <div class="meal-card-rec">
-                    <div class="custom-border rounded">
-                        <img class="my-recipe-img-card" src="https://images.pexels.com/photos/10261265/pexels-photo-10261265.jpeg" alt="Veggie Omelette">
-                        <div class="meal-name">veggie</div>
-                        <div class="meal-name-sub">omelette</div>
-                        <div class="meal-info">800 kcal<br>8 oz</div>
-                    </div>
-                </div>
-                <div class="meal-card-rec">
-                    <div class="custom-border rounded">
-                        <img class="my-recipe-img-card" src="https://images.pexels.com/photos/3184193/pexels-photo-3184193.jpeg" alt="Veggie Omelette">
-                        <div class="meal-name">veggie</div>
-                        <div class="meal-name-sub">omelette</div>
-                        <div class="meal-info">800 kcal<br>8 oz</div>
-                    </div>
-                </div>
-                <div class="meal-card-rec">
-                    <div class="custom-border rounded">
-                        <img class="my-recipe-img-card" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg" alt="Veggie Omelette">
-                        <div class="meal-name">veggie</div>
-                        <div class="meal-name-sub">omelette</div>
-                        <div class="meal-info">800 kcal<br>8 oz</div>
-                    </div>
-                </div>
-                <div class="meal-card-rec">
-                    <div class="custom-border rounded">
-                        <img class="my-recipe-img-card" src="https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Veggie Omelette">
-                        <div class="meal-name">veggie</div>
-                        <div class="meal-name-sub">omelette</div>
-                        <div class="meal-info">800 kcal<br>8 oz</div>
-                    </div>
-                </div>
+                <!-- Recipes will be dynamically injected here -->
             </div>
         </div>
     </div>
@@ -245,8 +185,8 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     <script>
         // Open modal with selected food type
         function openRecipeModal(foodOption) {
-            document.getElementById('recipeSearch').value = ''; // Clear search input
-            document.getElementById('searchResultsForRecipe').innerHTML = ''; // Clear previous results
+            document.getElementById('recipeSearch').value = '';
+            document.getElementById('searchResultsForRecipe').innerHTML = '';
             var modal = new bootstrap.Modal(document.getElementById('recipeModal'));
             modal.show();
         }
@@ -269,7 +209,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                     return response.json();
                 })
                 .then(data => {
-                    console.log("Recipe data:", data);
                     const searchResultsForRecipe = document.getElementById('searchResultsForRecipe');
                     searchResultsForRecipe.innerHTML = ''; // Clear previous results
 
@@ -321,7 +260,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                     </div>
 
                     <!-- Button to add recipe to the database -->
-                    <button type="button" class="btn btn-success my-3" onclick="addRecipeToDatabase('${food.foodId}', '${food.label}')">Add Recipe</button>
+                    <button type="button" class="btn btn-success my-3" onclick="addRecipeToDatabase('${food.foodId}', '${food.label}', '${food.image || ''}')">Add Recipe</button>
                 `;
 
             // Insert the expanded row directly after the selected list item
@@ -404,12 +343,12 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         }
 
         // Add the selected food to the database
-        function addRecipeToDatabase(foodId, label) {
-            var selected_date = document.getElementById('selected_date-recipe').value;
+        function addRecipeToDatabase(foodId, label, imageUrl) {
             var modal = bootstrap.Modal.getInstance(document.getElementById('recipeModal'));
             const foodData = {
                 foodId: foodId,
                 label: label,
+                image: imageUrl,
                 amount: document.getElementById('foodAmount').value,
                 unit: document.getElementById('weighingUnit').value,
                 calories: document.getElementById('calories').innerText,
@@ -421,7 +360,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                 fiber: document.getElementById('fiber').innerText,
                 sugars: document.getElementById('sugars').innerText,
                 protein: document.getElementById('protein').innerText,
-                selected_date: selected_date,
+                user_id: <?php echo $user_id ?>
             };
 
             // Send food data to the server (you'll need to define the actual endpoint)
@@ -434,7 +373,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("The data", data)
                     if (data.status == "success") {
                         modal.hide();
                         Swal.fire("Success", "Recipe added successfully!", "success")
@@ -448,6 +386,39 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                 });
         }
     </script>
+
+    <!-- Script to display the recipes on the page -->
+    <script>
+        const recipes = <?php echo $recipes_json; ?>;
+
+        function displayRecipes(recipes) {
+            const recipeContainer = document.querySelector(".d-flex.flex-wrap.mt-3.gap-3");
+            recipeContainer.innerHTML = "";
+
+            recipes.forEach(recipe => {
+                const card = document.createElement("div");
+                card.classList.add("meal-card-rec");
+                const recipeImage = recipe.image ? recipe.image : 'https://via.placeholder.com/150'
+
+                card.innerHTML = `
+                    <div class="custom-border rounded">
+                        <img class="my-recipe-img-card" src="${recipeImage}" alt="${recipe.label}">
+                        <div class="meal-name">${recipe.label}</div>
+                        <div class="meal-info">
+                            ${recipe.calories} kcal<br>
+                            ${recipe.amount} ${recipe.unit}
+                        </div>
+                    </div>
+                    `;
+                recipeContainer.appendChild(card);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            displayRecipes(recipes);
+        });
+    </script>
+
 </body>
 
 </html>

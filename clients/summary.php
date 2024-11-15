@@ -56,7 +56,7 @@
     }
 
     .nav-link.active h6,
-    .nav-link.active h1  {
+    .nav-link.active h1 {
         color: #946CFC !important;
         font-weight: 800;
     }
@@ -163,25 +163,22 @@
         color: yellow;
     }
 
-    .tab-button
-    {
-        padding:0;
-        font-weight:bold;
-    }
-    .tab-button:hover
-    {
-        color:#936CFB;
+    .tab-button {
+        padding: 0;
+        font-weight: bold;
     }
 
-    .line
-    {
-        color:#ccc;
+    .tab-button:hover {
+        color: #936CFB;
     }
 
-    .phase-tab
-    {
-        font-weight:600;
-        gap:5px
+    .line {
+        color: #ccc;
+    }
+
+    .phase-tab {
+        font-weight: 600;
+        gap: 5px
     }
 </style>
 
@@ -317,7 +314,7 @@ foreach ($weight_history as $index => $entry) {
                                                                         <a class="nav-link active nav-2" id="choose-food-tab" data-bs-toggle="pill" href="#choose-food" role="tab" aria-controls="choose-food" aria-selected="true">
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">1</h1>
-                                                                                <div> 
+                                                                                <div>
                                                                                     <h6 class="responsive-font">Choose Food</h6>
                                                                                 </div>
                                                                             </div>
@@ -327,7 +324,7 @@ foreach ($weight_history as $index => $entry) {
                                                                         <a class="nav-link nav-2" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">2</h1>
-                                                                                <div> 
+                                                                                <div>
                                                                                     <h6 class="responsive-font">My Planner</h6>
                                                                                 </div>
                                                                             </div>
@@ -337,7 +334,7 @@ foreach ($weight_history as $index => $entry) {
                                                                         <a class="nav-link nav-2" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">3</h1>
-                                                                                <div> 
+                                                                                <div>
                                                                                     <h6 class="responsive-font">My Tracker</h6>
                                                                                 </div>
                                                                             </div>
@@ -493,14 +490,13 @@ foreach ($weight_history as $index => $entry) {
 
         // Function to activate the saved tab if there is a date in the URL
         function activateSavedTab() {
-            const urlParams = new URLSearchParams(window.location.search);
             const activeTabId = localStorage.getItem('activeTab');
 
-            if (urlParams.has('date') && activeTabId) {
+            if (activeTabId) {
                 document.querySelectorAll('.nav-link.active').forEach(link => link.classList.remove('active'));
                 document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
 
-                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker' || activeTabId === 'choose-food' ) {
+                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker' || activeTabId === 'choose-food') {
                     const myPlanTabLink = document.querySelector('#my-plan-tab');
                     const myPlanTabContent = document.querySelector('#my-plan');
 

@@ -1274,26 +1274,37 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
         html2pdf().set(options).from(element).save();
     }
+</script>
 
-    // calender date picker
-    $(document).ready(function() {
-            // Initialize Flatpickr
+
+    <!-- JavaScript to Handle Calendar and Date Update -->
+    <script>
+        $(document).ready(function() {
+            // Initialize Flatpickr on the hidden input
             flatpickr("#datepicker", {
-                dateFormat: "Y-m-d", // Set the date format to YYYY-MM-DD
+                dateFormat: "Y-m-d",  // Date format
                 onChange: function(selectedDates, dateStr, instance) {
-                    // When a date is selected, update the URL with the selected date
+                    console.log("Date selected: " + dateStr);
                     var userId = "<?php echo $_GET['id']; ?>"; // Get the user ID from the URL
-                    window.location.href = "?id=" + userId + "&date=" + dateStr; // Redirect to the new URL with the selected date
-                }
+                    // Redirect to the new URL with the selected date
+                    window.location.href = "?id=" + userId + "&date=" + dateStr;
+                },
+                closeOnSelect: true  // Close the calendar after selecting a date
             });
 
             // Toggle calendar popup on calendar icon click
             $("#calendar-icon").click(function() {
-                $("#datepicker").toggle(); // Show the hidden datepicker input
-                // Open the calendar automatically when the user clicks on the calendar icon
-                $("#datepicker").focus(); // Focus to trigger the Flatpickr calendar
+                var $datepicker = $("#datepicker");
+
+                // Check if the datepicker is hidden
+                if ($datepicker.css("visibility") === "hidden") {
+                    console.log("Calendar is now visible.");
+                    $datepicker.css("visibility", "visible");
+                    $datepicker.focus();  // Focus to trigger the Flatpickr calendar
+                } else {
+                    console.log("Calendar is now hidden.");
+                    $datepicker.css("visibility", "hidden");
+                }
             });
-     });
-
-
-</script>
+        });
+    </script>

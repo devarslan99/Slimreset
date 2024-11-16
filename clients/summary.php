@@ -194,6 +194,37 @@
     }
 </style>
 
+<style>
+    /* Hide dropdown on large screens */
+    .phase-dropdown {
+        display: none;
+        width: 150px;
+        padding: 8px;
+        font-size: 16px;
+    }
+    /* Display dropdown only on small screens */
+    @media (max-width: 768px) {
+        .phase-dropdown {
+            display: block;
+        }
+        /* Hide regular tabs on small screens */
+        .phase-tab {
+            display: none;
+        }
+    }
+    @media (max-width: 600px) {
+        .phase-main-box
+        {
+            flex-direction:column;
+            margin-bottom:20px;
+            width: 100%;
+        }
+        .phase-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+
 <?php
 include_once '../database/db_connection.php';
 $user_id = $_GET['id'];
@@ -359,7 +390,7 @@ foreach ($weight_history as $index => $entry) {
                                                                         <div class="row">
                                                                             <div class="col-lg-9">
                                                                                 <h1 class="text-center">Choose Your Food Preferences</h1>
-                                                                                <div class="d-flex justify-content-between align-items-center px-5">
+                                                                                <div class="phase-main-box d-flex justify-content-between align-items-center px-5">
                                                                                     <div class="d-flex justify-content-center align-items-center my-4">
                                                                                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
                                                                                             <label class="form-label me-2 fs-6 responsive-font">View all</label>
@@ -369,6 +400,13 @@ foreach ($weight_history as $index => $entry) {
                                                                                             </div>
                                                                                         <?php endif; ?>
                                                                                     </div>
+                                                                                    <select class="phase-dropdown" onchange="selectPhase(this)">
+                                                                                        <option value="" disabled selected>Select Phase</option>
+                                                                                        <option value="1">Phase 1</option>
+                                                                                        <option value="2">Phase 2</option>
+                                                                                        <option value="3">Phase 3</option>
+                                                                                        <option value="4">Phase 4</option>
+                                                                                    </select>
                                                                                     <div class=" align-items-center phase-tab" id="phaseTabs">
                                                                                         <button class="btn tab-button active" data-phase="1">Phase 1</button>
                                                                                         <span class="line">|</span>
@@ -598,35 +636,7 @@ foreach ($weight_history as $index => $entry) {
         });
     </script>
 
-    <script>
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove 'active' class from all buttons
-                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-
-                // Add 'active' class to the clicked button
-                button.classList.add('active');
-
-                // Get the phase number
-                const phase = button.getAttribute('data-phase');
-
-                // Determine the file to load based on the phase
-                const filePath = phase === "1" 
-                    ? '../functions/food-logs/view_all_food.php' 
-                    : `../functions/food-logs/view_all_food_phase_${phase}.php`;
-
-                // Load content for the selected phase
-                fetch(filePath)
-                    .then(response => response.text())
-                    .then(data => {
-                        // Display the phase data in the single container
-                        document.getElementById('viewAllSection').innerHTML = data;
-                    })
-                    .catch(error => console.error('Error loading content:', error));
-            });
-        });
-    </script>
-
+    <!-- script to hide phase tabs for gut guided content  -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
         const preferenceSwitch = document.getElementById('preferenceSwitch');
@@ -639,6 +649,58 @@ foreach ($weight_history as $index => $entry) {
             } else {
                 phaseTabs.style.display = 'flex'; 
             }
+        });
+    });
+    </script>
+
+    <!-- script to handle phase tabs content to load in container for both medium and large sceen devices-->
+    <script>
+    function loadContentForPhase(phase) {
+        // Determine the file to load based on the phase
+        const filePath = phase === "1" 
+            ? '../functions/food-logs/view_all_food.php' 
+            : `../functions/food-logs/view_all_food_phase_${phase}.php`;
+
+        // Load content for the selected phase
+        fetch(filePath)
+            .then(response => response.text())
+            .then(data => {
+                // Display the phase data in the single container
+                document.getElementById('viewAllSection').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading content:', error));
+    }
+
+    function selectPhase(dropdown) {
+        const selectedPhase = dropdown.value;
+
+        // Clear 'active' class from all tab buttons
+        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+
+        // Add 'active' class to the corresponding tab button (for visual sync on large screens)
+        const correspondingTab = document.querySelector(`.tab-button[data-phase="${selectedPhase}"]`);
+        if (correspondingTab) {
+            correspondingTab.classList.add('active');
+        }
+
+        // Load the content for the selected phase
+        loadContentForPhase(selectedPhase);
+    }
+
+    // Attach click event listeners to tab buttons for larger screens
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove 'active' class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+            // Add 'active' class to the clicked button
+            button.classList.add('active');
+
+            // Get the phase number
+            const phase = button.getAttribute('data-phase');
+
+            // Load content for the selected phase
+            loadContentForPhase(phase);
         });
     });
     </script>

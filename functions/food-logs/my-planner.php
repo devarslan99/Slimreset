@@ -572,7 +572,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     
                     <h2 class="grocery-list-title">Grocery List</h2>
                     <!-- Grocery List Content -->
-                    <div class="grocery-list-box">
+                    <div class="grocery-list-box grocery-list-box-2">
                         
                         <!-- Columns for Aisles -->
                         <div class="grocery-columns">
@@ -708,7 +708,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Veggie',
             subName: 'Omelette',
             mealInfo: {
-                protein: '10g',
                 calories: '800 kcal',
                 fats: '8g',
                 carbs: '15g',
@@ -720,7 +719,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Grilled',
             subName: 'Chicken Salad',
             mealInfo: {
-                protein: '20g',
                 calories: '600 kcal',
                 fats: '10g',
                 carbs: '12g',
@@ -732,7 +730,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Berry',
             subName: 'Bowl',
             mealInfo: {
-                protein: '5g',
                 calories: '350 kcal',
                 fats: '5g',
                 carbs: '40g',
@@ -744,7 +741,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Avocado',
             subName: 'Toast',
             mealInfo: {
-                protein: '7g',
                 calories: '450 kcal',
                 fats: '12g',
                 carbs: '22g',
@@ -756,7 +752,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Caesar',
             subName: 'Salad',
             mealInfo: {
-                protein: '8g',
                 calories: '400 kcal',
                 fats: '12g',
                 carbs: '14g',
@@ -768,7 +763,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Banana',
             subName: 'Pancakes',
             mealInfo: {
-                protein: '6g',
                 calories: '450 kcal',
                 fats: '7g',
                 carbs: '50g',
@@ -780,7 +774,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Fruit',
             subName: 'Parfait',
             mealInfo: {
-                protein: '10g',
                 calories: '350 kcal',
                 fats: '5g',
                 carbs: '45g',
@@ -792,7 +785,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Pasta',
             subName: 'Primavera',
             mealInfo: {
-                protein: '12g',
                 calories: '550 kcal',
                 fats: '10g',
                 carbs: '60g',
@@ -804,7 +796,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Grilled',
             subName: 'Salmon',
             mealInfo: {
-                protein: '25g',
                 calories: '500 kcal',
                 fats: '15g',
                 carbs: '5g',
@@ -816,7 +807,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Margherita',
             subName: 'Pizza',
             mealInfo: {
-                protein: '15g',
                 calories: '750 kcal',
                 fats: '18g',
                 carbs: '80g',
@@ -828,7 +818,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Veggie',
             subName: 'Bowl',
             mealInfo: {
-                protein: '8g',
                 calories: '300 kcal',
                 fats: '10g',
                 carbs: '35g',
@@ -840,7 +829,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             name: 'Quinoa',
             subName: 'Salad',
             mealInfo: {
-                protein: '14g',
                 calories: '400 kcal',
                 fats: '9g',
                 carbs: '30g',
@@ -989,7 +977,56 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         initializeSortable();
     });
 
-    // let mealDataArray = [];
+    let mealDataArray = [];
+    // Function to populate all meat-card data into grocery list
+    function populateAllGroceryList(mealDataArray) {
+        const groceryListBox = document.querySelector('.grocery-list-box-2');
+        groceryListBox.innerHTML = ''; 
+
+        mealDataArray.forEach(meal => {
+            const mealHTML = `
+                <div class="list-box">
+                    <span class="label-name">${meal.label}</span> <!-- Dynamic label -->
+                    <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="fw-bold mb-0">${meal.mealName} ${meal.mealSubName}</h3>
+                        <p class="text-muted mb-0">${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                    </div>
+                    <div class="row">
+                        <!-- Left Column with Calories and Total Fat -->
+                        <div class="col-md-6 mb-3">
+                            <div class="left">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Calories</h5>
+                                    <p class="mb-0">${meal.mealInfo.calories || 'N/A'}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Total Fat</h5>
+                                    <p class="mb-0">${meal.mealInfo.fats || 'N/A'}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Right Column with Carbohydrates and Protein -->
+                        <div class="col-md-6 mb-3">
+                            <div class="right">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Carbohydrates</h5>
+                                    <p class="mb-0">${meal.mealInfo.carbs || 'N/A'}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="fw-bold mb-1">Protein</h5>
+                                    <p class="mb-0">${meal.mealInfo.size || 'N/A'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            groceryListBox.innerHTML += mealHTML;
+        });
+    }
+
+    populateAllGroceryList(mealDataArray);
+
     const dayMealData = {
         day1: [],
         day2: [],
@@ -1000,7 +1037,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         day7: []
     };
 
-    // // Function to populate the grocery list
+    // // Function to populate specific meal card data the grocery list
     function populateGroceryList(dayMealData) {
         const groceryListBox = document.querySelector('.grocery-list-box');
         groceryListBox.innerHTML = ''; // Clear previous content
@@ -1034,7 +1071,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <h5 class="fw-bold mb-1">Protein</h5>
-                                    <p class="mb-0">${meal.mealInfo.protein || 'N/A'}</p>
+                                    <p class="mb-0">${meal.mealInfo.size || 'N/A'}</p>
                                 </div>
                             </div>
                         </div>
@@ -1045,7 +1082,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         });
     }
 
-    // Call the function to populate the grocery list
     populateGroceryList(dayMealData);
 
 
@@ -1082,7 +1118,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     // Extract the nutritional information from the meal-info div
                     const mealInfoDiv = draggedItem.querySelector('.meal-info');
                     const mealInfo = extractMealInfo(mealInfoDiv);
-
+                    console.log(mealInfoDiv)
                     // Capture the section label
                     const sectionLabel = evt.to.getAttribute('data-label');
 
@@ -1096,11 +1132,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         // Populate the .meal-card with structured content, retaining the label
                         targetMealCard.innerHTML = `
                             ${existingLabel ? existingLabel.outerHTML : ''} <!-- Keep existing label -->
-                            <div class="custom-border rounded meal-box" data-meal-name="${mealName}" data-meal-subname="${mealSubName}" data-meal-info="${mealInfo}" onclick="showBox(this)">
+                            <div class="custom-border rounded meal-box" data-meal-name="${mealName}" data-meal-subname="${mealSubName}" data-meal-calories="${mealInfo.calories}" data-meal-size="${mealInfo.size}" data-meal-carbs="${mealInfo.carbs}" data-meal-fats="${mealInfo.fats}" onclick="showBox(this)">
                                 <img src="${imageSrc}" alt="${mealName}">
                                 <div class="meal-name">${mealName}</div>
                                 <div class="meal-name-sub">${mealSubName}</div>
-                                <div class="meal-info">${mealInfo.calories}<br>${mealInfo.size}</div> <!-- Display only calories and size -->
+                                <div class="meal-info">${mealInfo.calories}<br>${mealInfo.size}</div> 
                             </div>
                         `;
                     }
@@ -1116,6 +1152,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         mealInfo,
                         label: sectionLabel 
                     };
+                    
+                    mealDataArray.push(mealData); 
+                    populateAllGroceryList(mealDataArray);
 
                     const dayColumn = evt.to.closest('.day-column');
                     if (dayColumn) {
@@ -1138,7 +1177,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             if (dayMealData[dayId]) {
                                 // Push the meal data along with the date into the specific day array
                                 dayMealData[dayId].push({ ...mealData, date });
-                                console.log(`Meal data for ${dayId}:`, dayMealData[dayId]); // For debugging
                             } else {
                                 console.error(`Invalid dayId: ${dayId}`);
                             }
@@ -1162,11 +1200,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         const infoText = mealInfoDiv.innerText || mealInfoDiv.textContent;
 
         const infoLines = infoText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-        
+
         const mealInfo = {
             calories: infoLines.find(line => line.includes('kcal')) || '',
             size: infoLines.find(line => line.includes('oz')) || '',
-            protein: infoLines.find(line => line.includes('protein')) || '',  
             fats: infoLines.find(line => line.includes('fats')) || '',        
             carbs: infoLines.find(line => line.includes('carbs')) || ''       
         };
@@ -1175,31 +1212,34 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
     // function to show the recipe POP-UP
-function showBox(mealElement) {
-    const mealName = mealElement.getAttribute('data-meal-name');
-    const mealSubName = mealElement.getAttribute('data-meal-subname');
-    const mealInfo = mealElement.getAttribute('data-meal-info');
-    
-    document.getElementById('popup-overlay').style.display = 'flex';
-    const mealDetail = document.querySelector('.meal-detail');
-    
-    mealDetail.innerHTML = ""; // Clear existing content
-    
-    mealDetail.innerHTML = `
-        <div class="ingredients">
-            <h2>${mealName} ${mealSubName}</h2>
-            <strong>ingredients</strong>
-            <span>egg</span>
-            <span>your choice of veg</span>
-        </div>
-        <div class="details">
-            <div><strong>calories</strong> ${mealInfo.calories}</div>
-            <div><strong>protein</strong> 1.5 oz</div>
-            <div><strong>prep</strong> 5 min</div>
-            <div><strong>cook</strong> 20 min</div>
-        </div>
-    `;
-}
+    function showBox(mealElement) {
+        const mealName = mealElement.getAttribute('data-meal-name');
+        const mealSubName = mealElement.getAttribute('data-meal-subname');
+        const calories = mealElement.getAttribute('data-meal-calories');
+        const size = mealElement.getAttribute('data-meal-size');
+        const carbs = mealElement.getAttribute('data-meal-carbs');
+        const fats = mealElement.getAttribute('data-meal-fats');
+        
+        document.getElementById('popup-overlay').style.display = 'flex';
+        const mealDetail = document.querySelector('.meal-detail');
+        
+        mealDetail.innerHTML = ""; // Clear existing content
+        
+        mealDetail.innerHTML = `
+            <div class="ingredients">
+                <h2>${mealName} ${mealSubName}</h2>
+                <strong>ingredients</strong>
+                <span>egg</span>
+                <span>your choice of veg</span>
+            </div>
+            <div class="details">
+                <div><strong>calories</strong> ${calories}</div>
+                <div><strong>protein</strong> ${size}</div>
+                <div><strong>Fats</strong>${fats}</div>
+                <div><strong>Carbs</strong> ${carbs}</div>
+            </div>
+        `;
+    }
 
 
     // Function to close the popup

@@ -840,7 +840,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     // Append meal cards to #meal-cards
     $.each(mealData, function(index, meal) {
         const mealCard = `
-            <div class="meal-card-rec">
+            <div class="meal-card-rec" data-meal-fats="${meal.mealInfo.fats}" data-meal-carbs="${meal.mealInfo.carbs}">
                 <div class="custom-border rounded">
                     <img class="recipe-img-card" src="${meal.image}" alt="${meal.name} ${meal.subName}">
                     <div class="meal-name">${meal.name}</div>
@@ -1114,11 +1114,12 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     const imageSrc = draggedItem.querySelector('img').src;
                     const mealName = draggedItem.querySelector('.meal-name').textContent;
                     const mealSubName = draggedItem.querySelector('.meal-name-sub') ? draggedItem.querySelector('.meal-name-sub').textContent : '';
+                    const mealCarbs = draggedItem.getAttribute('data-meal-carbs');
+                    const mealFats = draggedItem.getAttribute('data-meal-fats');
 
                     // Extract the nutritional information from the meal-info div
                     const mealInfoDiv = draggedItem.querySelector('.meal-info');
                     const mealInfo = extractMealInfo(mealInfoDiv);
-                    console.log(mealInfoDiv)
                     // Capture the section label
                     const sectionLabel = evt.to.getAttribute('data-label');
 
@@ -1132,7 +1133,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         // Populate the .meal-card with structured content, retaining the label
                         targetMealCard.innerHTML = `
                             ${existingLabel ? existingLabel.outerHTML : ''} <!-- Keep existing label -->
-                            <div class="custom-border rounded meal-box" data-meal-name="${mealName}" data-meal-subname="${mealSubName}" data-meal-calories="${mealInfo.calories}" data-meal-size="${mealInfo.size}" data-meal-carbs="${mealInfo.carbs}" data-meal-fats="${mealInfo.fats}" onclick="showBox(this)">
+                            <div class="custom-border rounded meal-box" data-meal-name="${mealName}" data-meal-subname="${mealSubName}" data-meal-calories="${mealInfo.calories}" data-meal-size="${mealInfo.size}" data-meal-carbs="${mealCarbs}" data-meal-fats="${mealFats}" onclick="showBox(this)">
                                 <img src="${imageSrc}" alt="${mealName}">
                                 <div class="meal-name">${mealName}</div>
                                 <div class="meal-name-sub">${mealSubName}</div>
@@ -1149,10 +1150,14 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         imageSrc,
                         mealName,
                         mealSubName,
-                        mealInfo,
+                        mealInfo: {
+                            calories: mealInfo.calories,
+                            size: mealInfo.size,
+                            carbs: mealCarbs,
+                            fats: mealFats
+                        },
                         label: sectionLabel 
                     };
-                    
                     mealDataArray.push(mealData); 
                     populateAllGroceryList(mealDataArray);
 
@@ -1196,16 +1201,13 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     // Function to extract meal info from the HTML
     function extractMealInfo(mealInfoDiv) {
-        // Extract the nutritional values from the meal-info div
-        const infoText = mealInfoDiv.innerText || mealInfoDiv.textContent;
 
+        const infoText = mealInfoDiv.innerText || mealInfoDiv.textContent;
         const infoLines = infoText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
 
         const mealInfo = {
             calories: infoLines.find(line => line.includes('kcal')) || '',
-            size: infoLines.find(line => line.includes('oz')) || '',
-            fats: infoLines.find(line => line.includes('fats')) || '',        
-            carbs: infoLines.find(line => line.includes('carbs')) || ''       
+            size: infoLines.find(line => line.includes('oz')) || '',       
         };
 
         return mealInfo;
@@ -1233,10 +1235,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 <span>your choice of veg</span>
             </div>
             <div class="details">
-                <div><strong>calories</strong> ${calories}</div>
-                <div><strong>protein</strong> ${size}</div>
-                <div><strong>Fats</strong>${fats}</div>
-                <div><strong>Carbs</strong> ${carbs}</div>
+                <div><strong>calories</strong> ${calories} </div>
+                <div><strong>protein</strong> ${size} </div>
+                <div><strong>Fats</strong> ${fats} </div>
+                <div><strong>Carbs</strong> ${carbs} </div>
             </div>
         `;
     }

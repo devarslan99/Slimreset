@@ -184,7 +184,7 @@
     /* Add some styling for the active phase button */
     .tab-button.active {
         color: #936CFB;
-        border:0;
+        border: 0;
     }
 </style>
 
@@ -196,23 +196,26 @@
         padding: 8px;
         font-size: 16px;
     }
+
     /* Display dropdown only on small screens */
     @media (max-width: 768px) {
         .phase-dropdown {
             display: block;
         }
+
         /* Hide regular tabs on small screens */
         .phase-tab {
             display: none;
         }
     }
+
     @media (max-width: 600px) {
-        .phase-main-box
-        {
-            flex-direction:column;
-            margin-bottom:20px;
+        .phase-main-box {
+            flex-direction: column;
+            margin-bottom: 20px;
             width: 100%;
         }
+
         .phase-dropdown {
             width: 100%;
         }
@@ -540,13 +543,17 @@ foreach ($weight_history as $index => $entry) {
                 document.querySelectorAll('.nav-link.active').forEach(link => link.classList.remove('active'));
                 document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
 
-                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker' || activeTabId === 'choose-food') {
-                    const myPlanTabLink = document.querySelector('#my-plan-tab');
-                    const myPlanTabContent = document.querySelector('#my-plan');
+                // Ensure sub-tabs are reset when "My Plan" tab is activated
+                if (activeTabId === 'my-plan') {
+                    const chooseFoodTabLink = document.querySelector('#choose-food-tab');
+                    const chooseFoodTabContent = document.querySelector('#choose-food');
 
-                    if (myPlanTabLink && myPlanTabContent) {
-                        myPlanTabLink.classList.add('active');
-                        myPlanTabContent.classList.add('active', 'show');
+                    if (chooseFoodTabLink && chooseFoodTabContent) {
+                        document.querySelectorAll('.nav-2.active').forEach(link => link.classList.remove('active'));
+                        document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
+
+                        chooseFoodTabLink.classList.add('active');
+                        chooseFoodTabContent.classList.add('active', 'show');
                     }
                 }
 
@@ -561,15 +568,34 @@ foreach ($weight_history as $index => $entry) {
         }
 
         document.addEventListener("DOMContentLoaded", function() {
+
+            // Save the clicked tab in localStorage
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', function() {
                     const tabId = this.getAttribute('aria-controls');
                     saveActiveTab(tabId);
+
+                    // Reset to "Choose Food" tab when "My Plan" is clicked
+                    if (tabId === 'my-plan') {
+                        const chooseFoodTabLink = document.querySelector('#choose-food-tab');
+                        const chooseFoodTabContent = document.querySelector('#choose-food');
+
+                        if (chooseFoodTabLink && chooseFoodTabContent) {
+                            document.querySelectorAll('.nav-2.active').forEach(link => link.classList.remove('active'));
+                            document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
+
+                            chooseFoodTabLink.classList.add('active');
+                            chooseFoodTabContent.classList.add('active', 'show');
+                        }
+                    }
                 });
             });
+
             activateSavedTab();
         });
     </script>
+
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -632,70 +658,70 @@ foreach ($weight_history as $index => $entry) {
     <!-- script to hide phase tabs for gut guided content  -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-        const preferenceSwitch = document.getElementById('preferenceSwitch');
-        const phaseTabs = document.getElementById('phaseTabs');
+            const preferenceSwitch = document.getElementById('preferenceSwitch');
+            const phaseTabs = document.getElementById('phaseTabs');
 
-        // Add event listener
-        preferenceSwitch.addEventListener('change', function() {
-            if (preferenceSwitch.checked) {
-                phaseTabs.style.display = 'none';
-            } else {
-                phaseTabs.style.display = 'flex'; 
-            }
+            // Add event listener
+            preferenceSwitch.addEventListener('change', function() {
+                if (preferenceSwitch.checked) {
+                    phaseTabs.style.display = 'none';
+                } else {
+                    phaseTabs.style.display = 'flex';
+                }
+            });
         });
-    });
     </script>
 
     <!-- script to handle phase tabs content to load in container for both medium and large sceen devices-->
     <script>
-    function loadContentForPhase(phase) {
-        // Determine the file to load based on the phase
-        const filePath = phase === "1" 
-            ? '../functions/food-logs/view_all_food.php' 
-            : `../functions/food-logs/view_all_food_phase_${phase}.php`;
-
-        // Load content for the selected phase
-        fetch(filePath)
-            .then(response => response.text())
-            .then(data => {
-                // Display the phase data in the single container
-                document.getElementById('viewAllSection').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading content:', error));
-    }
-
-    function selectPhase(dropdown) {
-        const selectedPhase = dropdown.value;
-
-        // Clear 'active' class from all tab buttons
-        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-
-        // Add 'active' class to the corresponding tab button (for visual sync on large screens)
-        const correspondingTab = document.querySelector(`.tab-button[data-phase="${selectedPhase}"]`);
-        if (correspondingTab) {
-            correspondingTab.classList.add('active');
-        }
-
-        // Load the content for the selected phase
-        loadContentForPhase(selectedPhase);
-    }
-
-    // Attach click event listeners to tab buttons for larger screens
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove 'active' class from all buttons
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-
-            // Add 'active' class to the clicked button
-            button.classList.add('active');
-
-            // Get the phase number
-            const phase = button.getAttribute('data-phase');
+        function loadContentForPhase(phase) {
+            // Determine the file to load based on the phase
+            const filePath = phase === "1" ?
+                '../functions/food-logs/view_all_food.php' :
+                `../functions/food-logs/view_all_food_phase_${phase}.php`;
 
             // Load content for the selected phase
-            loadContentForPhase(phase);
+            fetch(filePath)
+                .then(response => response.text())
+                .then(data => {
+                    // Display the phase data in the single container
+                    document.getElementById('viewAllSection').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading content:', error));
+        }
+
+        function selectPhase(dropdown) {
+            const selectedPhase = dropdown.value;
+
+            // Clear 'active' class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+
+            // Add 'active' class to the corresponding tab button (for visual sync on large screens)
+            const correspondingTab = document.querySelector(`.tab-button[data-phase="${selectedPhase}"]`);
+            if (correspondingTab) {
+                correspondingTab.classList.add('active');
+            }
+
+            // Load the content for the selected phase
+            loadContentForPhase(selectedPhase);
+        }
+
+        // Attach click event listeners to tab buttons for larger screens
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove 'active' class from all buttons
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+                // Add 'active' class to the clicked button
+                button.classList.add('active');
+
+                // Get the phase number
+                const phase = button.getAttribute('data-phase');
+
+                // Load content for the selected phase
+                loadContentForPhase(phase);
+            });
         });
-    });
     </script>
 </body>
 

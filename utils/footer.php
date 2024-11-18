@@ -312,3 +312,11 @@
         });
     }
 </script>
+
+<!-- Check if the current URL is summary.php; if not, remove activeTab -->
+<script>
+    const currentUrl = window.location.pathname;
+    if (!currentUrl.includes('summary.php')) {
+        localStorage.removeItem('activeTab');
+    }
+</script>

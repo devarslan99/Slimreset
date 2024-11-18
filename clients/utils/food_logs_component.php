@@ -32,10 +32,10 @@
                     if ($result) {
                         $row = mysqli_fetch_assoc($result);
 
-                        $total_calories = number_format((float) ($row['total_calories'] ?? 0), 2, '.', '');
-                        $total_protein = number_format((float) ($row['total_protein'] ?? 0), 2, '.', '');
-                        $total_water = number_format((float) ($row['total_water'] ?? 0), 2, '.', '');
-                        $total_bowel_movement = number_format((float) ($row['total_bowel_movement'] ?? 0), 2, '.', '');
+                        $total_calories = isset($row['total_calories']) ? (int) $row['total_calories'] : 0;
+                        $total_protein = isset($row['total_protein']) ? (int) $row['total_protein'] : 0;
+                        $total_water = isset($row['total_water']) ? (int) $row['total_water'] : 0;
+                        $total_bowel_movement = isset($row['total_bowel_movement']) ? (int) $row['total_bowel_movement'] : 0;
 
                         $metrics = [
                             [
@@ -95,7 +95,7 @@
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <div class="">
-                            <div class="main-color text-center my-3">
+                                <div class="main-color text-center my-3">
                                     <i class="fa fa-calendar me-2 fw-bold fs-4" id="calendar-icon-2" style="cursor: pointer;"></i>
                                     <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
                                         <i class="fa fa-angle-left fw-bold fs-4"></i>
@@ -211,7 +211,7 @@
                                                         <th>Food Quantity
                                                         </th>
                                                         <th>Calories</th>
-                                                        <th>Protien</th>
+                                                        <th>Protein</th>
                                                         <th>Fat</th>
                                                         <th>Carbs</th>
                                                         <th>Sugar</th>

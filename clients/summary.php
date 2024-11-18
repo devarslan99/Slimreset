@@ -543,17 +543,13 @@ foreach ($weight_history as $index => $entry) {
                 document.querySelectorAll('.nav-link.active').forEach(link => link.classList.remove('active'));
                 document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
 
-                // Ensure sub-tabs are reset when "My Plan" tab is activated
-                if (activeTabId === 'my-plan') {
-                    const chooseFoodTabLink = document.querySelector('#choose-food-tab');
-                    const chooseFoodTabContent = document.querySelector('#choose-food');
+                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker' || activeTabId === 'choose-food') {
+                    const myPlanTabLink = document.querySelector('#my-plan-tab');
+                    const myPlanTabContent = document.querySelector('#my-plan');
 
-                    if (chooseFoodTabLink && chooseFoodTabContent) {
-                        document.querySelectorAll('.nav-2.active').forEach(link => link.classList.remove('active'));
-                        document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
-
-                        chooseFoodTabLink.classList.add('active');
-                        chooseFoodTabContent.classList.add('active', 'show');
+                    if (myPlanTabLink && myPlanTabContent) {
+                        myPlanTabLink.classList.add('active');
+                        myPlanTabContent.classList.add('active', 'show');
                     }
                 }
 
@@ -568,34 +564,29 @@ foreach ($weight_history as $index => $entry) {
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-
-            // Save the clicked tab in localStorage
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', function() {
                     const tabId = this.getAttribute('aria-controls');
                     saveActiveTab(tabId);
 
-                    // Reset to "Choose Food" tab when "My Plan" is clicked
                     if (tabId === 'my-plan') {
+                        // Activate "Choose Food" tab
                         const chooseFoodTabLink = document.querySelector('#choose-food-tab');
                         const chooseFoodTabContent = document.querySelector('#choose-food');
 
                         if (chooseFoodTabLink && chooseFoodTabContent) {
-                            document.querySelectorAll('.nav-2.active').forEach(link => link.classList.remove('active'));
-                            document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
-
                             chooseFoodTabLink.classList.add('active');
                             chooseFoodTabContent.classList.add('active', 'show');
+
+                            // Save "choose-food" to local storage
+                            saveActiveTab('choose-food');
                         }
                     }
                 });
             });
-
             activateSavedTab();
         });
     </script>
-
-
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

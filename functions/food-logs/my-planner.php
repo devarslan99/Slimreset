@@ -622,7 +622,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     </div>
                     <!-- PDF Icon -->
                     <div class="grocery-pdf-icon">
-                        <i class="fa fa-file-pdf-o" onclick="downloadPDF2()"></i>
+                        <i class="fa fa-file-pdf-o" onclick="downloadPDF2(mealDataArray)"></i>
                     </div>
                 </div>
             </div>
@@ -701,11 +701,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/vfs_fonts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <script>
@@ -868,33 +868,33 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     // Function to generate days data with formatted date
     function getUrlDate() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlDate = urlParams.get('date'); // Get date from URL
-    return urlDate ? new Date(urlDate) : new Date(); // Default to current date if no date is provided
-}
-
-function generateDaysData() {
-    const daysData = [];
-    const startDate = getUrlDate(); // Get the starting date from URL
-
-    for (let i = 0; i < 7; i++) {
-        const date = new Date(startDate);
-        date.setDate(startDate.getDate() + i);
-
-        // Get the abbreviated day name (e.g., "Thu") and formatted date
-        const dayAbbreviation = date.toLocaleDateString('en-US', { weekday: 'short' });
-        const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-        daysData.push({
-            day: i + 1,
-            dayAbbreviation: dayAbbreviation, 
-            date: formattedDate,
-            kcal: 00,
-            oz: 00
-        });
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlDate = urlParams.get('date'); // Get date from URL
+        return urlDate ? new Date(urlDate) : new Date(); // Default to current date if no date is provided
     }
-    return daysData;
-}
+
+    function generateDaysData() {
+        const daysData = [];
+        const startDate = getUrlDate();
+
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(startDate);
+            date.setDate(startDate.getDate() + i);
+
+            // Get the abbreviated day name (e.g., "Thu") and formatted date
+            const dayAbbreviation = date.toLocaleDateString('en-US', { weekday: 'short' });
+            const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+            daysData.push({
+                day: i + 1,
+                dayAbbreviation: dayAbbreviation, 
+                date: formattedDate,
+                kcal: 00,
+                oz: 00
+            });
+        }
+        return daysData;
+    }
 
 
     
@@ -1075,8 +1075,8 @@ function generateDaysData() {
         
         // Append the complete section to the grocery list box
         groceryListBox.innerHTML += daySectionHTML;
+        }
     }
-}
 
 
     populateAllGroceryList(mealDataArray);
@@ -1392,19 +1392,141 @@ function generateDaysData() {
         html2pdf().set(options).from(element).save();
     }
 
-    // / 2nd function to download grocery list as a PDF 
-    function downloadPDF2() {
-            const element = document.querySelector('#grocery-popup-overlay-2 .grocery-list-box');
-            const options = {
-                margin: 1,
-                filename: 'grocery_list_full.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, height: element.scrollHeight },
-                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    //2nd function to download grocery list as a PDF 
+    function downloadPDF2(mealDataArray) {
+            const fullDayNames = {
+                "Mon": "Monday",
+                "Tue": "Tuesday",
+                "Wed": "Wednesday",
+                "Thu": "Thursday",
+                "Fri": "Friday",
+                "Sat": "Saturday",
+                "Sun": "Sunday"
             };
 
-            html2pdf().set(options).from(element).save();
+            const groupedMeals = mealDataArray.reduce((acc, meal) => {
+                if (!acc[meal.day]) {
+                    acc[meal.day] = [];
+                }
+                acc[meal.day].push(meal);
+                return acc;
+            }, {});
+
+            const pdfContent = [];
+
+            for (const [day, meals] of Object.entries(groupedMeals)) {
+            const fullDayName = fullDayNames[day] || day;
+
+            pdfContent.push(
+                // Full-width background for day and date
+                {
+                    table: {
+                        widths: ['*', 'auto'], // Full-width table with two columns
+                        body: [
+                            [
+                                { 
+                                    text: fullDayName, 
+                                    style: 'dayHeaderText', 
+                                    margin: [10, 5, 0, 5] 
+                                },
+                                { 
+                                    text: meals[0].date, 
+                                    style: 'dateStyle', 
+                                    margin: [0, 5, 10, 5], 
+                                    alignment: 'right' 
+                                }
+                            ]
+                        ]
+                    },
+                    layout: {
+                        // Custom layout to add a background and remove borders
+                        hLineWidth: () => 0, 
+                        vLineWidth: () => 0, 
+                        fillColor: (rowIndex, node, columnIndex) => {
+                            return rowIndex === 0 ? '#ece5ff' : null;
+                        }
+                    },
+                    margin: [0, 0 , 20 , 0], // [top, right, bottom, left] or [vertical, horizontal]
+                    borderRadius: 10,
+                }
+
+            );
+
+            meals.forEach(meal => {
+                pdfContent.push(
+                    { text: meal.label, style: 'mealLabel' },
+                    { text: `${meal.mealName} ${meal.mealSubName}`, style: 'mealTitle' },
+                    {
+                        table: {
+                            widths: ['*', 'auto', '*', 'auto'],
+                            body: [
+                                [
+                                    { text: 'Calories', style: 'infoLabel' },
+                                    { text: `${meal.mealInfo.calories || 'N/A'} kcal`, style: 'infoValue' },
+                                    { text: 'Carbohydrates', style: 'infoLabel' },
+                                    { text: `${meal.mealInfo.carbs || 'N/A'}g`, style: 'infoValue' }
+                                ],
+                                [
+                                    { text: 'Total Fat', style: 'infoLabel' },
+                                    { text: `${meal.mealInfo.fats || 'N/A'}g`, style: 'infoValue' },
+                                    { text: 'Protein', style: 'infoLabel' },
+                                    { text: `${meal.mealInfo.size || 'N/A'} oz`, style: 'infoValue' }
+                                ]
+                            ]
+                        },
+                        layout: 'noBorders'
+                    },
+                    { text: '\n' }
+                );
+            });
+
+            pdfContent.push({ text: '\n\n' });
+        }
+
+
+        const docDefinition = {
+            content: pdfContent,
+            styles: {
+                dayHeader: {
+                    margin: [0, 0, 0, 10],
+                },
+                dayHeaderText: {
+                    fontSize: 16,
+                    bold: true,
+                    color: '#512DA8',
+                    margin: [0, 0, 10, 0]
+                },
+                dateStyle: {
+                    fontSize: 12,
+                    bold: true,
+                    color: '#512DA8'
+                },
+                mealLabel: {
+                    fontSize: 12,
+                    color: '#946cfc',
+                    bold: true,
+                    alignment: 'left',
+                },
+                mealTitle: {
+                    fontSize: 14,
+                    bold: true,
+                    margin: [0, 5, 0, 10]
+                },
+                infoLabel: {
+                    fontSize: 12,
+                    bold: true,
+                    margin: [0, 2, 0, 2]
+                },
+                infoValue: {
+                    fontSize: 12,
+                    margin: [0, 2, 0, 2]
+                }
+            }
+        };
+
+        pdfMake.createPdf(docDefinition).download('grocery_list_full.pdf');
     }
+
 
 </script>
 

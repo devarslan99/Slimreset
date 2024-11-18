@@ -567,10 +567,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
             
                     </div>
-                </div>
-                <!-- PDF Icon -->
-                <div class="grocery-pdf-icon">
-                    <i class="fa fa-file-pdf-o" onclick="downloadPDF()"></i>
+                    <!-- PDF Icon -->
+                    <div class="grocery-pdf-icon">
+                        <i class="fa fa-file-pdf-o" onclick="downloadPDF(dayMealData)"></i>
+                    </div>
                 </div>
             </div>
 
@@ -705,7 +705,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/vfs_fonts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -1079,9 +1078,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         }
     }
 
-
-    populateAllGroceryList(mealDataArray);
-
     const dayMealData = {
         day1: [],
         day2: [],
@@ -1097,13 +1093,20 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         const groceryListBox = document.querySelector('.grocery-list-box');
         groceryListBox.innerHTML = ''; // Clear previous content
 
+        // Flag to check if day and date have been displayed
+        let isDayDateDisplayed = false;
+
         dayMealData.forEach(meal => {
             const mealHTML = `
                 <div class="list-box">
-                    <div class="d-flex justify-content-between day-data-section">
-                        <span class="day-box fs-5 fw-bold">${meal.day}</span>
-                        <span class="date-box fs-5 fw-bold">${meal.date}</span>
-                    </div>
+                    ${
+                        !isDayDateDisplayed
+                        ? `<div class="d-flex justify-content-between day-data-section">
+                            <span class="day-box fs-5 fw-bold">${meal.day}</span>
+                            <span class="date-box fs-5 fw-bold">${meal.date}</span>
+                        </div>`
+                        : ''
+                    }
                     <span class="label-name">${meal.label}</span>
                     <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
                         <h3 class="fw-bold mb-0">${meal.mealName} ${meal.mealSubName}</h3>
@@ -1136,12 +1139,13 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     </div>
                 </div>
             `;
+
             groceryListBox.innerHTML += mealHTML;
-        });
-    }
 
-    populateGroceryList(dayMealData);
-
+            // Set flag to true after displaying day and date once
+            isDayDateDisplayed = true;
+    });
+}
 
     function initializeSortable() {
         // Make the meal cards (right side, recipes) draggable
@@ -1370,30 +1374,118 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     });
 
     // function to download grocery list as a PDF 
-    function downloadPDF() {
-        // Select the HTML element to be converted to PDF
-        const element = document.querySelector('.grocery-list-box');
+    function downloadPDF(dayMealData) {
+            const fullDayNames = {
+                "day1": "Monday",
+                "day2": "Tuesday",
+                "day3": "Wednesday",
+                "day4": "Thursday",
+                "day5": "Friday",
+                "day6": "Saturday",
+                "day7": "Sunday"
+            };
 
-        // Set up options for html2pdf
-        const options = {
-            margin: 1,
-            filename: 'grocery_list.pdf',
-            image: {
-                type: 'jpeg',
-                quality: 0.98
-            },
-            html2canvas: {
-                scale: 2
-            },
-            jsPDF: {
-                unit: 'in',
-                format: 'a4',
-                orientation: 'portrait'
+            const pdfContent = [];
+
+            for (const [dayKey, meals] of Object.entries(dayMealData)) {
+                if (meals.length === 0) continue; // Skip empty days
+
+                // Add day and date section
+                const fullDayName = fullDayNames[dayKey];
+                pdfContent.push({
+                    table: {
+                        widths: ['*', 'auto'],
+                        body: [
+                            [
+                                { 
+                                    text: fullDayName, 
+                                    style: 'dayHeaderText', 
+                                    margin: [10, 5, 0, 5] 
+                                },
+                                { 
+                                    text: meals[0]?.date || '', 
+                                    style: 'dateStyle', 
+                                    alignment: 'right', 
+                                    margin: [0, 5, 10, 5] 
+                                }
+                            ]
+                        ]
+                    },
+                    layout: {
+                        hLineWidth: () => 0,
+                        vLineWidth: () => 0,
+                        fillColor: (rowIndex) => (rowIndex === 0 ? '#ece5ff' : null)
+                    },
+                    margin: [0, 0, 0, 10] // Add bottom margin
+                });
+
+                // Add meal cards for the day
+                meals.forEach(meal => {
+                    pdfContent.push(
+                        { text: meal.label, style: 'mealLabel' },
+                        { text: `${meal.mealName} ${meal.mealSubName}`, style: 'mealTitle' },
+                        {
+                            table: {
+                                widths: ['*', 'auto', '*', 'auto'],
+                                body: [
+                                    [
+                                        { text: 'Calories', style: 'infoLabel' },
+                                        { text: `${meal.mealInfo.calories || 'N/A'}`, style: 'infoValue' },
+                                        { text: 'Carbohydrates', style: 'infoLabel' },
+                                        { text: `${meal.mealInfo.carbs || 'N/A'}`, style: 'infoValue' }
+                                    ],
+                                    [
+                                        { text: 'Total Fat', style: 'infoLabel' },
+                                        { text: `${meal.mealInfo.fats || 'N/A'}`, style: 'infoValue' },
+                                        { text: 'Protein', style: 'infoLabel' },
+                                        { text: `${meal.mealInfo.size || 'N/A'}`, style: 'infoValue' }
+                                    ]
+                                ]
+                            },
+                            layout: 'noBorders',
+                            margin: [0, 5, 0, 15] // Add space between meals
+                        }
+                    );
+                });
             }
-        };
 
-        // Convert to PDF
-        html2pdf().set(options).from(element).save();
+            // Define PDF styles
+            const docDefinition = {
+                content: pdfContent,
+                styles: {
+                    dayHeaderText: {
+                        fontSize: 16,
+                        bold: true,
+                        color: '#512DA8'
+                    },
+                    dateStyle: {
+                        fontSize: 12,
+                        bold: true,
+                        color: '#512DA8'
+                    },
+                    mealLabel: {
+                        fontSize: 12,
+                        color: '#946cfc',
+                        bold: true,
+                        margin: [0, 10, 0, 5]
+                    },
+                    mealTitle: {
+                        fontSize: 14,
+                        bold: true,
+                        margin: [0, 5, 0, 10]
+                    },
+                    infoLabel: {
+                        fontSize: 12,
+                        bold: true
+                    },
+                    infoValue: {
+                        fontSize: 12
+                    }
+                }
+            };
+
+            pdfMake.createPdf(docDefinition).download('meal_plan.pdf');
+
     }
 
     //2nd function to download grocery list as a PDF 
@@ -1417,6 +1509,14 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             }, {});
 
             const pdfContent = [];
+
+            // Add title at the top of the PDF
+            pdfContent.push({
+                text: 'Grocery List', // Replace with your desired title
+                style: 'titleStyle', 
+                margin: [0, 0, 0, 20], // Add bottom margin for spacing below the title
+                alignment: 'left' // Center align the title
+            });
 
             for (const [day, meals] of Object.entries(groupedMeals)) {
             const fullDayName = fullDayNames[day] || day;
@@ -1450,8 +1550,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             return rowIndex === 0 ? '#ece5ff' : null;
                         }
                     },
-                    margin: [0, 0 , 20 , 0], // [top, right, bottom, left] or [vertical, horizontal]
-                    borderRadius: 10,
+                    margin: [0, 0, 0, 10]
                 }
 
             );
@@ -1462,19 +1561,19 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     { text: `${meal.mealName} ${meal.mealSubName}`, style: 'mealTitle' },
                     {
                         table: {
-                            widths: ['*', 'auto', '*', 'auto'],
+                            widths: ['30%', '30%', '30%', '30%'],
                             body: [
                                 [
                                     { text: 'Calories', style: 'infoLabel' },
-                                    { text: `${meal.mealInfo.calories || 'N/A'} kcal`, style: 'infoValue' },
+                                    { text: `${meal.mealInfo.calories || 'N/A'}`, style: 'infoValue' },
                                     { text: 'Carbohydrates', style: 'infoLabel' },
-                                    { text: `${meal.mealInfo.carbs || 'N/A'}g`, style: 'infoValue' }
+                                    { text: `${meal.mealInfo.carbs || 'N/A'}`, style: 'infoValue' }
                                 ],
                                 [
                                     { text: 'Total Fat', style: 'infoLabel' },
-                                    { text: `${meal.mealInfo.fats || 'N/A'}g`, style: 'infoValue' },
+                                    { text: `${meal.mealInfo.fats || 'N/A'}`, style: 'infoValue' },
                                     { text: 'Protein', style: 'infoLabel' },
-                                    { text: `${meal.mealInfo.size || 'N/A'} oz`, style: 'infoValue' }
+                                    { text: `${meal.mealInfo.size || 'N/A'}`, style: 'infoValue' }
                                 ]
                             ]
                         },
@@ -1491,6 +1590,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         const docDefinition = {
             content: pdfContent,
             styles: {
+                titleStyle:{
+                    fontSize: 26,
+                    bold: true,
+                    color:'#946cfc',
+                },
                 dayHeader: {
                     margin: [0, 0, 0, 10],
                 },

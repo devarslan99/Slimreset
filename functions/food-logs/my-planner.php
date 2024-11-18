@@ -867,28 +867,34 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 
     // Function to generate days data with formatted date
-    function generateDaysData() {
-        const daysData = [];
-        const today = new Date();
+    function getUrlDate() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlDate = urlParams.get('date'); // Get date from URL
+    return urlDate ? new Date(urlDate) : new Date(); // Default to current date if no date is provided
+}
 
-        for (let i = 0; i < 7; i++) {
-            const date = new Date(today);
-            date.setDate(today.getDate() + i);
+function generateDaysData() {
+    const daysData = [];
+    const startDate = getUrlDate(); // Get the starting date from URL
 
-            // Get the abbreviated day name (e.g., "Thu") and formatted date
-            const dayAbbreviation = date.toLocaleDateString('en-US', { weekday: 'short' });
-            const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(startDate);
+        date.setDate(startDate.getDate() + i);
 
-            daysData.push({
-                day: i + 1,
-                dayAbbreviation: dayAbbreviation, 
-                date: formattedDate,
-                kcal: 00,
-                oz: 00
-            });
-        }
-        return daysData;
+        // Get the abbreviated day name (e.g., "Thu") and formatted date
+        const dayAbbreviation = date.toLocaleDateString('en-US', { weekday: 'short' });
+        const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+        daysData.push({
+            day: i + 1,
+            dayAbbreviation: dayAbbreviation, 
+            date: formattedDate,
+            kcal: 00,
+            oz: 00
+        });
     }
+    return daysData;
+}
 
 
     

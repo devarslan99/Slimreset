@@ -1,10 +1,11 @@
 <?php
 include_once '../../database/db_connection.php';
 session_start();
-$user_id = $_SESSION['user_id'];
 // Get the JSON data from the request
 $jsonData = file_get_contents('php://input');
 $data = json_decode($jsonData, true);
+$loginUserRole = mysqli_real_escape_string($mysqli, $data['loginUserRole'] ?? '');
+$user_id = ($loginUserRole === 'coach') ? mysqli_real_escape_string($mysqli, $data['userId']) : $_SESSION['user_id'];
 
 // Prepare and bind
 $stmt = $mysqli->prepare("INSERT INTO food_items (foodId, label,type, amount, unit, calories, totalFat, satFat, cholesterol, sodium, carbs, fiber, sugars, protein,user_id,created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)");

@@ -3,6 +3,7 @@ include_once '../database/db_connection.php';
 
 $user_one_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null; //55 => coach, saqlain
 $login_user_role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
+$client_user_id = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
 
 $user_two_id = null;
 $row = null;
@@ -80,7 +81,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
     .bread-crum-Link {
         color: #333;
-        user-select:none;
+        user-select: none;
     }
 
     .menu {
@@ -304,15 +305,15 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     /* Style for the scrollable navigation container */
     .scrollable-nav {
         overflow-x: auto;
-        overflow-y: hidden; 
+        overflow-y: hidden;
         white-space: nowrap;
-        -ms-overflow-style: none; 
-        scrollbar-width: none; 
-        cursor:grab;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        cursor: grab;
     }
 
     .scrollable-nav::-webkit-scrollbar {
-        display: none; 
+        display: none;
     }
 </style>
 <div class="page-header row">
@@ -434,6 +435,39 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                         </li>
                     <?php endif; ?>
 
+                    <?php if (strpos($_SERVER['REQUEST_URI'], 'summary.php') !== false) : ?>
+                        <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'coach') : ?>
+                            <li class="menu new-entry-bg-none">
+                                <ul>
+                                    <li>
+                                        <button class="btn btn-primary rounded-pill px-3 py-2" style="background-color: #946CFC; border: none;">
+                                            + new entry
+                                        </button>
+                                        <input type="hidden" value="<?php echo $selected_date; ?>" id="selected_date">
+                                        <ul class="rounded-2 main-bg">
+                                            <li><a class="dropdown-item text-white" href="#" onclick="openWeightModal('weightModal')">Weight</a></li>
+                                            <li class="text-white">
+                                                Meal
+                                                <ul class="rounded-2 main-bg">
+                                                    <li class="link text-white">Food
+                                                        <ul class="rounded-2 main-bg">
+                                                            <li><a class="dropdown-item text-white" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
+                                                            <li><a class="dropdown-item text-white" href="#" onclick="openModal('Lunch')">Lunch</a></li>
+                                                            <li><a class="dropdown-item text-white" href="#" onclick="openModal('Dinner')">Dinner</a></li>
+                                                            <li><a class="dropdown-item text-white" href="#" onclick="openModal('Snacks')">Snacks</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a class="dropdown-item text-white" href="#" onclick="openWaterModal('waterModal')">Water</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a class="dropdown-item text-white" href="#" onclick="openBowelMovementsModal('bowelMovementsModal')">Bowel</a></li>
+                                            <li class="link text-white">Activity</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        <?php endif; ?>
+                    <?php endif; ?>
 
                     <li class="custom-notification-dropdown onhover-dropdown px-0 py-0 d-none">
                         <div class="d-flex custom-notification align-items-center position-relative">
@@ -611,6 +645,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
     // Fetch food data from Edamam API
     function fetchFoodData() {
+        console.log("Fetched Food Function is called")
         const query = document.getElementById('foodSearch').value;
         if (query.length < 3) return; // Avoid too many requests for short queries
 
@@ -622,6 +657,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             })
             .then(response => response.json())
             .then(data => {
+                console.log("Trying to get the data from the keyword")
                 const searchResults = document.getElementById('searchResults');
                 searchResults.innerHTML = ''; // Clear previous results
 
@@ -776,6 +812,8 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             sugars: document.getElementById('sugars').innerText,
             protein: document.getElementById('protein').innerText,
             selected_date: selected_date,
+            loginUserRole: "<?php echo $login_user_role ?>",
+            userId: "<?php echo $client_user_id ?>"
         };
 
         // Send food data to the server (you'll need to define the actual endpoint)
@@ -853,7 +891,9 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                 type: 'POST',
                 data: {
                     weight: weight,
-                    selected_date: selected_date
+                    selected_date: selected_date,
+                    loginUserRole: "<?php echo $login_user_role ?>",
+                    userId: "<?php echo $client_user_id ?>"
                 },
                 success: function(response) {
                     if (response === 'Success') {
@@ -908,7 +948,9 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                 type: 'POST',
                 data: {
                     bowel: bowel,
-                    selected_date: selected_date
+                    selected_date: selected_date,
+                    loginUserRole: "<?php echo $login_user_role ?>",
+                    userId: "<?php echo $client_user_id ?>"
                 },
                 success: function(response) {
                     if (response === 'Success') {
@@ -965,7 +1007,9 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                 type: 'POST',
                 data: {
                     water: water,
-                    selected_date: selected_date
+                    selected_date: selected_date,
+                    loginUserRole: "<?php echo $login_user_role ?>",
+                    userId: "<?php echo $client_user_id ?>"
                 },
                 success: function(response) {
                     if (response === 'Success') {
@@ -1027,38 +1071,37 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         }
     }
 
-            // Selecting the scrollable navigation container
+    // Selecting the scrollable navigation container
     const scrollableNav = document.querySelector('.scrollable-nav');
 
-            let isDragging = false;
-            let startX;
-            let scrollLeft;
+    let isDragging = false;
+    let startX;
+    let scrollLeft;
 
-            scrollableNav.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                startX = e.pageX - scrollableNav.offsetLeft;
-                scrollLeft = scrollableNav.scrollLeft;
-            });
-
-            scrollableNav.addEventListener('mouseleave', () => {
-                isDragging = false;
-            });
-
-            scrollableNav.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-
-            scrollableNav.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                e.preventDefault();
-                const x = e.pageX - scrollableNav.offsetLeft;
-                const walk = (x - startX) * 2; 
-                scrollableNav.scrollLeft = scrollLeft - walk;
-            });
-
-            scrollableNav.addEventListener('wheel', (e) => {
-                e.preventDefault(); 
-                scrollableNav.scrollLeft += e.deltaY; 
+    scrollableNav.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.pageX - scrollableNav.offsetLeft;
+        scrollLeft = scrollableNav.scrollLeft;
     });
 
+    scrollableNav.addEventListener('mouseleave', () => {
+        isDragging = false;
+    });
+
+    scrollableNav.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    scrollableNav.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - scrollableNav.offsetLeft;
+        const walk = (x - startX) * 2;
+        scrollableNav.scrollLeft = scrollLeft - walk;
+    });
+
+    scrollableNav.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        scrollableNav.scrollLeft += e.deltaY;
+    });
 </script>

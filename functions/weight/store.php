@@ -2,32 +2,29 @@
 include_once '../../database/db_connection.php';
 session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $user_id = $_SESSION['user_id']; // Fetch the user ID from session
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $loginUserRole = mysqli_real_escape_string($mysqli, $_POST['loginUserRole'] ?? '');
     $weight = mysqli_real_escape_string($mysqli, $_POST['weight']);
-    $selected_date = mysqli_real_escape_string($mysqli, $_POST['selected_date']); // Date in 'YYYY-MM-DD'
+    $selected_date = mysqli_real_escape_string($mysqli, $_POST['selected_date']);
+    $user_id = ($loginUserRole === 'coach') ? mysqli_real_escape_string($mysqli, $_POST['userId']) : $_SESSION['user_id'];
+
+    if (!$weight || !$selected_date || !$user_id) {
+        echo "Invalid Input";
+        exit;
+    }
 
     // Check if the record for the selected date and user already exists
-    $check_query = "SELECT * FROM weight_records WHERE DATE(created_at) = '$selected_date' AND user_id = '$user_id' LIMIT 1";
+    $check_query = "SELECT 1 FROM weight_records WHERE DATE(created_at) = '$selected_date' AND user_id = '$user_id'";
     $result = mysqli_query($mysqli, $check_query);
-    $record = mysqli_fetch_assoc($result);
 
-    if ($record) {
-        // If the record exists, update the existing weight
+    if (mysqli_num_rows($result) > 0) {
+        // Update existing weight record
         $update_query = "UPDATE weight_records SET weight='$weight' WHERE DATE(created_at) = '$selected_date' AND user_id = '$user_id'";
-        if (mysqli_query($mysqli, $update_query)) {
-            echo "Success";
-        } else {
-            echo "Failed to Update";
-        }
+        echo mysqli_query($mysqli, $update_query) ? "Success" : "Failed to Update";
     } else {
-        // If the record does not exist, insert a new record
+        // Insert new weight record
         $insert_query = "INSERT INTO weight_records (user_id, weight, created_at) VALUES ('$user_id', '$weight', '$selected_date')";
-        if (mysqli_query($mysqli, $insert_query)) {
-            echo "Success";
-        } else {
-            echo "Error";
-        }
+        echo mysqli_query($mysqli, $insert_query) ? "Success" : "Error";
     }
 
     mysqli_close($mysqli); // Close the database connection

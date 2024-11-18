@@ -575,7 +575,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     <h2 class="grocery-list-title">Grocery List</h2>
                     <!-- Grocery List Content -->
                     <div class="grocery-list-box grocery-list-box-2">
-                        
+
                         <!-- Columns for Aisles -->
                         <div class="grocery-columns">
                             <!-- Left Column -->
@@ -704,144 +704,143 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 <script>
     $(document).ready(function() {
         // Dummy details of meals for the right side (meal cards)
-    const mealData =  [
-        {
-            image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Veggie',
-            subName: 'Omelette',
-            mealInfo: {
-                calories: '800 kcal',
-                fats: '8g',
-                carbs: '15g',
-                size: '8 oz'
+        const mealData = [{
+                image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Veggie',
+                subName: 'Omelette',
+                mealInfo: {
+                    calories: '800 kcal',
+                    fats: '8g',
+                    carbs: '15g',
+                    size: '8 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/248444/pexels-photo-248444.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Grilled',
+                subName: 'Chicken Salad',
+                mealInfo: {
+                    calories: '600 kcal',
+                    fats: '10g',
+                    carbs: '12g',
+                    size: '10 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/8541404/pexels-photo-8541404.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Berry',
+                subName: 'Bowl',
+                mealInfo: {
+                    calories: '350 kcal',
+                    fats: '5g',
+                    carbs: '40g',
+                    size: '6 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Avocado',
+                subName: 'Toast',
+                mealInfo: {
+                    calories: '450 kcal',
+                    fats: '12g',
+                    carbs: '22g',
+                    size: '5 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/29389670/pexels-photo-29389670/free-photo-of-fresh-mixed-salad-in-takeaway-container.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Caesar',
+                subName: 'Salad',
+                mealInfo: {
+                    calories: '400 kcal',
+                    fats: '12g',
+                    carbs: '14g',
+                    size: '8 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Banana',
+                subName: 'Pancakes',
+                mealInfo: {
+                    calories: '450 kcal',
+                    fats: '7g',
+                    carbs: '50g',
+                    size: '6 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/5642831/pexels-photo-5642831.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Fruit',
+                subName: 'Parfait',
+                mealInfo: {
+                    calories: '350 kcal',
+                    fats: '5g',
+                    carbs: '45g',
+                    size: '5 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                name: 'Pasta',
+                subName: 'Primavera',
+                mealInfo: {
+                    calories: '550 kcal',
+                    fats: '10g',
+                    carbs: '60g',
+                    size: '9 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/8964280/pexels-photo-8964280.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Grilled',
+                subName: 'Salmon',
+                mealInfo: {
+                    calories: '500 kcal',
+                    fats: '15g',
+                    carbs: '5g',
+                    size: '7 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/29345893/pexels-photo-29345893/free-photo-of-freshly-baked-pizza-with-toppings-on-wooden-board.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Margherita',
+                subName: 'Pizza',
+                mealInfo: {
+                    calories: '750 kcal',
+                    fats: '18g',
+                    carbs: '80g',
+                    size: '10 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/27672709/pexels-photo-27672709/free-photo-of-salad-with-shrimps.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Veggie',
+                subName: 'Bowl',
+                mealInfo: {
+                    calories: '300 kcal',
+                    fats: '10g',
+                    carbs: '35g',
+                    size: '6 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/27195708/pexels-photo-27195708/free-photo-of-meal-with-vegetables-on-dark-plate.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Quinoa',
+                subName: 'Salad',
+                mealInfo: {
+                    calories: '400 kcal',
+                    fats: '9g',
+                    carbs: '30g',
+                    size: '8 oz'
+                }
             }
-        },
-        {
-            image: 'https://images.pexels.com/photos/248444/pexels-photo-248444.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Grilled',
-            subName: 'Chicken Salad',
-            mealInfo: {
-                calories: '600 kcal',
-                fats: '10g',
-                carbs: '12g',
-                size: '10 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/8541404/pexels-photo-8541404.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Berry',
-            subName: 'Bowl',
-            mealInfo: {
-                calories: '350 kcal',
-                fats: '5g',
-                carbs: '40g',
-                size: '6 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Avocado',
-            subName: 'Toast',
-            mealInfo: {
-                calories: '450 kcal',
-                fats: '12g',
-                carbs: '22g',
-                size: '5 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/29389670/pexels-photo-29389670/free-photo-of-fresh-mixed-salad-in-takeaway-container.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Caesar',
-            subName: 'Salad',
-            mealInfo: {
-                calories: '400 kcal',
-                fats: '12g',
-                carbs: '14g',
-                size: '8 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Banana',
-            subName: 'Pancakes',
-            mealInfo: {
-                calories: '450 kcal',
-                fats: '7g',
-                carbs: '50g',
-                size: '6 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/5642831/pexels-photo-5642831.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Fruit',
-            subName: 'Parfait',
-            mealInfo: {
-                calories: '350 kcal',
-                fats: '5g',
-                carbs: '45g',
-                size: '5 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-            name: 'Pasta',
-            subName: 'Primavera',
-            mealInfo: {
-                calories: '550 kcal',
-                fats: '10g',
-                carbs: '60g',
-                size: '9 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/8964280/pexels-photo-8964280.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Grilled',
-            subName: 'Salmon',
-            mealInfo: {
-                calories: '500 kcal',
-                fats: '15g',
-                carbs: '5g',
-                size: '7 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/29345893/pexels-photo-29345893/free-photo-of-freshly-baked-pizza-with-toppings-on-wooden-board.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Margherita',
-            subName: 'Pizza',
-            mealInfo: {
-                calories: '750 kcal',
-                fats: '18g',
-                carbs: '80g',
-                size: '10 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/27672709/pexels-photo-27672709/free-photo-of-salad-with-shrimps.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Veggie',
-            subName: 'Bowl',
-            mealInfo: {
-                calories: '300 kcal',
-                fats: '10g',
-                carbs: '35g',
-                size: '6 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/27195708/pexels-photo-27195708/free-photo-of-meal-with-vegetables-on-dark-plate.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Quinoa',
-            subName: 'Salad',
-            mealInfo: {
-                calories: '400 kcal',
-                fats: '9g',
-                carbs: '30g',
-                size: '8 oz'
-            }
-        }
-    ];
- 
-    // Append meal cards to #meal-cards
-    $.each(mealData, function(index, meal) {
-        const mealCard = `
+        ];
+
+        // Append meal cards to #meal-cards
+        $.each(mealData, function(index, meal) {
+            const mealCard = `
             <div class="meal-card-rec" data-meal-fats="${meal.mealInfo.fats}" data-meal-carbs="${meal.mealInfo.carbs}">
                 <div class="custom-border rounded">
                     <img class="recipe-img-card" src="${meal.image}" alt="${meal.name} ${meal.subName}">
@@ -889,10 +888,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         }
 
 
-    
-    // Function to create HTML for each day column
-    function createDayColumn(dayData, isFirstColumn) {
-        return `
+
+        // Function to create HTML for each day column
+        function createDayColumn(dayData, isFirstColumn) {
+            return `
             <div class="col-lg-2 col-md-4 col-sm-6 col-6 mb-4 day-column" style="max-width: 150px;">
                 <div class="text-center">
                     ${isFirstColumn ? '<div class="nutrition-label">nutrition</div>' : ''}
@@ -958,36 +957,47 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             function addLabels($dayColumn) {
                 $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
 
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-breakfast .meal-card').prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-lunch .meal-card').prepend('<div class="lunch-label meal-card-title">Lunch</div>');
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-dinner .meal-card').prepend('<div class="dinner-label meal-card-title">Dinner</div>');
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-snack .meal-card').prepend('<div class="snack-label meal-card-title">Snack</div>');
+                $dayColumn
+                    .find('#day' + $dayColumn.find('.day-header').text().split(' ')[1] + '-breakfast .meal-card')
+                    .prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
+                $dayColumn
+                    .find('#day' + $dayColumn.find('.day-header').text().split(' ')[1] + '-lunch .meal-card')
+                    .prepend('<div class="lunch-label meal-card-title">Lunch</div>');
+                $dayColumn
+                    .find('#day' + $dayColumn.find('.day-header').text().split(' ')[1] + '-dinner .meal-card')
+                    .prepend('<div class="dinner-label meal-card-title">Dinner</div>');
+                $dayColumn
+                    .find('#day' + $dayColumn.find('.day-header').text().split(' ')[1] + '-snack .meal-card')
+                    .prepend('<div class="snack-label meal-card-title">Snack</div>');
             }
-
-            updateLabels();
-            $(window).on('resize', function() {
-                updateLabels();
-            });
 
             // Append the new columns
             daysData.forEach((day, index) => {
                 $('#empty-card-slots').append(createDayColumn(day, index === 0)); // Add date and day info
             });
+
+            // Call updateLabels AFTER appending the columns
+            updateLabels();
+
+            $(window).on('resize', function() {
+                updateLabels();
+            });
         }
+
         // Initial load of the columns
         displayDates();
         // Optional: Refresh the dates daily at midnight
         setInterval(displayDates, 24 * 60 * 60 * 1000); // Refresh every 24 hours
 
-
         initializeSortable();
+
     });
 
     let mealDataArray = [];
     // Function to populate all meat-card data into grocery list
     function populateAllGroceryList(mealDataArray) {
         const groceryListBox = document.querySelector('.grocery-list-box-2');
-        groceryListBox.innerHTML = ''; 
+        groceryListBox.innerHTML = '';
 
         mealDataArray.forEach(meal => {
             const mealHTML = `
@@ -1162,9 +1172,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             carbs: mealCarbs,
                             fats: mealFats
                         },
-                        label: sectionLabel 
+                        label: sectionLabel
                     };
-                    mealDataArray.push(mealData); 
+                    mealDataArray.push(mealData);
                     populateAllGroceryList(mealDataArray);
 
                     const dayColumn = evt.to.closest('.day-column');
@@ -1187,7 +1197,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                             if (dayMealData[dayId]) {
                                 // Push the meal data along with the date into the specific day array
-                                dayMealData[dayId].push({ ...mealData, date });
+                                dayMealData[dayId].push({
+                                    ...mealData,
+                                    date
+                                });
                             } else {
                                 console.error(`Invalid dayId: ${dayId}`);
                             }
@@ -1213,7 +1226,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
         const mealInfo = {
             calories: infoLines.find(line => line.includes('kcal')) || '',
-            size: infoLines.find(line => line.includes('oz')) || '',       
+            size: infoLines.find(line => line.includes('oz')) || '',
         };
 
         return mealInfo;
@@ -1227,12 +1240,12 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         const size = mealElement.getAttribute('data-meal-size');
         const carbs = mealElement.getAttribute('data-meal-carbs');
         const fats = mealElement.getAttribute('data-meal-fats');
-        
+
         document.getElementById('popup-overlay').style.display = 'flex';
         const mealDetail = document.querySelector('.meal-detail');
-        
+
         mealDetail.innerHTML = ""; // Clear existing content
-        
+
         mealDetail.innerHTML = `
             <div class="ingredients">
                 <h2>${mealName} ${mealSubName}</h2>
@@ -1252,7 +1265,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     // Function to close the popup
     function closePopup() {
-            document.getElementById('popup-overlay').style.display = 'none';
+        document.getElementById('popup-overlay').style.display = 'none';
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -1355,34 +1368,34 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 </script>
 
 
-    <!-- JavaScript to Handle Calendar and Date Update -->
-    <script>
-        $(document).ready(function() {
-            // Initialize Flatpickr on the hidden input
-            flatpickr("#datepicker", {
-                dateFormat: "Y-m-d",  // Date format
-                onChange: function(selectedDates, dateStr, instance) {
-                    console.log("Date selected: " + dateStr);
-                    var userId = "<?php echo $_GET['id']; ?>"; // Get the user ID from the URL
-                    // Redirect to the new URL with the selected date
-                    window.location.href = "?id=" + userId + "&date=" + dateStr;
-                },
-                closeOnSelect: true  // Close the calendar after selecting a date
-            });
-
-            // Toggle calendar popup on calendar icon click
-            $("#calendar-icon").click(function() {
-                var $datepicker = $("#datepicker");
-
-                // Check if the datepicker is hidden
-                if ($datepicker.css("visibility") === "hidden") {
-                    console.log("Calendar is now visible.");
-                    $datepicker.css("visibility", "visible");
-                    $datepicker.focus();  // Focus to trigger the Flatpickr calendar
-                } else {
-                    console.log("Calendar is now hidden.");
-                    $datepicker.css("visibility", "hidden");
-                }
-            });
+<!-- JavaScript to Handle Calendar and Date Update -->
+<script>
+    $(document).ready(function() {
+        // Initialize Flatpickr on the hidden input
+        flatpickr("#datepicker", {
+            dateFormat: "Y-m-d", // Date format
+            onChange: function(selectedDates, dateStr, instance) {
+                console.log("Date selected: " + dateStr);
+                var userId = "<?php echo $_GET['id']; ?>"; // Get the user ID from the URL
+                // Redirect to the new URL with the selected date
+                window.location.href = "?id=" + userId + "&date=" + dateStr;
+            },
+            closeOnSelect: true // Close the calendar after selecting a date
         });
-    </script>
+
+        // Toggle calendar popup on calendar icon click
+        $("#calendar-icon").click(function() {
+            var $datepicker = $("#datepicker");
+
+            // Check if the datepicker is hidden
+            if ($datepicker.css("visibility") === "hidden") {
+                console.log("Calendar is now visible.");
+                $datepicker.css("visibility", "visible");
+                $datepicker.focus(); // Focus to trigger the Flatpickr calendar
+            } else {
+                console.log("Calendar is now hidden.");
+                $datepicker.css("visibility", "hidden");
+            }
+        });
+    });
+</script>

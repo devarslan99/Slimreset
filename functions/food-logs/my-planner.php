@@ -479,7 +479,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             <div class="grocery-popup-overlay" id="grocery-popup-overlay">
                 <div class="grocery-popup-content">
                     <div class="grocery-close-popup" onclick="closeGroceryPopup()">X</div>
-                    <!-- Grocery List Content -->
+                    <!-- dynamically content will display here -->
                     <div class="grocery-list-box">
                         <h2 class="grocery-list-title">grocery list</h2>
                         
@@ -565,11 +565,12 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             </div>
                         </div>
 
-                        <!-- PDF Icon -->
-                        <div class="grocery-pdf-icon">
-                            <i class="fa fa-file-pdf-o" onclick="downloadPDF()"></i>
-                        </div>
+            
                     </div>
+                </div>
+                <!-- PDF Icon -->
+                <div class="grocery-pdf-icon">
+                    <i class="fa fa-file-pdf-o" onclick="downloadPDF()"></i>
                 </div>
             </div>
 
@@ -1099,10 +1100,13 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         dayMealData.forEach(meal => {
             const mealHTML = `
                 <div class="list-box">
+                    <div class="d-flex justify-content-between day-data-section">
+                        <span class="day-box fs-5 fw-bold">${meal.day}</span>
+                        <span class="date-box fs-5 fw-bold">${meal.date}</span>
+                    </div>
                     <span class="label-name">${meal.label}</span>
                     <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
                         <h3 class="fw-bold mb-0">${meal.mealName} ${meal.mealSubName}</h3>
-                        <p class="text-muted mb-0">${meal.date}</p>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">

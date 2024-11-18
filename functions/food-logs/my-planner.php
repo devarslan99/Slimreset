@@ -989,7 +989,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     <span class="label-name">${meal.label}</span> <!-- Dynamic label -->
                     <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
                         <h3 class="fw-bold mb-0">${meal.mealName} ${meal.mealSubName}</h3>
-                        <p class="text-muted mb-0">${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                        <p class="text-muted mb-0">${meal.date}</p>
                     </div>
                     <div class="row">
                         <!-- Left Column with Calories and Total Fat -->
@@ -1123,6 +1123,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     // Capture the section label
                     const sectionLabel = evt.to.getAttribute('data-label');
 
+                    // Find the date in the day column
+                    const dayColumn = evt.to.closest('.day-column');
+                    const dateTextElement = dayColumn ? dayColumn.querySelector('.date-text') : null;
+                    const date = dateTextElement ? dateTextElement.getAttribute('data-date') : '';
+
                     // Find the existing empty .meal-card in the target section
                     const targetMealCard = evt.to.querySelector('.meal-card');
 
@@ -1156,12 +1161,14 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             carbs: mealCarbs,
                             fats: mealFats
                         },
-                        label: sectionLabel 
+                        label: sectionLabel,
+                        date 
                     };
+                    console.log(mealData)
                     mealDataArray.push(mealData); 
                     populateAllGroceryList(mealDataArray);
 
-                    const dayColumn = evt.to.closest('.day-column');
+                    // const dayColumn = evt.to.closest('.day-column');
                     if (dayColumn) {
                         const addToCartIcon = dayColumn.querySelector('.AddToCart');
                         if (addToCartIcon) {

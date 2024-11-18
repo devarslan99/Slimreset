@@ -149,7 +149,7 @@
     <!-- Recipe Card Example -->
     <div class="meal-card-rec">
         <div class="custom-border rounded">
-            <img class="recipe-img-card" src="https://images.unsplash.com/photo-1525351484163-7529414344d8" alt="Veggie Omelette">
+            <img class="recipe-img-card" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200" alt="Veggie Omelette">
             <div class="meal-name">veggie</div>
             <div class="meal-name-sub">omelette</div>
             <div class="meal-info">800 kcal<br>8 oz</div>
@@ -160,7 +160,7 @@
     </div>
     <div class="meal-card-rec">
         <div class="custom-border rounded">
-            <img class="recipe-img-card" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061" alt="Veggie Omelette">
+            <img class="recipe-img-card" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200" alt="Veggie Omelette">
             <div class="meal-name">veggie</div>
             <div class="meal-name-sub">omelette</div>
             <div class="meal-info">800 kcal<br>8 oz</div>
@@ -171,7 +171,7 @@
     </div>
     <div class="meal-card-rec">
         <div class="custom-border rounded">
-            <img class="recipe-img-card" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Veggie Omelette">
+            <img class="recipe-img-card" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200" alt="Veggie Omelette">
             <div class="meal-name">veggie</div>
             <div class="meal-name-sub">omelette</div>
             <div class="meal-info">800 kcal<br>8 oz</div>
@@ -182,7 +182,7 @@
     </div>
     <div class="meal-card-rec">
         <div class="custom-border rounded">
-            <img class="recipe-img-card" src="https://images.unsplash.com/photo-1495195129352-aeb325a55b65" alt="Veggie Omelette">
+            <img class="recipe-img-card" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200" alt="Veggie Omelette">
             <div class="meal-name">veggie</div>
             <div class="meal-name-sub">omelette</div>
             <div class="meal-info">800 kcal<br>8 oz</div>
@@ -193,7 +193,7 @@
     </div>
     <div class="meal-card-rec">
         <div class="custom-border rounded">
-            <img class="recipe-img-card" src="https://images.unsplash.com/photo-1543353071-873f17a7a088" alt="Veggie Omelette">
+            <img class="recipe-img-card" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200" alt="Veggie Omelette">
             <div class="meal-name">veggie</div>
             <div class="meal-name-sub">omelette</div>
             <div class="meal-info">800 kcal<br>8 oz</div>
@@ -204,7 +204,7 @@
     </div>
     <div class="meal-card-rec">
         <div class="custom-border rounded">
-            <img class="recipe-img-card" src="https://images.pexels.com/photos/10261265/pexels-photo-10261265.jpeg" alt="Veggie Omelette">
+            <img class="recipe-img-card" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200" alt="Veggie Omelette">
             <div class="meal-name">veggie</div>
             <div class="meal-name-sub">omelette</div>
             <div class="meal-info">800 kcal<br>8 oz</div>
@@ -215,7 +215,7 @@
     </div>
     <div class="meal-card-rec">
         <div class="custom-border rounded">
-            <img class="recipe-img-card" src="https://images.pexels.com/photos/3184193/pexels-photo-3184193.jpeg" alt="Veggie Omelette">
+            <img class="recipe-img-card" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200" alt="Veggie Omelette">
             <div class="meal-name">veggie</div>
             <div class="meal-name-sub">omelette</div>
             <div class="meal-info">800 kcal<br>8 oz</div>
@@ -226,7 +226,7 @@
     </div>
     <div class="meal-card-rec">
         <div class="custom-border rounded">
-            <img class="recipe-img-card" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg" alt="Veggie Omelette">
+            <img class="recipe-img-card" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200" alt="Veggie Omelette">
             <div class="meal-name">veggie</div>
             <div class="meal-name-sub">omelette</div>
             <div class="meal-info">800 kcal<br>8 oz</div>
@@ -237,7 +237,7 @@
     </div>
     <div class="meal-card-rec">
         <div class="custom-border rounded">
-            <img class="recipe-img-card" src="https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Veggie Omelette">
+            <img class="recipe-img-card" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200" alt="Veggie Omelette">
             <div class="meal-name">veggie</div>
             <div class="meal-name-sub">omelette</div>
             <div class="meal-info">800 kcal<br>8 oz</div>

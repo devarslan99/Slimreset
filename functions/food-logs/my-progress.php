@@ -158,8 +158,8 @@ while ($row = $result_protein->fetch_assoc()) {
             </div>
 
             <div class="row">
-                <div id="chartContainer">
-                    <canvas id="weightChart"></canvas>
+                <div id="chartContainer" style="height: 515px !important;">
+                    <canvas id="weightChart" style="height: 100%;"></canvas>
                 </div>
             </div>
         </div>

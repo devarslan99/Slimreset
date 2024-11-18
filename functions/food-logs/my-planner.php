@@ -1164,7 +1164,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         label: sectionLabel,
                         date 
                     };
-                    console.log(mealData)
                     mealDataArray.push(mealData); 
                     populateAllGroceryList(mealDataArray);
 

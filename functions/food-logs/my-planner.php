@@ -26,7 +26,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         padding: 20px 30px;
         border-radius: 30px;
         width: 500px;
-        height: 250px;
+        min-height: 250px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -425,6 +425,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     /* Red Border when Section is Full */
     .meal-box {
+        position: relative;
         transition: border 0.3s ease;
     }
 
@@ -433,6 +434,32 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         border: 2px solid red;
     }
 
+    .meal-box-close-btn
+    {
+        position: absolute;
+        top:-5px;
+        right:-5px;
+        border-radius: 50%;
+        text-align: center;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #9d87f5;
+        color: #fff;
+        border:2px solid #f2f2f2;
+    }
+
+    .meal-box-close-btn .fa-times
+    {
+        font-size: 12px;
+        color:#fff;
+    }
+    .meal-box-close-btn .fa-times:hover
+    {
+        color:#fff;
+    }
 </style>
 
 <div class="row">
@@ -906,7 +933,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             date.setDate(startDate.getDate() + i);
 
             // Get the abbreviated day name (e.g., "Thu") and formatted date
-            const dayAbbreviation = date.toLocaleDateString('en-US', { weekday: 'short' });
+            const dayAbbreviation = date.toLocaleDateString('en-US', { weekday: 'short' } );
             const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
             daysData.push({
@@ -1201,26 +1228,25 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 animation: 150,
                 sort: false,
                 onAdd: function(evt) {
-                    // Check if the section already contains a meal card
-                    const targetSection = evt.to; 
+                    const targetSection = evt.to;
                     // Check if the section already contains a meal card
                     if (targetSection.querySelector('.meal-card .meal-box')) {
-                        targetSection.querySelector('.meal-card .meal-box').style.cursor = 'not-allowed';
-                        targetSection.querySelector('.meal-card .meal-box').style.border = '2px solid red';
-                        targetSection.querySelector('.meal-card .meal-box').classList.add('shake-effect'); 
-                        evt.item.style.display = 'none';
-                        // Remove the border and reset the style after a short period
+                        const existingMealBox = targetSection.querySelector('.meal-card .meal-box');
+                        existingMealBox.style.cursor = 'not-allowed';
+                        existingMealBox.style.border = '2px solid red';
+                        existingMealBox.classList.add('shake-effect'); 
+                        evt.item.remove(); // Remove the dragged item to prevent adding duplicate
                         setTimeout(() => {
-                            targetSection.querySelector('.meal-card .meal-box').style.border = ''; 
-                            targetSection.querySelector('.meal-card .meal-box').classList.remove('shake-effect');
-                            targetSection.querySelector('.meal-card .meal-box').style.cursor = 'pointer';
+                            existingMealBox.style.border = '';
+                            existingMealBox.classList.remove('shake-effect');
+                            existingMealBox.style.cursor = '';
                         }, 500);
 
                         return;
                     } else {
-                        // Reset cursor and border when the section becomes empty
-                        targetSection.style.border = ''; // Reset the border
-                        targetSection.classList.remove('shake-effect'); // Remove the shake effect
+                        // Reset cursor and border if the section becomes empty
+                        targetSection.style.border = '';
+                        targetSection.classList.remove('shake-effect');
                     }
 
                     // Get the data from the dragged element
@@ -1270,8 +1296,41 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 <div class="meal-name">${mealName}</div>
                                 <div class="meal-name-sub">${mealSubName}</div>
                                 <div class="meal-info">${mealInfo.calories}<br>${mealInfo.size}</div> 
+                                <div class="meal-box-close-btn"><i class="fa fa-times"></i></div>
                             </div>
                         `;
+
+                            // Add event listener for the close button inside the meal-box
+                            const closeButton = targetMealCard.querySelector('.meal-box-close-btn');
+                            closeButton.addEventListener('click', function(e) {
+                                e.stopPropagation();
+                                const mealBox = closeButton.closest('.meal-box');
+                                    if (mealBox) {
+                                        // Remove only the meal-box, not the entire section
+                                        const mealCard = mealBox.closest('.meal-card');
+                                        if (mealCard) {
+                                            // Remove the meal-box inside the meal-card
+                                            mealBox.remove();
+                                            
+                                            // Remove the corresponding meal data from the arrays
+                                            const mealName = mealBox.getAttribute('data-meal-name');
+                                            const mealIndex = mealDataArray.findIndex(meal => meal.mealName === mealName);
+                                            if (mealIndex !== -1) {
+                                                mealDataArray.splice(mealIndex, 1); // Remove from mealDataArray
+                                            }
+
+                                            // Update section (meal-card) if needed
+                                            if (mealCard.children.length === 0) {
+                                                // If the meal-card is now empty, you may want to add back the empty slot or display a message.
+                                                const addMoreDiv = document.createElement('div');
+                                                addMoreDiv.classList.add('add-more');
+                                                addMoreDiv.innerHTML = '<div class="plus-sign">+</div>';
+                                                mealCard.appendChild(addMoreDiv);
+                                            }
+                                        }
+                                    }
+                            });
+
                     }
 
                     // Remove the dragged item from its original location to keep a single instance

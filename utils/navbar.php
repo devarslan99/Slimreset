@@ -647,6 +647,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     function fetchFoodData() {
         console.log("Fetched Food Function is called")
         const query = document.getElementById('foodSearch').value;
+        console.log("The value searched!",query)
         if (query.length < 3) return; // Avoid too many requests for short queries
 
         fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=f73b06f6&app_key=562df73d9c2324199c25a9b8088540ba&ingr=${query}`, {

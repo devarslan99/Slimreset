@@ -173,7 +173,7 @@ $recipes_json = json_encode($recipes);
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="recipeSearch" class="form-control" placeholder="Search for recipes..." oninput="fetchFoodData()">
+                    <input type="text" id="recipeSearch" class="form-control" placeholder="Search for recipes..." oninput="fetchRecipeData()">
                     <!-- Display search results -->
                     <ul class="list-group mt-3" id="searchResultsForRecipe"></ul>
                 </div>
@@ -192,8 +192,9 @@ $recipes_json = json_encode($recipes);
         }
 
         // Fetch food data from Edamam API
-        function fetchFoodData() {
+        function fetchRecipeData() {
             const query = document.getElementById('recipeSearch').value;
+            console.log("Recipe function called!")
             if (query.length < 3) return; // Avoid too many requests for short queries
 
             fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=f73b06f6&app_key=562df73d9c2324199c25a9b8088540ba&ingr=${query}`, {
@@ -219,7 +220,7 @@ $recipes_json = json_encode($recipes);
                         const li = document.createElement('li');
                         li.classList.add('list-group-item');
                         li.innerHTML = item.label || `${item.food.label}`;
-                        li.onclick = () => selectFoodItem(item, li); // Pass the selected item and the li element
+                        li.onclick = () => selectRecipeItem(item, li); // Pass the selected item and the li element
                         searchResultsForRecipe.appendChild(li);
                     });
                 })
@@ -227,7 +228,7 @@ $recipes_json = json_encode($recipes);
         }
 
         // Select food item and display its details directly beneath the clicked item
-        function selectFoodItem(food, listItem) {
+        function selectRecipeItem(food, listItem) {
             // Remove any existing expanded sections
             const existingExpandedRow = document.querySelector('.expanded-row');
             if (existingExpandedRow) existingExpandedRow.remove();
@@ -240,10 +241,10 @@ $recipes_json = json_encode($recipes);
             expandedRow.innerHTML = `
                     <h6 class="mt-3">${food.label}</h6>
                     <p class="mt-2">Enter amount:</p>
-                    <input type="number" id="foodAmount" class="form-control mb-2" value="1" placeholder="Amount" onchange="updateNutritionValues()">
+                    <input type="number" id="foodAmount" class="form-control mb-2" value="1" placeholder="Amount" onchange="updateNutritionValuesForRecipe()">
 
                     <!-- Dropdown for weighing unit -->
-                    <select id="weighingUnit" class="form-control mb-2" onchange="updateNutritionValues()">
+                    <select id="weighingUnit" class="form-control mb-2" onchange="updateNutritionValuesForRecipe()">
                     </select>
 
                     <!-- Display nutritional info -->
@@ -282,11 +283,11 @@ $recipes_json = json_encode($recipes);
             expandedRow.dataset.protein = food.nutrients.PROCNT || 0;
 
             // Populate the weighingUnit dropdown dynamically
-            populateWeighingUnits(food);
+            populateWeighingUnitsForRecipe(food);
         }
 
         // Populate weighing units dynamically
-        function populateWeighingUnits(food) {
+        function populateWeighingUnitsForRecipe(food) {
             const unitSelect = document.getElementById('weighingUnit');
             unitSelect.innerHTML = ''; // Clear previous options
 
@@ -306,7 +307,7 @@ $recipes_json = json_encode($recipes);
         }
 
         // Update nutritional values dynamically based on selected unit and amount
-        function updateNutritionValues() {
+        function updateNutritionValuesForRecipe() {
             const amount = document.getElementById('foodAmount').value || 1;
             const unit = document.getElementById('weighingUnit').value;
             const expandedRow = document.querySelector('.expanded-row');

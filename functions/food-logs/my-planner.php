@@ -410,6 +410,29 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         cursor: pointer;
     }
 
+    /* Shake Effect for Full Section */
+    .shake-effect {
+        animation: shake 0.5s ease-out;
+    }
+
+    @keyframes shake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        50% { transform: translateX(5px); }
+        75% { transform: translateX(-5px); }
+        100% { transform: translateX(0); }
+    }
+
+    /* Red Border when Section is Full */
+    .meal-box {
+        transition: border 0.3s ease;
+    }
+
+    /* When the border is added temporarily */
+    .meal-box.temp-border {
+        border: 2px solid red;
+    }
+
 </style>
 
 <div class="row">
@@ -1159,11 +1182,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         Sortable.create(document.getElementById('meal-cards'), {
             group: {
                 name: 'shared',
-                pull: 'clone', 
+                pull: 'clone',
                 put: false
             },
             animation: 150,
-            sort: false 
+            sort: false
         });
 
         // Make each meal section (left side, empty slots) a drop target only
@@ -1172,46 +1195,77 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             Sortable.create(section, {
                 group: {
                     name: 'shared',
-                    pull: false, 
+                    pull: false,
                     put: true
                 },
                 animation: 150,
-                sort: false, 
+                sort: false,
                 onAdd: function(evt) {
+                    // Check if the section already contains a meal card
+                    const targetSection = evt.to; 
+                    // Check if the section already contains a meal card
+                    if (targetSection.querySelector('.meal-card .meal-box')) {
+                        targetSection.querySelector('.meal-card .meal-box').style.cursor = 'not-allowed';
+                        targetSection.querySelector('.meal-card .meal-box').style.border = '2px solid red';
+                        targetSection.querySelector('.meal-card .meal-box').classList.add('shake-effect'); 
+                        evt.item.style.display = 'none';
+                        // Remove the border and reset the style after a short period
+                        setTimeout(() => {
+                            targetSection.querySelector('.meal-card .meal-box').style.border = ''; 
+                            targetSection.querySelector('.meal-card .meal-box').classList.remove('shake-effect');
+                            targetSection.querySelector('.meal-card .meal-box').style.cursor = 'pointer';
+                        }, 500);
+
+                        return;
+                    } else {
+                        // Reset cursor and border when the section becomes empty
+                        targetSection.style.border = ''; // Reset the border
+                        targetSection.classList.remove('shake-effect'); // Remove the shake effect
+                    }
+
                     // Get the data from the dragged element
                     const draggedItem = evt.item;
                     const imageSrc = draggedItem.querySelector('img').src;
                     const mealName = draggedItem.querySelector('.meal-name').textContent;
-                    const mealSubName = draggedItem.querySelector('.meal-name-sub') ? draggedItem.querySelector('.meal-name-sub').textContent : '';
+                    const mealSubName = draggedItem.querySelector('.meal-name-sub') 
+                        ? draggedItem.querySelector('.meal-name-sub').textContent 
+                        : '';
                     const mealCarbs = draggedItem.getAttribute('data-meal-carbs');
                     const mealFats = draggedItem.getAttribute('data-meal-fats');
 
-                    // Extract the nutritional information from the meal-info div
+                    // Extract the nutritional information
                     const mealInfoDiv = draggedItem.querySelector('.meal-info');
                     const mealInfo = extractMealInfo(mealInfoDiv);
                     const kcal = parseFloat(mealInfo.calories) || 0;
                     const oz = parseFloat(mealInfo.size) || 0;
+
                     // Capture the section label
                     const sectionLabel = evt.to.getAttribute('data-label');
 
                     // Find the date in the day column
                     const dayColumn = evt.to.closest('.day-column');
                     const dateTextElement = dayColumn ? dayColumn.querySelector('.date-text') : null;
-                    const date = dateTextElement ? dateTextElement.getAttribute('data-date') : '';   
+                    const date = dateTextElement ? dateTextElement.getAttribute('data-date') : '';
                     const dayTextElement = dayColumn ? dayColumn.querySelector('.day-Name') : null;
                     const day = dayTextElement ? dayTextElement.getAttribute('data-day') : '';
 
                     // Find the existing empty .meal-card in the target section
                     const targetMealCard = evt.to.querySelector('.meal-card');
-
                     if (targetMealCard) {
                         // Keep the existing label in the meal card
                         const existingLabel = targetMealCard.querySelector('.meal-card-title');
-
+                        
                         // Populate the .meal-card with structured content, retaining the label
                         targetMealCard.innerHTML = `
                             ${existingLabel ? existingLabel.outerHTML : ''} <!-- Keep existing label -->
-                            <div class="custom-border rounded meal-box" data-meal-name="${mealName}" data-meal-subname="${mealSubName}" data-meal-calories="${mealInfo.calories}" data-meal-size="${mealInfo.size}" data-meal-carbs="${mealCarbs}" data-meal-fats="${mealFats}" onclick="showBox(this)">
+                            <div class="custom-border rounded meal-box" 
+                                data-meal-name="${mealName}" 
+                                data-meal-subname="${mealSubName}" 
+                                data-meal-calories="${mealInfo.calories}" 
+                                data-meal-size="${mealInfo.size}" 
+                                data-meal-carbs="${mealCarbs}" 
+                                data-meal-fats="${mealFats}" 
+                                onclick="showBox(this)">
                                 <img src="${imageSrc}" alt="${mealName}">
                                 <div class="meal-name">${mealName}</div>
                                 <div class="meal-name-sub">${mealSubName}</div>
@@ -1220,7 +1274,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         `;
                     }
 
-                    // Remove the dragged item from its original location to keep single instance
+                    // Remove the dragged item from its original location to keep a single instance
                     draggedItem.remove();
 
                     // Capture the meal card data and add it to the array
@@ -1236,15 +1290,14 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         },
                         label: sectionLabel,
                         date,
-                        day 
+                        day
                     };
-                    mealDataArray.push(mealData); 
+                    mealDataArray.push(mealData);
                     populateAllGroceryList(mealDataArray);
 
-                    const grocery_list_btn = document.querySelector('.grocery-list')
-                    grocery_list_btn.addEventListener('click', function() {
-                        showGroceryPopup2();
-                    });
+                    // Grocery list button event listener
+                    const groceryListBtn = document.querySelector('.grocery-list');
+                    groceryListBtn.addEventListener('click', showGroceryPopup2);
 
                     if (dayColumn) {
                         const addToCartIcon = dayColumn.querySelector('.AddToCart');
@@ -1259,14 +1312,15 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             }
 
                             // Identify the day column where the meal was dropped
-                            const dayId = dayColumn.querySelector('.day-header').textContent.toLowerCase().replace(" ", "");
+                            const dayId = dayColumn.querySelector('.day-header')
+                                .textContent.toLowerCase().replace(" ", "");
                             const dateTextElement = dayColumn.querySelector('.date-text');
                             const date = dateTextElement ? dateTextElement.getAttribute('data-date') : '';
 
+                            // Push meal data into the specific day array
                             if (dayMealData[dayId]) {
-                                // Push the meal data along with the date into the specific day array
-                                    dayMealData[dayId].push({ ...mealData, date });
-                                } else {
+                                dayMealData[dayId].push({ ...mealData, date });
+                            } else {
                                 console.error(`Invalid dayId: ${dayId}`);
                             }
 
@@ -1294,11 +1348,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             });
                         }
                     }
-
                 }
             });
-        });        
-    }
+        });
+    }   
 
     // Function to extract meal info from the HTML
     function extractMealInfo(mealInfoDiv) {

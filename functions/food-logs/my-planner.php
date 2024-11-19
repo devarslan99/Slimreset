@@ -429,6 +429,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         transition: border 0.3s ease;
     }
 
+    .meal-box:hover .meal-box-close-btn 
+    {
+        display:flex;
+    }
+
     /* When the border is added temporarily */
     .meal-box.temp-border {
         border: 2px solid red;
@@ -449,6 +454,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         background: #9d87f5;
         color: #fff;
         border:2px solid #f2f2f2;
+        display:none;
     }
 
     .meal-box-close-btn .fa-times
@@ -1302,23 +1308,42 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                             // Add event listener for the close button inside the meal-box
                             const closeButton = targetMealCard.querySelector('.meal-box-close-btn');
-                            closeButton.addEventListener('click', function(e) {
+                             closeButton.addEventListener('click', function(e) {
                                 e.stopPropagation();
                                 const mealBox = closeButton.closest('.meal-box');
-                                    if (mealBox) {
-                                        // Remove only the meal-box, not the entire section
-                                        const mealCard = mealBox.closest('.meal-card');
-                                        if (mealCard) {
-                                            // Remove the meal-box inside the meal-card
-                                            mealBox.remove();
-                                            
+                                if (mealBox) {
+                                    // Remove only the meal-box, not the entire section
+                                    const mealCard = mealBox.closest('.meal-card');
+                                    if (mealCard) {
+                                        // Remove the meal-box inside the meal-card
+                                        mealBox.remove();
+                                        
+                                        // Get the day and meal section to properly identify which day and meal type the card belongs to
+                                        const dayColumn = mealCard.closest('.day-column');
+                                        const mealSection = mealCard.closest('.meal-section');
+
+                                        if (dayColumn && mealSection) {
+                                            const dayId = dayColumn.querySelector('.day-header').innerText.split(' ')[1]; // Get day number (e.g., Day 1)
+                                            const mealLabel = mealSection.getAttribute('data-label'); // Get the meal label (Breakfast, Lunch, etc.)
+
                                             // Remove the corresponding meal data from the arrays
                                             const mealName = mealBox.getAttribute('data-meal-name');
+                                            
+                                            // Remove from mealDataArray
                                             const mealIndex = mealDataArray.findIndex(meal => meal.mealName === mealName);
                                             if (mealIndex !== -1) {
                                                 mealDataArray.splice(mealIndex, 1); // Remove from mealDataArray
                                             }
 
+                                            // Remove from dayMealData for the corresponding day and meal section
+                                            const dayMealIndex = dayMealData[dayId] && dayMealData[dayId][mealLabel] 
+                                                ? dayMealData[dayId][mealLabel].findIndex(meal => meal.mealName === mealName)
+                                                : -1;
+
+                                            if (dayMealIndex !== -1) {
+                                                dayMealData[dayId][mealLabel].splice(dayMealIndex, 1); // Remove from dayMealData
+                                            }
+                                            
                                             // Update section (meal-card) if needed
                                             if (mealCard.children.length === 0) {
                                                 // If the meal-card is now empty, you may want to add back the empty slot or display a message.
@@ -1327,9 +1352,13 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                                 addMoreDiv.innerHTML = '<div class="plus-sign">+</div>';
                                                 mealCard.appendChild(addMoreDiv);
                                             }
+
+                                            populateAllGroceryList(mealDataArray); // Re-render the grocery list
                                         }
                                     }
+                                }
                             });
+
 
                     }
 

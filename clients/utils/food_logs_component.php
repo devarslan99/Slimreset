@@ -304,7 +304,7 @@
                                         <?php echo $current_weight; ?>lbs
                                     </h1>
                                     <p class="text-center mt-2">
-                                        <?php echo $goal_weight; ?> goal weight
+                                        <strong class="font-weight:800;color:#000;"><?php echo $goal_weight; ?>lbs</strong> goal weight
                                     </p>
                                 </div>
                                 <div class="row text-center my-4 justify-content-center">
@@ -380,6 +380,8 @@
                                                 echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$display_date}</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$logged_weight}</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:22px'>{$loss}</p></td>";
+                                                echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($protein ?? 0), 2, '.', '') . "</p></td>";
+                                                echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($calories ?? 0), 2, '.', '') . "</p></td>";
                                                 echo "</tr>";
                                             }
                                             ?>

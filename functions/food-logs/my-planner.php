@@ -456,8 +456,8 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         Grocery List
                     </span>
                 </div>
-                <div class="main-color text-center my-3">
-                    <i class="fa fa-calendar me-2 fw-bold fs-4" id="calendar-icon" style="cursor: pointer;"></i>
+                <div class="main-color text-center my-3 d-flex justify-content-center align-items-center">
+                    <div id="calendar-icon"><i class="fa fa-calendar me-2 fw-bold fs-4"  style="cursor: pointer;"></i></div>
                     <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
                         <i class="fa fa-angle-left fw-bold fs-4"></i>
                     </a>
@@ -1718,32 +1718,30 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 <!-- JavaScript to Handle Calendar and Date Update -->
 <script>
-    $(document).ready(function() {
-        // Initialize Flatpickr on the hidden input
-        flatpickr("#datepicker", {
-            dateFormat: "Y-m-d",  // Date format
-            onChange: function(selectedDates, dateStr, instance) {
-                console.log("Date selected: " + dateStr);
-                var userId = "<?php echo $_GET['id']; ?>"; // Get the user ID from the URL
-                // Redirect to the new URL with the selected date
-                window.location.href = "?id=" + userId + "&date=" + dateStr;
-            },
-            closeOnSelect: true  // Close the calendar after selecting a date
-        });
-
-        // Toggle calendar popup on calendar icon click
-        $("#calendar-icon").click(function() {
-            var $datepicker = $("#datepicker");
-
-            // Check if the datepicker is hidden
-            if ($datepicker.css("visibility") === "hidden") {
-                console.log("Calendar is now visible.");
-                $datepicker.css("visibility", "visible");
-                $datepicker.focus();  // Focus to trigger the Flatpickr calendar
-            } else {
-                console.log("Calendar is now hidden.");
-                $datepicker.css("visibility", "hidden");
-            }
-        });
+$(document).ready(function() {
+    // Initialize Flatpickr on the hidden input
+    var calendar = flatpickr("#datepicker", {
+        dateFormat: "Y-m-d",  // Date format
+        onChange: function(selectedDates, dateStr, instance) {
+            console.log("Date selected: " + dateStr);
+            var userId = "<?php echo $_GET['id']; ?>"; 
+            // Redirect to the new URL with the selected date
+            window.location.href = "?id=" + userId + "&date=" + dateStr;
+        },
+        closeOnSelect: true 
     });
+
+    // Toggle calendar popup on calendar icon click
+    $("#calendar-icon").click(function() {
+        // Use flatpickr's toggle method to show/hide the calendar
+        if (calendar.isOpen) {
+            console.log("Calendar is now hidden.");
+            calendar.close();  // Close the calendar
+        } else {
+            console.log("Calendar is now visible.");
+            calendar.open();  // Open the calendar
+        }
+    });
+});
+
 </script>

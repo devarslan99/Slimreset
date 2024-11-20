@@ -8,7 +8,8 @@ $client_user_id = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['
 $user_two_id = null;
 $row = null;
 if ($login_user_role == 'coach') {
-    $user_two_id = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
+    // $user_two_id = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
+    $user_two_id = 57;
     $query = "SELECT first_name,role FROM users WHERE id = ?";
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("i", $user_two_id);
@@ -39,6 +40,7 @@ if ($login_user_role == 'coach') {
     }
 }
 $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
+print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id);
 ?>
 
 <style>
@@ -185,8 +187,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         }
     }
 
-
-
     .navbar-container {
         display: flex;
         align-items: center;
@@ -235,7 +235,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         }
     }
 
-    /* Overlay */
     .meal-plan-popup-overlay {
         position: fixed;
         top: 0;
@@ -249,7 +248,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         z-index: 1000;
     }
 
-    /* Popup Content */
     .meal-plan-popup-content {
         position: relative;
         background-color: #fff;
@@ -261,7 +259,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
-    /* Title */
     .meal-plan-title {
         font-size: 24px;
         font-weight: bold;
@@ -269,7 +266,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         color: #333;
     }
 
-    /* Close Button */
     .meal-plan-close {
         position: absolute;
         top: 10px;
@@ -279,7 +275,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         color: #333;
     }
 
-    /* Buttons */
     .meal-plan-buttons {
         display: flex;
         justify-content: center;
@@ -299,10 +294,8 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
     .meal-plan-buttons button:hover {
         color: #946CFC;
-        /* Matches theme color */
     }
 
-    /* Style for the scrollable navigation container */
     .scrollable-nav {
         overflow-x: auto;
         overflow-y: hidden;
@@ -315,7 +308,18 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     .scrollable-nav::-webkit-scrollbar {
         display: none;
     }
+
+    .toggle-icon-responsive {
+        display: none !important;
+    }
+
+    @media (max-width: 991px) {
+        .toggle-icon-responsive {
+            display: block !important;
+        }
+    }
 </style>
+
 <div class="page-header row">
     <div class="header-logo-wrapper col-auto">
         <div class="logo-wrapper">
@@ -363,21 +367,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
         </nav>
     </div>
-
-    <style>
-        /* Custom CSS class for responsive toggle icon visibility */
-        .toggle-icon-responsive {
-            display: none !important;
-            /* Hide by default */
-        }
-
-        @media (max-width: 991px) {
-            .toggle-icon-responsive {
-                display: block !important;
-                /* Show when screen width is 991px or less */
-            }
-        }
-    </style>
 
     <div class="header-wrapper col m-0">
         <div class="row">
@@ -647,7 +636,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     function fetchFoodData() {
         console.log("Fetched Food Function is called")
         const query = document.getElementById('foodSearch').value;
-        console.log("The value searched!",query)
+        console.log("The value searched!", query)
         if (query.length < 3) return; // Avoid too many requests for short queries
 
         fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=f73b06f6&app_key=562df73d9c2324199c25a9b8088540ba&ingr=${query}`, {
@@ -847,17 +836,16 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const notificationDropdown = document.querySelector(".custom-notification-dropdown");
+        notificationDropdown.classList.remove("d-none");
 
-        function toggleNotificationVisibility() {
-            const path = window.location.pathname;
-            if (path.includes("summary.php")) {
-                notificationDropdown.classList.remove("d-none");
-            } else {
-                notificationDropdown.classList.add("d-none");
-            }
-        }
-        toggleNotificationVisibility();
-        window.addEventListener("popstate", toggleNotificationVisibility);
+        // function toggleNotificationVisibility() {
+        //     const path = window.location.pathname;
+        //     if (path.includes("summary.php")) {} else {
+        //         notificationDropdown.classList.add("d-none");
+        //     }
+        // }
+        // toggleNotificationVisibility();
+        // window.addEventListener("popstate", toggleNotificationVisibility);
     });
 </script>
 

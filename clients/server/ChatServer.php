@@ -119,31 +119,31 @@ class ChatServer implements MessageComponentInterface
     private function getUserDetails($sender_id, $receiver_id)
     {
         $query = "
-        SELECT 
-        m.id AS message_id,
-        m.message,
-        m.sent_at,
-        m.is_read,
-        u_sender.id AS sender_id,
-        u_receiver.id AS receiver_id,
-        CONCAT(u_sender.first_name, ' ', u_sender.last_name) AS sender_name,
-        u_sender.profile_image AS sender_profile_image
-    FROM 
-        messages m
-    JOIN 
-        users u_sender ON m.sender_id = u_sender.id
-    JOIN 
-        users u_receiver ON m.receiver_id = u_receiver.id
-    WHERE 
-        (m.sender_id = ? AND m.receiver_id = ?) 
-        OR 
-        (m.sender_id = ? AND m.receiver_id = ?)
-        AND
-        m.is_read = 0
-    ORDER BY 
-        m.sent_at DESC
-    LIMIT 5
-    ";
+                    SELECT 
+                    m.id AS message_id,
+                    m.message,
+                    m.sent_at,
+                    m.is_read,
+                    u_sender.id AS sender_id,
+                    u_receiver.id AS receiver_id,
+                    CONCAT(u_sender.first_name, ' ', u_sender.last_name) AS sender_name,
+                    u_sender.profile_image AS sender_profile_image
+                    FROM 
+                        messages m
+                    JOIN 
+                        users u_sender ON m.sender_id = u_sender.id
+                    JOIN 
+                        users u_receiver ON m.receiver_id = u_receiver.id
+                    WHERE 
+                        (m.sender_id = ? AND m.receiver_id = ?) 
+                        OR 
+                        (m.sender_id = ? AND m.receiver_id = ?)
+                        AND
+                        m.is_read = 0
+                    ORDER BY 
+                        m.sent_at DESC
+                    LIMIT 5
+                    ";
 
         // Prepare the statement
         $stmt = $this->mysqli->prepare($query);
@@ -210,7 +210,6 @@ class ChatServer implements MessageComponentInterface
 
         return $messages;
     }
-
 
     // Get or create chat between users
     private function getChatId($user_one_id, $user_two_id)

@@ -14,6 +14,7 @@
 
     let userOneId = <?php echo $user_one_id; ?>;
     let userTwoId = <?php echo $user_two_id; ?>;
+    let loggedInUserRole = "<?php echo $login_user_role ?>";
     let isInMessageTab = false;
 
     ws.onopen = function() {
@@ -36,7 +37,6 @@
                             let chatBox = document.getElementById('chat-box');
                             chatBox.scrollTop = chatBox.scrollHeight;
                         } else {
-                            console.error("Error:", response.message);
                             Swal.fire({
                                 title: 'Error',
                                 text: response.message,
@@ -82,25 +82,34 @@
     // Displays the conversation messages
     function renderMessage(data, isOwnMessage) {
         let chatBox = document.getElementById('chat-box');
+
+        // Create a new message div
         let newMessage = document.createElement('div');
         newMessage.className = isOwnMessage ? 'message user1' : 'message user2';
 
+        // Message content
         let messageText = data.message || "No message content";
 
+        // Format timestamp
         let timestamp = new Date(data.sent_at).toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit'
         }) || "Unknown time";
 
+        // Render the message HTML
         newMessage.innerHTML =
             `<div class="message-content">
-                <p>${messageText}</p>
-                <div class="timestamp">${timestamp}</div>
-            </div>`;
+            <p>${messageText}</p>
+            <div class="timestamp">${timestamp}</div>
+        </div>`;
 
+        // Append the new message to the chat box
         chatBox.appendChild(newMessage);
+
+        // Scroll to the bottom of the chat box
         chatBox.scrollTop = chatBox.scrollHeight;
     }
+
 
     function resetNotifications() {
         notificationCount = 0;
@@ -108,12 +117,9 @@
 
         const notificationList = document.getElementById('notification-list');
         notificationList.innerHTML = '';
-        s
-
 
         checkNotifications();
     }
-
 
     let notificationCount = 0;
     const MAX_NOTIFICATIONS_DISPLAYED = 5;
@@ -149,7 +155,6 @@
             notificationList.removeChild(notificationList.lastChild);
         }
     }
-
 
     function checkNotifications() {
         const notificationList = document.getElementById('notification-list');
@@ -201,34 +206,47 @@
         let data = JSON.parse(event.data);
         if (Array.isArray(data)) {
             data.forEach(msg => {
-                renderMessage(msg, msg.sender_id === userOneId);
-                if (msg.is_read === 0 && msg.receiver_id === userOneId && !isInMessageTab) {
-                    let notificationData = {
-                        sender_profile_image: removeFirstDots(msg.sender_profile_image) || DEFAULT_IMAGE_URL,
-                        sender_name: msg.sender_name,
-                        message: msg.message,
-                        sent_at: msg.sent_at,
-                        is_read: msg.is_read,
-                        message_id: msg.message_id
-                    };
-                    addNotificationToPanel(notificationData);
-                }
+                processMessage(msg);
             });
         } else {
-            renderMessage(data, data.sender_id === userOneId);
-            if (data.is_read === 0 && data.receiver_id === userOneId && !isInMessageTab) {
-                let notificationData = {
+            processMessage(data);
+        }
+    };
+
+    function processMessage(data) {
+        // Add notification if the message is unread and the user is not in the message tab 
+        if (loggedInUserRole === "coach") {
+            if (data.is_read === 0 && !isInMessageTab) {
+                addNotificationToPanel({
                     sender_profile_image: removeFirstDots(data.sender_profile_image) || DEFAULT_IMAGE_URL,
                     sender_name: data.sender_name,
                     message: data.message,
                     sent_at: data.sent_at,
                     is_read: data.is_read,
                     message_id: data.message_id
-                };
-                addNotificationToPanel(notificationData);
+                });
+            }
+        } else {
+            if (data.is_read === 0 && data.receiver_id === userOneId && !isInMessageTab) {
+                addNotificationToPanel({
+                    sender_profile_image: removeFirstDots(data.sender_profile_image) || DEFAULT_IMAGE_URL,
+                    sender_name: data.sender_name,
+                    message: data.message,
+                    sent_at: data.sent_at,
+                    is_read: data.is_read,
+                    message_id: data.message_id
+                });
             }
         }
-    };
+
+        // Only render messages if they are meant for the current user
+        if ((data.sender_id === userOneId && data.receiver_id === userTwoId) ||
+            (data.sender_id === userTwoId && data.receiver_id === userOneId)) {
+
+            window.location.pathname.includes("summary.php") && renderMessage(data, data.sender_id === userOneId);
+
+        }
+    }
 
     function sendMessage() {
         let messageInput = document.getElementById('message-input').value;
@@ -271,10 +289,10 @@
                 to_user_id: toUserId
             },
             success: function(response) {
-                console.log("Messages marked as read: ", response.message);
+                // console.log("Messages marked as read: ", response.message);
             },
             error: function(err) {
-                console.error("Error marking messages as read:", err);
+                // console.error("Error marking messages as read:", err);
             }
         });
     }
@@ -311,10 +329,8 @@
             }
         });
     }
-</script>
 
-<!-- Check if the current URL is summary.php; if not, remove activeTab -->
-<script>
+    // Check if the current URL is summary.php; if not, remove activeTab
     const currentUrl = window.location.pathname;
     if (!currentUrl.includes('summary.php')) {
         localStorage.removeItem('activeTab');

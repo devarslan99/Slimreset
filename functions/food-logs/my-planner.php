@@ -1317,13 +1317,23 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                         // Add event listener for the close button inside the meal-box
                         const closeButton = targetMealCard.querySelector('.meal-box-close-btn');
-                            closeButton.addEventListener('click', function(e) {
+                        closeButton.addEventListener('click', function(e) {
                             e.stopPropagation();
                             const mealBox = closeButton.closest('.meal-box');
                             if (mealBox) {
-                                // Remove only the meal-box, not the entire section
-                                const mealCard = mealBox.closest('.meal-card');
-                                if (mealCard) {
+                                // SweetAlert confirmation dialog
+                                Swal.fire({
+                                    title: 'Are you sure?',
+                                    text: "Do you really want to remove this meal?",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Yes, remove it!',
+                                    cancelButtonText: 'No, cancel',
+                                    reverseButtons: true
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                    const mealCard = mealBox.closest('.meal-card');
+                                    if (mealCard) {
                                     // Remove the meal-box inside the meal-card
                                     mealBox.remove();
                                     
@@ -1333,10 +1343,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                     const mealSection = mealCard.closest('.meal-section');
 
                                     if (dayColumn && mealSection) {
-
                                         const dayId = dayColumn.querySelector('.day-header').textContent.trim().toLowerCase().replace(' ', '');
                                         const mealLabel = mealSection.getAttribute('data-label'); // Get the meal label (Breakfast, Lunch, etc.)
-                                        
+
                                         // Remove the corresponding meal data from the arrays
                                         const mealName = mealBox.getAttribute('data-meal-name');
                                         
@@ -1388,7 +1397,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                         populateAllGroceryList(mealDataArray);
                                         populateGroceryList(dayMealData[dayId]);
                                     }
-                                }
+                                    }
+                                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                        Swal.fire('Cancelled', 'Your meal data is safe', 'error');
+                                    }
+                                });
                             }
                         });
                     }

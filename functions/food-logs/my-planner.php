@@ -1059,6 +1059,14 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         const groceryListBox = document.querySelector('.grocery-list-box-2');
         groceryListBox.innerHTML = ''; 
 
+        // Check if mealDataArray has data
+        if (mealDataArray.length === 0) {
+            // Remove event listener if no data is available
+            const groceryListBtn = document.querySelector('.grocery-list');
+            groceryListBtn.removeEventListener('click', showGroceryPopup2);
+            return; // Exit the function if mealDataArray is empty
+        }
+
         const fullDayNames = {
             "Mon": "Monday",
             "Tue": "Tuesday",
@@ -1137,6 +1145,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         // Append the complete section to the grocery list box
         groceryListBox.innerHTML += daySectionHTML;
         }
+
+        // Grocery list button event listener
+        const groceryListBtn = document.querySelector('.grocery-list');
+        groceryListBtn.addEventListener('click', showGroceryPopup2);
     }
 
     const dayMealData = {
@@ -1353,7 +1365,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                                 mealCard.appendChild(addMoreDiv);
                                             }
 
-                                            populateAllGroceryList(mealDataArray); // Re-render the grocery list
+                                            populateAllGroceryList(mealDataArray);
                                         }
                                     }
                                 }
@@ -1382,10 +1394,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     };
                     mealDataArray.push(mealData);
                     populateAllGroceryList(mealDataArray);
-
-                    // Grocery list button event listener
-                    const groceryListBtn = document.querySelector('.grocery-list');
-                    groceryListBtn.addEventListener('click', showGroceryPopup2);
 
                     if (dayColumn) {
                         const addToCartIcon = dayColumn.querySelector('.AddToCart');

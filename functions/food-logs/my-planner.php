@@ -1266,35 +1266,30 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         targetSection.style.border = '';
                         targetSection.classList.remove('shake-effect');
                     }
-
                     // Get the data from the dragged element
                     const draggedItem = evt.item;
                     const imageSrc = draggedItem.querySelector('img').src;
                     const mealName = draggedItem.querySelector('.meal-name').textContent;
-                    const mealSubName = draggedItem.querySelector('.meal-name-sub') 
-                        ? draggedItem.querySelector('.meal-name-sub').textContent 
-                        : '';
+                    const mealSubName = draggedItem.querySelector('.meal-name-sub') ? draggedItem.querySelector('.meal-name-sub').textContent : '';
                     const mealCarbs = draggedItem.getAttribute('data-meal-carbs');
                     const mealFats = draggedItem.getAttribute('data-meal-fats');
-
                     // Extract the nutritional information
                     const mealInfoDiv = draggedItem.querySelector('.meal-info');
                     const mealInfo = extractMealInfo(mealInfoDiv);
                     const kcal = parseFloat(mealInfo.calories) || 0;
                     const oz = parseFloat(mealInfo.size) || 0;
-
                     // Capture the section label
                     const sectionLabel = evt.to.getAttribute('data-label');
-
-                    const mealId = `meal-${new Date().getTime()}`;
-
                     // Find the date in the day column
                     const dayColumn = evt.to.closest('.day-column');
+                    // Identify the day column where the meal was dropped
+                    const dayId = dayColumn.querySelector('.day-header').textContent.toLowerCase().replace(" ", "");
                     const dateTextElement = dayColumn ? dayColumn.querySelector('.date-text') : null;
                     const date = dateTextElement ? dateTextElement.getAttribute('data-date') : '';
                     const dayTextElement = dayColumn ? dayColumn.querySelector('.day-Name') : null;
                     const day = dayTextElement ? dayTextElement.getAttribute('data-day') : '';
-
+                    // meal-box id
+                    const mealId = `meal-${new Date().getTime()}`;
                     // Find the existing empty .meal-card in the target section
                     const targetMealCard = evt.to.querySelector('.meal-card');
                     if (targetMealCard) {
@@ -1341,14 +1336,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                                         const dayId = dayColumn.querySelector('.day-header').textContent.trim().toLowerCase().replace(' ', '');
                                         const mealLabel = mealSection.getAttribute('data-label'); // Get the meal label (Breakfast, Lunch, etc.)
-                                        console.log("Calculated dayId:", dayId);  // Check what dayId is being generated
-
-                                        if (dayMealData[dayId]) {
-                                            console.log("Meal data for " + dayId + ":", dayMealData[dayId]);
-                                        } else {
-                                            console.error(`Invalid dayId: ${dayId}`);
-                                        }
-
+                                        
                                         // Remove the corresponding meal data from the arrays
                                         const mealName = mealBox.getAttribute('data-meal-name');
                                         
@@ -1426,7 +1414,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     mealDataArray.push(mealData);
                     populateAllGroceryList(mealDataArray);
 
-                    if (dayColumn) {
+                    if (dayId) {
 
                         const addToCartIcon = dayColumn.querySelector('.AddToCart');
 
@@ -1435,17 +1423,13 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         if (cartIcon) {
                             cartIcon.style.color = 'black';
                             cartIcon.classList.add('black-icon');
-                        }
+                        } 
 
                         // Add click event to the cart icon to show the specific day’s grocery list
                         cartIcon.addEventListener('click', function() {
                             populateGroceryList(dayMealData[dayId]); 
                             showGroceryPopup(); // Show the grocery list popup
                         });
-
-                        // Identify the day column where the meal was dropped
-                        const dayId = dayColumn.querySelector('.day-header')
-                            .textContent.toLowerCase().replace(" ", "");
 
                         // Push meal data into the specific day array
                         if (dayMealData[dayId]) {
@@ -1721,7 +1705,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                     margin: [10, 5, 0, 5] 
                                 },
                                 { 
-                                    text: formattedDate, 
+                                    text:formattedDate, 
                                     style: 'dateStyle', 
                                     margin: [0, 5, 10, 5], 
                                     alignment: 'right' 

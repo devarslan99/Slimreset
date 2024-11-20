@@ -1385,6 +1385,21 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                             }
                                         } 
                                         
+                                        const remainingMealCards = mealSection.querySelectorAll('.meal-box');
+                                        if (dayMealData[dayId] && dayMealData[dayId].length === 0) {
+                                            // Reset the icon's color and remove the event listener
+                                            const addToCartIcon = dayColumn.querySelector('.AddToCart');
+                                            if (addToCartIcon) {
+                                                const cartIcon = addToCartIcon.querySelector('i');
+                                                if (cartIcon) {
+                                                    cartIcon.style.color = '';  // Reset color
+                                                    cartIcon.classList.remove('black-icon');  // Remove the black-icon class
+                                                    // Remove the click event listener if needed
+                                                    cartIcon.addEventListener('click', closeGroceryPopup);
+                                                }
+                                            }
+                                        }
+
                                         // Update section (meal-card) if needed
                                         if (mealCard.children.length === 0) {
                                             // If the meal-card is now empty, you may want to add back the empty slot or display a message.
@@ -1429,21 +1444,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                     if (dayId) {
 
-                        const addToCartIcon = dayColumn.querySelector('.AddToCart');
-
-                        // Change the icon color to black and add the "black-icon" class
-                        const cartIcon = addToCartIcon.querySelector('i');
-                        if (cartIcon) {
-                            cartIcon.style.color = 'black';
-                            cartIcon.classList.add('black-icon');
-                        } 
-
-                        // Add click event to the cart icon to show the specific day’s grocery list
-                        cartIcon.addEventListener('click', function() {
-                            populateGroceryList(dayMealData[dayId]); 
-                            showGroceryPopup(); // Show the grocery list popup
-                        });
-
                         // Push meal data into the specific day array
                         if (dayMealData[dayId]) {
                             dayMealData[dayId].push({ ...mealData , mealId });
@@ -1470,7 +1470,38 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                         
                     }
-                }
+                         // Handle the cart icon visibility
+                       
+                        const addToCartIcon = dayColumn.querySelector('.AddToCart');
+
+                        // Check if there is meal data for this dayId
+                        if (dayMealData[dayId] && dayMealData[dayId].length > 0) {
+                            // Meal data exists, make sure the cart icon is visible and clickable
+                            const cartIcon = addToCartIcon.querySelector('i');
+                            if (cartIcon) {
+                                cartIcon.style.display = 'block'; // Make sure icon is visible
+                                cartIcon.style.color = 'black';  // Set color to black
+                                cartIcon.classList.add('black-icon');  // Ensure 'black-icon' class is added
+                                cartIcon.removeEventListener('click', closeGroceryPopup); // Remove any previous event listener
+                                cartIcon.addEventListener('click', function() {
+                                    populateGroceryList(dayMealData[dayId]);
+                                    showGroceryPopup();
+                                });
+                            }
+                        } else {
+                            // No meal data exists, disable or hide the cart icon
+                            const cartIcon = addToCartIcon.querySelector('i');
+                            if (cartIcon) {
+                                cartIcon.style.display = 'none';  // Hide the cart icon
+                                cartIcon.style.color = '';        // Remove the color styling
+                                cartIcon.classList.remove('black-icon');  // Remove the black-icon class
+                                cartIcon.removeEventListener('click', function() {
+                                    populateGroceryList(dayMealData[dayId]);
+                                    showGroceryPopup();
+                                });  // Ensure event listener is removed
+                            }
+                        }
+                    }   
             });
         });
     }   

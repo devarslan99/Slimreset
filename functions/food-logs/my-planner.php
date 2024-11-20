@@ -1439,6 +1439,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                         // Add click event to the cart icon to show the specific day’s grocery list
                         cartIcon.addEventListener('click', function() {
+                            populateGroceryList(dayMealData[dayId]); 
                             showGroceryPopup(); // Show the grocery list popup
                         });
 
@@ -1470,7 +1471,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             calInfoElement.innerHTML = `${dayNutritionTotals[dayId].kcal} kcal<br>${dayNutritionTotals[dayId].oz} oz`;
                         }
 
-                        populateGroceryList(dayMealData[dayId]); 
+                        
                     }
                 }
             });
@@ -1576,23 +1577,16 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     // function to download grocery list as a PDF 
     function downloadPDF(dayMealData) {
-            const fullDayNames = {
-                "day1": "Monday",
-                "day2": "Tuesday",
-                "day3": "Wednesday",
-                "day4": "Thursday",
-                "day5": "Friday",
-                "day6": "Saturday",
-                "day7": "Sunday"
-            };
 
             const pdfContent = [];
 
             for (const [dayKey, meals] of Object.entries(dayMealData)) {
                 if (meals.length === 0) continue; // Skip empty days
 
-                // Add day and date section
-                const fullDayName = fullDayNames[dayKey];
+                const firstMeal = meals[0];
+                const fullDayName = firstMeal.day;
+                const formattedDate = firstMeal.date; 
+
                 pdfContent.push({
                     table: {
                         widths: ['*', 'auto'],
@@ -1604,7 +1598,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                     margin: [10, 5, 0, 5] 
                                 },
                                 { 
-                                    text: meals[0]?.date || '', 
+                                    text: formattedDate || '', 
                                     style: 'dateStyle', 
                                     alignment: 'right', 
                                     margin: [0, 5, 10, 5] 
@@ -1691,16 +1685,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     //2nd function to download grocery list as a PDF 
     function downloadPDF2(mealDataArray) {
-            const fullDayNames = {
-                "Mon": "Monday",
-                "Tue": "Tuesday",
-                "Wed": "Wednesday",
-                "Thu": "Thursday",
-                "Fri": "Friday",
-                "Sat": "Saturday",
-                "Sun": "Sunday"
-            };
-
             const groupedMeals = mealDataArray.reduce((acc, meal) => {
                 if (!acc[meal.day]) {
                     acc[meal.day] = [];
@@ -1720,7 +1704,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             });
 
             for (const [day, meals] of Object.entries(groupedMeals)) {
-            const fullDayName = fullDayNames[day] || day;
+                const firstMeal = meals[0];
+                const fullDayName = firstMeal.day;
+                const formattedDate = firstMeal.date; 
 
             pdfContent.push(
                 // Full-width background for day and date
@@ -1735,7 +1721,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                     margin: [10, 5, 0, 5] 
                                 },
                                 { 
-                                    text: meals[0].date, 
+                                    text: formattedDate, 
                                     style: 'dateStyle', 
                                     margin: [0, 5, 10, 5], 
                                     alignment: 'right' 

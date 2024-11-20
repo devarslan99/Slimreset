@@ -1286,6 +1286,8 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     // Capture the section label
                     const sectionLabel = evt.to.getAttribute('data-label');
 
+                    const mealId = `meal-${new Date().getTime()}`;
+
                     // Find the date in the day column
                     const dayColumn = evt.to.closest('.day-column');
                     const dateTextElement = dayColumn ? dayColumn.querySelector('.date-text') : null;
@@ -1309,7 +1311,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 data-meal-size="${mealInfo.size}" 
                                 data-meal-carbs="${mealCarbs}" 
                                 data-meal-fats="${mealFats}" 
-                                onclick="showBox(this)">
+                                onclick="showBox(this)" data-id="${mealId}">
                                 <img src="${imageSrc}" alt="${mealName}">
                                 <div class="meal-name">${mealName}</div>
                                 <div class="meal-name-sub">${mealSubName}</div>
@@ -1318,60 +1320,89 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             </div>
                         `;
 
-                            // Add event listener for the close button inside the meal-box
-                            const closeButton = targetMealCard.querySelector('.meal-box-close-btn');
-                             closeButton.addEventListener('click', function(e) {
-                                e.stopPropagation();
-                                const mealBox = closeButton.closest('.meal-box');
-                                if (mealBox) {
-                                    // Remove only the meal-box, not the entire section
-                                    const mealCard = mealBox.closest('.meal-card');
-                                    if (mealCard) {
-                                        // Remove the meal-box inside the meal-card
-                                        mealBox.remove();
-                                        
-                                        // Get the day and meal section to properly identify which day and meal type the card belongs to
-                                        const dayColumn = mealCard.closest('.day-column');
-                                        const mealSection = mealCard.closest('.meal-section');
+                        // Add event listener for the close button inside the meal-box
+                        const closeButton = targetMealCard.querySelector('.meal-box-close-btn');
+                            closeButton.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            const mealBox = closeButton.closest('.meal-box');
+                            if (mealBox) {
+                                // Remove only the meal-box, not the entire section
+                                const mealCard = mealBox.closest('.meal-card');
+                                if (mealCard) {
+                                    // Remove the meal-box inside the meal-card
+                                    mealBox.remove();
+                                    
+                                    const mealId = mealBox ? mealBox.getAttribute('data-id') : null;
+                                    // Get the day and meal section to properly identify which day and meal type the card belongs to
+                                    const dayColumn = mealCard.closest('.day-column');
+                                    const mealSection = mealCard.closest('.meal-section');
 
-                                        if (dayColumn && mealSection) {
-                                            const dayId = dayColumn.querySelector('.day-header').innerText.split(' ')[1]; // Get day number (e.g., Day 1)
-                                            const mealLabel = mealSection.getAttribute('data-label'); // Get the meal label (Breakfast, Lunch, etc.)
+                                    if (dayColumn && mealSection) {
 
-                                            // Remove the corresponding meal data from the arrays
-                                            const mealName = mealBox.getAttribute('data-meal-name');
-                                            
-                                            // Remove from mealDataArray
-                                            const mealIndex = mealDataArray.findIndex(meal => meal.mealName === mealName);
-                                            if (mealIndex !== -1) {
-                                                mealDataArray.splice(mealIndex, 1); // Remove from mealDataArray
-                                            }
+                                        const dayId = dayColumn.querySelector('.day-header').textContent.trim().toLowerCase().replace(' ', '');
+                                        const mealLabel = mealSection.getAttribute('data-label'); // Get the meal label (Breakfast, Lunch, etc.)
+                                        console.log("Calculated dayId:", dayId);  // Check what dayId is being generated
 
-                                            // Remove from dayMealData for the corresponding day and meal section
-                                            const dayMealIndex = dayMealData[dayId] && dayMealData[dayId][mealLabel] 
-                                                ? dayMealData[dayId][mealLabel].findIndex(meal => meal.mealName === mealName)
-                                                : -1;
-
-                                            if (dayMealIndex !== -1) {
-                                                dayMealData[dayId][mealLabel].splice(dayMealIndex, 1); // Remove from dayMealData
-                                            }
-                                            
-                                            // Update section (meal-card) if needed
-                                            if (mealCard.children.length === 0) {
-                                                // If the meal-card is now empty, you may want to add back the empty slot or display a message.
-                                                const addMoreDiv = document.createElement('div');
-                                                addMoreDiv.classList.add('add-more');
-                                                addMoreDiv.innerHTML = '<div class="plus-sign">+</div>';
-                                                mealCard.appendChild(addMoreDiv);
-                                            }
-
-                                            populateAllGroceryList(mealDataArray);
+                                        if (dayMealData[dayId]) {
+                                            console.log("Meal data for " + dayId + ":", dayMealData[dayId]);
+                                        } else {
+                                            console.error(`Invalid dayId: ${dayId}`);
                                         }
+
+                                        // Remove the corresponding meal data from the arrays
+                                        const mealName = mealBox.getAttribute('data-meal-name');
+                                        
+                                        // Remove from mealDataArray
+                                        const mealIndex = mealDataArray.findIndex(meal => meal.mealName === mealName);
+                                        if (mealIndex !== -1) {
+                                            mealDataArray.splice(mealIndex, 1); // Remove from mealDataArray
+                                        }
+
+                                        // Update kcal and oz in dayNutritionTotals for the specific dayId
+                                        if (mealData && mealData.mealInfo) {
+                                            const kcalToRemove = parseFloat(mealData.mealInfo.calories || 0);
+                                            const ozToRemove = parseFloat(mealData.mealInfo.size || 0);
+
+                                            if (dayNutritionTotals[dayId]) {
+                                                dayNutritionTotals[dayId].kcal -= kcalToRemove;
+                                                dayNutritionTotals[dayId].oz -= ozToRemove;
+                                            }
+                                        }
+
+                                        // Update the display of kcal and oz in the day column after meal removal
+                                        const calInfoElement = dayColumn.querySelector('.cal-info');
+                                        if (calInfoElement) {
+                                            calInfoElement.innerHTML = `${dayNutritionTotals[dayId].kcal} kcal<br>${dayNutritionTotals[dayId].oz} oz`;
+                                        }
+
+                                        // Remove from dayMealData for the corresponding day and meal section
+                                        if (dayMealData[dayId]) {
+                                            const mealIndex = dayMealData[dayId].findIndex(meal => meal.mealId === mealId);  // Use mealId to find the correct meal
+
+                                            // If the meal is found, remove it
+                                            if (mealIndex !== -1) {
+                                                dayMealData[dayId].splice(mealIndex, 1); // Remove the meal from the array
+                                                console.log(`Meal removed: ${mealId} from ${dayId}`);
+                                            } else {
+                                                console.error(`Meal with ID ${mealId} not found in dayMealData for dayId: ${dayId}`);
+                                            }
+                                        } 
+                                        
+                                        // Update section (meal-card) if needed
+                                        if (mealCard.children.length === 0) {
+                                            // If the meal-card is now empty, you may want to add back the empty slot or display a message.
+                                            const addMoreDiv = document.createElement('div');
+                                            addMoreDiv.classList.add('add-more');
+                                            addMoreDiv.innerHTML = '<div class="plus-sign">+</div>';
+                                            mealCard.appendChild(addMoreDiv);
+                                        }
+
+                                        populateAllGroceryList(mealDataArray);
+                                        populateGroceryList(dayMealData[dayId]);
                                     }
                                 }
-                            });
-
-
+                            }
+                        });
                     }
 
                     // Remove the dragged item from its original location to keep a single instance
@@ -1396,53 +1427,50 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     populateAllGroceryList(mealDataArray);
 
                     if (dayColumn) {
+
                         const addToCartIcon = dayColumn.querySelector('.AddToCart');
-                        if (addToCartIcon) {
-                            addToCartIcon.style.display = 'block';
 
-                            // Change the icon color to black and add the "black-icon" class
-                            const cartIcon = addToCartIcon.querySelector('i');
-                            if (cartIcon) {
-                                cartIcon.style.color = 'black';
-                                cartIcon.classList.add('black-icon');
-                            }
-
-                            // Identify the day column where the meal was dropped
-                            const dayId = dayColumn.querySelector('.day-header')
-                                .textContent.toLowerCase().replace(" ", "");
-                            const dateTextElement = dayColumn.querySelector('.date-text');
-                            const date = dateTextElement ? dateTextElement.getAttribute('data-date') : '';
-
-                            // Push meal data into the specific day array
-                            if (dayMealData[dayId]) {
-                                dayMealData[dayId].push({ ...mealData, date });
-                            } else {
-                                console.error(`Invalid dayId: ${dayId}`);
-                            }
-
-                            // Ensure `dayNutritionTotals` is initialized for this dayId
-                            if (!dayNutritionTotals[dayId]) {
-                                dayNutritionTotals[dayId] = { kcal: 0, oz: 0 };
-                            }
-
-                            // Add the meal's kcal and oz to the day's totals
-                            if (mealData && mealData.mealInfo) {
-                                dayNutritionTotals[dayId].kcal += parseFloat(mealData.mealInfo.calories || 0);
-                                dayNutritionTotals[dayId].oz += parseFloat(mealData.mealInfo.size || 0);
-                            }
-
-                            // Update the display of kcal and oz in the day column
-                            const calInfoElement = dayColumn.querySelector('.cal-info');
-                            if (calInfoElement) {
-                                calInfoElement.innerHTML = `${dayNutritionTotals[dayId].kcal} kcal<br>${dayNutritionTotals[dayId].oz} oz`;
-                            }
-
-                            // Add click event to the cart icon to show the specific day’s grocery list
-                            cartIcon.addEventListener('click', function() {
-                                populateGroceryList(dayMealData[dayId]); // Populate the grocery list with only this day’s data
-                                showGroceryPopup(); // Show the grocery list popup
-                            });
+                        // Change the icon color to black and add the "black-icon" class
+                        const cartIcon = addToCartIcon.querySelector('i');
+                        if (cartIcon) {
+                            cartIcon.style.color = 'black';
+                            cartIcon.classList.add('black-icon');
                         }
+
+                        // Add click event to the cart icon to show the specific day’s grocery list
+                        cartIcon.addEventListener('click', function() {
+                            showGroceryPopup(); // Show the grocery list popup
+                        });
+
+                        // Identify the day column where the meal was dropped
+                        const dayId = dayColumn.querySelector('.day-header')
+                            .textContent.toLowerCase().replace(" ", "");
+
+                        // Push meal data into the specific day array
+                        if (dayMealData[dayId]) {
+                            dayMealData[dayId].push({ ...mealData , mealId });
+                        } else {
+                            console.error(`Invalid dayId: ${dayId}`);
+                        }
+
+                        // Ensure `dayNutritionTotals` is initialized for this dayId
+                        if (!dayNutritionTotals[dayId]) {
+                            dayNutritionTotals[dayId] = { kcal: 0, oz: 0 };
+                        }
+
+                        // Add the meal's kcal and oz to the day's totals
+                        if (mealData && mealData.mealInfo) {
+                            dayNutritionTotals[dayId].kcal += parseFloat(mealData.mealInfo.calories || 0);
+                            dayNutritionTotals[dayId].oz += parseFloat(mealData.mealInfo.size || 0);
+                        }
+
+                        // Update the display of kcal and oz in the day column
+                        const calInfoElement = dayColumn.querySelector('.cal-info');
+                        if (calInfoElement) {
+                            calInfoElement.innerHTML = `${dayNutritionTotals[dayId].kcal} kcal<br>${dayNutritionTotals[dayId].oz} oz`;
+                        }
+
+                        populateGroceryList(dayMealData[dayId]); 
                     }
                 }
             });
@@ -1814,30 +1842,30 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 <!-- JavaScript to Handle Calendar and Date Update -->
 <script>
-$(document).ready(function() {
-    // Initialize Flatpickr on the hidden input
-    var calendar = flatpickr("#datepicker", {
-        dateFormat: "Y-m-d",  // Date format
-        onChange: function(selectedDates, dateStr, instance) {
-            console.log("Date selected: " + dateStr);
-            var userId = "<?php echo $_GET['id']; ?>"; 
-            // Redirect to the new URL with the selected date
-            window.location.href = "?id=" + userId + "&date=" + dateStr;
-        },
-        closeOnSelect: true 
-    });
+    $(document).ready(function() {
+        // Initialize Flatpickr on the hidden input
+        var calendar = flatpickr("#datepicker", {
+            dateFormat: "Y-m-d",  // Date format
+            onChange: function(selectedDates, dateStr, instance) {
+                console.log("Date selected: " + dateStr);
+                var userId = "<?php echo $_GET['id']; ?>"; 
+                // Redirect to the new URL with the selected date
+                window.location.href = "?id=" + userId + "&date=" + dateStr;
+            },
+            closeOnSelect: true 
+        });
 
-    // Toggle calendar popup on calendar icon click
-    $("#calendar-icon").click(function() {
-        // Use flatpickr's toggle method to show/hide the calendar
-        if (calendar.isOpen) {
-            console.log("Calendar is now hidden.");
-            calendar.close();  // Close the calendar
-        } else {
-            console.log("Calendar is now visible.");
-            calendar.open();  // Open the calendar
-        }
+        // Toggle calendar popup on calendar icon click
+        $("#calendar-icon").click(function() {
+            // Use flatpickr's toggle method to show/hide the calendar
+            if (calendar.isOpen) {
+                console.log("Calendar is now hidden.");
+                calendar.close();  // Close the calendar
+            } else {
+                console.log("Calendar is now visible.");
+                calendar.open();  // Open the calendar
+            }
+        });
     });
-});
 
 </script>

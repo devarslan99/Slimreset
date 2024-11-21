@@ -44,6 +44,7 @@ while ($row = $result->fetch_assoc()) {
 }
 
 $course_end_date = date('Y-m-d', strtotime("$account_creation_date +$course_time days"));
+$maintenance_end_date = date('Y-m-d', strtotime("$course_end_date +$course_time days"));
 
 $weight_lost = 0;
 if (!empty($weights)) {
@@ -145,20 +146,20 @@ while ($row = $result_protein->fetch_assoc()) {
                             <h5 class="mt-3"><?php echo formatDate($startDate); ?></h5>
                         </div>
                         <div class="mb-4 text-center flex-fill border-lines">
-                            <h4 class="" style="color: #000000;">Projected date to goal</h4>
+                            <h4 class="" style="color: #000000;">Stabilization</h4>
                             <h5 class="mt-3"><?php echo formatDate($course_end_date); ?></h5>
                         </div>
                         <div class="mb-4 text-center flex-fill">
-                            <h4 class="" style="color: #000000;">Weight loss/per day</h4>
-                            <h5 class="mt-3">You are losing 0.5 to 1lb per day</h5>
+                            <h4 class="" style="color: #000000;">Maintenance</h4>
+                            <h5 class="mt-3"><?php echo formatDate($maintenance_end_date); ?></h5>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div id="chartContainer">
-                    <canvas id="weightChart"></canvas>
+                <div id="chartContainer" style="height: 515px !important;">
+                    <canvas id="weightChart" style="height: 100%;"></canvas>
                 </div>
             </div>
         </div>
@@ -179,7 +180,7 @@ while ($row = $result_protein->fetch_assoc()) {
                                     <?php echo $current_weight; ?>lbs
                                 </h1>
                                 <p class="text-center mt-2">
-                                    <strong class="font-weight:800;color:#000;"><?php echo $goal_weight; ?> lbs</strong> goal weight
+                                    <strong class="font-weight:800;color:#000;"><?php echo $goal_weight; ?>lbs</strong> goal weight
                                 </p>
                             </div>
                             <div class="row text-center my-4 justify-content-center">

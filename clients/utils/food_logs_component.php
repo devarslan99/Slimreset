@@ -32,10 +32,10 @@
                     if ($result) {
                         $row = mysqli_fetch_assoc($result);
 
-                        $total_calories = number_format((float) ($row['total_calories'] ?? 0), 2, '.', '');
-                        $total_protein = number_format((float) ($row['total_protein'] ?? 0), 2, '.', '');
-                        $total_water = number_format((float) ($row['total_water'] ?? 0), 2, '.', '');
-                        $total_bowel_movement = number_format((float) ($row['total_bowel_movement'] ?? 0), 2, '.', '');
+                        $total_calories = isset($row['total_calories']) ? (int) $row['total_calories'] : 0;
+                        $total_protein = isset($row['total_protein']) ? (int) $row['total_protein'] : 0;
+                        $total_water = isset($row['total_water']) ? (int) $row['total_water'] : 0;
+                        $total_bowel_movement = isset($row['total_bowel_movement']) ? (int) $row['total_bowel_movement'] : 0;
 
                         $metrics = [
                             [
@@ -95,7 +95,7 @@
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <div class="">
-                            <div class="main-color text-center my-3">
+                                <div class="main-color text-center my-3">
                                     <i class="fa fa-calendar me-2 fw-bold fs-4" id="calendar-icon-2" style="cursor: pointer;"></i>
                                     <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
                                         <i class="fa fa-angle-left fw-bold fs-4"></i>
@@ -211,7 +211,7 @@
                                                         <th>Food Quantity
                                                         </th>
                                                         <th>Calories</th>
-                                                        <th>Protien</th>
+                                                        <th>Protein</th>
                                                         <th>Fat</th>
                                                         <th>Carbs</th>
                                                         <th>Sugar</th>
@@ -304,7 +304,7 @@
                                         <?php echo $current_weight; ?>lbs
                                     </h1>
                                     <p class="text-center mt-2">
-                                        <?php echo $goal_weight; ?> goal weight
+                                        <strong class="font-weight:800;color:#000;"><?php echo $goal_weight; ?>lbs</strong> goal weight
                                     </p>
                                 </div>
                                 <div class="row text-center my-4 justify-content-center">
@@ -368,7 +368,8 @@
                                             foreach ($last_5_days as $index => $date) {
                                                 $day_of_month = date('d', strtotime($date));
                                                 $day_name = date('D', strtotime($date));
-                                                $display_date = $day_of_month . "<br/>" . $day_name;
+                                                $display_date = "<a href='?id=" . $_GET['id'] . "&date={$date}'>{$day_of_month}<br/>{$day_name}</a>";
+
                                                 $logged_weight = isset($logged_weights[$date]) ? $logged_weights[$date] : '-';
                                                 $loss = $index > 0 && isset($logged_weights[$last_5_days[$index - 1]]) ?
                                                     round($logged_weights[$last_5_days[$index - 1]] - ($logged_weights[$date] ?? 0), 2) : '-';
@@ -379,6 +380,8 @@
                                                 echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$display_date}</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$logged_weight}</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:22px'>{$loss}</p></td>";
+                                                echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($protein ?? 0), 2, '.', '') . "</p></td>";
+                                                echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($calories ?? 0), 2, '.', '') . "</p></td>";
                                                 echo "</tr>";
                                             }
                                             ?>

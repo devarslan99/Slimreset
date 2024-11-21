@@ -56,7 +56,7 @@
     }
 
     .nav-link.active h6,
-    .nav-link.active h1  {
+    .nav-link.active h1 {
         color: #946CFC !important;
         font-weight: 800;
     }
@@ -163,34 +163,28 @@
         color: yellow;
     }
 
-    .btn
-    {
-        padding:0;
-        font-weight:bold;
-        color:#ccc;
-        border:0;
-        outline:none;
-    }
-    .btn:hover
-    {
-        color:#936CFB;
+    .tab-button {
+        padding: 0;
+        font-weight: bold;
     }
 
-    .line
-    {
-        color:#ccc;
+    .tab-button:hover {
+        color: #936CFB;
     }
 
-    .phase-tab
-    {
-        font-weight:600;
-        gap:5px
+    .line {
+        color: #ccc;
+    }
+
+    .phase-tab {
+        font-weight: 600;
+        gap: 5px
     }
 
     /* Add some styling for the active phase button */
     .tab-button.active {
         color: #936CFB;
-        border:0;
+        border: 0;
     }
 </style>
 
@@ -202,23 +196,26 @@
         padding: 8px;
         font-size: 16px;
     }
+
     /* Display dropdown only on small screens */
     @media (max-width: 768px) {
         .phase-dropdown {
             display: block;
         }
+
         /* Hide regular tabs on small screens */
         .phase-tab {
             display: none;
         }
     }
+
     @media (max-width: 600px) {
-        .phase-main-box
-        {
-            flex-direction:column;
-            margin-bottom:20px;
+        .phase-main-box {
+            flex-direction: column;
+            margin-bottom: 20px;
             width: 100%;
         }
+
         .phase-dropdown {
             width: 100%;
         }
@@ -357,7 +354,7 @@ foreach ($weight_history as $index => $entry) {
                                                                         <a class="nav-link active nav-2" id="choose-food-tab" data-bs-toggle="pill" href="#choose-food" role="tab" aria-controls="choose-food" aria-selected="true">
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">1</h1>
-                                                                                <div> 
+                                                                                <div>
                                                                                     <h6 class="responsive-font">Choose Food</h6>
                                                                                 </div>
                                                                             </div>
@@ -367,7 +364,7 @@ foreach ($weight_history as $index => $entry) {
                                                                         <a class="nav-link nav-2" id="my-planner-tab" data-bs-toggle="pill" href="#my-planner" role="tab" aria-controls="my-planner" aria-selected="false" tabindex="-1">
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">2</h1>
-                                                                                <div> 
+                                                                                <div>
                                                                                     <h6 class="responsive-font">My Planner</h6>
                                                                                 </div>
                                                                             </div>
@@ -377,7 +374,7 @@ foreach ($weight_history as $index => $entry) {
                                                                         <a class="nav-link nav-2" id="my-tracker-tab" data-bs-toggle="pill" href="#my-tracker" role="tab" aria-controls="my-tracker" aria-selected="false" tabindex="-1">
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">3</h1>
-                                                                                <div> 
+                                                                                <div>
                                                                                     <h6 class="responsive-font">My Tracker</h6>
                                                                                 </div>
                                                                             </div>
@@ -540,14 +537,13 @@ foreach ($weight_history as $index => $entry) {
 
         // Function to activate the saved tab if there is a date in the URL
         function activateSavedTab() {
-            const urlParams = new URLSearchParams(window.location.search);
             const activeTabId = localStorage.getItem('activeTab');
 
-            if (urlParams.has('date') && activeTabId) {
+            if (activeTabId) {
                 document.querySelectorAll('.nav-link.active').forEach(link => link.classList.remove('active'));
                 document.querySelectorAll('.tab-pane.active.show').forEach(tab => tab.classList.remove('active', 'show'));
 
-                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker' || activeTabId === 'choose-food' ) {
+                if (activeTabId === 'my-planner' || activeTabId === 'my-tracker' || activeTabId === 'choose-food') {
                     const myPlanTabLink = document.querySelector('#my-plan-tab');
                     const myPlanTabContent = document.querySelector('#my-plan');
 
@@ -572,6 +568,20 @@ foreach ($weight_history as $index => $entry) {
                 link.addEventListener('click', function() {
                     const tabId = this.getAttribute('aria-controls');
                     saveActiveTab(tabId);
+
+                    if (tabId === 'my-plan') {
+                        // Activate "Choose Food" tab
+                        const chooseFoodTabLink = document.querySelector('#choose-food-tab');
+                        const chooseFoodTabContent = document.querySelector('#choose-food');
+
+                        if (chooseFoodTabLink && chooseFoodTabContent) {
+                            chooseFoodTabLink.classList.add('active');
+                            chooseFoodTabContent.classList.add('active', 'show');
+
+                            // Save "choose-food" to local storage
+                            saveActiveTab('choose-food');
+                        }
+                    }
                 });
             });
             activateSavedTab();
@@ -639,70 +649,70 @@ foreach ($weight_history as $index => $entry) {
     <!-- script to hide phase tabs for gut guided content  -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-        const preferenceSwitch = document.getElementById('preferenceSwitch');
-        const phaseTabs = document.getElementById('phaseTabs');
+            const preferenceSwitch = document.getElementById('preferenceSwitch');
+            const phaseTabs = document.getElementById('phaseTabs');
 
-        // Add event listener
-        preferenceSwitch.addEventListener('change', function() {
-            if (preferenceSwitch.checked) {
-                phaseTabs.style.display = 'none';
-            } else {
-                phaseTabs.style.display = 'flex'; 
-            }
+            // Add event listener
+            preferenceSwitch.addEventListener('change', function() {
+                if (preferenceSwitch.checked) {
+                    phaseTabs.style.display = 'none';
+                } else {
+                    phaseTabs.style.display = 'flex';
+                }
+            });
         });
-    });
     </script>
 
     <!-- script to handle phase tabs content to load in container for both medium and large sceen devices-->
     <script>
-    function loadContentForPhase(phase) {
-        // Determine the file to load based on the phase
-        const filePath = phase === "1" 
-            ? '../functions/food-logs/view_all_food.php' 
-            : `../functions/food-logs/view_all_food_phase_${phase}.php`;
-
-        // Load content for the selected phase
-        fetch(filePath)
-            .then(response => response.text())
-            .then(data => {
-                // Display the phase data in the single container
-                document.getElementById('viewAllSection').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading content:', error));
-    }
-
-    function selectPhase(dropdown) {
-        const selectedPhase = dropdown.value;
-
-        // Clear 'active' class from all tab buttons
-        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-
-        // Add 'active' class to the corresponding tab button (for visual sync on large screens)
-        const correspondingTab = document.querySelector(`.tab-button[data-phase="${selectedPhase}"]`);
-        if (correspondingTab) {
-            correspondingTab.classList.add('active');
-        }
-
-        // Load the content for the selected phase
-        loadContentForPhase(selectedPhase);
-    }
-
-    // Attach click event listeners to tab buttons for larger screens
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove 'active' class from all buttons
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-
-            // Add 'active' class to the clicked button
-            button.classList.add('active');
-
-            // Get the phase number
-            const phase = button.getAttribute('data-phase');
+        function loadContentForPhase(phase) {
+            // Determine the file to load based on the phase
+            const filePath = phase === "1" ?
+                '../functions/food-logs/view_all_food.php' :
+                `../functions/food-logs/view_all_food_phase_${phase}.php`;
 
             // Load content for the selected phase
-            loadContentForPhase(phase);
+            fetch(filePath)
+                .then(response => response.text())
+                .then(data => {
+                    // Display the phase data in the single container
+                    document.getElementById('viewAllSection').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading content:', error));
+        }
+
+        function selectPhase(dropdown) {
+            const selectedPhase = dropdown.value;
+
+            // Clear 'active' class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+
+            // Add 'active' class to the corresponding tab button (for visual sync on large screens)
+            const correspondingTab = document.querySelector(`.tab-button[data-phase="${selectedPhase}"]`);
+            if (correspondingTab) {
+                correspondingTab.classList.add('active');
+            }
+
+            // Load the content for the selected phase
+            loadContentForPhase(selectedPhase);
+        }
+
+        // Attach click event listeners to tab buttons for larger screens
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove 'active' class from all buttons
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+                // Add 'active' class to the clicked button
+                button.classList.add('active');
+
+                // Get the phase number
+                const phase = button.getAttribute('data-phase');
+
+                // Load content for the selected phase
+                loadContentForPhase(phase);
+            });
         });
-    });
     </script>
 </body>
 

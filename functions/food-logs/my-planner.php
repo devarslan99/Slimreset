@@ -18,7 +18,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         align-items: center;
         z-index: 1000;
     }
-    
+
 
     .popup-content {
         position: relative;
@@ -93,6 +93,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         color: #946cfc;
         font-weight: 800;
     }
+
     /* Grocery Popup Overlay */
     .grocery-popup-overlay {
         position: fixed;
@@ -139,25 +140,25 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     .grocery-list-box {
         max-height: 60vh;
-        overflow-y: auto; 
+        overflow-y: auto;
         padding-right: 15px;
         margin-top: 20px;
     }
 
     /* Custom scrollbar styles for webkit browsers */
     .grocery-list-box::-webkit-scrollbar {
-        width: 8px; 
+        width: 8px;
     }
 
     .grocery-list-box::-webkit-scrollbar-track {
-        background-color: #f1f1f1; 
-        border-radius: 10px; 
+        background-color: #f1f1f1;
+        border-radius: 10px;
     }
 
     .grocery-list-box::-webkit-scrollbar-thumb {
         background-color: #946cfc;
-        border-radius: 10px; 
-        border: 2px solid #f1f1f1; 
+        border-radius: 10px;
+        border: 2px solid #f1f1f1;
     }
 
     .grocery-list-box::-webkit-scrollbar-thumb:hover {
@@ -196,7 +197,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
     /* PDF Icon */
-    .grocery-pdf-icon{
+    .grocery-pdf-icon {
         margin-top: 20px;
         display: flex;
         justify-content: flex-end;
@@ -208,6 +209,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         font-size: 32px;
         color: #946cfc;
     }
+
     .day-header {
         font-weight: bold;
         color: #6b4ce6;
@@ -215,11 +217,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         font-size: 0.9rem;
     }
 
-    .day-Name
-    {
+    .day-Name {
         text-transform: lowercase;
-        font-size:1rem;
+        font-size: 1rem;
     }
+
     .date-text {
         font-size: 1rem;
         font-weight: bold;
@@ -230,9 +232,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         color: #000;
         font-size: 0.9rem;
     }
-    .col-lg-9
-    {
-        padding-right:0px;
+
+    .col-lg-9 {
+        padding-right: 0px;
     }
 
     .col-lg-9 {
@@ -263,6 +265,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         width: 100%;
         padding: 0px 5px;
     }
+
     .meal-card,
     .empty-card {
         border: none;
@@ -346,7 +349,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         padding: 2px 6px;
         border-radius: 2px;
         position: absolute;
-        left: -69px;
+        left: -66px;
         top: 70px;
         transform: rotate(-90deg);
     }
@@ -359,7 +362,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         padding: 2px 6px;
         border-radius: 2px;
         position: absolute;
-        left: -56px;
+        left: -55px;
         top: 70px;
         transform: rotate(-90deg);
     }
@@ -372,7 +375,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         padding: 2px 6px;
         border-radius: 2px;
         position: absolute;
-        left: -58px;
+        left: -57px;
         top: 70px;
         transform: rotate(-90deg);
     }
@@ -385,7 +388,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         padding: 2px 6px;
         border-radius: 2px;
         position: absolute;
-        left: -56px;
+        left: -55px;
         top: 70px;
         transform: rotate(-90deg);
     }
@@ -397,17 +400,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     .AddToCart i {
         font-size: 18px;
-        color:gray;
-    }
-    
-    .AddToCart i.black-icon {
-        color: black; 
-        transition: color 0.3s ease; 
-    }
-    
-    .black-icon:hover {
-        color: #00BF63 !important; 
-        cursor: pointer;
+        color: gray;
     }
 
     /* Shake Effect for Full Section */
@@ -531,7 +524,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     </div>
                 </div>
             </div>
-            
+
             <!-- Grocery List Popup Overlay -->
             <div class="grocery-popup-overlay" id="grocery-popup-overlay">
                 <div class="grocery-popup-content">
@@ -539,12 +532,12 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     <!-- dynamically content will display here -->
                     <div class="grocery-list-box">
                         <h2 class="grocery-list-title">grocery list</h2>
-                        
+
                         <div class="list-box">
                             <span class="label-name">
                                 Breakfast
                             </span>
-                            
+
                             <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
                                 <h3 class="fw-bold mb-0">Cheese Pizza</h3>
                                 <p class="text-muted mb-0">Nov 12</p>
@@ -585,7 +578,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             <span class="label-name" data-label="Breakfast">
                                 Breakfast
                             </span>
-                            
+
                             <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
                                 <h3 class="fw-bold mb-0">Cheese Pizza</h3>
                                 <p class="text-muted mb-0">Nov 12</p>
@@ -635,11 +628,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             <div class="grocery-popup-overlay" id="grocery-popup-overlay-2">
                 <div class="grocery-popup-content">
                     <div class="grocery-close-popup" onclick="closeGroceryPopup2()">X</div>
-                    
+
                     <h2 class="grocery-list-title">Grocery List</h2>
                     <!-- Grocery List Content -->
                     <div class="grocery-list-box grocery-list-box-2">
-                        
+
                         <!-- Columns for Aisles -->
                         <div class="grocery-columns">
                             <!-- Left Column -->
@@ -659,7 +652,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 </div>
                                 <!-- Repeat as needed -->
                             </div>
-                            
+
                             <!-- Right Column -->
                             <div class="grocery-column">
                                 <div class="grocery-aisle">
@@ -768,144 +761,143 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 <script>
     $(document).ready(function() {
         // Dummy details of meals for the right side (meal cards)
-    const mealData =  [
-        {
-            image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Veggie',
-            subName: 'Omelette',
-            mealInfo: {
-                calories: '800 kcal',
-                fats: '8g',
-                carbs: '15g',
-                size: '8 oz'
+        const mealData = [{
+                image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Veggie',
+                subName: 'Omelette',
+                mealInfo: {
+                    calories: '800 kcal',
+                    fats: '8g',
+                    carbs: '15g',
+                    size: '8 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/248444/pexels-photo-248444.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Grilled',
+                subName: 'Chicken Salad',
+                mealInfo: {
+                    calories: '600 kcal',
+                    fats: '10g',
+                    carbs: '12g',
+                    size: '10 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/8541404/pexels-photo-8541404.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Berry',
+                subName: 'Bowl',
+                mealInfo: {
+                    calories: '350 kcal',
+                    fats: '5g',
+                    carbs: '40g',
+                    size: '6 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Avocado',
+                subName: 'Toast',
+                mealInfo: {
+                    calories: '450 kcal',
+                    fats: '12g',
+                    carbs: '22g',
+                    size: '5 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/29389670/pexels-photo-29389670/free-photo-of-fresh-mixed-salad-in-takeaway-container.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Caesar',
+                subName: 'Salad',
+                mealInfo: {
+                    calories: '400 kcal',
+                    fats: '12g',
+                    carbs: '14g',
+                    size: '8 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Banana',
+                subName: 'Pancakes',
+                mealInfo: {
+                    calories: '450 kcal',
+                    fats: '7g',
+                    carbs: '50g',
+                    size: '6 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/5642831/pexels-photo-5642831.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Fruit',
+                subName: 'Parfait',
+                mealInfo: {
+                    calories: '350 kcal',
+                    fats: '5g',
+                    carbs: '45g',
+                    size: '5 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                name: 'Pasta',
+                subName: 'Primavera',
+                mealInfo: {
+                    calories: '550 kcal',
+                    fats: '10g',
+                    carbs: '60g',
+                    size: '9 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/8964280/pexels-photo-8964280.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Grilled',
+                subName: 'Salmon',
+                mealInfo: {
+                    calories: '500 kcal',
+                    fats: '15g',
+                    carbs: '5g',
+                    size: '7 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/29345893/pexels-photo-29345893/free-photo-of-freshly-baked-pizza-with-toppings-on-wooden-board.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Margherita',
+                subName: 'Pizza',
+                mealInfo: {
+                    calories: '750 kcal',
+                    fats: '18g',
+                    carbs: '80g',
+                    size: '10 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/27672709/pexels-photo-27672709/free-photo-of-salad-with-shrimps.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Veggie',
+                subName: 'Bowl',
+                mealInfo: {
+                    calories: '300 kcal',
+                    fats: '10g',
+                    carbs: '35g',
+                    size: '6 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/27195708/pexels-photo-27195708/free-photo-of-meal-with-vegetables-on-dark-plate.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Quinoa',
+                subName: 'Salad',
+                mealInfo: {
+                    calories: '400 kcal',
+                    fats: '9g',
+                    carbs: '30g',
+                    size: '8 oz'
+                }
             }
-        },
-        {
-            image: 'https://images.pexels.com/photos/248444/pexels-photo-248444.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Grilled',
-            subName: 'Chicken Salad',
-            mealInfo: {
-                calories: '600 kcal',
-                fats: '10g',
-                carbs: '12g',
-                size: '10 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/8541404/pexels-photo-8541404.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Berry',
-            subName: 'Bowl',
-            mealInfo: {
-                calories: '350 kcal',
-                fats: '5g',
-                carbs: '40g',
-                size: '6 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Avocado',
-            subName: 'Toast',
-            mealInfo: {
-                calories: '450 kcal',
-                fats: '12g',
-                carbs: '22g',
-                size: '5 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/29389670/pexels-photo-29389670/free-photo-of-fresh-mixed-salad-in-takeaway-container.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Caesar',
-            subName: 'Salad',
-            mealInfo: {
-                calories: '400 kcal',
-                fats: '12g',
-                carbs: '14g',
-                size: '8 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Banana',
-            subName: 'Pancakes',
-            mealInfo: {
-                calories: '450 kcal',
-                fats: '7g',
-                carbs: '50g',
-                size: '6 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/5642831/pexels-photo-5642831.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Fruit',
-            subName: 'Parfait',
-            mealInfo: {
-                calories: '350 kcal',
-                fats: '5g',
-                carbs: '45g',
-                size: '5 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-            name: 'Pasta',
-            subName: 'Primavera',
-            mealInfo: {
-                calories: '550 kcal',
-                fats: '10g',
-                carbs: '60g',
-                size: '9 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/8964280/pexels-photo-8964280.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Grilled',
-            subName: 'Salmon',
-            mealInfo: {
-                calories: '500 kcal',
-                fats: '15g',
-                carbs: '5g',
-                size: '7 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/29345893/pexels-photo-29345893/free-photo-of-freshly-baked-pizza-with-toppings-on-wooden-board.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Margherita',
-            subName: 'Pizza',
-            mealInfo: {
-                calories: '750 kcal',
-                fats: '18g',
-                carbs: '80g',
-                size: '10 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/27672709/pexels-photo-27672709/free-photo-of-salad-with-shrimps.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Veggie',
-            subName: 'Bowl',
-            mealInfo: {
-                calories: '300 kcal',
-                fats: '10g',
-                carbs: '35g',
-                size: '6 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/27195708/pexels-photo-27195708/free-photo-of-meal-with-vegetables-on-dark-plate.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Quinoa',
-            subName: 'Salad',
-            mealInfo: {
-                calories: '400 kcal',
-                fats: '9g',
-                carbs: '30g',
-                size: '8 oz'
-            }
-        }
-    ];
- 
-    // Append meal cards to #meal-cards
-    $.each(mealData, function(index, meal) {
-        const mealCard = `
+        ];
+
+        // Append meal cards to #meal-cards
+        $.each(mealData, function(index, meal) {
+            const mealCard = `
             <div class="meal-card-rec" data-meal-fats="${meal.mealInfo.fats}" data-meal-carbs="${meal.mealInfo.carbs}">
                 <div class="custom-border rounded">
                     <img class="recipe-img-card" src="${meal.image}" alt="${meal.name} ${meal.subName}">
@@ -918,8 +910,8 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 </div>
             </div>
         `;
-        $('#meal-cards').append(mealCard);
-    });
+            $('#meal-cards').append(mealCard);
+        });
 
 
 
@@ -942,16 +934,16 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             const dayAbbreviation = date.toLocaleDateString('en-US', { weekday: 'short' } );
             const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-            daysData.push({
-                day: i + 1,
-                dayAbbreviation: dayAbbreviation, 
-                date: formattedDate,
-                kcal: 00,
-                oz: 00
-            });
+                daysData.push({
+                    day: i + 1,
+                    dayAbbreviation: dayAbbreviation,
+                    date: formattedDate,
+                    kcal: '00',
+                    oz: '00'
+                });
+            }
+            return daysData;
         }
-        return daysData;
-    }
 
 
     
@@ -1001,10 +993,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 </div>
             </div>
         `;
-    }
+        }
 
-    // Generate and append the columns with dates
-    function displayDates() {
+        // Generate and append the columns with dates
+        function displayDates() {
             const daysData = generateDaysData(); // Generate the date data
 
             // Clear any existing content
@@ -1027,37 +1019,47 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             function addLabels($dayColumn) {
                 $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
 
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-breakfast .meal-card').prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-lunch .meal-card').prepend('<div class="lunch-label meal-card-title">Lunch</div>');
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-dinner .meal-card').prepend('<div class="dinner-label meal-card-title">Dinner</div>');
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-snack .meal-card').prepend('<div class="snack-label meal-card-title">Snack</div>');
+                $dayColumn
+                    .find('#day' + $dayColumn.find('.day-header').text().split(' ')[1] + '-breakfast .meal-card')
+                    .prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
+                $dayColumn
+                    .find('#day' + $dayColumn.find('.day-header').text().split(' ')[1] + '-lunch .meal-card')
+                    .prepend('<div class="lunch-label meal-card-title">Lunch</div>');
+                $dayColumn
+                    .find('#day' + $dayColumn.find('.day-header').text().split(' ')[1] + '-dinner .meal-card')
+                    .prepend('<div class="dinner-label meal-card-title">Dinner</div>');
+                $dayColumn
+                    .find('#day' + $dayColumn.find('.day-header').text().split(' ')[1] + '-snack .meal-card')
+                    .prepend('<div class="snack-label meal-card-title">Snack</div>');
             }
-
-            updateLabels();
-            $(window).on('resize', function() {
-                updateLabels();
-            });
 
             // Append the new columns
             daysData.forEach((day, index) => {
                 $('#empty-card-slots').append(createDayColumn(day, index === 0)); // Add date and day info
             });
+
+            // Call updateLabels AFTER appending the columns
+            updateLabels();
+
+            $(window).on('resize', function() {
+                updateLabels();
+            });
         }
+
         // Initial load of the columns
         displayDates();
         // Optional: Refresh the dates daily at midnight
         setInterval(displayDates, 24 * 60 * 60 * 1000); // Refresh every 24 hours
 
-
-        // Initialize Sortable after all elements have been created
         initializeSortable();
+
     });
 
     let mealDataArray = [];
     // Function to populate all meat-card data into grocery list
     function populateAllGroceryList(mealDataArray) {
         const groceryListBox = document.querySelector('.grocery-list-box-2');
-        groceryListBox.innerHTML = ''; 
+        groceryListBox.innerHTML = '';
 
         // Check if mealDataArray has data
         if (mealDataArray.length === 0) {
@@ -1514,7 +1516,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
         const mealInfo = {
             calories: infoLines.find(line => line.includes('kcal')) || '',
-            size: infoLines.find(line => line.includes('oz')) || '',       
+            size: infoLines.find(line => line.includes('oz')) || '',
         };
 
         return mealInfo;
@@ -1528,12 +1530,12 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         const size = mealElement.getAttribute('data-meal-size');
         const carbs = mealElement.getAttribute('data-meal-carbs');
         const fats = mealElement.getAttribute('data-meal-fats');
-        
+
         document.getElementById('popup-overlay').style.display = 'flex';
         const mealDetail = document.querySelector('.meal-detail');
-        
+
         mealDetail.innerHTML = ""; // Clear existing content
-        
+
         mealDetail.innerHTML = `
             <div class="ingredients">
                 <h2>${mealName} ${mealSubName}</h2>
@@ -1553,7 +1555,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     // Function to close the popup
     function closePopup() {
-            document.getElementById('popup-overlay').style.display = 'none';
+        document.getElementById('popup-overlay').style.display = 'none';
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -1572,35 +1574,35 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     // Function to show the grocery popup
     function showGroceryPopup() {
         document.getElementById('grocery-popup-overlay').style.display = 'flex';
+    }
+    // Function to close the grocery popup
+    function closeGroceryPopup() {
+        document.getElementById('grocery-popup-overlay').style.display = 'none';
+    }
+    // Close the grocery popup when clicking outside of it
+    document.addEventListener('click', function(event) {
+        const overlay = document.getElementById('grocery-popup-overlay');
+        if (event.target === overlay) {
+            closeGroceryPopup();
         }
-        // Function to close the grocery popup
-        function closeGroceryPopup() {
-            document.getElementById('grocery-popup-overlay').style.display = 'none';
-        }
-        // Close the grocery popup when clicking outside of it
-        document.addEventListener('click', function(event) {
-            const overlay = document.getElementById('grocery-popup-overlay');
-            if (event.target === overlay) {
-                closeGroceryPopup();
-            }
     });
 
 
     // 2nd Function to show the grocery popup
     function showGroceryPopup2() {
-         document.getElementById('grocery-popup-overlay-2').style.display = 'flex';
-        }
+        document.getElementById('grocery-popup-overlay-2').style.display = 'flex';
+    }
 
-        function closeGroceryPopup2() {
-            document.getElementById('grocery-popup-overlay-2').style.display = 'none';
-        }
+    function closeGroceryPopup2() {
+        document.getElementById('grocery-popup-overlay-2').style.display = 'none';
+    }
 
-        // Close the 2nd grocery popup when clicking outside of it
-        document.addEventListener('click', function(event) {
-            const overlay2 = document.getElementById('grocery-popup-overlay-2');
-            if (event.target === overlay2) {
-                closeGroceryPopup2();
-            }
+    // Close the 2nd grocery popup when clicking outside of it
+    document.addEventListener('click', function(event) {
+        const overlay2 = document.getElementById('grocery-popup-overlay-2');
+        if (event.target === overlay2) {
+            closeGroceryPopup2();
+        }
     });
 
     const mealListPdfBtn = document.getElementById('mealListPdfBtn');

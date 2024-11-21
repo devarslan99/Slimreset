@@ -3,7 +3,8 @@ include_once '../../database/db_connection.php';
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $user_id = $_SESSION['user_id']; // Fetch the user ID from session
+    $loginUserRole = mysqli_real_escape_string($mysqli, $_POST['loginUserRole'] ?? '');
+    $user_id = ($loginUserRole === 'coach') ? mysqli_real_escape_string($mysqli, $_POST['userId']) : $_SESSION['user_id'];
     $bowel = mysqli_real_escape_string($mysqli, $_POST['bowel']);
     $selected_date = mysqli_real_escape_string($mysqli, $_POST['selected_date']); // Date in 'YYYY-MM-DD'
 

@@ -1036,9 +1036,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-snack .meal-card').prepend('<div class="snack-label meal-card-title">Snack</div>');
             }
 
-            updateLabels();
-            $(window).on('resize', function() {
-                updateLabels();
+            // updateLabels();
+            $(window).on('load resize', function () {
+                setTimeout(() => {
+                    updateLabels(); // Ensure labels update after layout stabilizes
+                }, 50); // Small delay to allow layout to stabilize
             });
 
             // Append the new columns

@@ -16,6 +16,7 @@
     let userTwoId = <?php echo $user_two_id; ?>;
     let loggedInUserRole = "<?php echo $login_user_role ?>";
     let isInMessageTab = false;
+    const currentUrl = window.location.pathname;
 
     ws.onopen = function() {
         console.log('WebSocket connection opened.');
@@ -122,7 +123,7 @@
     }
 
     let notificationCount = 0;
-    const MAX_NOTIFICATIONS_DISPLAYED = 5;
+    const MAX_NOTIFICATIONS_DISPLAYED = 99;
 
     function addNotificationToPanel(notification) {
         checkNotifications();
@@ -149,11 +150,8 @@
             <i class="fa fa-times" aria-hidden="true" style="cursor: pointer;" onclick="dismissMessage(${notification.message_id})"></i>
         </div>`;
 
+        // Prepend the notification (add it to the top)
         notificationList.insertBefore(notificationItem, notificationList.firstChild);
-
-        while (notificationList.childElementCount > MAX_NOTIFICATIONS_DISPLAYED) {
-            notificationList.removeChild(notificationList.lastChild);
-        }
     }
 
     function checkNotifications() {
@@ -180,7 +178,7 @@
 
         if (notificationCount > 0) {
             counterElement.style.display = 'inline';
-            counterElement.textContent = notificationCount > MAX_NOTIFICATIONS_DISPLAYED ? '5+' : notificationCount;
+            counterElement.textContent = notificationCount > MAX_NOTIFICATIONS_DISPLAYED ? '99+' : notificationCount;
         } else {
             counterElement.style.display = 'none';
         }
@@ -202,49 +200,56 @@
 
     const DEFAULT_IMAGE_URL = 'https://avatar.iran.liara.run/public/33';
 
+    let notificationsArray = [];
     ws.onmessage = function(event) {
         let data = JSON.parse(event.data);
         if (Array.isArray(data)) {
             data.forEach(msg => {
+                if (data.is_read === 0 && data.receiver_id === userOneId) {
+                    notificationsArray.push(data)
+                    processNotifications(data);
+                }
                 processMessage(msg);
             });
         } else {
+            if (data.is_read === 0 && data.receiver_id === userOneId) {
+                notificationsArray.push(data)
+                processNotifications(data);
+            }
             processMessage(data);
         }
     };
 
     function processMessage(data) {
-        // Add notification if the message is unread and the user is not in the message tab 
+        if ((data.sender_id === userOneId && data.receiver_id === userTwoId) ||
+            (data.sender_id === userTwoId && data.receiver_id === userOneId)) {
+            window.location.pathname.includes("summary.php") && renderMessage(data, data.sender_id === userOneId);
+        }
+    }
+
+    function processNotifications(data) {
         if (loggedInUserRole === "coach") {
-            if (data.is_read === 0 && !isInMessageTab) {
+            if (!isInMessageTab) {
                 addNotificationToPanel({
+                    is_read: data.is_read,
                     sender_profile_image: removeFirstDots(data.sender_profile_image) || DEFAULT_IMAGE_URL,
                     sender_name: data.sender_name,
                     message: data.message,
                     sent_at: data.sent_at,
-                    is_read: data.is_read,
                     message_id: data.message_id
                 });
             }
         } else {
-            if (data.is_read === 0 && data.receiver_id === userOneId && !isInMessageTab) {
+            if (data.receiver_id === userOneId && !isInMessageTab) {
                 addNotificationToPanel({
+                    is_read: data.is_read,
                     sender_profile_image: removeFirstDots(data.sender_profile_image) || DEFAULT_IMAGE_URL,
                     sender_name: data.sender_name,
                     message: data.message,
                     sent_at: data.sent_at,
-                    is_read: data.is_read,
                     message_id: data.message_id
                 });
             }
-        }
-
-        // Only render messages if they are meant for the current user
-        if ((data.sender_id === userOneId && data.receiver_id === userTwoId) ||
-            (data.sender_id === userTwoId && data.receiver_id === userOneId)) {
-
-            window.location.pathname.includes("summary.php") && renderMessage(data, data.sender_id === userOneId);
-
         }
     }
 
@@ -270,9 +275,11 @@
         checkNotifications();
     });
 
-    document.getElementById('send-button').onclick = function() {
-        sendMessage();
-    };
+    if (currentUrl.includes("summary.php")) {
+        document.getElementById('send-button').onclick = function() {
+            sendMessage();
+        };
+    }
 
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
@@ -331,7 +338,6 @@
     }
 
     // Check if the current URL is summary.php; if not, remove activeTab
-    const currentUrl = window.location.pathname;
     if (!currentUrl.includes('summary.php')) {
         localStorage.removeItem('activeTab');
     }

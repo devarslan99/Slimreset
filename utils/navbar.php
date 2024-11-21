@@ -9,14 +9,15 @@ $user_two_id = null;
 $row = null;
 if ($login_user_role == 'coach') {
     // $user_two_id = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
-    $user_two_id = 57;
-    $query = "SELECT first_name,role FROM users WHERE id = ?";
+    $query = "SELECT client_id FROM client_coach_assignments WHERE coach_id = ?";
     $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("i", $user_two_id);
+    $stmt->bind_param("i", $user_one_id);
     $stmt->execute();
     $result = $stmt->get_result();
+
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
+        $user_two_id = $row['client_id'];
     }
 } elseif ($login_user_role == 'client') {
     $query = "SELECT coach_id FROM client_coach_assignments WHERE client_id = ?";
@@ -317,6 +318,34 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
         .toggle-icon-responsive {
             display: block !important;
         }
+    }
+
+    #notification-list {
+        max-height: 380px;
+        overflow-y: auto;
+        border: 1px solid #946CFC;
+        list-style: none;
+        margin: 0;
+        scrollbar-width: thin;
+        scrollbar-color: #946CFC #f9f9f9;
+    }
+
+    /* Scrollbar styles for WebKit browsers (Chrome, Edge, Safari) */
+    #notification-list::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #notification-list::-webkit-scrollbar-track {
+        background: #f9f9f9;
+    }
+
+    #notification-list::-webkit-scrollbar-thumb {
+        background-color: #946CFC;
+        border-radius: 10px;
+    }
+
+    #notification-list::-webkit-scrollbar-thumb:hover {
+        background-color: #7C56E6;
     }
 </style>
 
@@ -634,9 +663,7 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
 
     // Fetch food data from Edamam API
     function fetchFoodData() {
-        console.log("Fetched Food Function is called")
         const query = document.getElementById('foodSearch').value;
-        console.log("The value searched!", query)
         if (query.length < 3) return; // Avoid too many requests for short queries
 
         fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=f73b06f6&app_key=562df73d9c2324199c25a9b8088540ba&ingr=${query}`, {
@@ -647,7 +674,6 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Trying to get the data from the keyword")
                 const searchResults = document.getElementById('searchResults');
                 searchResults.innerHTML = ''; // Clear previous results
 

@@ -992,9 +992,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             });
 
             // Call updateLabels AFTER appending the columns
-            updateLabels();
+            // updateLabels();
 
-            $(window).on('resize', function() {
+            $(window).on('load resize', function() {
                 updateLabels();
             });
         }

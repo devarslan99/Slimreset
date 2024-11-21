@@ -163,7 +163,7 @@ class ChatServer implements MessageComponentInterface
     private function getPreviousMessages($user_one_id, $user_two_id)
     {
         $query = "
-            SELECT 
+                    SELECT 
                 m.id AS message_id,
                 m.message,
                 m.sent_at,
@@ -179,18 +179,26 @@ class ChatServer implements MessageComponentInterface
             JOIN 
                 users u_receiver ON m.receiver_id = u_receiver.id
             WHERE 
-                (m.sender_id = ? AND m.receiver_id = ?) OR (m.sender_id = ? AND m.receiver_id = ?)
+                m.receiver_id = ?
+            OR
+                m.sender_id =?
             ORDER BY 
-                m.sent_at ASC
-        ";
+                m.sent_at ASC";
 
+        // Prepare the statement
         $stmt = $this->mysqli->prepare($query);
 
-        // Bind parameters for sender and receiver (4 parameters total)
-        $stmt->bind_param("iiii", $user_one_id, $user_two_id, $user_two_id, $user_one_id);
+        if (!$stmt) {
+            throw new Exception("Error preparing query: " . $this->mysqli->error);
+        }
+
+        // Bind parameter for receiver_id only
+        $stmt->bind_param("ii", $user_one_id, $user_one_id);
 
         // Execute the statement
         $stmt->execute();
+
+        // Fetch the result
         $result = $stmt->get_result();
 
         $messages = [];
@@ -210,6 +218,7 @@ class ChatServer implements MessageComponentInterface
 
         return $messages;
     }
+
 
     // Get or create chat between users
     private function getChatId($user_one_id, $user_two_id)

@@ -499,36 +499,6 @@ foreach ($weight_history as $index => $entry) {
         window.addEventListener('resize', updateWrapperClass);
     </script>
 
-    <!-- WEIGHT TRACKER GAUGE SCRIPT -->
-    <script>
-        const ctx = document.getElementById('myGauge').getContext('2d');
-
-        // Create a gauge chart using Chart.js
-        const gaugeChart = new Chart(ctx, {
-            type: 'doughnut', // Use a doughnut chart to create a gauge effect
-            data: {
-                labels: ['Current Weight', 'Remaining Weight'],
-                datasets: [{
-                    data: [<?php echo $percentage; ?>, 100 - <?php echo $percentage; ?>], // Current vs Remaining
-                    backgroundColor: ['#007bff', '#e9ecef'], // Blue for current, light gray for remaining
-                    borderWidth: 0 // Remove border
-                }]
-            },
-            options: {
-                responsive: true,
-                cutout: '70%', // Cut out the center to make it look like a gauge
-                plugins: {
-                    tooltip: {
-                        enabled: false // Disable tooltips
-                    },
-                    legend: {
-                        display: false // Disable legend
-                    }
-                }
-            }
-        });
-    </script>
-
     <!-- Redirecting to food logs if we have date and adjusting of my tracker view page -->
     <script>
         function saveActiveTab(tabId) {

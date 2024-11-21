@@ -626,7 +626,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     </div>
                     <!-- PDF Icon -->
                     <div class="grocery-pdf-icon">
-                        <i class="fa fa-file-pdf-o" onclick="downloadPDF(dayMealData)"></i>
+                        <i class="fa fa-file-pdf-o" id="mealListPdfBtn"></i>
                     </div>
                 </div>
             </div>
@@ -680,7 +680,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     </div>
                     <!-- PDF Icon -->
                     <div class="grocery-pdf-icon">
-                        <i class="fa fa-file-pdf-o" onclick="downloadPDF2(mealDataArray)"></i>
+                        <i class="fa fa-file-pdf-o" onclick="GroceryListPdf(mealDataArray)"></i>
                     </div>
                 </div>
             </div>
@@ -1160,6 +1160,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         day6: [],
         day7: []
     };
+    let selectedId = null;
 
     const dayNutritionTotals = {};
 
@@ -1471,9 +1472,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         
                     }
                          // Handle the cart icon visibility
-                       
                         const addToCartIcon = dayColumn.querySelector('.AddToCart');
-
                         // Check if there is meal data for this dayId
                         if (dayMealData[dayId] && dayMealData[dayId].length > 0) {
                             // Meal data exists, make sure the cart icon is visible and clickable
@@ -1486,20 +1485,21 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 cartIcon.addEventListener('click', function() {
                                     populateGroceryList(dayMealData[dayId]);
                                     showGroceryPopup();
+                                    selectedId = dayId
                                 });
                             }
-                        } else {
-                            // No meal data exists, disable or hide the cart icon
-                            const cartIcon = addToCartIcon.querySelector('i');
-                            if (cartIcon) {
-                                cartIcon.style.display = 'none';  // Hide the cart icon
-                                cartIcon.style.color = '';        // Remove the color styling
-                                cartIcon.classList.remove('black-icon');  // Remove the black-icon class
-                                cartIcon.removeEventListener('click', function() {
-                                    populateGroceryList(dayMealData[dayId]);
-                                    showGroceryPopup();
-                                });  // Ensure event listener is removed
-                            }
+                            } else {
+                                // No meal data exists, disable or hide the cart icon
+                                const cartIcon = addToCartIcon.querySelector('i');
+                                if (cartIcon) {
+                                    cartIcon.style.display = 'none';  // Hide the cart icon
+                                    cartIcon.style.color = '';        // Remove the color styling
+                                    cartIcon.classList.remove('black-icon');  // Remove the black-icon class
+                                    cartIcon.removeEventListener('click', function() {
+                                        populateGroceryList(dayMealData[dayId]);
+                                        showGroceryPopup();
+                                    });  // Ensure event listener is removed
+                                }
                         }
                     }   
             });
@@ -1603,116 +1603,126 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             }
     });
 
-    // function to download grocery list as a PDF 
-    function downloadPDF(dayMealData) {
+    const mealListPdfBtn = document.getElementById('mealListPdfBtn');
+    mealListPdfBtn.addEventListener('click', function() {
+        mealListPDF()
+    });
 
-            const pdfContent = [];
 
-            for (const [dayKey, meals] of Object.entries(dayMealData)) {
-                if (meals.length === 0) continue; // Skip empty days
+    // function to download meal list as a PDF  
+    function mealListPDF() {
+        const pdfContent = [];
+        const meals = dayMealData[selectedId];
 
-                const firstMeal = meals[0];
-                const fullDayName = firstMeal.day;
-                const formattedDate = firstMeal.date; 
+        // Check if the selected day has meals
+        if (meals.length === 0) {
+            console.log(`No meals found for ${dayMealData}`);
+            return; // Exit if no meals for the selected day
+        }
 
-                pdfContent.push({
+        const firstMeal = meals[0];
+        const fullDayName = firstMeal.day;
+        const formattedDate = firstMeal.date;
+
+        // Add table with day name and date
+        pdfContent.push({
+            table: {
+                widths: ['*', 'auto'],
+                body: [
+                    [
+                        { 
+                            text: fullDayName, 
+                            style: 'dayHeaderText', 
+                            margin: [10, 5, 0, 5] 
+                        },
+                        { 
+                            text: formattedDate || '', 
+                            style: 'dateStyle', 
+                            alignment: 'right', 
+                            margin: [0, 5, 10, 5] 
+                        }
+                    ]
+                ]
+            },
+            layout: {
+                hLineWidth: () => 0,
+                vLineWidth: () => 0,
+                fillColor: (rowIndex) => (rowIndex === 0 ? '#ece5ff' : null)
+            },
+            margin: [0, 0, 0, 10] // Add bottom margin
+        });
+
+        // Add meal cards for the selected day
+        meals.forEach(meal => {
+            pdfContent.push(
+                { text: meal.label, style: 'mealLabel' },
+                { text: `${meal.mealName} ${meal.mealSubName}`, style: 'mealTitle' },
+                {
                     table: {
-                        widths: ['*', 'auto'],
+                        widths: ['*', 'auto', '*', 'auto'],
                         body: [
                             [
-                                { 
-                                    text: fullDayName, 
-                                    style: 'dayHeaderText', 
-                                    margin: [10, 5, 0, 5] 
-                                },
-                                { 
-                                    text: formattedDate || '', 
-                                    style: 'dateStyle', 
-                                    alignment: 'right', 
-                                    margin: [0, 5, 10, 5] 
-                                }
+                                { text: 'Calories', style: 'infoLabel' },
+                                { text: `${meal.mealInfo.calories || 'N/A'}`, style: 'infoValue' },
+                                { text: 'Carbohydrates', style: 'infoLabel' },
+                                { text: `${meal.mealInfo.carbs || 'N/A'}`, style: 'infoValue' }
+                            ],
+                            [
+                                { text: 'Total Fat', style: 'infoLabel' },
+                                { text: `${meal.mealInfo.fats || 'N/A'}`, style: 'infoValue' },
+                                { text: 'Protein', style: 'infoLabel' },
+                                { text: `${meal.mealInfo.size || 'N/A'}`, style: 'infoValue' }
                             ]
                         ]
                     },
-                    layout: {
-                        hLineWidth: () => 0,
-                        vLineWidth: () => 0,
-                        fillColor: (rowIndex) => (rowIndex === 0 ? '#ece5ff' : null)
-                    },
-                    margin: [0, 0, 0, 10] // Add bottom margin
-                });
-
-                // Add meal cards for the day
-                meals.forEach(meal => {
-                    pdfContent.push(
-                        { text: meal.label, style: 'mealLabel' },
-                        { text: `${meal.mealName} ${meal.mealSubName}`, style: 'mealTitle' },
-                        {
-                            table: {
-                                widths: ['*', 'auto', '*', 'auto'],
-                                body: [
-                                    [
-                                        { text: 'Calories', style: 'infoLabel' },
-                                        { text: `${meal.mealInfo.calories || 'N/A'}`, style: 'infoValue' },
-                                        { text: 'Carbohydrates', style: 'infoLabel' },
-                                        { text: `${meal.mealInfo.carbs || 'N/A'}`, style: 'infoValue' }
-                                    ],
-                                    [
-                                        { text: 'Total Fat', style: 'infoLabel' },
-                                        { text: `${meal.mealInfo.fats || 'N/A'}`, style: 'infoValue' },
-                                        { text: 'Protein', style: 'infoLabel' },
-                                        { text: `${meal.mealInfo.size || 'N/A'}`, style: 'infoValue' }
-                                    ]
-                                ]
-                            },
-                            layout: 'noBorders',
-                            margin: [0, 5, 0, 15] // Add space between meals
-                        }
-                    );
-                });
-            }
-
-            // Define PDF styles
-            const docDefinition = {
-                content: pdfContent,
-                styles: {
-                    dayHeaderText: {
-                        fontSize: 16,
-                        bold: true,
-                        color: '#512DA8'
-                    },
-                    dateStyle: {
-                        fontSize: 12,
-                        bold: true,
-                        color: '#512DA8'
-                    },
-                    mealLabel: {
-                        fontSize: 12,
-                        color: '#946cfc',
-                        bold: true,
-                        margin: [0, 10, 0, 5]
-                    },
-                    mealTitle: {
-                        fontSize: 14,
-                        bold: true,
-                        margin: [0, 5, 0, 10]
-                    },
-                    infoLabel: {
-                        fontSize: 12,
-                        bold: true
-                    },
-                    infoValue: {
-                        fontSize: 12
-                    }
+                    layout: 'noBorders',
+                    margin: [0, 5, 0, 15] // Add space between meals
                 }
-            };
+            );
+        });
 
-            pdfMake.createPdf(docDefinition).download('meal_plan.pdf');
+        // Define PDF styles
+        const docDefinition = {
+            content: pdfContent,
+            styles: {
+                dayHeaderText: {
+                    fontSize: 16,
+                    bold: true,
+                    color: '#512DA8'
+                },
+                dateStyle: {
+                    fontSize: 12,
+                    bold: true,
+                    color: '#512DA8'
+                },
+                mealLabel: {
+                    fontSize: 12,
+                    color: '#946cfc',
+                    bold: true,
+                    margin: [0, 10, 0, 5]
+                },
+                mealTitle: {
+                    fontSize: 14,
+                    bold: true,
+                    margin: [0, 5, 0, 10]
+                },
+                infoLabel: {
+                    fontSize: 12,
+                    bold: true
+                },
+                infoValue: {
+                    fontSize: 12
+                }
+            }
+        };
 
+        // Download the PDF with the specified content for the selected day
+        pdfMake.createPdf(docDefinition).download(`meal_plan_${selectedId}.pdf`);
     }
 
+
     //2nd function to download grocery list as a PDF 
-    function downloadPDF2(mealDataArray) {
+    function GroceryListPdf(mealDataArray) {
             const groupedMeals = mealDataArray.reduce((acc, meal) => {
                 if (!acc[meal.day]) {
                     acc[meal.day] = [];

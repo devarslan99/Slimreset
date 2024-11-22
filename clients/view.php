@@ -115,7 +115,7 @@
         function updateWrapperClass() {
             const pageWrapper = document.getElementById('pageWrapper');
 
-            if (window.innerWidth <= 768) { // Assuming mobile screen width is 768px or less
+            if (window.innerWidth <= 991) { // Assuming mobile screen width is 768px or less
                 pageWrapper.classList.remove('horizontal-wrapper');
                 pageWrapper.classList.add('compact-wrapper');
             } else {

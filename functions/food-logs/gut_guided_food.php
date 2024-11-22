@@ -131,9 +131,9 @@
 
             <!-- Veggies Category -->
             <div class="category-section flex-fill mb-4">
-                <h3 class="">veggies</h3>
-                <h3 class="my-3 main-color">rich protein</h3>
-                <div class="label-select mb-2">select</div>
+                <h3 class="">Veggies</h3>
+                <h3 class="my-3 main-color">Rich Protein</h3>
+                <div class="label-select mb-2">Select</div>
                 <div class="checkbox-group">
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -141,7 +141,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        asparagus
+                        Spinach
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -149,7 +149,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        broccoli
+                        Kale
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -157,11 +157,11 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        carrot
+                        Brussels Sprouts
                     </label>
                 </div>
-                <h3 class="my-3 main-color">light protein</h3>
-                <div class="label-select mb-2">select</div>
+                <h3 class="my-3 main-color">Light Protein</h3>
+                <div class="label-select mb-2">Select</div>
                 <div class="checkbox-group">
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -169,7 +169,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        asparagus
+                        Lettuce
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -177,7 +177,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        broccoli
+                        Cabbage
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -185,16 +185,16 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        carrot
+                        Cauliflower
                     </label>
                 </div>
             </div>
 
             <!-- Fruits Category -->
             <div class="category-section flex-fill mb-4">
-                <h3 class="">veggies</h3>
-                <h3 class="my-3 main-color">rich protein</h3>
-                <div class="label-select mb-2">select</div>
+                <h3 class="">Fruits</h3>
+                <h3 class="my-3 main-color">Rich Protein</h3>
+                <div class="label-select mb-2">Select</div>
                 <div class="checkbox-group">
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -202,7 +202,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        asparagus
+                        Avocado
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -210,7 +210,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        broccoli
+                        Guava
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -218,11 +218,11 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        carrot
+                        Mulberries
                     </label>
                 </div>
-                <h3 class="my-3 main-color">light protein</h3>
-                <div class="label-select mb-2">select</div>
+                <h3 class="my-3 main-color">Light Protein</h3>
+                <div class="label-select mb-2">Select</div>
                 <div class="checkbox-group">
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -230,7 +230,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        asparagus
+                        Apples
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -238,7 +238,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        broccoli
+                        Banana
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -246,16 +246,16 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        carrot
+                        Berries
                     </label>
                 </div>
             </div>
 
             <!-- Beverages Category -->
             <div class="category-section flex-fill mb-4">
-                <h3 class="">veggies</h3>
-                <h3 class="my-3 main-color">rich protein</h3>
-                <div class="label-select mb-2">select</div>
+                <h3 class="">Beverages</h3>
+                <h3 class="my-3 main-color">Rich Protein</h3>
+                <div class="label-select mb-2">Select</div>
                 <div class="checkbox-group">
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -263,7 +263,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        asparagus
+                        Soy Milk
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -271,7 +271,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        broccoli
+                        Almond Milk
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -279,11 +279,11 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        carrot
+                        Oat Milk
                     </label>
                 </div>
-                <h3 class="my-3 main-color">light protein</h3>
-                <div class="label-select mb-2">select</div>
+                <h3 class="my-3 main-color">Light Protein</h3>
+                <div class="label-select mb-2">Select</div>
                 <div class="checkbox-group">
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -291,7 +291,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        asparagus
+                        Coconut Water
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -299,7 +299,7 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        broccoli
+                        Green Tea
                     </label>
                     <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
                         <div class="checkboxes">
@@ -307,12 +307,72 @@
                             <input type="checkbox" class="green-checkbox mx-2">
                             <input type="checkbox" class="orange-checkbox">
                         </div>
-                        carrot
+                        Herbal Tea
                     </label>
                 </div>
             </div>
 
-            <!-- Repeat for Fruit, Beverages, etc. as needed -->
+            <!-- Flavorings Category -->
+            <div class="category-section flex-fill mb-4">
+                <h3 class="">Flavorings</h3>
+                <h3 class="my-3 main-color">Rich Protein</h3>
+                <div class="label-select mb-2">Select</div>
+                <div class="checkbox-group">
+                    <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
+                        <div class="checkboxes">
+                            <input type="checkbox" class="red-checkbox">
+                            <input type="checkbox" class="green-checkbox mx-2">
+                            <input type="checkbox" class="orange-checkbox">
+                        </div>
+                        Tofu
+                    </label>
+                    <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
+                        <div class="checkboxes">
+                            <input type="checkbox" class="red-checkbox">
+                            <input type="checkbox" class="green-checkbox mx-2">
+                            <input type="checkbox" class="orange-checkbox">
+                        </div>
+                        Tempeh
+                    </label>
+                    <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
+                        <div class="checkboxes">
+                            <input type="checkbox" class="red-checkbox">
+                            <input type="checkbox" class="green-checkbox mx-2">
+                            <input type="checkbox" class="orange-checkbox">
+                        </div>
+                        Edamame
+                    </label>
+                </div>
+                <h3 class="my-3 main-color">Light Protein</h3>
+                <div class="label-select mb-2">Select</div>
+                <div class="checkbox-group">
+                    <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
+                        <div class="checkboxes">
+                            <input type="checkbox" class="red-checkbox">
+                            <input type="checkbox" class="green-checkbox mx-2">
+                            <input type="checkbox" class="orange-checkbox">
+                        </div>
+                        Low-fat Yogurt
+                    </label>
+                    <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
+                        <div class="checkboxes">
+                            <input type="checkbox" class="red-checkbox">
+                            <input type="checkbox" class="green-checkbox mx-2">
+                            <input type="checkbox" class="orange-checkbox">
+                        </div>
+                        Cottage Cheese
+                    </label>
+                    <label class="d-flex align-items-center gap-2 border-bottom-row-gut-guided py-2">
+                        <div class="checkboxes">
+                            <input type="checkbox" class="red-checkbox">
+                            <input type="checkbox" class="green-checkbox mx-2">
+                            <input type="checkbox" class="orange-checkbox">
+                        </div>
+                        Almond Butter
+                    </label>
+                </div>
+            </div>
+            
         </div>
     </div>
 </body>

@@ -220,6 +220,17 @@
             width: 100%;
         }
     }
+
+    #edit-view-box 
+    {
+        display:none;
+        gap:10px;
+        font-weight:600;
+    }
+    #edit-view-box a
+    {
+        text-decoration:underline;
+    }
 </style>
 
 <?php
@@ -412,6 +423,10 @@ foreach ($weight_history as $index => $entry) {
                                                                                         <button class="btn tab-button" data-phase="3">Phase 3</button>
                                                                                         <span class="line">|</span>
                                                                                         <button class="btn tab-button" data-phase="4">Phase 4</button>
+                                                                                    </div>
+                                                                                    <div id="edit-view-box">
+                                                                                        <a href="#">edit</a>
+                                                                                        <p>view as client</p>
                                                                                     </div>
                                                                                 </div>
 
@@ -621,13 +636,16 @@ foreach ($weight_history as $index => $entry) {
         document.addEventListener('DOMContentLoaded', function() {
             const preferenceSwitch = document.getElementById('preferenceSwitch');
             const phaseTabs = document.getElementById('phaseTabs');
+            const editViewBox = document.getElementById('edit-view-box');
 
             // Add event listener
             preferenceSwitch.addEventListener('change', function() {
                 if (preferenceSwitch.checked) {
                     phaseTabs.style.display = 'none';
+                    editViewBox.style.display = 'flex';
                 } else {
                     phaseTabs.style.display = 'flex';
+                    editViewBox.style.display = 'none';
                 }
             });
         });

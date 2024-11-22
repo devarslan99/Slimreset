@@ -67,7 +67,7 @@
                                 cancelButtonColor: '#d33',
                                 confirmButtonText: 'Ok'
                             }).then((result) => {
-                                location.reload();
+                                window.location.href = 'view-food-group.php';
                             });
                         } else {
                             Swal.fire({

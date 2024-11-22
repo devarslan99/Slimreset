@@ -1,7 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php include_once "../utils/header.php";
 
-<?php include_once "../utils/header.php" ?>
+include_once "../database/db_connection.php";
+
+$proteinId = isset($_GET['id']) ? intval($_GET['id']) : null;
+
+if (!$proteinId) {
+    header("Location: view-protein.php");
+    exit();
+}
+
+$query = "SELECT * FROM `protein` WHERE id = ?";
+$stmt = $mysqli->prepare($query);
+$stmt->bind_param("i", $proteinId);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $proteinItem = $result->fetch_assoc();
+} else {
+    header("Location: view-protein.php");
+    exit();
+}
+
+$stmt->close();
+?>
 
 <body>
     <?php include_once "../utils/loader.php" ?>
@@ -17,17 +41,17 @@
                             <div class="col-xl-12">
                                 <form class="card" method="post">
                                     <div class="card-header">
-                                        <h4 class="card-title mb-0">Add Meal Type</h4>
+                                        <h4 class="card-title mb-0">Edit Protein</h4>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-10 mb-1">
-                                                <label class="form-label" for="meal-type">Meal Type</label>
-                                                <input id="meal-type" class="form-control" type="text" placeholder="Enter Meal Type" name="meal-type" required>
+                                                <label class="form-label" for="protein">Protein</label>
+                                                <input id="protein" class="form-control" type="text" placeholder="Enter Protein" name="protein" value="<?php echo htmlspecialchars($proteinItem['name']); ?>" required>
                                             </div>
                                             <div class="col-md-2 d-flex justify-content-end align-items-end mb-1">
                                                 <button class="btn btn-primary w-100 p-2" type="submit" style="white-space: nowrap;">
-                                                    Add
+                                                    Update
                                                 </button>
                                             </div>
                                         </div>
@@ -48,38 +72,30 @@
         $(document).ready(function() {
             $('form').submit(function(e) {
                 e.preventDefault();
-                var form = $(this);
                 var formData = {
-                    mealType: $('input[name="meal-type"]').val()
+                    id: <?php echo $proteinId; ?>,
+                    protein: $('input[name="protein"]').val()
                 };
                 $.ajax({
                     type: 'POST',
-                    url: '../functions/recipes/meal-type/add.php',
+                    url: '../functions/recipes/protein/edit.php',
                     data: formData,
                     success: function(response) {
                         if (response.trim() === 'Success') {
                             Swal.fire({
                                 title: 'Success',
-                                text: "Meal type added successfully!",
+                                text: "Protein updated successfully!",
                                 icon: 'success',
-                                showCancelButton: false,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
                                 confirmButtonText: 'Ok'
-                            }).then((result) => {
-                                window.location.href = 'view-meal-type.php';
+                            }).then(() => {
+                                window.location.href = 'view-protein.php';
                             });
                         } else {
                             Swal.fire({
                                 title: 'Error',
                                 text: response,
                                 icon: 'error',
-                                showCancelButton: false,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
                                 confirmButtonText: 'Ok'
-                            }).then((result) => {
-                                location.reload();
                             });
                         }
                     },
@@ -88,12 +104,7 @@
                             title: 'Error',
                             text: "An error occurred while processing your request. Please try again.",
                             icon: 'error',
-                            showCancelButton: false,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
                             confirmButtonText: 'Ok'
-                        }).then((result) => {
-                            location.reload();
                         });
                     }
                 });
@@ -105,7 +116,7 @@
         function updateWrapperClass() {
             const pageWrapper = document.getElementById('pageWrapper');
 
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= 991) {
                 pageWrapper.classList.remove('horizontal-wrapper');
                 pageWrapper.classList.add('compact-wrapper');
             } else {

@@ -23,6 +23,9 @@ $recipes_json = json_encode($recipes);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Recipes</title>
     <style>
+        .modal-dialog {
+            max-width:700px !important;
+        }
         .recipe-checkboxes input[type="checkbox"] {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -105,6 +108,78 @@ $recipes_json = json_encode($recipes);
             width: 200px;
             height: 180px;
         }
+
+        .food-label-name {
+            color:rgb(148 108 252) !important;
+        }
+
+        /* .d-flex {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        } */
+
+        .nutrition-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nutrition-item {
+            flex: 1;
+            text-align: left;
+            margin-right: 1rem;
+            width: 100%;
+        }
+
+        .nutrition-item label {
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .nutrition-item input {
+            text-align: right;
+            width:100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 576px) {
+            .nutrition-grid .d-flex {
+                flex-direction: column;
+            }
+
+            .nutrition-item {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        #choose-img-section {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+        }
+
+        #choose-img {
+            background-color: #946CFC; 
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+        
+        .food-img-box {
+            width: 150px;
+            height: 150px;
+        }
+        .food-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit:cover;
+        }
     </style>
 </head>
 
@@ -175,7 +250,11 @@ $recipes_json = json_encode($recipes);
                 <div class="modal-body">
                     <input type="text" id="recipeSearch" class="form-control" placeholder="Search for recipes..." oninput="fetchRecipeData()">
                     <!-- Display search results -->
-                    <ul class="list-group mt-3" id="searchResultsForRecipe"></ul>
+                    <ul class="list-group mt-3 bg-red" id="searchResultsForRecipe"></ul>
+
+                    <div class="recipe-detail-section" id="receipeDetailSection">
+                       <!-- dynamically data of selected resipe or food will be display here  -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -220,67 +299,122 @@ $recipes_json = json_encode($recipes);
                         const li = document.createElement('li');
                         li.classList.add('list-group-item');
                         li.innerHTML = item.label || `${item.food.label}`;
-                        li.onclick = () => selectRecipeItem(item, li); // Pass the selected item and the li element
+                        li.onclick = () =>{
+                            selectRecipeItem(item, li)
+                            searchResultsForRecipe.innerHTML = '';
+                        }; // Pass the selected item and the li element
                         searchResultsForRecipe.appendChild(li);
                     });
                 })
                 .catch(error => console.error('Error fetching food data:', error));
         }
 
+        
         // Select food item and display its details directly beneath the clicked item
         function selectRecipeItem(food, listItem) {
             // Remove any existing expanded sections
-            const existingExpandedRow = document.querySelector('.expanded-row');
-            if (existingExpandedRow) existingExpandedRow.remove();
+            // const existingExpandedRow = document.querySelector('.expanded-row');
+            const receipeDetailSection = document.getElementById('receipeDetailSection');
+            // if (existingExpandedRow) existingExpandedRow.remove();
 
             // Create the expanded row to show details
-            const expandedRow = document.createElement('div');
-            expandedRow.classList.add('expanded-row');
-
+            // const expandedRow = document.createElement('div');
+            // expandedRow.classList.add('expanded-row');
+            console.log(food,listItem)
             // Add content to expanded row
-            expandedRow.innerHTML = `
-                    <h6 class="mt-3">${food.label}</h6>
-                    <p class="mt-2">Enter amount:</p>
-                    <input type="number" id="foodAmount" class="form-control mb-2" value="1" placeholder="Amount" onchange="updateNutritionValuesForRecipe()">
+            receipeDetailSection.innerHTML = `
+                    <div class="food-card p-4 mb-4 border rounded">
+                            <!-- Food Label -->
+                            <h5 class="food-label-name mb-3 font-weight-bold">${food.label}</h5>
+                            
+                            <!-- Amount and Unit Row -->
+                            <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                                <div class="flex-fill">
+                                    <label for="foodAmount" class="font-weight-bold">Amount:</label>
+                                    <input type="number" id="foodAmount" class="form-control" value="1" placeholder="Enter Amount" onchange="updateNutritionValuesForRecipe()">
+                                </div>
+                                <div class="flex-fill">
+                                    <label for="weighingUnit" class="font-weight-bold">Unit:</label>
+                                    <select id="weighingUnit" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    </select>
+                                </div>
+                            </div>
 
-                    <!-- Dropdown for weighing unit -->
-                    <select id="weighingUnit" class="form-control mb-2" onchange="updateNutritionValuesForRecipe()">
-                    </select>
+                            <!-- Nutritional Info -->
+                            <div id="nutritionInfo" class="mt-4">
+                                <div class="nutrition-grid">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div class="nutrition-item">
+                                            <label>Calories:</label>
+                                            <input type="text" id="calories" class="form-control" value="${food.nutrients.ENERC_KCAL || '0'}" onchange="updateNutritionValuesForRecipe()">
+                                        </div>
+                                        <div class="nutrition-item">
+                                            <label>Total Fat:</label>
+                                            <input type="text" id="fat" class="form-control" value="${food.nutrients.FAT || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                        </div>
+                                        <div class="nutrition-item">
+                                            <label>Sat. Fat:</label>
+                                            <input type="text" id="satFat" class="form-control" value="${food.nutrients.FASAT || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div class="nutrition-item">
+                                            <label>Cholest.:</label>
+                                            <input type="text" id="cholesterol" class="form-control" value="${food.nutrients.CHOLE || '0mg'}" onchange="updateNutritionValuesForRecipe()">
+                                        </div>
+                                        <div class="nutrition-item">
+                                            <label>Sodium:</label>
+                                            <input type="text" id="sodium" class="form-control" value="${food.nutrients.NA || '0mg'}" onchange="updateNutritionValuesForRecipe()">
+                                        </div>
+                                        <div class="nutrition-item">
+                                            <label>Carb.:</label>
+                                            <input type="text" id="carbs" class="form-control" value="${food.nutrients.CHOCDF || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div class="nutrition-item">
+                                            <label>Fiber:</label>
+                                            <input type="text" id="fiber" class="form-control" value="${food.nutrients.FIBTG || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                        </div>
+                                        <div class="nutrition-item">
+                                            <label>Sugars:</label>
+                                            <input type="text" id="sugars" class="form-control" value="${food.nutrients.SUGAR || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                        </div>
+                                        <div class="nutrition-item">
+                                            <label>Protein:</label>
+                                            <input type="text" id="protein" class="form-control" value="${food.nutrients.PROCNT || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <!-- Display nutritional info -->
-                    <div id="nutritionInfo">
-                        <p>Calories: <span id="calories">${food.nutrients.ENERC_KCAL || '0'}</span></p>
-                        <p>Total Fat: <span id="fat">${food.nutrients.FAT || '0g'}</span></p>
-                        <p>Sat. Fat: <span id="satFat">${food.nutrients.FASAT || '0g'}</span></p>
-                        <p>Cholest.: <span id="cholesterol">${food.nutrients.CHOLE || '0mg'}</span></p>
-                        <p>Sodium: <span id="sodium">${food.nutrients.NA || '0mg'}</span></p>
-                        <p>Carb.: <span id="carbs">${food.nutrients.CHOCDF || '0g'}</span></p>
-                        <p>Fiber: <span id="fiber">${food.nutrients.FIBTG || '0g'}</span></p>
-                        <p>Sugars: <span id="sugars">${food.nutrients.SUGAR || '0g'}</span></p>
-                        <p>Protein: <span id="protein">${food.nutrients.PROCNT || '0g'}</span></p>
-                    </div>
+                            <div id="choose-img-section">
+                                <button id="choose-img" onclick="ChooseFile()">Select Image</button>
+                                <div class="food-img-box"><img src="${food.image}" /></div>
+                            </div>
 
-                    <!-- Button to add recipe to the database -->
-                    <button type="button" class="btn btn-success my-3" onclick="addRecipeToDatabase('${food.foodId}', '${food.label}', '${food.image || ''}')">Add Recipe</button>
+                            <!-- Add Recipe Button -->
+                            <button type="button" class="btn btn-success btn-block mt-4" onclick="addRecipeToDatabase('${food.foodId}', '${food.label}', '${food.image || ''}')">Add Recipe</button>
+                        </div>
                 `;
 
             // Insert the expanded row directly after the selected list item
-            listItem.insertAdjacentElement('afterend', expandedRow);
+            // listItem.insertAdjacentElement('afterend', expandedRow);
 
-            // Store the default calories per serving in a global variable for calculations
-            expandedRow.dataset.caloriesPerServing = food.nutrients.ENERC_KCAL || 0;
-            expandedRow.dataset.defaultServingSize = food.servingSize || 1; // Default serving size in the dataset
-            expandedRow.dataset.defaultWeightGrams = food.servingWeight || 100; // Default weight in grams
+            // // Store the default calories per serving in a global variable for calculations
+            // expandedRow.dataset.caloriesPerServing = food.nutrients.ENERC_KCAL || 0;
+            // expandedRow.dataset.defaultServingSize = food.servingSize || 1; // Default serving size in the dataset
+            // expandedRow.dataset.defaultWeightGrams = food.servingWeight || 100; // Default weight in grams
 
-            // Store nutritional data in the row for dynamic calculations
-            expandedRow.dataset.fat = food.nutrients.FAT || 0;
-            expandedRow.dataset.saturatedFat = food.nutrients.FASAT || 0;
-            expandedRow.dataset.cholesterol = food.nutrients.CHOLE || 0;
-            expandedRow.dataset.sodium = food.nutrients.NA || 0;
-            expandedRow.dataset.carbs = food.nutrients.CHOCDF || 0;
-            expandedRow.dataset.fiber = food.nutrients.FIBTG || 0;
-            expandedRow.dataset.sugars = food.nutrients.SUGAR || 0;
-            expandedRow.dataset.protein = food.nutrients.PROCNT || 0;
+            // // Store nutritional data in the row for dynamic calculations
+            // expandedRow.dataset.fat = food.nutrients.FAT || 0;
+            // expandedRow.dataset.saturatedFat = food.nutrients.FASAT || 0;
+            // expandedRow.dataset.cholesterol = food.nutrients.CHOLE || 0;
+            // expandedRow.dataset.sodium = food.nutrients.NA || 0;
+            // expandedRow.dataset.carbs = food.nutrients.CHOCDF || 0;
+            // expandedRow.dataset.fiber = food.nutrients.FIBTG || 0;
+            // expandedRow.dataset.sugars = food.nutrients.SUGAR || 0;
+            // expandedRow.dataset.protein = food.nutrients.PROCNT || 0;
 
             // Populate the weighingUnit dropdown dynamically
             populateWeighingUnitsForRecipe(food);
@@ -307,41 +441,41 @@ $recipes_json = json_encode($recipes);
         }
 
         // Update nutritional values dynamically based on selected unit and amount
-        function updateNutritionValuesForRecipe() {
-            const amount = document.getElementById('foodAmount').value || 1;
-            const unit = document.getElementById('weighingUnit').value;
-            const expandedRow = document.querySelector('.expanded-row');
+        // function updateNutritionValuesForRecipe() {
+        //     const amount = document.getElementById('foodAmount').value || 1;
+        //     const unit = document.getElementById('weighingUnit').value;
+        //     // const expandedRow = document.querySelector('.expanded-row');
 
-            if (!expandedRow) return;
+        //     if (!expandedRow) return;
 
-            const caloriesPerServing = expandedRow.dataset.caloriesPerServing;
-            const defaultServingSize = expandedRow.dataset.defaultServingSize;
-            const defaultWeightGrams = expandedRow.dataset.defaultWeightGrams;
+        //     const caloriesPerServing = expandedRow.dataset.caloriesPerServing;
+        //     const defaultServingSize = expandedRow.dataset.defaultServingSize;
+        //     const defaultWeightGrams = expandedRow.dataset.defaultWeightGrams;
 
-            // Conversion factors for other units
-            const unitToGrams = {
-                g: 1,
-                oz: 28.35,
-                lb: 453.59
-            };
+        //     // Conversion factors for other units
+        //     const unitToGrams = {
+        //         g: 1,
+        //         oz: 28.35,
+        //         lb: 453.59
+        //     };
 
-            // Calculate the factor to adjust based on the selected unit and amount
-            const weightInGrams = unitToGrams[unit] * amount;
+        //     // Calculate the factor to adjust based on the selected unit and amount
+        //     const weightInGrams = unitToGrams[unit] * amount;
 
-            // Scaling factor for nutritional values
-            const scalingFactor = weightInGrams / defaultWeightGrams;
+        //     // Scaling factor for nutritional values
+        //     const scalingFactor = weightInGrams / defaultWeightGrams;
 
-            // Dynamically update all nutritional values
-            document.getElementById('calories').innerText = (caloriesPerServing * scalingFactor).toFixed(2);
-            document.getElementById('fat').innerText = (expandedRow.dataset.fat * scalingFactor).toFixed(2) + 'g';
-            document.getElementById('satFat').innerText = (expandedRow.dataset.saturatedFat * scalingFactor).toFixed(2) + 'g';
-            document.getElementById('cholesterol').innerText = (expandedRow.dataset.cholesterol * scalingFactor).toFixed(2) + 'mg';
-            document.getElementById('sodium').innerText = (expandedRow.dataset.sodium * scalingFactor).toFixed(2) + 'mg';
-            document.getElementById('carbs').innerText = (expandedRow.dataset.carbs * scalingFactor).toFixed(2) + 'g';
-            document.getElementById('fiber').innerText = (expandedRow.dataset.fiber * scalingFactor).toFixed(2) + 'g';
-            document.getElementById('sugars').innerText = (expandedRow.dataset.sugars * scalingFactor).toFixed(2) + 'g';
-            document.getElementById('protein').innerText = (expandedRow.dataset.protein * scalingFactor).toFixed(2) + 'g';
-        }
+        //     // Dynamically update all nutritional values
+        //     document.getElementById('calories').innerText = (caloriesPerServing * scalingFactor).toFixed(2);
+        //     document.getElementById('fat').innerText = (expandedRow.dataset.fat * scalingFactor).toFixed(2) + 'g';
+        //     document.getElementById('satFat').innerText = (expandedRow.dataset.saturatedFat * scalingFactor).toFixed(2) + 'g';
+        //     document.getElementById('cholesterol').innerText = (expandedRow.dataset.cholesterol * scalingFactor).toFixed(2) + 'mg';
+        //     document.getElementById('sodium').innerText = (expandedRow.dataset.sodium * scalingFactor).toFixed(2) + 'mg';
+        //     document.getElementById('carbs').innerText = (expandedRow.dataset.carbs * scalingFactor).toFixed(2) + 'g';
+        //     document.getElementById('fiber').innerText = (expandedRow.dataset.fiber * scalingFactor).toFixed(2) + 'g';
+        //     document.getElementById('sugars').innerText = (expandedRow.dataset.sugars * scalingFactor).toFixed(2) + 'g';
+        //     document.getElementById('protein').innerText = (expandedRow.dataset.protein * scalingFactor).toFixed(2) + 'g';
+        // }
 
         // Add the selected food to the database
         function addRecipeToDatabase(foodId, label, imageUrl) {
@@ -352,15 +486,15 @@ $recipes_json = json_encode($recipes);
                 image: imageUrl,
                 amount: document.getElementById('foodAmount').value,
                 unit: document.getElementById('weighingUnit').value,
-                calories: document.getElementById('calories').innerText,
-                totalFat: document.getElementById('fat').innerText,
-                satFat: document.getElementById('satFat').innerText,
-                cholesterol: document.getElementById('cholesterol').innerText,
-                sodium: document.getElementById('sodium').innerText,
-                carbs: document.getElementById('carbs').innerText,
-                fiber: document.getElementById('fiber').innerText,
-                sugars: document.getElementById('sugars').innerText,
-                protein: document.getElementById('protein').innerText,
+                calories: document.getElementById('calories').value,
+                totalFat: document.getElementById('fat').value,
+                satFat: document.getElementById('satFat').value,
+                cholesterol: document.getElementById('cholesterol').value,
+                sodium: document.getElementById('sodium').value,
+                carbs: document.getElementById('carbs').value,
+                fiber: document.getElementById('fiber').value,
+                sugars: document.getElementById('sugars').value,
+                protein: document.getElementById('protein').value,
                 user_id: <?php echo $user_id ?>
             };
 
@@ -418,6 +552,20 @@ $recipes_json = json_encode($recipes);
         document.addEventListener("DOMContentLoaded", function() {
             displayRecipes(recipes);
         });
+    </script>
+
+    <script>
+        function ChooseFile() {
+            let input = document.createElement('input');
+            input.type = 'file';
+            input.onchange = _ => {
+                // you can use this method to get file and perform respective operations
+                        let files =   Array.from(input.files);
+                        console.log(files);
+                    };
+            input.click();
+        
+        }
     </script>
 
 </body>

@@ -347,6 +347,10 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
     #notification-list::-webkit-scrollbar-thumb:hover {
         background-color: #7C56E6;
     }
+
+    .page-wrapper {
+        background: #fff !important;
+    }
 </style>
 
 <div class="page-header row">
@@ -386,6 +390,8 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
                         ?>
                             <li><a class="bread-crum-Link" href="../clients/invite_clients.php">Invite Clients</a></li>
                             <li><a class="bread-crum-Link" href="../clients/view.php">My Clients</a></li>
+                            <li><a class="bread-crum-Link" href="../clients/add-meal-type.php">Add Meal</a></li>
+                            <li><a class="bread-crum-Link" href="../clients/view-meal-type.php">View Meal</a></li>
                             <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
                         <?php
                         }

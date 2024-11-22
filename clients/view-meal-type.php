@@ -28,8 +28,8 @@
                                                         <tr role="row">
                                                             <th>Sr</th>
                                                             <th>Name</th>
-                                                            <th>Created At</th>
                                                             <th>Status</th>
+                                                            <th>Created At</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
@@ -55,12 +55,12 @@
                                                                     <?php echo htmlspecialchars($row['name']); ?>
                                                                 </td>
                                                                 <td>
-                                                                    <?php echo date('Y-m-d H:i:s', strtotime($row['created_at'])); ?>
-                                                                </td>
-                                                                <td>
                                                                     <a href="#" class="status-link <?php echo $statusClass; ?>" data-id="<?php echo $row['id']; ?>" title="<?php echo $statusText; ?>">
                                                                         <?php echo $statusText; ?>
                                                                     </a>
+                                                                </td>
+                                                                <td>
+                                                                    <?php echo date('Y-m-d H:i:s', strtotime($row['created_at'])); ?>
                                                                 </td>
                                                                 <td>
                                                                     <ul class="action" style="list-style-type: none; padding: 0; margin: 0; display: flex; gap: 10px;">
@@ -191,7 +191,7 @@
                                 if (response.trim() === 'Success') {
                                     Swal.fire(
                                         'Deleted!',
-                                        'The meal type has been deleted.',
+                                        'The meal type item has been deleted.',
                                         'success'
                                     ).then(() => {
                                         location.reload();

@@ -392,6 +392,8 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
                             <li><a class="bread-crum-Link" href="../clients/view.php">My Clients</a></li>
                             <li><a class="bread-crum-Link" href="../clients/add-meal-type.php">Add Meal</a></li>
                             <li><a class="bread-crum-Link" href="../clients/view-meal-type.php">View Meal</a></li>
+                            <li><a class="bread-crum-Link" href="../clients/add-food-group.php">Add Food</a></li>
+                            <li><a class="bread-crum-Link" href="../clients/view-food-group.php">View Food</a></li>
                             <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
                         <?php
                         }

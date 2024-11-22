@@ -17,8 +17,8 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Meal Type List</h4>
-                                        <span>List of all meal types.</span>
+                                        <h4>Food Group List</h4>
+                                        <span>List of all food groups.</span>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive theme-scrollbar">
@@ -28,8 +28,8 @@
                                                         <tr role="row">
                                                             <th>Sr</th>
                                                             <th>Name</th>
-                                                            <th>Created At</th>
                                                             <th>Status</th>
+                                                            <th>Created At</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
@@ -37,7 +37,7 @@
                                                         <?php
                                                         include_once '../database/db_connection.php';
 
-                                                        $query = "SELECT * FROM `meal-type`";
+                                                        $query = "SELECT * FROM `food-group`";
                                                         $stmt = $mysqli->prepare($query);
                                                         $stmt->execute();
                                                         $result = $stmt->get_result();
@@ -47,7 +47,7 @@
                                                             $statusText = $row['status'] == 1 ? 'Active' : 'Inactive';
                                                             $statusClass = $row['status'] == 1 ? 'active' : 'inactive';
                                                         ?>
-                                                            <tr role="row" class="odd" id="meal_type_<?php echo $row['id']; ?>">
+                                                            <tr role="row" class="odd" id="food_group_<?php echo $row['id']; ?>">
                                                                 <td>
                                                                     <?php echo $serial_number; ?>
                                                                 </td>
@@ -55,22 +55,22 @@
                                                                     <?php echo htmlspecialchars($row['name']); ?>
                                                                 </td>
                                                                 <td>
-                                                                    <?php echo date('Y-m-d H:i:s', strtotime($row['created_at'])); ?>
-                                                                </td>
-                                                                <td>
                                                                     <a href="#" class="status-link <?php echo $statusClass; ?>" data-id="<?php echo $row['id']; ?>" title="<?php echo $statusText; ?>">
                                                                         <?php echo $statusText; ?>
                                                                     </a>
                                                                 </td>
                                                                 <td>
+                                                                    <?php echo date('Y-m-d H:i:s', strtotime($row['created_at'])); ?>
+                                                                </td>
+                                                                <td>
                                                                     <ul class="action" style="list-style-type: none; padding: 0; margin: 0; display: flex; gap: 10px;">
                                                                         <li class="edit">
-                                                                            <a href="edit.php?id=<?php echo $row['id']; ?>" title="Edit">
+                                                                            <a href="edit-food-group.php?id=<?php echo $row['id']; ?>" title="Edit">
                                                                                 <i class="fa fa-pencil"></i>
                                                                             </a>
                                                                         </li>
                                                                         <li class="delete">
-                                                                            <a href="delete.php?id=<?php echo $row['id']; ?>" title="Delete" onclick="return confirm('Are you sure you want to delete this meal type?');">
+                                                                            <a href="javascript:void(0);" data-id="<?php echo $row['id']; ?>" title="Delete" class="delete-record">
                                                                                 <i class="fa fa-trash"></i>
                                                                             </a>
                                                                         </li>
@@ -108,7 +108,7 @@
             $('.status-link').on('click', function(e) {
                 e.preventDefault();
 
-                var mealTypeId = $(this).data('id');
+                var foodGroupId = $(this).data('id');
                 var currentStatus = $(this).text().trim();
                 var newStatus = (currentStatus === 'Active') ? 'Inactive' : 'Active';
 
@@ -125,14 +125,14 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: 'POST',
-                            url: '../functions/recipes/meal-type/status.php',
+                            url: '../functions/recipes/food-group/status.php',
                             data: {
-                                id: mealTypeId,
+                                id: foodGroupId,
                                 status: (newStatus === 'Active') ? 1 : 0
                             },
                             success: function(response) {
                                 if (response.trim() === 'Success') {
-                                    $('a[data-id="' + mealTypeId + '"]').text(newStatus).toggleClass('active inactive');
+                                    $('a[data-id="' + foodGroupId + '"]').text(newStatus).toggleClass('active inactive');
                                     Swal.fire({
                                         title: 'Success',
                                         text: "Status updated successfully!",
@@ -165,6 +165,58 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $('.delete-record').on('click', function(e) {
+                e.preventDefault();
+                const recordId = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '../functions/recipes/food-group/delete.php',
+                            type: 'POST',
+                            data: {
+                                id: recordId
+                            },
+                            success: function(response) {
+                                if (response.trim() === 'Success') {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'The food group item has been deleted.',
+                                        'success'
+                                    ).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire(
+                                        'Error!',
+                                        response,
+                                        'error'
+                                    );
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire(
+                                    'Error!',
+                                    'An error occurred while deleting the record. Please try again.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 
     <script>
         function updateWrapperClass() {

@@ -198,8 +198,8 @@ $recipes_json = json_encode($recipes);
 
         .food-img-box img {
             width: 100%;
+            height: 100%;
             object-fit:cover;
-            height: 220px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
@@ -227,6 +227,15 @@ $recipes_json = json_encode($recipes);
             color: #fff;
             font-weight: 800;
             border: 2px solid #fff;
+        }
+
+        .meal-name {
+            white-space: nowrap;          
+            overflow: hidden;            
+            text-overflow: ellipsis;  
+            width: 100%;
+            max-width: 300px;  
+            padding:0 10px
         }
     </style>
 </head>
@@ -382,48 +391,81 @@ $recipes_json = json_encode($recipes);
                                 </div>
                             </div>
 
+                            <!-- Filters Meal Type and Food Group -->
+                            <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                                <div class="col">
+                                    <label for="MealType" class="font-weight-bold">Meal Type</label>
+                                    <select id="MealType" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label for="FoodGroup" class="font-weight-bold">Food Group</label>
+                                    <select id="FoodGroup" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Ingredients -->
+                            <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                                <div class="flex-fill">
+                                    <label for="Protein" class="font-weight-bold">Protien</label>
+                                    <select id="Protein" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    </select>
+                                </div>
+                                <div class="flex-fill">
+                                    <label for="Veggie" class="font-weight-bold">Veggie</label>
+                                    <select id="Veggie" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    </select>
+                                </div>
+                                <div class="flex-fill">
+                                    <label for="Fruit" class="font-weight-bold">Fruit</label>
+                                    <select id="Fruit" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Nutritional Info -->
                             <div id="nutritionInfo" class="mt-4">
                                 <div class="nutrition-grid">
                                     <div class="d-flex justify-content-between gap-3 mb-3">
                                         <div class="nutrition-item">
-                                            <label>Calories:</label>
+                                            <label>Calories</label>
                                             <input type="text" id="calories" class="form-control" value="${food.nutrients.ENERC_KCAL || '0'}" onchange="updateNutritionValuesForRecipe()">
                                         </div>
                                         <div class="nutrition-item">
-                                            <label>Total Fat:</label>
+                                            <label>Total Fat</label>
                                             <input type="text" id="fat" class="form-control" value="${food.nutrients.FAT || '0g'}" onchange="updateNutritionValuesForRecipe()">
                                         </div>
                                         <div class="nutrition-item">
-                                            <label>Sat. Fat:</label>
+                                            <label>Sat. Fat</label>
                                             <input type="text" id="satFat" class="form-control" value="${food.nutrients.FASAT || '0g'}" onchange="updateNutritionValuesForRecipe()">
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between gap-3 mb-3">
                                         <div class="nutrition-item">
-                                            <label>Cholest.:</label>
+                                            <label>Cholest.</label>
                                             <input type="text" id="cholesterol" class="form-control" value="${food.nutrients.CHOLE || '0mg'}" onchange="updateNutritionValuesForRecipe()">
                                         </div>
                                         <div class="nutrition-item">
-                                            <label>Sodium:</label>
+                                            <label>Sodium</label>
                                             <input type="text" id="sodium" class="form-control" value="${food.nutrients.NA || '0mg'}" onchange="updateNutritionValuesForRecipe()">
                                         </div>
                                         <div class="nutrition-item">
-                                            <label>Carb.:</label>
+                                            <label>Carb.</label>
                                             <input type="text" id="carbs" class="form-control" value="${food.nutrients.CHOCDF || '0g'}" onchange="updateNutritionValuesForRecipe()">
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between gap-3 mb-3">
                                         <div class="nutrition-item">
-                                            <label>Fiber:</label>
+                                            <label>Fiber</label>
                                             <input type="text" id="fiber" class="form-control" value="${food.nutrients.FIBTG || '0g'}" onchange="updateNutritionValuesForRecipe()">
                                         </div>
                                         <div class="nutrition-item">
-                                            <label>Sugars:</label>
+                                            <label>Sugars</label>
                                             <input type="text" id="sugars" class="form-control" value="${food.nutrients.SUGAR || '0g'}" onchange="updateNutritionValuesForRecipe()">
                                         </div>
                                         <div class="nutrition-item">
-                                            <label>Protein:</label>
+                                            <label>Protein</label>
                                             <input type="text" id="protein" class="form-control" value="${food.nutrients.PROCNT || '0g'}" onchange="updateNutritionValuesForRecipe()">
                                         </div>
                                     </div>

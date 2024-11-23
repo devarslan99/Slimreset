@@ -771,291 +771,400 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 <script>
     $(document).ready(function() {
         // Dummy details of meals for the right side (meal cards)
-    const mealData =  [
-        {
-            image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Veggie',
-            subName: 'Omelette',
-            mealInfo: {
-                calories: '800 kcal',
-                fats: '8g',
-                carbs: '15g',
-                size: '8 oz'
+        const mealData =  [
+            {
+                image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Veggie',
+                subName: 'Omelette',
+                mealInfo: {
+                    calories: '800 kcal',
+                    fats: '8g',
+                    carbs: '15g',
+                    size: '8 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/248444/pexels-photo-248444.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Grilled',
+                subName: 'Chicken Salad',
+                mealInfo: {
+                    calories: '600 kcal',
+                    fats: '10g',
+                    carbs: '12g',
+                    size: '10 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/8541404/pexels-photo-8541404.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Berry',
+                subName: 'Bowl',
+                mealInfo: {
+                    calories: '350 kcal',
+                    fats: '5g',
+                    carbs: '40g',
+                    size: '6 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Avocado',
+                subName: 'Toast',
+                mealInfo: {
+                    calories: '450 kcal',
+                    fats: '12g',
+                    carbs: '22g',
+                    size: '5 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/29389670/pexels-photo-29389670/free-photo-of-fresh-mixed-salad-in-takeaway-container.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Caesar',
+                subName: 'Salad',
+                mealInfo: {
+                    calories: '400 kcal',
+                    fats: '12g',
+                    carbs: '14g',
+                    size: '8 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Banana',
+                subName: 'Pancakes',
+                mealInfo: {
+                    calories: '450 kcal',
+                    fats: '7g',
+                    carbs: '50g',
+                    size: '6 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/5642831/pexels-photo-5642831.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
+                name: 'Fruit',
+                subName: 'Parfait',
+                mealInfo: {
+                    calories: '350 kcal',
+                    fats: '5g',
+                    carbs: '45g',
+                    size: '5 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                name: 'Pasta',
+                subName: 'Primavera',
+                mealInfo: {
+                    calories: '550 kcal',
+                    fats: '10g',
+                    carbs: '60g',
+                    size: '9 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/8964280/pexels-photo-8964280.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Grilled',
+                subName: 'Salmon',
+                mealInfo: {
+                    calories: '500 kcal',
+                    fats: '15g',
+                    carbs: '5g',
+                    size: '7 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/29345893/pexels-photo-29345893/free-photo-of-freshly-baked-pizza-with-toppings-on-wooden-board.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Margherita',
+                subName: 'Pizza',
+                mealInfo: {
+                    calories: '750 kcal',
+                    fats: '18g',
+                    carbs: '80g',
+                    size: '10 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/27672709/pexels-photo-27672709/free-photo-of-salad-with-shrimps.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Veggie',
+                subName: 'Bowl',
+                mealInfo: {
+                    calories: '300 kcal',
+                    fats: '10g',
+                    carbs: '35g',
+                    size: '6 oz'
+                }
+            },
+            {
+                image: 'https://images.pexels.com/photos/27195708/pexels-photo-27195708/free-photo-of-meal-with-vegetables-on-dark-plate.jpeg?auto=compress&cs=tinysrgb&w=600',
+                name: 'Quinoa',
+                subName: 'Salad',
+                mealInfo: {
+                    calories: '400 kcal',
+                    fats: '9g',
+                    carbs: '30g',
+                    size: '8 oz'
+                }
             }
-        },
-        {
-            image: 'https://images.pexels.com/photos/248444/pexels-photo-248444.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Grilled',
-            subName: 'Chicken Salad',
-            mealInfo: {
-                calories: '600 kcal',
-                fats: '10g',
-                carbs: '12g',
-                size: '10 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/8541404/pexels-photo-8541404.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Berry',
-            subName: 'Bowl',
-            mealInfo: {
-                calories: '350 kcal',
-                fats: '5g',
-                carbs: '40g',
-                size: '6 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Avocado',
-            subName: 'Toast',
-            mealInfo: {
-                calories: '450 kcal',
-                fats: '12g',
-                carbs: '22g',
-                size: '5 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/29389670/pexels-photo-29389670/free-photo-of-fresh-mixed-salad-in-takeaway-container.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Caesar',
-            subName: 'Salad',
-            mealInfo: {
-                calories: '400 kcal',
-                fats: '12g',
-                carbs: '14g',
-                size: '8 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Banana',
-            subName: 'Pancakes',
-            mealInfo: {
-                calories: '450 kcal',
-                fats: '7g',
-                carbs: '50g',
-                size: '6 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/5642831/pexels-photo-5642831.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-            name: 'Fruit',
-            subName: 'Parfait',
-            mealInfo: {
-                calories: '350 kcal',
-                fats: '5g',
-                carbs: '45g',
-                size: '5 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-            name: 'Pasta',
-            subName: 'Primavera',
-            mealInfo: {
-                calories: '550 kcal',
-                fats: '10g',
-                carbs: '60g',
-                size: '9 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/8964280/pexels-photo-8964280.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Grilled',
-            subName: 'Salmon',
-            mealInfo: {
-                calories: '500 kcal',
-                fats: '15g',
-                carbs: '5g',
-                size: '7 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/29345893/pexels-photo-29345893/free-photo-of-freshly-baked-pizza-with-toppings-on-wooden-board.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Margherita',
-            subName: 'Pizza',
-            mealInfo: {
-                calories: '750 kcal',
-                fats: '18g',
-                carbs: '80g',
-                size: '10 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/27672709/pexels-photo-27672709/free-photo-of-salad-with-shrimps.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Veggie',
-            subName: 'Bowl',
-            mealInfo: {
-                calories: '300 kcal',
-                fats: '10g',
-                carbs: '35g',
-                size: '6 oz'
-            }
-        },
-        {
-            image: 'https://images.pexels.com/photos/27195708/pexels-photo-27195708/free-photo-of-meal-with-vegetables-on-dark-plate.jpeg?auto=compress&cs=tinysrgb&w=600',
-            name: 'Quinoa',
-            subName: 'Salad',
-            mealInfo: {
-                calories: '400 kcal',
-                fats: '9g',
-                carbs: '30g',
-                size: '8 oz'
-            }
-        }
-    ];
- 
-    // Append meal cards to #meal-cards
-    $.each(mealData, function(index, meal) {
-        const mealCard = `
-            <div class="meal-card-rec" data-meal-fats="${meal.mealInfo.fats}" data-meal-carbs="${meal.mealInfo.carbs}">
-                <div class="custom-border rounded">
-                    <img class="recipe-img-card" src="${meal.image}" alt="${meal.name} ${meal.subName}">
-                    <div class="meal-name">${meal.name}</div>
-                    <div class="meal-name-sub">${meal.subName}</div>
-                    <div class="meal-info">${meal.mealInfo.calories}<br>${meal.mealInfo.size}</div>
-                    <span class="text-end star-margin">
-                        <i class="fa fa-star"></i>
-                    </span>
-                </div>
-            </div>
-        `;
-        $('#meal-cards').append(mealCard);
-    });
-
-
-
-    // Function to generate days data with formatted date
-    function getUrlDate() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlDate = urlParams.get('date'); // Get date from URL
-        return urlDate ? new Date(urlDate) : new Date(); // Default to current date if no date is provided
-    }
-
-    function generateDaysData() {
-        const daysData = [];
-        const startDate = getUrlDate();
-
-        for (let i = 0; i < 7; i++) {
-            const date = new Date(startDate);
-            date.setDate(startDate.getDate() + i);
-
-            // Get the abbreviated day name (e.g., "Thu") and formatted date
-            const dayAbbreviation = date.toLocaleDateString('en-US', { weekday: 'short' } );
-            const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-            daysData.push({
-                day: i + 1,
-                dayAbbreviation: dayAbbreviation, 
-                date: formattedDate,
-                kcal: '00',
-                oz: '00'
-            });
-        }
-        return daysData;
-    }
-
-
+        ];
     
-    // Function to create HTML for each day column
-    function createDayColumn(dayData, isFirstColumn) {
-        const dayId = `day${dayData.day}`;
-        const kcal = dayNutritionTotals[dayId]?.kcal || 0;
-        const oz = dayNutritionTotals[dayId]?.oz || 0;
-
-        return `
-            <div class="col-lg-2 col-md-4 col-sm-6 col-6 mb-4 day-column" style="max-width: 150px;">
-                <div class="text-center">
-                    ${isFirstColumn ? '<div class="nutrition-label">nutrition</div>' : ''}
-                    <div class="day-header">day ${dayData.day}</div>
-                    <div class="day-Name fs-2" data-day="${dayData.dayAbbreviation}">${dayData.dayAbbreviation}</div>
-                    <div class="date-text" data-date="${dayData.date}">${dayData.date}</div>
-                    <div class="cal-info">${kcal}kcal<br>${oz} oz</div>
-                    <div class="AddToCart"><i class="fa fa-shopping-cart" id="cartIcon"></i></div>
-                </div>
-                <div class="meal-section" id="day${dayData.day}-breakfast" data-label="Breakfast">
-                    <div class="meal-card">${isFirstColumn ? '<div class="breakfast-label meal-card-title">Breakfast</div>' : ''}
-                        <div class="add-more">
-                            <div class="plus-sign">+</div>
-                        </div>
+        // Append meal cards to #meal-cards
+        $.each(mealData, function(index, meal) {
+            const mealCard = `
+                <div class="meal-card-rec" data-meal-fats="${meal.mealInfo.fats}" data-meal-carbs="${meal.mealInfo.carbs}">
+                    <div class="custom-border rounded">
+                        <img class="recipe-img-card" src="${meal.image}" alt="${meal.name} ${meal.subName}">
+                        <div class="meal-name">${meal.name}</div>
+                        <div class="meal-name-sub">${meal.subName}</div>
+                        <div class="meal-info">${meal.mealInfo.calories}<br>${meal.mealInfo.size}</div>
+                        <span class="text-end star-margin">
+                            <i class="fa fa-star"></i>
+                        </span>
                     </div>
                 </div>
-                <div class="meal-section" id="day${dayData.day}-lunch" data-label="Lunch">
-                    <div class="meal-card">${isFirstColumn ? '<div class="lunch-label meal-card-title">Lunch</div>' : ''}
-                        <div class="add-more">
-                            <div class="plus-sign">+</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="meal-section" id="day${dayData.day}-dinner" data-label="Dinner">
-                    <div class="meal-card">${isFirstColumn ? '<div class="dinner-label meal-card-title">Dinner</div>' : ''}
-                        <div class="add-more">
-                            <div class="plus-sign">+</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="meal-section" id="day${dayData.day}-snack" data-label="Snack">
-                    <div class="meal-card">${isFirstColumn ? '<div class="snack-label meal-card-title">Snack</div>' : ''}
-                        <div class="add-more">
-                            <div class="plus-sign">+</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
+            `;
+            $('#meal-cards').append(mealCard);
+        });
 
-    // Generate and append the columns with dates
-    function displayDates() {
-            const daysData = generateDaysData(); // Generate the date data
+        // Function to generate days data with formatted date
+        function getUrlDate() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlDate = urlParams.get('date'); // Get date from URL
+            return urlDate ? new Date(urlDate) : new Date(); // Default to current date if no date is provided
+        }
 
-            // Clear any existing content
-            $('#empty-card-slots').empty();
+        function generateDaysData() {
+            const daysData = [];
+            const startDate = getUrlDate();
 
-            function updateLabels() {
-                $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
 
-                let previousOffsetTop = null;
+                // Get the abbreviated day name (e.g., "Thu") and formatted date
+                const dayAbbreviation = date.toLocaleDateString('en-US', { weekday: 'short' } );
+                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-                $('.day-column').each(function() {
-                    const currentOffsetTop = $(this).offset().top;
-                    if (currentOffsetTop !== previousOffsetTop) {
-                        addLabels($(this));
-                    }
-                    previousOffsetTop = currentOffsetTop;
+                daysData.push({
+                    day: i + 1,
+                    dayAbbreviation: dayAbbreviation, 
+                    date: formattedDate,
+                    kcal: '00',
+                    oz: '00'
                 });
             }
-
-            function addLabels($dayColumn) {
-                $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
-
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-breakfast .meal-card').prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-lunch .meal-card').prepend('<div class="lunch-label meal-card-title">Lunch</div>');
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-dinner .meal-card').prepend('<div class="dinner-label meal-card-title">Dinner</div>');
-                $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-snack .meal-card').prepend('<div class="snack-label meal-card-title">Snack</div>');
-            }
-
-            // updateLabels();
-            $(window).on('load resize', function () {
-                setTimeout(() => {
-                    updateLabels(); // Ensure labels update after layout stabilizes
-                }, 50); // Small delay to allow layout to stabilize
-            });
-
-            // Append the new columns
-            daysData.forEach((day, index) => {
-                $('#empty-card-slots').append(createDayColumn(day, index === 0)); // Add date and day info
-            });
+            return daysData;
         }
-        // Initial load of the columns
-        displayDates();
-        // Optional: Refresh the dates daily at midnight
-        setInterval(displayDates, 24 * 60 * 60 * 1000); // Refresh every 24 hours
+        
+        // Function to create HTML for each day column
+        function createDayColumn(dayData, isFirstColumn) {
+            const dayId = `day${dayData.day}`;
+            const kcal = dayNutritionTotals[dayId]?.kcal || 0;
+            const oz = dayNutritionTotals[dayId]?.oz || 0;
+
+            return `
+                <div class="col-lg-2 col-md-4 col-sm-6 col-6 mb-4 day-column" style="max-width: 150px;">
+                    <div class="text-center">
+                        ${isFirstColumn ? '<div class="nutrition-label">nutrition</div>' : ''}
+                        <div class="day-header">day ${dayData.day}</div>
+                        <div class="day-Name fs-2" data-day="${dayData.dayAbbreviation}">${dayData.dayAbbreviation}</div>
+                        <div class="date-text" data-date="${dayData.date}">${dayData.date}</div>
+                        <div class="cal-info">${kcal}kcal<br>${oz} oz</div>
+                        <div class="AddToCart"><i class="fa fa-shopping-cart" id="cartIcon"></i></div>
+                    </div>
+                    <div class="meal-section" id="day${dayData.day}-breakfast" data-label="Breakfast">
+                        <div class="meal-card">${isFirstColumn ? '<div class="breakfast-label meal-card-title">Breakfast</div>' : ''}
+                            <div class="add-more">
+                                <div class="plus-sign">+</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-section" id="day${dayData.day}-lunch" data-label="Lunch">
+                        <div class="meal-card">${isFirstColumn ? '<div class="lunch-label meal-card-title">Lunch</div>' : ''}
+                            <div class="add-more">
+                                <div class="plus-sign">+</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-section" id="day${dayData.day}-dinner" data-label="Dinner">
+                        <div class="meal-card">${isFirstColumn ? '<div class="dinner-label meal-card-title">Dinner</div>' : ''}
+                            <div class="add-more">
+                                <div class="plus-sign">+</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-section" id="day${dayData.day}-snack" data-label="Snack">
+                        <div class="meal-card">${isFirstColumn ? '<div class="snack-label meal-card-title">Snack</div>' : ''}
+                            <div class="add-more">
+                                <div class="plus-sign">+</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Generate and append the columns with dates
+        function displayDates() {
+                const daysData = generateDaysData();
+
+                // Clear any existing content
+                $('#empty-card-slots').empty();
+
+                // function updateLabels() {
+                //     $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
+
+                //     let group = 0;
+                //     let previousOffsetTop = null;
+
+                //     $('.day-column').each(function() {
+                //         const currentOffsetTop = $(this).offset().top;
+                //         console.log(currentOffsetTop)
+                //         if (currentOffsetTop !== previousOffsetTop || currentOffsetTop <= 0) {
+                //             addLabels($(this));
+                //         }
+                //         previousOffsetTop = currentOffsetTop;
+                //     });
+                // }
+
+                // function addLabels($dayColumn) {
+                //     $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
+
+                //     $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-breakfast .meal-card').prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
+                //     $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-lunch .meal-card').prepend('<div class="lunch-label meal-card-title">Lunch</div>');
+                //     $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-dinner .meal-card').prepend('<div class="dinner-label meal-card-title">Dinner</div>');
+                //     $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-snack .meal-card').prepend('<div class="snack-label meal-card-title">Snack</div>');
+                // }
+
+                // // updateLabels();
+                // $(window).on('load resize', function () {
+                //     setTimeout(() => {
+                //         updateLabels(); 
+                //     },); 
+                // });
+                
 
 
-        // Initialize Sortable after all elements have been created
-        initializeSortable();
+
+
+                // function updateLabels() {
+                //     // Clear all labels first
+                //     $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
+
+                //     // Use a more robust way to detect columns in a row
+                //     let columnsInRow = []; 
+
+                //     $('.day-column').each(function () {
+                //         const $dayColumn = $(this);
+                        
+                //         // Collect columns in the same row
+                //         const currentRowTop = $dayColumn.offset().top; 
+                //         console.log(currentRowTop)
+                //         if (!columnsInRow[currentRowTop]) columnsInRow[currentRowTop] = [];
+                //         columnsInRow[currentRowTop].push($dayColumn);
+                //     });
+
+                //     // Now add labels to the first column in each row (leftmost column)
+                //     Object.keys(columnsInRow).forEach((rowTop) => {
+                //         const rowColumns = columnsInRow[rowTop];
+                //         const $firstColumn = rowColumns[0]; 
+
+                //         // Call the function to add labels to this first column
+                //         addLabels($firstColumn);
+                //     });
+                // }
+
+                // function addLabels($dayColumn) {
+                //     const dayNumber = $dayColumn.find('.day-header').text().split(" ")[1]; // Get the day number
+                //     if (!dayNumber) return; // Skip if no valid day number found
+
+                //     // Add labels to the first column in each row
+                //     $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
+                //     $dayColumn.find(`#day${dayNumber}-breakfast .meal-card`).prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
+                //     $dayColumn.find(`#day${dayNumber}-lunch .meal-card`).prepend('<div class="lunch-label meal-card-title">Lunch</div>');
+                //     $dayColumn.find(`#day${dayNumber}-dinner .meal-card`).prepend('<div class="dinner-label meal-card-title">Dinner</div>');
+                //     $dayColumn.find(`#day${dayNumber}-snack .meal-card`).prepend('<div class="snack-label meal-card-title">Snack</div>');
+                // }
+
+                // // Trigger updateLabels on window load and resize events
+                // $(window).on('load resize', function () {
+                //     setTimeout(() => {
+                //         updateLabels();
+                //     }, ); 
+                // });
+
+                function updateLabels() {
+    // Clear all labels first
+    $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
+
+    // Use a more robust way to detect columns in a row
+    let columnsInRow = []; 
+
+    $('.day-column').each(function () {
+        const $dayColumn = $(this);
+        const currentRowTop = $dayColumn.offset().top; 
+        
+        // Collect columns in the same row based on their offset.top
+        if (!columnsInRow[currentRowTop]) columnsInRow[currentRowTop] = [];
+        columnsInRow[currentRowTop].push($dayColumn);
+    });
+
+    // Now process columns in each row and add labels where necessary
+    Object.keys(columnsInRow).forEach((rowTop) => {
+        const rowColumns = columnsInRow[rowTop];
+
+        // Detect columns moved down (on small screens), i.e., if offsetTop is the same (or close) and move the labels accordingly
+        rowColumns.forEach(($dayColumn) => {
+            const currentOffsetTop = $dayColumn.offset().top;
+            console.log(currentOffsetTop)
+            // Only add labels to columns that are moved down due to smaller screen size
+            // Ensure that we're adding labels only if the column is actually at the bottom of the screen
+            if (currentOffsetTop === 0) {
+                addLabels($dayColumn);  // Add labels to this column if it's down
+            }
+        });
+
+        // Otherwise, add labels to the first column in each row (leftmost column)
+        const $firstColumn = rowColumns[0]; 
+        addLabels($firstColumn);
+    });
+}
+
+function addLabels($dayColumn) {
+    const dayNumber = $dayColumn.find('.day-header').text().split(" ")[1]; // Get the day number
+    if (!dayNumber) return; // Skip if no valid day number found
+
+    // Add labels to the column
+    $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
+    $dayColumn.find(`#day${dayNumber}-breakfast .meal-card`).prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
+    $dayColumn.find(`#day${dayNumber}-lunch .meal-card`).prepend('<div class="lunch-label meal-card-title">Lunch</div>');
+    $dayColumn.find(`#day${dayNumber}-dinner .meal-card`).prepend('<div class="dinner-label meal-card-title">Dinner</div>');
+    $dayColumn.find(`#day${dayNumber}-snack .meal-card`).prepend('<div class="snack-label meal-card-title">Snack</div>');
+}
+
+// Trigger updateLabels on window load and resize events
+$(window).on('load resize', function () {
+    setTimeout(() => {
+        updateLabels();
+    }, 100); // Small delay to allow layout adjustments
+});
+$('.nav-link').on('shown.bs.tab', function (e) {
+    setTimeout(() => {
+        updateLabels(); // Update labels when the tab is shown
+    }, 200); // Wait a bit to ensure tab content is visible
+});
+
+                // Append the new columns
+                daysData.forEach((day, index) => {
+                    $('#empty-card-slots').append(createDayColumn(day, index === 0)); 
+                });
+        }
+            // Initial load of the columns
+            displayDates();
+            // Optional: Refresh the dates daily at midnight
+            setInterval(displayDates, 24 * 60 * 60 * 1000); 
+
+
+            // Initialize Sortable after all elements have been created
+            initializeSortable();
     });
 
     let mealDataArray = [];

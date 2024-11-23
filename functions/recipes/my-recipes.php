@@ -104,20 +104,19 @@ $recipes_json = json_encode($recipes);
             color: #333;
         }
 
-        .my-recipe-img-card {
+        .my-recipe-img-card-box {
             width: 200px;
+        }
+
+        .my-recipe-img-card {
+            width: 100%;
             height: 180px;
+            object-fit: cover;
         }
 
         .food-label-name {
             color:rgb(148 108 252) !important;
         }
-
-        /* .d-flex {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        } */
 
         .nutrition-grid {
             display: flex;
@@ -128,7 +127,6 @@ $recipes_json = json_encode($recipes);
         .nutrition-item {
             flex: 1;
             text-align: left;
-            margin-right: 1rem;
             width: 100%;
         }
 
@@ -153,32 +151,82 @@ $recipes_json = json_encode($recipes);
                 margin-bottom: 1rem;
             }
         }
-        
-        #choose-img-section {
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
+
+        .choose-img-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
         }
 
-        #choose-img {
-            background-color: #946CFC; 
-            border: none;
-            color: white;
-            padding: 15px 32px;
+        .upload-container {
+            width: 100%;
+            max-width: 300px;
+            height: 160px;
+            border: 2px dashed #ccc;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
+            background-color: #fafafa;
+            transition: background-color 0.2s, border-color 0.2s;
+            cursor: pointer;
         }
-        
+
+        .file-name {
+            margin: 10px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .hidden-input {
+            display: none;
+        }
+
         .food-img-box {
-            width: 150px;
-            height: 150px;
+            width: 100%;
+            height:160px;
+            text-align: right;
+            border: 2px dashed #ccc;
+            border-radius: 15px;
+            overflow: hidden;
         }
+
         .food-img-box img {
             width: 100%;
-            height: 100%;
             object-fit:cover;
+            height: 220px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (min-width: 600px) {
+            .choose-img-section {
+                flex-direction: row;
+            }
+
+            .upload-container,
+            .food-img-box {
+                flex: 1;
+            }
+        }
+        .btn-danger {
+            border-radius:50px;
+        }
+
+        .remove-imf-btn {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            background: #ed4141;
+            color: #fff;
+            font-weight: 800;
+            border: 2px solid #fff;
         }
     </style>
 </head>
@@ -291,6 +339,8 @@ $recipes_json = json_encode($recipes);
                 .then(data => {
                     const searchResultsForRecipe = document.getElementById('searchResultsForRecipe');
                     searchResultsForRecipe.innerHTML = ''; // Clear previous results
+                    const searchInput = document.getElementById('recipeSearch');
+                    const receipeDetailSection = document.getElementById('receipeDetailSection').innerHTML = "";
 
                     // Edamam stores food items in the 'parsed' and 'hints' arrays
                     const foodItems = [...data.parsed, ...data.hints.map(hint => hint.food)];
@@ -312,16 +362,8 @@ $recipes_json = json_encode($recipes);
         
         // Select food item and display its details directly beneath the clicked item
         function selectRecipeItem(food, listItem) {
-            // Remove any existing expanded sections
-            // const existingExpandedRow = document.querySelector('.expanded-row');
             const receipeDetailSection = document.getElementById('receipeDetailSection');
-            // if (existingExpandedRow) existingExpandedRow.remove();
 
-            // Create the expanded row to show details
-            // const expandedRow = document.createElement('div');
-            // expandedRow.classList.add('expanded-row');
-            console.log(food,listItem)
-            // Add content to expanded row
             receipeDetailSection.innerHTML = `
                     <div class="food-card p-4 mb-4 border rounded">
                             <!-- Food Label -->
@@ -329,11 +371,11 @@ $recipes_json = json_encode($recipes);
                             
                             <!-- Amount and Unit Row -->
                             <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-                                <div class="flex-fill">
+                                <div class="col">
                                     <label for="foodAmount" class="font-weight-bold">Amount:</label>
                                     <input type="number" id="foodAmount" class="form-control" value="1" placeholder="Enter Amount" onchange="updateNutritionValuesForRecipe()">
                                 </div>
-                                <div class="flex-fill">
+                                <div class="col">
                                     <label for="weighingUnit" class="font-weight-bold">Unit:</label>
                                     <select id="weighingUnit" class="form-control" onchange="updateNutritionValuesForRecipe()">
                                     </select>
@@ -343,7 +385,7 @@ $recipes_json = json_encode($recipes);
                             <!-- Nutritional Info -->
                             <div id="nutritionInfo" class="mt-4">
                                 <div class="nutrition-grid">
-                                    <div class="d-flex justify-content-between mb-3">
+                                    <div class="d-flex justify-content-between gap-3 mb-3">
                                         <div class="nutrition-item">
                                             <label>Calories:</label>
                                             <input type="text" id="calories" class="form-control" value="${food.nutrients.ENERC_KCAL || '0'}" onchange="updateNutritionValuesForRecipe()">
@@ -357,7 +399,7 @@ $recipes_json = json_encode($recipes);
                                             <input type="text" id="satFat" class="form-control" value="${food.nutrients.FASAT || '0g'}" onchange="updateNutritionValuesForRecipe()">
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-between mb-3">
+                                    <div class="d-flex justify-content-between gap-3 mb-3">
                                         <div class="nutrition-item">
                                             <label>Cholest.:</label>
                                             <input type="text" id="cholesterol" class="form-control" value="${food.nutrients.CHOLE || '0mg'}" onchange="updateNutritionValuesForRecipe()">
@@ -371,7 +413,7 @@ $recipes_json = json_encode($recipes);
                                             <input type="text" id="carbs" class="form-control" value="${food.nutrients.CHOCDF || '0g'}" onchange="updateNutritionValuesForRecipe()">
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-between mb-3">
+                                    <div class="d-flex justify-content-between gap-3 mb-3">
                                         <div class="nutrition-item">
                                             <label>Fiber:</label>
                                             <input type="text" id="fiber" class="form-control" value="${food.nutrients.FIBTG || '0g'}" onchange="updateNutritionValuesForRecipe()">
@@ -388,33 +430,22 @@ $recipes_json = json_encode($recipes);
                                 </div>
                             </div>
 
-                            <div id="choose-img-section">
-                                <button id="choose-img" onclick="ChooseFile()">Select Image</button>
-                                <div class="food-img-box"><img src="${food.image}" /></div>
+                            <div class="choose-img-section">
+                                <div class="upload-container" id="uploadContainer" onclick="chooseFile()">
+                                   Upload Image
+                                </div>
+                                <div class="food-img-box position-relative">
+                                    <img id="foodImage" src="${food.image || 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png'}" />
+                                    <button id="removeImageBtn" class="remove-imf-btn position-absolute" style="top: 5px; right: 5px; display: ${food.image ? 'block' : 'none'};" onclick="removeImage()">X</button> 
+                                </div>
                             </div>
 
                             <!-- Add Recipe Button -->
-                            <button type="button" class="btn btn-success btn-block mt-4" onclick="addRecipeToDatabase('${food.foodId}', '${food.label}', '${food.image || ''}')">Add Recipe</button>
+                            <div class='d-flex justify-content-end'>
+                                <button type="button" style="width: 160px;height: 40px;" class="btn btn-success btn-block mt-4" onclick="addRecipeToDatabase('${food.foodId}', '${food.label}', '${food.image || ''}')">Add Recipe</button>
+                            </div>
                         </div>
                 `;
-
-            // Insert the expanded row directly after the selected list item
-            // listItem.insertAdjacentElement('afterend', expandedRow);
-
-            // // Store the default calories per serving in a global variable for calculations
-            // expandedRow.dataset.caloriesPerServing = food.nutrients.ENERC_KCAL || 0;
-            // expandedRow.dataset.defaultServingSize = food.servingSize || 1; // Default serving size in the dataset
-            // expandedRow.dataset.defaultWeightGrams = food.servingWeight || 100; // Default weight in grams
-
-            // // Store nutritional data in the row for dynamic calculations
-            // expandedRow.dataset.fat = food.nutrients.FAT || 0;
-            // expandedRow.dataset.saturatedFat = food.nutrients.FASAT || 0;
-            // expandedRow.dataset.cholesterol = food.nutrients.CHOLE || 0;
-            // expandedRow.dataset.sodium = food.nutrients.NA || 0;
-            // expandedRow.dataset.carbs = food.nutrients.CHOCDF || 0;
-            // expandedRow.dataset.fiber = food.nutrients.FIBTG || 0;
-            // expandedRow.dataset.sugars = food.nutrients.SUGAR || 0;
-            // expandedRow.dataset.protein = food.nutrients.PROCNT || 0;
 
             // Populate the weighingUnit dropdown dynamically
             populateWeighingUnitsForRecipe(food);
@@ -479,11 +510,22 @@ $recipes_json = json_encode($recipes);
 
         // Add the selected food to the database
         function addRecipeToDatabase(foodId, label, imageUrl) {
+            const foodImage = document.getElementById('foodImage');
+            let imageData;
+
+            if (foodImage.dataset.localFile) {
+                // If a local file was uploaded, use the base64 data
+                imageData = foodImage.src;
+            } else {
+                // Use the default image (passed from the `food` object)
+                imageData = imageUrl || foodImage.src;
+            }
+
             var modal = bootstrap.Modal.getInstance(document.getElementById('recipeModal'));
             const foodData = {
                 foodId: foodId,
                 label: label,
-                image: imageUrl,
+                image: imageData,
                 amount: document.getElementById('foodAmount').value,
                 unit: document.getElementById('weighingUnit').value,
                 calories: document.getElementById('calories').value,
@@ -536,7 +578,7 @@ $recipes_json = json_encode($recipes);
                 const recipeImage = recipe.image ? recipe.image : 'https://via.placeholder.com/150'
 
                 card.innerHTML = `
-                    <div class="custom-border rounded">
+                    <div class="custom-border rounded my-recipe-img-card-box">
                         <img class="my-recipe-img-card" src="${recipeImage}" alt="${recipe.label}">
                         <div class="meal-name">${recipe.label}</div>
                         <div class="meal-info">
@@ -554,18 +596,61 @@ $recipes_json = json_encode($recipes);
         });
     </script>
 
-    <script>
-        function ChooseFile() {
+        <!-- script for selecting image and removing -->
+    <script>         
+        function chooseFile() {
+            let uploadContainer = document.getElementById('uploadContainer')
             let input = document.createElement('input');
             input.type = 'file';
-            input.onchange = _ => {
-                // you can use this method to get file and perform respective operations
-                        let files =   Array.from(input.files);
-                        console.log(files);
+            input.accept = 'image/*';
+
+            input.onchange = () => {
+                let file = input.files[0];
+                if (file) {
+                    const reader = new FileReader();
+
+                    // Preview the selected image
+                    reader.onload = () => {
+                        const imgElement = document.getElementById('foodImage');
+                        imgElement.src = reader.result;
+                        imgElement.dataset.localFile = 'true';
+                        document.getElementById('removeImageBtn').style.display = 'block';
+                        uploadContainer.innerHTML = `Selected File <br/> <strong>${file.name}</strong>`
                     };
+
+                    reader.readAsDataURL(file);
+                }
+            };
+
             input.click();
-        
         }
+
+        // Remove the uploaded image and reset the preview
+        function removeImage() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to remove this image?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, remove it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Remove the uploaded image and reset the preview
+                    const foodImage = document.getElementById('foodImage');
+                    foodImage.src = 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png'; 
+                    foodImage.removeAttribute('data-local-file'); 
+                    document.getElementById('removeImageBtn').style.display = 'none';
+                    uploadContainer.innerHTML = 'No File Selected'
+
+                    // Optional: You can reset the file input or do any other action after removal
+                    console.log("Image removed");
+                } else {
+                    console.log("Image removal canceled");
+                }
+            });
+        }
+
     </script>
 
 </body>

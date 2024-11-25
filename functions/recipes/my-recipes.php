@@ -641,23 +641,53 @@ $recipes_json = json_encode($recipes);
         <!-- script for selecting image and removing -->
     <script>         
         function chooseFile() {
-            let uploadContainer = document.getElementById('uploadContainer')
+            let uploadContainer = document.getElementById('uploadContainer');
             let input = document.createElement('input');
             input.type = 'file';
-            input.accept = 'image/*';
+            input.accept = 'image/png, image/jpeg'; // Allow only PNG and JPG files
 
             input.onchange = () => {
                 let file = input.files[0];
+                console.log("Selected file:", file); // Debugging line
+
                 if (file) {
+                    // Check file size (1MB limit)
+                    const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+                    console.log("File size:", file.size); // Debugging line
+                    
+                    // If the file is larger than 1MB, show an error
+                    if (file.size > maxSize) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'File Size Exceeded',
+                            text: 'You can only upload files up to 1MB in size.',
+                            footer: 'Allowed file types: PNG, JPG (1MB limit)'
+                        });
+                        return; // Stop further processing if the file is too large
+                    }
+
+                    // Check file type (must be PNG or JPG)
+                    console.log("File type:", file.type); // Debugging line
+                    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Invalid File Type',
+                            text: 'You can only upload PNG or JPG files.',
+                            footer: 'Allowed file types: PNG, JPG (1MB limit)'
+                        });
+                        return; // Stop further processing if the file type is invalid
+                    }
+
+                    // Proceed if the file is valid
                     const reader = new FileReader();
 
                     // Preview the selected image
                     reader.onload = () => {
                         const imgElement = document.getElementById('foodImage');
                         imgElement.src = reader.result;
-                        imgElement.dataset.localFile = 'true';
+                        imgElement.dataset.localFile = 'true'; // Mark the image as locally selected
                         document.getElementById('removeImageBtn').style.display = 'block';
-                        uploadContainer.innerHTML = `Selected File <br/> <strong>${file.name}</strong>`
+                        uploadContainer.innerHTML = `Selected File <br/> <strong>${file.name}</strong>`;
                     };
 
                     reader.readAsDataURL(file);
@@ -666,6 +696,7 @@ $recipes_json = json_encode($recipes);
 
             input.click();
         }
+
 
         // Remove the uploaded image and reset the preview
         function removeImage() {

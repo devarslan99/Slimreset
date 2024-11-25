@@ -22,12 +22,12 @@
             var localStoragePins = JSON.parse(localStorage.getItem("pins") || false);
             item.parentNode.classList.toggle("pined");
 
-            if (localStoragePins ? .length) {
+            if (localStoragePins ?.length) {
                 if (item.parentNode.classList.contains("pined")) {
-                    !localStoragePins ? .includes(linkName) &&
+                    !localStoragePins ?.includes(linkName) &&
                         (localStoragePins = [...localStoragePins, linkName]);
                 } else {
-                    localStoragePins ? .includes(linkName) &&
+                    localStoragePins ?.includes(linkName) &&
                         localStoragePins.splice(localStoragePins.indexOf(linkName), 1);
                 }
                 localStorage.setItem("pins", JSON.stringify(localStoragePins));

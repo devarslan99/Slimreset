@@ -24,8 +24,9 @@ $recipes_json = json_encode($recipes);
     <title>My Recipes</title>
     <style>
         .modal-dialog {
-            max-width:700px !important;
+            max-width: 700px !important;
         }
+
         .recipe-checkboxes input[type="checkbox"] {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -115,7 +116,7 @@ $recipes_json = json_encode($recipes);
         }
 
         .food-label-name {
-            color:rgb(148 108 252) !important;
+            color: rgb(148 108 252) !important;
         }
 
         .nutrition-grid {
@@ -137,7 +138,7 @@ $recipes_json = json_encode($recipes);
 
         .nutrition-item input {
             text-align: right;
-            width:100%;
+            width: 100%;
         }
 
         /* Responsive Design */
@@ -189,7 +190,7 @@ $recipes_json = json_encode($recipes);
 
         .food-img-box {
             width: 100%;
-            height:160px;
+            height: 160px;
             text-align: right;
             border: 2px dashed #ccc;
             border-radius: 15px;
@@ -199,7 +200,7 @@ $recipes_json = json_encode($recipes);
         .food-img-box img {
             width: 100%;
             height: 100%;
-            object-fit:cover;
+            object-fit: cover;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
@@ -213,8 +214,9 @@ $recipes_json = json_encode($recipes);
                 flex: 1;
             }
         }
+
         .btn-danger {
-            border-radius:50px;
+            border-radius: 50px;
         }
 
         .remove-imf-btn {
@@ -230,12 +232,12 @@ $recipes_json = json_encode($recipes);
         }
 
         .meal-name {
-            white-space: nowrap;          
-            overflow: hidden;            
-            text-overflow: ellipsis;  
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             width: 100%;
-            max-width: 300px;  
-            padding:0 10px
+            max-width: 300px;
+            padding: 0 10px
         }
     </style>
 </head>
@@ -310,12 +312,122 @@ $recipes_json = json_encode($recipes);
                     <ul class="list-group mt-3 bg-red" id="searchResultsForRecipe"></ul>
 
                     <div class="recipe-detail-section" id="receipeDetailSection">
-                       <!-- dynamically data of selected resipe or food will be display here  -->
+                        <!-- dynamically data of selected resipe or food will be display here  -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Script to get meal-types -->
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '../functions/recipes/meal-type/fetch-meal-type.php',
+                method: 'GET',
+                dataType: "json",
+                success: function(response) {
+                    if (response.length > 0) {
+                        console.log("Meal type",response)
+                    } else {
+                        console.error('No meal types found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching meal types:', error);
+                },
+
+            })
+        });
+    </script>
+
+    <!-- Script to get food-groups -->
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '../functions/recipes/food-group/fetch-food-group.php',
+                method: 'GET',
+                dataType: "json",
+                success: function(response) {
+                    if (response.length > 0) {
+                        console.log("Food group",response)
+                    } else {
+                        console.error('No food group found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching food groups:', error);
+                },
+
+            })
+        });
+    </script>
+
+    <!-- Script to get veggies -->
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '../functions/recipes/veggie/fetch-veggie.php',
+                method: 'GET',
+                dataType: "json",
+                success: function(response) {
+                    if (response.length > 0) {
+                        console.log("veggie",response)
+                    } else {
+                        console.error('No veggie found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching veggies:', error);
+                },
+
+            })
+        });
+    </script>
+
+     <!-- Script to get protein -->
+     <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '../functions/recipes/protein/fetch-protein.php',
+                method: 'GET',
+                dataType: "json",
+                success: function(response) {
+                    if (response.length > 0) {
+                        console.log("protein",response)
+                    } else {
+                        console.error('No protein found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching proteins:', error);
+                },
+
+            })
+        });
+    </script>
+
+     <!-- Script to get fruit -->
+     <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '../functions/recipes/fruit/fetch-fruit.php',
+                method: 'GET',
+                dataType: "json",
+                success: function(response) {
+                    if (response.length > 0) {
+                        console.log("fruit",response)
+                    } else {
+                        console.error('No fruit found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching fruits:', error);
+                },
+
+            })
+        });
+    </script>
 
     <!-- SCRIPT TO SEARCH AND ADD RECIPE -->
     <script>
@@ -330,7 +442,6 @@ $recipes_json = json_encode($recipes);
         // Fetch food data from Edamam API
         function fetchRecipeData() {
             const query = document.getElementById('recipeSearch').value;
-            console.log("Recipe function called!")
             if (query.length < 3) return; // Avoid too many requests for short queries
 
             fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=f73b06f6&app_key=562df73d9c2324199c25a9b8088540ba&ingr=${query}`, {
@@ -358,7 +469,7 @@ $recipes_json = json_encode($recipes);
                         const li = document.createElement('li');
                         li.classList.add('list-group-item');
                         li.innerHTML = item.label || `${item.food.label}`;
-                        li.onclick = () =>{
+                        li.onclick = () => {
                             selectRecipeItem(item, li)
                             searchResultsForRecipe.innerHTML = '';
                         }; // Pass the selected item and the li element
@@ -368,7 +479,7 @@ $recipes_json = json_encode($recipes);
                 .catch(error => console.error('Error fetching food data:', error));
         }
 
-        
+
         // Select food item and display its details directly beneath the clicked item
         function selectRecipeItem(food, listItem) {
             const receipeDetailSection = document.getElementById('receipeDetailSection');
@@ -638,8 +749,8 @@ $recipes_json = json_encode($recipes);
         });
     </script>
 
-        <!-- script for selecting image and removing -->
-    <script>         
+    <!-- script for selecting image and removing -->
+    <script>
         function chooseFile() {
             let uploadContainer = document.getElementById('uploadContainer')
             let input = document.createElement('input');
@@ -680,8 +791,8 @@ $recipes_json = json_encode($recipes);
                 if (result.isConfirmed) {
                     // Remove the uploaded image and reset the preview
                     const foodImage = document.getElementById('foodImage');
-                    foodImage.src = 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png'; 
-                    foodImage.removeAttribute('data-local-file'); 
+                    foodImage.src = 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png';
+                    foodImage.removeAttribute('data-local-file');
                     document.getElementById('removeImageBtn').style.display = 'none';
                     uploadContainer.innerHTML = 'No File Selected'
 
@@ -692,7 +803,6 @@ $recipes_json = json_encode($recipes);
                 }
             });
         }
-
     </script>
 
 </body>

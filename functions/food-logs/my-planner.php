@@ -1009,149 +1009,64 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 // Clear any existing content
                 $('#empty-card-slots').empty();
 
-                // function updateLabels() {
-                //     $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
-
-                //     let group = 0;
-                //     let previousOffsetTop = null;
-
-                //     $('.day-column').each(function() {
-                //         const currentOffsetTop = $(this).offset().top;
-                //         console.log(currentOffsetTop)
-                //         if (currentOffsetTop !== previousOffsetTop || currentOffsetTop <= 0) {
-                //             addLabels($(this));
-                //         }
-                //         previousOffsetTop = currentOffsetTop;
-                //     });
-                // }
-
-                // function addLabels($dayColumn) {
-                //     $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
-
-                //     $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-breakfast .meal-card').prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
-                //     $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-lunch .meal-card').prepend('<div class="lunch-label meal-card-title">Lunch</div>');
-                //     $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-dinner .meal-card').prepend('<div class="dinner-label meal-card-title">Dinner</div>');
-                //     $dayColumn.find('#day' + $dayColumn.find('.day-header').text().split(" ")[1] + '-snack .meal-card').prepend('<div class="snack-label meal-card-title">Snack</div>');
-                // }
-
-                // // updateLabels();
-                // $(window).on('load resize', function () {
-                //     setTimeout(() => {
-                //         updateLabels(); 
-                //     },); 
-                // });
-                
-
-
-
-
-                // function updateLabels() {
-                //     // Clear all labels first
-                //     $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
-
-                //     // Use a more robust way to detect columns in a row
-                //     let columnsInRow = []; 
-
-                //     $('.day-column').each(function () {
-                //         const $dayColumn = $(this);
-                        
-                //         // Collect columns in the same row
-                //         const currentRowTop = $dayColumn.offset().top; 
-                //         console.log(currentRowTop)
-                //         if (!columnsInRow[currentRowTop]) columnsInRow[currentRowTop] = [];
-                //         columnsInRow[currentRowTop].push($dayColumn);
-                //     });
-
-                //     // Now add labels to the first column in each row (leftmost column)
-                //     Object.keys(columnsInRow).forEach((rowTop) => {
-                //         const rowColumns = columnsInRow[rowTop];
-                //         const $firstColumn = rowColumns[0]; 
-
-                //         // Call the function to add labels to this first column
-                //         addLabels($firstColumn);
-                //     });
-                // }
-
-                // function addLabels($dayColumn) {
-                //     const dayNumber = $dayColumn.find('.day-header').text().split(" ")[1]; // Get the day number
-                //     if (!dayNumber) return; // Skip if no valid day number found
-
-                //     // Add labels to the first column in each row
-                //     $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
-                //     $dayColumn.find(`#day${dayNumber}-breakfast .meal-card`).prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
-                //     $dayColumn.find(`#day${dayNumber}-lunch .meal-card`).prepend('<div class="lunch-label meal-card-title">Lunch</div>');
-                //     $dayColumn.find(`#day${dayNumber}-dinner .meal-card`).prepend('<div class="dinner-label meal-card-title">Dinner</div>');
-                //     $dayColumn.find(`#day${dayNumber}-snack .meal-card`).prepend('<div class="snack-label meal-card-title">Snack</div>');
-                // }
-
-                // // Trigger updateLabels on window load and resize events
-                // $(window).on('load resize', function () {
-                //     setTimeout(() => {
-                //         updateLabels();
-                //     }, ); 
-                // });
-
                 function updateLabels() {
-    // Clear all labels first
-    $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
+                    setTimeout(() => {
+                        // Clear all labels first
+                        $('.nutrition-label, .breakfast-label, .lunch-label, .dinner-label, .snack-label').remove();
 
-    // Use a more robust way to detect columns in a row
-    let columnsInRow = []; 
+                        // Use a more robust way to detect columns in a row
+                        let columnsInRow = []; 
 
-    $('.day-column').each(function () {
-        const $dayColumn = $(this);
-        const currentRowTop = $dayColumn.offset().top; 
-        
-        // Collect columns in the same row based on their offset.top
-        if (!columnsInRow[currentRowTop]) columnsInRow[currentRowTop] = [];
-        columnsInRow[currentRowTop].push($dayColumn);
-    });
+                        $('.day-column').each(function () {
+                            const $dayColumn = $(this);
+                            const currentRowTop = $dayColumn.offset().top; 
+                            
+                            // Collect columns in the same row based on their offset.top
+                            if (!columnsInRow[currentRowTop]) columnsInRow[currentRowTop] = [];
+                            columnsInRow[currentRowTop].push($dayColumn);
+                        });
 
-    // Now process columns in each row and add labels where necessary
-    Object.keys(columnsInRow).forEach((rowTop) => {
-        const rowColumns = columnsInRow[rowTop];
+                        // Now process columns in each row and add labels where necessary
+                        Object.keys(columnsInRow).forEach((rowTop) => {
+                            const rowColumns = columnsInRow[rowTop];
+                            console.log(rowColumns.length)
 
-        // Detect columns moved down (on small screens), i.e., if offsetTop is the same (or close) and move the labels accordingly
-        rowColumns.forEach(($dayColumn) => {
-            const currentOffsetTop = $dayColumn.offset().top;
-            console.log(currentOffsetTop)
-            // Only add labels to columns that are moved down due to smaller screen size
-            // Ensure that we're adding labels only if the column is actually at the bottom of the screen
-            if (currentOffsetTop === 0) {
-                addLabels($dayColumn);  // Add labels to this column if it's down
-            }
-        });
+                            const $firstColumn = rowColumns[0]; 
+                            addLabels($firstColumn);
+                        });
+                    }, 100); 
+                }
 
-        // Otherwise, add labels to the first column in each row (leftmost column)
-        const $firstColumn = rowColumns[0]; 
-        addLabels($firstColumn);
-    });
-}
+                function addLabels($dayColumn) {
+                    const dayNumber = $dayColumn.find('.day-header').text().split(" ")[1];
+                    if (!dayNumber) return; 
 
-function addLabels($dayColumn) {
-    const dayNumber = $dayColumn.find('.day-header').text().split(" ")[1]; // Get the day number
-    if (!dayNumber) return; // Skip if no valid day number found
+                    // Add labels to the column
+                    $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
+                    $dayColumn.find(`#day${dayNumber}-breakfast .meal-card`).prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
+                    $dayColumn.find(`#day${dayNumber}-lunch .meal-card`).prepend('<div class="lunch-label meal-card-title">Lunch</div>');
+                    $dayColumn.find(`#day${dayNumber}-dinner .meal-card`).prepend('<div class="dinner-label meal-card-title">Dinner</div>');
+                    $dayColumn.find(`#day${dayNumber}-snack .meal-card`).prepend('<div class="snack-label meal-card-title">Snack</div>');
+                }
 
-    // Add labels to the column
-    $dayColumn.find('.text-center').prepend('<div class="nutrition-label">nutrition</div>');
-    $dayColumn.find(`#day${dayNumber}-breakfast .meal-card`).prepend('<div class="breakfast-label meal-card-title">Breakfast</div>');
-    $dayColumn.find(`#day${dayNumber}-lunch .meal-card`).prepend('<div class="lunch-label meal-card-title">Lunch</div>');
-    $dayColumn.find(`#day${dayNumber}-dinner .meal-card`).prepend('<div class="dinner-label meal-card-title">Dinner</div>');
-    $dayColumn.find(`#day${dayNumber}-snack .meal-card`).prepend('<div class="snack-label meal-card-title">Snack</div>');
-}
+                $(document).ready(function () {
+                    setTimeout(() => {
+                        updateLabels();
+                    }, 100); 
+                });
 
-// Trigger updateLabels on window load and resize events
-$(window).on('load resize', function () {
-    setTimeout(() => {
-        updateLabels();
-    }, 100); // Small delay to allow layout adjustments
-});
-$('.nav-link').on('shown.bs.tab', function (e) {
-    setTimeout(() => {
-        updateLabels(); // Update labels when the tab is shown
-    }, 200); // Wait a bit to ensure tab content is visible
-});
-
+                // Trigger updateLabels on window load and resize events
+                $(window).on('load resize', function () {
+                    setTimeout(() => {
+                        updateLabels();
+                    }, 100); 
+                });
+                $('.nav-link').on('shown.bs.tab', function (e) {
+                    setTimeout(() => {
+                        updateLabels();
+                    }, 200); 
+                });
+                
                 // Append the new columns
                 daysData.forEach((day, index) => {
                     $('#empty-card-slots').append(createDayColumn(day, index === 0)); 

@@ -1,57 +1,60 @@
 <?php
-// Define the upload directory
-$uploadDir = 'assets/images/recipe_images';
-if (!file_exists($uploadDir)) {
-    mkdir($uploadDir, 0777, true); // Create the upload directory if it doesn't exist
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check if the 'image' file and 'uniqueFileName' are present
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK && isset($_POST['uniqueFileName'])) {
+        
+        $fileTmpPath = $_FILES['image']['tmp_name'];
+        $uniqueFileName = $_POST['uniqueFileName'];  // Access the correct key
 
-$data = json_decode(file_get_contents("php://input"), true);
-$response = ['status' => 'error', 'message' => 'An error occurred.'];
+        // Check file size (5MB limit)
+        $maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        if ($_FILES['image']['size'] > $maxSize) {
+            echo json_encode(['status' => 'error', 'message' => 'File size exceeds the 5MB limit.']);
+            exit; // Stop further processing if file is too large
+        }
 
-// Check if image data exists
-if (isset($data['image'])) {
-    $imageData = $data['image'];
+        // Check file type (must be PNG, JPG, or WEBP)
+        $allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+        if (!in_array($_FILES['image']['type'], $allowedTypes)) {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid file type. Allowed types: PNG, JPG, WEBP']);
+            exit;
+        }
 
-    // If the image is a base64 string (local upload), decode and save
-    if (strpos($imageData, 'data:image/') === 0) {
-        // Remove prefix (base64 encoded image data)
-        $imageData = str_replace('data:image/png;base64,', '', $imageData);
-        $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
-        $imageData = str_replace('data:image/jpg;base64,', '', $imageData);
-        $imageData = str_replace('data:image/webp;base64,', '', $imageData);
-        $imageData = base64_decode($imageData);
+        $uploadDir = '../../assets/images/recipe_images/uploads';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);  // Create the directory if it doesn't exist
+        }
 
-        // Generate a unique name for the image
-        $uniqueName = uniqid('recipe_', true) . '.png';  // Change .png to .jpg or .webp if needed
-        $filePath = $uploadDir . $uniqueName;
+        // Sanitize file name
+        $uniqueFileName = preg_replace('/[^a-zA-Z0-9_-]/', '.', $uniqueFileName);
+        $destPath = $uploadDir . '/' . $uniqueFileName;
 
-        // Save the image
-        if (file_put_contents($filePath, $imageData)) {
-            // Image saved successfully, return the file path
-            $response = [
+        if (move_uploaded_file($fileTmpPath, $destPath)) {
+            // Return a JSON response
+            echo json_encode([
                 'status' => 'success',
-                'filePath' => $filePath  // Return the file path to the frontend
-            ];
+                'message' => 'File uploaded successfully',
+                'filePath' => $destPath
+            ]);
         } else {
-            $response['message'] = 'Failed to save the image.';
+            // Return error as JSON
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Error moving the uploaded file.'
+            ]);
         }
     } else {
-        // If no local image was uploaded, use the default image URL
-        $response = [
-            'status' => 'success',
-            'filePath' => $imageData  // The image URL (from the API) will be used
-        ];
+        // Return error if no file uploaded or other issues
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'No file uploaded or an error occurred.'
+        ]);
     }
-
-    // Here you would insert the food data into the database, including the image URL/path
-    // Assuming the insert logic is implemented below:
-    // $foodId = ...;
-    // $label = ...;
-    // $foodImage = $response['filePath']; // Save the image path/URL to the database
-
 } else {
-    $response['message'] = 'No image data received.';
+    // Invalid request method
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Invalid request method.'
+    ]);
 }
-
-echo json_encode($response);
 ?>

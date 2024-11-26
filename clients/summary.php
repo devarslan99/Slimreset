@@ -273,6 +273,7 @@ foreach ($weight_history as $index => $entry) {
         $loss_per_day[] = 0;
     }
 }
+
 ?>
 
 <body>

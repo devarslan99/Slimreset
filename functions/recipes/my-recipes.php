@@ -24,9 +24,8 @@ $recipes_json = json_encode($recipes);
     <title>My Recipes</title>
     <style>
         .modal-dialog {
-            max-width: 700px !important;
+            max-width:700px !important;
         }
-
         .recipe-checkboxes input[type="checkbox"] {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -116,7 +115,8 @@ $recipes_json = json_encode($recipes);
         }
 
         .food-label-name {
-            color: rgb(148 108 252) !important;
+            color:rgb(148 108 252) !important;
+            font-weight:600;
         }
 
         .nutrition-grid {
@@ -138,7 +138,7 @@ $recipes_json = json_encode($recipes);
 
         .nutrition-item input {
             text-align: right;
-            width: 100%;
+            width:100%;
         }
 
         /* Responsive Design */
@@ -190,7 +190,7 @@ $recipes_json = json_encode($recipes);
 
         .food-img-box {
             width: 100%;
-            height: 160px;
+            height:160px;
             text-align: right;
             border: 2px dashed #ccc;
             border-radius: 15px;
@@ -200,7 +200,7 @@ $recipes_json = json_encode($recipes);
         .food-img-box img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit:cover;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
@@ -232,13 +232,42 @@ $recipes_json = json_encode($recipes);
         }
 
         .meal-name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: nowrap;          
+            overflow: hidden;            
+            text-overflow: ellipsis;  
             width: 100%;
-            max-width: 300px;
-            padding: 0 10px
+            max-width: 300px;  
+            padding:0 10px
         }
+
+        .filter-seclect-input {
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        .filter-seclect-input::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .filter-seclect-input::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .filter-seclect-input::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .filter-seclect-input::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .filter-seclect-input {
+            scrollbar-width: thin;
+            scrollbar-color: #888 #f1f1f1;
+        }
+
     </style>
 </head>
 
@@ -312,7 +341,7 @@ $recipes_json = json_encode($recipes);
                     <ul class="list-group mt-3 bg-red" id="searchResultsForRecipe"></ul>
 
                     <div class="recipe-detail-section" id="receipeDetailSection">
-                        <!-- dynamically data of selected resipe or food will be display here  -->
+                       <!-- dynamically data of selected resipe or food will be display here  -->
                     </div>
                 </div>
             </div>
@@ -321,36 +350,47 @@ $recipes_json = json_encode($recipes);
 
     <!-- Script to get meal-types -->
     <script>
-        $(document).ready(function() {
+        function fetchAndPopulateMealTypes() {
+            const MealType = document.getElementById('MealType');
+
             $.ajax({
                 url: '../functions/recipes/meal-type/fetch-meal-type.php',
                 method: 'GET',
                 dataType: "json",
                 success: function(response) {
                     if (response.length > 0) {
-                        console.log("Meal type",response)
+                        response.forEach(resp => {
+                            MealType.innerHTML += `
+                                <option value="${resp.id}">${resp.name}</option>
+                            `;
+                        });
                     } else {
                         console.error('No meal types found.');
                     }
                 },
                 error: function(xhr, status, error) {
                     console.error('Error fetching meal types:', error);
-                },
-
-            })
-        });
+                }
+            });
+        }
     </script>
 
     <!-- Script to get food-groups -->
     <script>
-        $(document).ready(function() {
+       function fetchAndPopulateFoodGroup() {
+        const FoodGroup = document.getElementById('FoodGroup');
+
             $.ajax({
                 url: '../functions/recipes/food-group/fetch-food-group.php',
                 method: 'GET',
                 dataType: "json",
                 success: function(response) {
                     if (response.length > 0) {
-                        console.log("Food group",response)
+                        response.forEach(resp => {
+                            FoodGroup.innerHTML += `
+                                <option value="${resp.id}">${resp.name}</option>
+                            `;
+                        });
                     } else {
                         console.error('No food group found.');
                     }
@@ -359,20 +399,26 @@ $recipes_json = json_encode($recipes);
                     console.error('Error fetching food groups:', error);
                 },
 
-            })
-        });
+            });
+        }
     </script>
 
     <!-- Script to get veggies -->
     <script>
-        $(document).ready(function() {
+         function fetchAndPopulateVeggie() {
+            const Veggie = document.getElementById('Veggie');
+
             $.ajax({
                 url: '../functions/recipes/veggie/fetch-veggie.php',
                 method: 'GET',
                 dataType: "json",
                 success: function(response) {
                     if (response.length > 0) {
-                        console.log("veggie",response)
+                        response.forEach(resp => {
+                            Veggie.innerHTML += `
+                                <option value="${resp.id}">${resp.name}</option>
+                            `;
+                        });
                     } else {
                         console.error('No veggie found.');
                     }
@@ -381,20 +427,26 @@ $recipes_json = json_encode($recipes);
                     console.error('Error fetching veggies:', error);
                 },
 
-            })
-        });
+            });
+        }
     </script>
 
      <!-- Script to get protein -->
      <script>
-        $(document).ready(function() {
+         function fetchAndPopulateProtein() {
+            const Protein = document.getElementById('Protein');
+
             $.ajax({
                 url: '../functions/recipes/protein/fetch-protein.php',
                 method: 'GET',
                 dataType: "json",
                 success: function(response) {
                     if (response.length > 0) {
-                        console.log("protein",response)
+                        response.forEach(resp => {
+                            Protein.innerHTML += `
+                                <option value="${resp.id}">${resp.name}</option>
+                            `;
+                        });
                     } else {
                         console.error('No protein found.');
                     }
@@ -404,19 +456,25 @@ $recipes_json = json_encode($recipes);
                 },
 
             })
-        });
+        }
     </script>
 
      <!-- Script to get fruit -->
      <script>
-        $(document).ready(function() {
+       function fetchAndPopulateFruit() {
+        const Fruit = document.getElementById('Fruit');
+
             $.ajax({
                 url: '../functions/recipes/fruit/fetch-fruit.php',
                 method: 'GET',
                 dataType: "json",
                 success: function(response) {
                     if (response.length > 0) {
-                        console.log("fruit",response)
+                        response.forEach(resp => {
+                            Fruit.innerHTML += `
+                                <option value="${resp.id}">${resp.name}</option>
+                            `;
+                        });
                     } else {
                         console.error('No fruit found.');
                     }
@@ -426,7 +484,7 @@ $recipes_json = json_encode($recipes);
                 },
 
             })
-        });
+        }
     </script>
 
     <!-- SCRIPT TO SEARCH AND ADD RECIPE -->
@@ -442,6 +500,7 @@ $recipes_json = json_encode($recipes);
         // Fetch food data from Edamam API
         function fetchRecipeData() {
             const query = document.getElementById('recipeSearch').value;
+            console.log("Recipe function called!")
             if (query.length < 3) return; // Avoid too many requests for short queries
 
             fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=f73b06f6&app_key=562df73d9c2324199c25a9b8088540ba&ingr=${query}`, {
@@ -469,7 +528,7 @@ $recipes_json = json_encode($recipes);
                         const li = document.createElement('li');
                         li.classList.add('list-group-item');
                         li.innerHTML = item.label || `${item.food.label}`;
-                        li.onclick = () => {
+                        li.onclick = () =>{
                             selectRecipeItem(item, li)
                             searchResultsForRecipe.innerHTML = '';
                         }; // Pass the selected item and the li element
@@ -487,17 +546,17 @@ $recipes_json = json_encode($recipes);
             receipeDetailSection.innerHTML = `
                     <div class="food-card p-4 mb-4 border rounded">
                             <!-- Food Label -->
-                            <h5 class="food-label-name mb-3 font-weight-bold">${food.label}</h5>
+                            <h5 class="food-label-name mb-3 font-weight-bold" id="foodLabel">${food.label}</h5>
                             
                             <!-- Amount and Unit Row -->
                             <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
                                 <div class="col">
                                     <label for="foodAmount" class="font-weight-bold">Amount:</label>
-                                    <input type="number" id="foodAmount" class="form-control" value="1" placeholder="Enter Amount" onchange="updateNutritionValuesForRecipe()">
+                                    <input type="number" id="foodAmount" class="form-control" value="1" placeholder="Enter Amount">
                                 </div>
                                 <div class="col">
                                     <label for="weighingUnit" class="font-weight-bold">Unit:</label>
-                                    <select id="weighingUnit" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    <select id="weighingUnit" class="form-control">
                                     </select>
                                 </div>
                             </div>
@@ -506,12 +565,14 @@ $recipes_json = json_encode($recipes);
                             <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
                                 <div class="col">
                                     <label for="MealType" class="font-weight-bold">Meal Type</label>
-                                    <select id="MealType" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    <select id="MealType" class="form-control filter-seclect-input" required>
+                                        <option selected="selected" disabled >Select Meal Type</option>
                                     </select>
                                 </div>
                                 <div class="col">
                                     <label for="FoodGroup" class="font-weight-bold">Food Group</label>
-                                    <select id="FoodGroup" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    <select id="FoodGroup" class="form-control filter-seclect-input" required>
+                                        <option selected="selected" disabled >Select Food Group</option>
                                     </select>
                                 </div>
                             </div>
@@ -520,17 +581,20 @@ $recipes_json = json_encode($recipes);
                             <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
                                 <div class="flex-fill">
                                     <label for="Protein" class="font-weight-bold">Protien</label>
-                                    <select id="Protein" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    <select id="Protein" class="form-control filter-seclect-input" required>
+                                        <option selected="selected" disabled >By Protein</option>
                                     </select>
                                 </div>
                                 <div class="flex-fill">
                                     <label for="Veggie" class="font-weight-bold">Veggie</label>
-                                    <select id="Veggie" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    <select id="Veggie" class="form-control filter-seclect-input" required>
+                                        <option selected="selected" disabled >By Veggie</option>
                                     </select>
                                 </div>
                                 <div class="flex-fill">
                                     <label for="Fruit" class="font-weight-bold">Fruit</label>
-                                    <select id="Fruit" class="form-control" onchange="updateNutritionValuesForRecipe()">
+                                    <select id="Fruit" class="form-control filter-seclect-input" required>
+                                        <option selected="selected" disabled >By Fruit</option>
                                     </select>
                                 </div>
                             </div>
@@ -541,43 +605,43 @@ $recipes_json = json_encode($recipes);
                                     <div class="d-flex justify-content-between gap-3 mb-3">
                                         <div class="nutrition-item">
                                             <label>Calories</label>
-                                            <input type="text" id="calories" class="form-control" value="${food.nutrients.ENERC_KCAL || '0'}" onchange="updateNutritionValuesForRecipe()">
+                                            <input type="text" id="calories" class="form-control" value="${food.nutrients.ENERC_KCAL || '0'}">
                                         </div>
                                         <div class="nutrition-item">
                                             <label>Total Fat</label>
-                                            <input type="text" id="fat" class="form-control" value="${food.nutrients.FAT || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                            <input type="text" id="fat" class="form-control" value="${food.nutrients.FAT || '0g'}">
                                         </div>
                                         <div class="nutrition-item">
                                             <label>Sat. Fat</label>
-                                            <input type="text" id="satFat" class="form-control" value="${food.nutrients.FASAT || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                            <input type="text" id="satFat" class="form-control" value="${food.nutrients.FASAT || '0g'}">
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between gap-3 mb-3">
                                         <div class="nutrition-item">
                                             <label>Cholest.</label>
-                                            <input type="text" id="cholesterol" class="form-control" value="${food.nutrients.CHOLE || '0mg'}" onchange="updateNutritionValuesForRecipe()">
+                                            <input type="text" id="cholesterol" class="form-control" value="${food.nutrients.CHOLE || '0mg'}">
                                         </div>
                                         <div class="nutrition-item">
                                             <label>Sodium</label>
-                                            <input type="text" id="sodium" class="form-control" value="${food.nutrients.NA || '0mg'}" onchange="updateNutritionValuesForRecipe()">
+                                            <input type="text" id="sodium" class="form-control" value="${food.nutrients.NA || '0mg'}">
                                         </div>
                                         <div class="nutrition-item">
                                             <label>Carb.</label>
-                                            <input type="text" id="carbs" class="form-control" value="${food.nutrients.CHOCDF || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                            <input type="text" id="carbs" class="form-control" value="${food.nutrients.CHOCDF || '0g'}">
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between gap-3 mb-3">
                                         <div class="nutrition-item">
                                             <label>Fiber</label>
-                                            <input type="text" id="fiber" class="form-control" value="${food.nutrients.FIBTG || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                            <input type="text" id="fiber" class="form-control" value="${food.nutrients.FIBTG || '0g'}">
                                         </div>
                                         <div class="nutrition-item">
                                             <label>Sugars</label>
-                                            <input type="text" id="sugars" class="form-control" value="${food.nutrients.SUGAR || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                            <input type="text" id="sugars" class="form-control" value="${food.nutrients.SUGAR || '0g'}">
                                         </div>
                                         <div class="nutrition-item">
                                             <label>Protein</label>
-                                            <input type="text" id="protein" class="form-control" value="${food.nutrients.PROCNT || '0g'}" onchange="updateNutritionValuesForRecipe()">
+                                            <input type="text" id="protein" class="form-control" value="${food.nutrients.PROCNT || '0g'}">
                                         </div>
                                     </div>
                                 </div>
@@ -602,6 +666,12 @@ $recipes_json = json_encode($recipes);
 
             // Populate the weighingUnit dropdown dynamically
             populateWeighingUnitsForRecipe(food);
+
+            fetchAndPopulateMealTypes();
+            fetchAndPopulateFoodGroup();
+            fetchAndPopulateVeggie();
+            fetchAndPopulateProtein();
+            fetchAndPopulateFruit();
         }
 
         // Populate weighing units dynamically
@@ -624,54 +694,32 @@ $recipes_json = json_encode($recipes);
             });
         }
 
-        // Update nutritional values dynamically based on selected unit and amount
-        // function updateNutritionValuesForRecipe() {
-        //     const amount = document.getElementById('foodAmount').value || 1;
-        //     const unit = document.getElementById('weighingUnit').value;
-        //     // const expandedRow = document.querySelector('.expanded-row');
-
-        //     if (!expandedRow) return;
-
-        //     const caloriesPerServing = expandedRow.dataset.caloriesPerServing;
-        //     const defaultServingSize = expandedRow.dataset.defaultServingSize;
-        //     const defaultWeightGrams = expandedRow.dataset.defaultWeightGrams;
-
-        //     // Conversion factors for other units
-        //     const unitToGrams = {
-        //         g: 1,
-        //         oz: 28.35,
-        //         lb: 453.59
-        //     };
-
-        //     // Calculate the factor to adjust based on the selected unit and amount
-        //     const weightInGrams = unitToGrams[unit] * amount;
-
-        //     // Scaling factor for nutritional values
-        //     const scalingFactor = weightInGrams / defaultWeightGrams;
-
-        //     // Dynamically update all nutritional values
-        //     document.getElementById('calories').innerText = (caloriesPerServing * scalingFactor).toFixed(2);
-        //     document.getElementById('fat').innerText = (expandedRow.dataset.fat * scalingFactor).toFixed(2) + 'g';
-        //     document.getElementById('satFat').innerText = (expandedRow.dataset.saturatedFat * scalingFactor).toFixed(2) + 'g';
-        //     document.getElementById('cholesterol').innerText = (expandedRow.dataset.cholesterol * scalingFactor).toFixed(2) + 'mg';
-        //     document.getElementById('sodium').innerText = (expandedRow.dataset.sodium * scalingFactor).toFixed(2) + 'mg';
-        //     document.getElementById('carbs').innerText = (expandedRow.dataset.carbs * scalingFactor).toFixed(2) + 'g';
-        //     document.getElementById('fiber').innerText = (expandedRow.dataset.fiber * scalingFactor).toFixed(2) + 'g';
-        //     document.getElementById('sugars').innerText = (expandedRow.dataset.sugars * scalingFactor).toFixed(2) + 'g';
-        //     document.getElementById('protein').innerText = (expandedRow.dataset.protein * scalingFactor).toFixed(2) + 'g';
-        // }
-
         // Add the selected food to the database
         function addRecipeToDatabase(foodId, label, imageUrl) {
-            const foodImage = document.getElementById('foodImage');
-            let imageData;
+
 
             if (foodImage.dataset.localFile) {
-                // If a local file was uploaded, use the base64 data
-                imageData = foodImage.src;
+                // If a local file was uploaded, prepare it to send to the backend
+                imageData = foodImage.src;  
             } else {
-                // Use the default image (passed from the `food` object)
-                imageData = imageUrl || foodImage.src;
+                // Use the default image if no file was uploaded
+                imageData = imageUrl 
+            }
+
+            // Validate dropdown selections
+            const requiredDropdowns = [
+                { id: 'MealType', name: 'Meal Type', defaultValue: 'Select Meal Type' },
+                { id: 'FoodGroup', name: 'Food Group', defaultValue: 'Select Food Group' },
+                { id: 'Veggie', name: 'By Veggie', defaultValue: 'By Veggie' },
+                { id: 'Protein', name: 'By Protein', defaultValue: 'By Protein' },
+                { id: 'Fruit', name: 'By Fruit', defaultValue: 'By Fruit' },
+            ];
+            for (const dropdown of requiredDropdowns) {
+                const element = document.getElementById(dropdown.id);
+                if (element && element.value === dropdown.defaultValue) {
+                    Swal.fire("Validation Error", `Please select a valid ${dropdown.name}.`, "error");
+                    return; // Stop submission if validation fails
+                }
             }
 
             var modal = bootstrap.Modal.getInstance(document.getElementById('recipeModal'));
@@ -681,6 +729,11 @@ $recipes_json = json_encode($recipes);
                 image: imageData,
                 amount: document.getElementById('foodAmount').value,
                 unit: document.getElementById('weighingUnit').value,
+                meal_type_id: document.getElementById('MealType').value,
+                food_group_id: document.getElementById('FoodGroup').value,
+                veggie_id: document.getElementById('Veggie').value,
+                protein_id: document.getElementById('Protein').value,
+                fruit_id: document.getElementById('Fruit').value,
                 calories: document.getElementById('calories').value,
                 totalFat: document.getElementById('fat').value,
                 satFat: document.getElementById('satFat').value,
@@ -701,7 +754,10 @@ $recipes_json = json_encode($recipes);
                     },
                     body: JSON.stringify(foodData),
                 })
-                .then(response => response.json())
+                .then(response =>{
+                    console.log("Response from server:", response); 
+                    response.json()
+                })
                 .then(data => {
                     if (data.status == "success") {
                         modal.hide();
@@ -749,45 +805,103 @@ $recipes_json = json_encode($recipes);
         });
     </script>
 
-    <!-- script for selecting image and removing -->
-    <script>
+        <!-- script for selecting image and removing -->
+    <script>         
+        // function chooseFile() {
+        //     let uploadContainer = document.getElementById('uploadContainer');
+        //     let input = document.createElement('input');
+        //     input.type = 'file';
+        //     input.accept = 'image/png, image/jpeg, image/jpg, image/webp'; 
+
+        //     input.onchange = () => {
+        //         let file = input.files[0];
+        //         console.log(file)
+
+        //         if (file) {
+        //             // Check file size (1MB limit)
+        //             const maxSize = 5 * 1024 * 1024; 
+                    
+        //             // If the file is larger than 1MB, show an error
+        //             if (file.size > maxSize) {
+        //                 Swal.fire({
+        //                     icon: 'error',
+        //                     title: 'File Size Exceeded',
+        //                     text: 'You can only upload files up to 5MB in size.',
+        //                     footer: 'Allowed file types: PNG, JPG, JPEG, WEBP (5MB limit)'
+        //                 });
+        //                 return; // Stop further processing if the file is too large
+        //             }
+
+        //             // Check file type (must be PNG or JPG)
+        //             if (file.type !== 'image/png' && file.type !== 'image/jpeg' && file.type !== 'image/jpg' && file.type !== 'image/webp') {
+        //                 Swal.fire({
+        //                     icon: 'error',
+        //                     title: 'Invalid File Type',
+        //                     text: 'You can only upload PNG or JPG files.',
+        //                     footer: 'Allowed file types: PNG, JPG, JPEG, WEBP (5MB limit)'
+        //                 });
+        //                 return; // Stop further processing if the file type is invalid
+        //             }
+
+        //             // Proceed if the file is valid
+        //             const reader = new FileReader();
+
+        //             // Preview the selected image
+        //             reader.onload = () => {
+        //                 const imgElement = document.getElementById('foodImage');
+        //                 imgElement.src = reader.result;
+        //                 imgElement.dataset.localFile = 'true'; // Mark the image as locally selected
+        //                 document.getElementById('removeImageBtn').style.display = 'block';
+        //                 uploadContainer.innerHTML = `Selected File <br/> <strong>${file.name}</strong>`;
+        //             };
+
+        //             reader.readAsDataURL(file);
+        //         }
+        //     };
+
+        //     input.click();
+        // }
+
         function chooseFile() {
             let uploadContainer = document.getElementById('uploadContainer');
             let input = document.createElement('input');
             input.type = 'file';
-            input.accept = 'image/png, image/jpeg'; // Allow only PNG and JPG files
+            input.accept = 'image/png, image/jpeg, image/jpg, image/webp';
 
             input.onchange = () => {
                 let file = input.files[0];
-                console.log("Selected file:", file); // Debugging line
 
                 if (file) {
-                    // Check file size (1MB limit)
-                    const maxSize = 1 * 1024 * 1024; // 1MB in bytes
-                    console.log("File size:", file.size); // Debugging line
-                    
-                    // If the file is larger than 1MB, show an error
+                    // Check file size (5MB limit)
+                    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+
                     if (file.size > maxSize) {
                         Swal.fire({
                             icon: 'error',
                             title: 'File Size Exceeded',
-                            text: 'You can only upload files up to 1MB in size.',
-                            footer: 'Allowed file types: PNG, JPG (1MB limit)'
+                            text: 'You can only upload files up to 5MB in size.',
+                            footer: 'Allowed file types: PNG, JPG (5MB limit)'
                         });
                         return; // Stop further processing if the file is too large
                     }
 
-                    // Check file type (must be PNG or JPG)
-                    console.log("File type:", file.type); // Debugging line
-                    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+                    // Check file type (must be PNG, JPG, or WEBP)
+                    if (!['image/png', 'image/jpeg', 'image/jpg', 'image/webp'].includes(file.type)) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Invalid File Type',
-                            text: 'You can only upload PNG or JPG files.',
-                            footer: 'Allowed file types: PNG, JPG (1MB limit)'
+                            text: 'You can only upload PNG, JPG, or WEBP files.',
+                            footer: 'Allowed file types: PNG, JPG, WEBP (5MB limit)'
                         });
                         return; // Stop further processing if the file type is invalid
                     }
+
+                    // Generate a dynamic image name based on the label
+                    const fileExtension = file.name.split('.').pop();
+                    const label = document.getElementById('foodLabel').innerHTML; 
+                    const renamedFile = new File([file], `${label}-${Date.now()}.${fileExtension}`, {
+                    type: file.type,
+                    });
 
                     // Proceed if the file is valid
                     const reader = new FileReader();
@@ -798,7 +912,10 @@ $recipes_json = json_encode($recipes);
                         imgElement.src = reader.result;
                         imgElement.dataset.localFile = 'true'; // Mark the image as locally selected
                         document.getElementById('removeImageBtn').style.display = 'block';
-                        uploadContainer.innerHTML = `Selected File <br/> <strong>${file.name}</strong>`;
+                        uploadContainer.innerHTML = `Selected File <br/> <strong>${renamedFile.name}</strong>`;
+
+                        // Save the file name for later use
+                        imgElement.dataset.uploadedImageName = renamedFile.name;
                     };
 
                     reader.readAsDataURL(file);
@@ -822,8 +939,8 @@ $recipes_json = json_encode($recipes);
                 if (result.isConfirmed) {
                     // Remove the uploaded image and reset the preview
                     const foodImage = document.getElementById('foodImage');
-                    foodImage.src = 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png';
-                    foodImage.removeAttribute('data-local-file');
+                    foodImage.src = 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png'; 
+                    foodImage.removeAttribute('data-local-file'); 
                     document.getElementById('removeImageBtn').style.display = 'none';
                     uploadContainer.innerHTML = 'No File Selected'
 
@@ -834,6 +951,7 @@ $recipes_json = json_encode($recipes);
                 }
             });
         }
+
     </script>
 
 </body>

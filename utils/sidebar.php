@@ -1,6 +1,5 @@
 <style>
-    .sidebar-entery-btn
-    {
+    .sidebar-entery-btn {
         width: 100%;
         padding: 12px 20px;
         text-align: left;
@@ -10,31 +9,33 @@
         color: #ffff;
         text-transform: capitalize;
     }
-    .entery-plus-icon
-    {
-        font-size:18px;
-        margin-right:10px;
+
+    .entery-plus-icon {
+        font-size: 18px;
+        margin-right: 10px;
     }
+
     .sidebar-entery-btn:hover {
         background-color: #374462;
     }
+
     .entery-btn-menu-list {
         height: 0;
         overflow: hidden;
         transition: 0.3s;
     }
+
     .entery-btn-menu-list.active {
         height: auto;
         transition: 0.3s;
     }
 
-    .entery-btn-menu-list li:hover
-    {
+    .entery-btn-menu-list li:hover {
         background-color: #374462;
     }
 
     .txt-li {
-        padding:12px 20px;
+        padding: 12px 20px;
     }
 
     .meal-btn i,
@@ -246,17 +247,17 @@
                                             Meal <i class="fa fa-angle-right" aria-hidden="true"></i>
                                         </li>
                                         <ul class="meal-entery-menu-list">
-                                            <li class="link text-white txt-li food-btn d-flex justify-content-between">Food <i class="fa fa-angle-right" aria-hidden="true"></i>                                            </li>
-                                                <ul class="food-entry-menu-list">
-                                                    <li><a class="dropdown-item text-white" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
-                                                    <li><a class="dropdown-item text-white" href="#" onclick="openModal('Lunch')">Lunch</a></li>
-                                                    <li><a class="dropdown-item text-white" href="#" onclick="openModal('Dinner')">Dinner</a></li>
-                                                    <li><a class="dropdown-item text-white" href="#" onclick="openModal('Snacks')">Snacks</a></li>
-                                                </ul>
-                                            
+                                            <li class="link text-white txt-li food-btn d-flex justify-content-between">Food <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
+                                            <ul class="food-entry-menu-list">
+                                                <li><a class="dropdown-item text-white" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
+                                                <li><a class="dropdown-item text-white" href="#" onclick="openModal('Lunch')">Lunch</a></li>
+                                                <li><a class="dropdown-item text-white" href="#" onclick="openModal('Dinner')">Dinner</a></li>
+                                                <li><a class="dropdown-item text-white" href="#" onclick="openModal('Snacks')">Snacks</a></li>
+                                            </ul>
+
                                             <li><a class="dropdown-item text-white" href="#" onclick="openWaterModal('waterModal')">Water</a></li>
                                         </ul>
-                                        
+
                                         <li><a class="dropdown-item text-white" href="#" onclick="openBowelMovementsModal('bowelMovementsModal')">Bowel</a></li>
                                         <li class="link text-white txt-li">Activity</li>
                                     </ul>
@@ -299,7 +300,12 @@
                                 <span>Logout </span>
                             </a>
                         </li>
-                        <li class="sidebar-list">
+                        <?php
+                        $currentPath = $_SERVER['REQUEST_URI'];
+                        $hideNewEntryBtn = strpos($currentPath, "dashboard.php") !== false;
+                        ?>
+
+                        <li class="sidebar-list <?php echo $hideNewEntryBtn ? 'd-none' : 'd-block'; ?>">
                             <ul>
                                 <li>
                                     <button class="sidebar-entery-btn">
@@ -312,17 +318,17 @@
                                             Meal <i class="fa fa-angle-right" aria-hidden="true"></i>
                                         </li>
                                         <ul class="meal-entery-menu-list">
-                                            <li class="link text-white txt-li food-btn d-flex justify-content-between">Food <i class="fa fa-angle-right" aria-hidden="true"></i>                                            </li>
-                                                <ul class="food-entry-menu-list">
-                                                    <li><a class="dropdown-item text-white" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
-                                                    <li><a class="dropdown-item text-white" href="#" onclick="openModal('Lunch')">Lunch</a></li>
-                                                    <li><a class="dropdown-item text-white" href="#" onclick="openModal('Dinner')">Dinner</a></li>
-                                                    <li><a class="dropdown-item text-white" href="#" onclick="openModal('Snacks')">Snacks</a></li>
-                                                </ul>
-                                            
+                                            <li class="link text-white txt-li food-btn d-flex justify-content-between">Food <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
+                                            <ul class="food-entry-menu-list">
+                                                <li><a class="dropdown-item text-white" href="#" onclick="openModal('Breakfast')">Breakfast</a></li>
+                                                <li><a class="dropdown-item text-white" href="#" onclick="openModal('Lunch')">Lunch</a></li>
+                                                <li><a class="dropdown-item text-white" href="#" onclick="openModal('Dinner')">Dinner</a></li>
+                                                <li><a class="dropdown-item text-white" href="#" onclick="openModal('Snacks')">Snacks</a></li>
+                                            </ul>
+
                                             <li><a class="dropdown-item text-white" href="#" onclick="openWaterModal('waterModal')">Water</a></li>
                                         </ul>
-                                        
+
                                         <li><a class="dropdown-item text-white" href="#" onclick="openBowelMovementsModal('bowelMovementsModal')">Bowel</a></li>
                                         <li class="link text-white txt-li">Activity</li>
                                     </ul>
@@ -340,8 +346,6 @@
 </div>
 
 <script>
-
-    
     const sidebarEnteryBtn = document.querySelector('.sidebar-entery-btn');
     const enteryBtnMenuList = document.querySelector('.entery-btn-menu-list');
     const MealBtn = document.querySelector('.meal-btn');
@@ -352,34 +356,32 @@
     const Food_arrow_icon = document.querySelector('.food-btn i');
 
     // entery btn toggle to show entery menu list
-    sidebarEnteryBtn.addEventListener('click',(e)=>{
-        e.target.style.backgroundColor  = '#374462'
+    sidebarEnteryBtn.addEventListener('click', (e) => {
+        e.target.style.backgroundColor = '#374462'
         enteryBtnMenuList.classList.toggle('active')
         meal_menu_list.classList.remove('active')
         food_menu_list.classList.remove('active')
-         Meal_arrow_icon.style.transform  = ''
+        Meal_arrow_icon.style.transform = ''
     })
 
-     // Meal toogle to show meal menu list
-    MealBtn.addEventListener('click',(e)=>{
-        e.target.style.backgroundColor  = '#374462'
-        foodBtn.style.backgroundColor  = ''
-        Meal_arrow_icon.style.color  = '#fff'
-        Meal_arrow_icon.style.transform  = 'rotate(90deg)'
-        Food_arrow_icon.style.transform  = ''
+    // Meal toogle to show meal menu list
+    MealBtn.addEventListener('click', (e) => {
+        e.target.style.backgroundColor = '#374462'
+        foodBtn.style.backgroundColor = ''
+        Meal_arrow_icon.style.color = '#fff'
+        Meal_arrow_icon.style.transform = 'rotate(90deg)'
+        Food_arrow_icon.style.transform = ''
         meal_menu_list.classList.toggle('active')
         food_menu_list.classList.remove('active')
     })
 
     // food toogle to show food menu list
-    foodBtn.addEventListener('click',(e)=>{
-        e.target.style.backgroundColor  = '#374462'
-        MealBtn.style.backgroundColor  = ''
-        Food_arrow_icon.style.color  = '#fff'
-        Food_arrow_icon.style.transform  = 'rotate(90deg)'
+    foodBtn.addEventListener('click', (e) => {
+        e.target.style.backgroundColor = '#374462'
+        MealBtn.style.backgroundColor = ''
+        Food_arrow_icon.style.color = '#fff'
+        Food_arrow_icon.style.transform = 'rotate(90deg)'
         meal_menu_list.style.border = 'none'
         food_menu_list.classList.toggle('active')
     })
-
-
 </script>

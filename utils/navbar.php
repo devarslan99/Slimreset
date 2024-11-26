@@ -41,7 +41,7 @@ if ($login_user_role == 'coach') {
     }
 }
 $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
-print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id);
+// print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id);
 ?>
 
 <style>
@@ -531,7 +531,7 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
 
                     <li class="profile-nav onhover-dropdown px-0 py-0">
                         <div class="d-flex profile-media align-items-center">
-                            <a href="../dashboard/profile.php">
+                            <a href="../dashboard/dashboard.php">
                                 <img class="img-30" src="<?php echo $_SESSION['profile_image'] ?>" alt="">
                             </a>
                             <div class="flex-grow-1">

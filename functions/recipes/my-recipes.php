@@ -372,16 +372,17 @@ $recipes_json = json_encode($recipes);
     <!-- Script to get meal-types filter data -->
     <script>
         function fetchAndPopulateFilterMealTypes() {
-            const filter_MealType = document.getElementById('filter-meal-type');
+            const filterMealType = document.getElementById('filter-meal-type');
 
             $.ajax({
                 url: '../functions/recipes/meal-type/fetch-meal-type.php',
                 method: 'GET',
-                dataType: "json",
-                success: function(response) {
+                dataType: 'json',
+                success: function (response) {
                     if (response.length > 0) {
+                        filterMealType.innerHTML = '<option value="">Select Meal Type</option>';
                         response.forEach(resp => {
-                            filter_MealType.innerHTML += `
+                            filterMealType.innerHTML += `
                                 <option value="${resp.id}">${resp.name}</option>
                             `;
                         });
@@ -389,128 +390,273 @@ $recipes_json = json_encode($recipes);
                         console.error('No meal types found.');
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error fetching meal types:', error);
                 }
             });
         }
-        fetchAndPopulateFilterMealTypes()
+
+        function handleMealTypeChange(event) {
+            const selectedOption = event.target.selectedOptions[0];
+            const mealTypeId = selectedOption.value;
+
+            if (mealTypeId) {
+                filterMealType('meal-type', mealTypeId);
+            } else {
+                console.log('No valid meal type selected.');
+            }
+        }
+
+        function filterMealType(type, id) {
+            $.ajax({
+                url: '../functions/recipes/filter-recipes.php',
+                method: 'POST',
+                dataType: 'json',
+                data: { category: type, itemId: id },
+                success: function (response) {
+                    displayRecipes(response.data)
+                    console.log('Meal Type Filter Response:', response.data);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error filtering meal type:', error);
+                }
+            });
+        }
+
+        document.getElementById('filter-meal-type').addEventListener('change', handleMealTypeChange);
+        fetchAndPopulateFilterMealTypes();
     </script>
 
     <!-- Script to get food-groups filter data -->
     <script>
-       function fetchAndPopulateFilterFoodGroup() {
-        const filter_food_group = document.getElementById('filter-food-group');
+        function fetchAndPopulateFilterFoodGroup() {
+            const filterFoodGroup = document.getElementById('filter-food-group');
 
             $.ajax({
                 url: '../functions/recipes/food-group/fetch-food-group.php',
                 method: 'GET',
-                dataType: "json",
-                success: function(response) {
+                dataType: 'json',
+                success: function (response) {
                     if (response.length > 0) {
+                        filterFoodGroup.innerHTML = '<option value="">Select Food Group</option>';
                         response.forEach(resp => {
-                            filter_food_group.innerHTML += `
+                            filterFoodGroup.innerHTML += `
                                 <option value="${resp.id}">${resp.name}</option>
                             `;
                         });
                     } else {
-                        console.error('No food group found.');
+                        console.error('No food groups found.');
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error fetching food groups:', error);
-                },
-
+                }
             });
         }
-        fetchAndPopulateFilterFoodGroup()
+
+        function handleFoodGroupChange(event) {
+            const selectedOption = event.target.selectedOptions[0];
+            const foodGroupId = selectedOption.value;
+
+            if (foodGroupId) {
+                filterFoodGroup('food-group', foodGroupId);
+            } else {
+                console.log('No valid food group selected.');
+            }
+        }
+
+        function filterFoodGroup(type, id) {
+            $.ajax({
+                url: '../functions/recipes/filter-recipes.php',
+                method: 'POST',
+                dataType: 'json',
+                data: { category: type, itemId: id },
+                success: function (response) {
+                    displayRecipes(response.data)
+                    console.log('Food Group Filter Response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error filtering food group:', error);
+                }
+            });
+        }
+
+        document.getElementById('filter-food-group').addEventListener('change', handleFoodGroupChange);
+        fetchAndPopulateFilterFoodGroup();
     </script>
 
     <!-- Script to get veggies filter data -->
     <script>
-         function fetchAndPopulateFilterVeggie() {
-            const filter_veggie = document.getElementById('filter-veggie');
+        function fetchAndPopulateFilterVeggie() {
+            const filterVeggie = document.getElementById('filter-veggie');
 
             $.ajax({
                 url: '../functions/recipes/veggie/fetch-veggie.php',
                 method: 'GET',
-                dataType: "json",
-                success: function(response) {
+                dataType: 'json',
+                success: function (response) {
                     if (response.length > 0) {
+                        filterVeggie.innerHTML = '<option value="">Select Veggie</option>';
                         response.forEach(resp => {
-                            filter_veggie.innerHTML += `
+                            filterVeggie.innerHTML += `
                                 <option value="${resp.id}">${resp.name}</option>
                             `;
                         });
                     } else {
-                        console.error('No veggie found.');
+                        console.error('No veggies found.');
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error fetching veggies:', error);
-                },
-
+                }
             });
         }
-        fetchAndPopulateFilterVeggie()
+
+        function handleVeggieChange(event) {
+            const selectedOption = event.target.selectedOptions[0];
+            const veggieId = selectedOption.value;
+
+            if (veggieId) {
+                filterVeggie('veggie', veggieId);
+            } else {
+                console.log('No valid veggie selected.');
+            }
+        }
+
+        function filterVeggie(type, id) {
+            $.ajax({
+                url: '../functions/recipes/filter-recipes.php',
+                method: 'POST',
+                dataType: 'json',
+                data: { category: type, itemId: id },
+                success: function (response) {
+                    displayRecipes(response.data)
+                    console.log('Veggie Filter Response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error filtering veggie:', error);
+                }
+            });
+        }
+
+        document.getElementById('filter-veggie').addEventListener('change', handleVeggieChange);
+        fetchAndPopulateFilterVeggie();
     </script>
 
      <!-- Script to get protein filter data -->
      <script>
-         function fetchAndPopulateFilterProtein() {
-            const filter_protein = document.getElementById('filter-protein');
+        function fetchAndPopulateFilterProtein() {
+            const filterProtein = document.getElementById('filter-protein');
 
             $.ajax({
                 url: '../functions/recipes/protein/fetch-protein.php',
                 method: 'GET',
-                dataType: "json",
-                success: function(response) {
+                dataType: 'json',
+                success: function (response) {
                     if (response.length > 0) {
+                        filterProtein.innerHTML = '<option value="">Select Protein</option>';
                         response.forEach(resp => {
-                            filter_protein.innerHTML += `
+                            filterProtein.innerHTML += `
                                 <option value="${resp.id}">${resp.name}</option>
                             `;
                         });
                     } else {
-                        console.error('No protein found.');
+                        console.error('No proteins found.');
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error fetching proteins:', error);
-                },
-
-            })
+                }
+            });
         }
-        fetchAndPopulateFilterProtein() 
+
+        function handleProteinChange(event) {
+            const selectedOption = event.target.selectedOptions[0];
+            const proteinId = selectedOption.value;
+
+            if (proteinId) {
+                filterProtein('protein', proteinId);
+            } else {
+                console.log('No valid protein selected.');
+            }
+        }
+
+        function filterProtein(type, id) {
+            $.ajax({
+                url: '../functions/recipes/filter-recipes.php',
+                method: 'POST',
+                dataType: 'json',
+                data: { category: type, itemId: id },
+                success: function (response) {
+                    displayRecipes(response.data)
+                    console.log('Protein Filter Response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error filtering protein:', error);
+                }
+            });
+        }
+
+        document.getElementById('filter-protein').addEventListener('change', handleProteinChange);
+        fetchAndPopulateFilterProtein();
     </script>
 
      <!-- Script to get fruit filter data-->
      <script>
-       function fetchAndPopulateFilterFruit() {
-        const filter_fruit = document.getElementById('filter-fruit');
+        function fetchAndPopulateFilterFruit() {
+            const filterFruit = document.getElementById('filter-fruit');
 
             $.ajax({
                 url: '../functions/recipes/fruit/fetch-fruit.php',
                 method: 'GET',
-                dataType: "json",
-                success: function(response) {
+                dataType: 'json',
+                success: function (response) {
                     if (response.length > 0) {
+                        filterFruit.innerHTML = '<option value="">Select Fruit</option>';
                         response.forEach(resp => {
-                            filter_fruit.innerHTML += `
+                            filterFruit.innerHTML += `
                                 <option value="${resp.id}">${resp.name}</option>
                             `;
                         });
                     } else {
-                        console.error('No fruit found.');
+                        console.error('No fruits found.');
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error fetching fruits:', error);
-                },
-
-            })
+                }
+            });
         }
-        fetchAndPopulateFilterFruit()
+
+        function handleFruitChange(event) {
+            const selectedOption = event.target.selectedOptions[0];
+            const fruitId = selectedOption.value;
+
+            if (fruitId) {
+                filterFruit('fruit', fruitId);
+            } else {
+                console.log('No valid fruit selected.');
+            }
+        }
+
+        function filterFruit(type, id) {
+            $.ajax({
+                url: '../functions/recipes/filter-recipes.php',
+                method: 'POST',
+                dataType: 'json',
+                data: { category: type, itemId: id },
+                success: function (response) {
+                    displayRecipes(response.data)
+                    console.log('Fruit Filter Response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error filtering fruit:', error);
+                }
+            });
+        }
+
+        document.getElementById('filter-fruit').addEventListener('change', handleFruitChange);
+        fetchAndPopulateFilterFruit();
     </script>
 
     <!-- Populating and fetching data for add recipe filters  -->

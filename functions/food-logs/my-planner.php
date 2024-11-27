@@ -1029,12 +1029,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         // Now process columns in each row and add labels where necessary
                         Object.keys(columnsInRow).forEach((rowTop) => {
                             const rowColumns = columnsInRow[rowTop];
-                            console.log(rowColumns.length)
 
                             const $firstColumn = rowColumns[0]; 
                             addLabels($firstColumn);
                         });
-                    }, 100); 
+                    }, 200); 
                 }
 
                 function addLabels($dayColumn) {

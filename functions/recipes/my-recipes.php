@@ -106,6 +106,7 @@ $recipes_json = json_encode($recipes);
 
         .my-recipe-img-card-box {
             width: 200px;
+            overflow: hidden;
         }
 
         .my-recipe-img-card {
@@ -1037,7 +1038,7 @@ $recipes_json = json_encode($recipes);
                 const element = document.getElementById(dropdown.id);
                 if (element && element.value === dropdown.defaultValue) {
                     Swal.fire("Validation Error", `Please select a valid ${dropdown.name}.`, "error");
-                    return; // Stop submission if validation fails
+                    return;
                 }
             }
             

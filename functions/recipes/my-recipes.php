@@ -368,11 +368,156 @@ $recipes_json = json_encode($recipes);
         </div>
     </div>
 
+    <!-- Script to get meal-types filter data -->
+    <script>
+        function fetchAndPopulateFilterMealTypes() {
+            const filter_MealType = document.getElementById('filter-meal-type');
+
+            $.ajax({
+                url: '../functions/recipes/meal-type/fetch-meal-type.php',
+                method: 'GET',
+                dataType: "json",
+                success: function(response) {
+                    if (response.length > 0) {
+                        response.forEach(resp => {
+                            filter_MealType.innerHTML += `
+                                <option value="${resp.id}">${resp.name}</option>
+                            `;
+                        });
+                    } else {
+                        console.error('No meal types found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching meal types:', error);
+                }
+            });
+        }
+        fetchAndPopulateFilterMealTypes()
+    </script>
+
+    <!-- Script to get food-groups filter data -->
+    <script>
+       function fetchAndPopulateFilterFoodGroup() {
+        const filter_food_group = document.getElementById('filter-food-group');
+
+            $.ajax({
+                url: '../functions/recipes/food-group/fetch-food-group.php',
+                method: 'GET',
+                dataType: "json",
+                success: function(response) {
+                    if (response.length > 0) {
+                        response.forEach(resp => {
+                            filter_food_group.innerHTML += `
+                                <option value="${resp.id}">${resp.name}</option>
+                            `;
+                        });
+                    } else {
+                        console.error('No food group found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching food groups:', error);
+                },
+
+            });
+        }
+        fetchAndPopulateFilterFoodGroup()
+    </script>
+
+    <!-- Script to get veggies filter data -->
+    <script>
+         function fetchAndPopulateFilterVeggie() {
+            const filter_veggie = document.getElementById('filter-veggie');
+
+            $.ajax({
+                url: '../functions/recipes/veggie/fetch-veggie.php',
+                method: 'GET',
+                dataType: "json",
+                success: function(response) {
+                    if (response.length > 0) {
+                        response.forEach(resp => {
+                            filter_veggie.innerHTML += `
+                                <option value="${resp.id}">${resp.name}</option>
+                            `;
+                        });
+                    } else {
+                        console.error('No veggie found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching veggies:', error);
+                },
+
+            });
+        }
+        fetchAndPopulateFilterVeggie()
+    </script>
+
+     <!-- Script to get protein filter data -->
+     <script>
+         function fetchAndPopulateFilterProtein() {
+            const filter_protein = document.getElementById('filter-protein');
+
+            $.ajax({
+                url: '../functions/recipes/protein/fetch-protein.php',
+                method: 'GET',
+                dataType: "json",
+                success: function(response) {
+                    if (response.length > 0) {
+                        response.forEach(resp => {
+                            filter_protein.innerHTML += `
+                                <option value="${resp.id}">${resp.name}</option>
+                            `;
+                        });
+                    } else {
+                        console.error('No protein found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching proteins:', error);
+                },
+
+            })
+        }
+        fetchAndPopulateFilterProtein() 
+    </script>
+
+     <!-- Script to get fruit filter data-->
+     <script>
+       function fetchAndPopulateFilterFruit() {
+        const filter_fruit = document.getElementById('filter-fruit');
+
+            $.ajax({
+                url: '../functions/recipes/fruit/fetch-fruit.php',
+                method: 'GET',
+                dataType: "json",
+                success: function(response) {
+                    if (response.length > 0) {
+                        response.forEach(resp => {
+                            filter_fruit.innerHTML += `
+                                <option value="${resp.id}">${resp.name}</option>
+                            `;
+                        });
+                    } else {
+                        console.error('No fruit found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching fruits:', error);
+                },
+
+            })
+        }
+        fetchAndPopulateFilterFruit()
+    </script>
+
+    <!-- Populating and fetching data for add recipe filters  -->
+
     <!-- Script to get meal-types -->
     <script>
         function fetchAndPopulateMealTypes() {
             const MealType = document.getElementById('MealType');
-            const filter_meal_type = document.getElementById('filter-meal-type');
 
             $.ajax({
                 url: '../functions/recipes/meal-type/fetch-meal-type.php',
@@ -382,9 +527,6 @@ $recipes_json = json_encode($recipes);
                     if (response.length > 0) {
                         response.forEach(resp => {
                             MealType.innerHTML += `
-                                <option value="${resp.id}">${resp.name}</option>
-                            `;
-                            filter_meal_type.innerHTML += `
                                 <option value="${resp.id}">${resp.name}</option>
                             `;
                         });
@@ -830,7 +972,7 @@ $recipes_json = json_encode($recipes);
                                 Upload Image
                             </div>
                             <div class="food-img-box position-relative">
-                                <img id="foodImage" src="${food.image || 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png'}" />
+                                <img id="foodImage" src="${food.image || 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png'}" onerror="this.src='https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png';" />
                                 <button id="removeImageBtn" class="remove-imf-btn position-absolute" style="top: 5px; right: 5px; display: ${food.image ? 'block' : 'none'};" onclick="removeImage()">X</button> 
                             </div>
                         </div>
@@ -967,7 +1109,7 @@ $recipes_json = json_encode($recipes);
 
                 card.innerHTML = `
                     <div class="custom-border rounded my-recipe-img-card-box">
-                        <img class="my-recipe-img-card" src="${recipeImage}" alt="${recipe.label}">
+                        <img class="my-recipe-img-card" src="${recipeImage}"  onerror="this.src='https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png';" alt="${recipe.label}">
                         <div class="meal-name">${recipe.label}</div>
                         <div class="meal-info">
                             ${recipe.calories} kcal<br>

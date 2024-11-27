@@ -117,6 +117,10 @@ $recipes_json = json_encode($recipes);
         .food-label-name {
             color:rgb(148 108 252) !important;
             font-weight:600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
         }
 
         .nutrition-grid {
@@ -267,7 +271,23 @@ $recipes_json = json_encode($recipes);
             scrollbar-width: thin;
             scrollbar-color: #888 #f1f1f1;
         }
+        
+        .text-required {
+            font-style: italic;
+            text-transform: capitalize !important;
+        }
 
+        .required-star {
+            color:red;
+        }
+
+        @media (max-width: 768px) {
+            .food-label-name,
+            .text-required {
+                flex-basis: 100%; /* Make each heading take full width on small screens */
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -289,31 +309,31 @@ $recipes_json = json_encode($recipes);
         <div class="row mb-4">
             <div class="col-md-3 filter-select">
                 <label class="form-label">Meal Type</label>
-                <select class="form-select">
+                <select class="form-select" id="filter-meal-type">
                     <option>Select Meal Type</option>
                 </select>
             </div>
             <div class="col-md-3 filter-select">
                 <label class="form-label">Food Group</label>
-                <select class="form-select">
+                <select class="form-select" id="filter-food-group">
                     <option>Select Food Group</option>
                 </select>
             </div>
             <div class="col-md-2 filter-select">
                 <label class="form-label">Ingredient</label>
-                <select class="form-select">
+                <select class="form-select" id="filter-protein">
                     <option>By Protein</option>
                 </select>
             </div>
             <div class="col-md-2 filter-select">
                 <label class="form-label">&nbsp;</label>
-                <select class="form-select">
+                <select class="form-select" id="filter-veggie">
                     <option>By Veggie</option>
                 </select>
             </div>
             <div class="col-md-2 filter-select">
                 <label class="form-label">&nbsp;</label>
-                <select class="form-select">
+                <select class="form-select" id="filter-fruit">
                     <option>By Fruit</option>
                 </select>
             </div>
@@ -352,6 +372,7 @@ $recipes_json = json_encode($recipes);
     <script>
         function fetchAndPopulateMealTypes() {
             const MealType = document.getElementById('MealType');
+            const filter_meal_type = document.getElementById('filter-meal-type');
 
             $.ajax({
                 url: '../functions/recipes/meal-type/fetch-meal-type.php',
@@ -361,6 +382,9 @@ $recipes_json = json_encode($recipes);
                     if (response.length > 0) {
                         response.forEach(resp => {
                             MealType.innerHTML += `
+                                <option value="${resp.id}">${resp.name}</option>
+                            `;
+                            filter_meal_type.innerHTML += `
                                 <option value="${resp.id}">${resp.name}</option>
                             `;
                         });
@@ -487,326 +511,7 @@ $recipes_json = json_encode($recipes);
         }
     </script>
 
-    <!-- SCRIPT TO SEARCH AND ADD RECIPE -->
-    <script>
-        // Open modal with selected food type
-        function openRecipeModal(foodOption) {
-            document.getElementById('recipeSearch').value = '';
-            document.getElementById('searchResultsForRecipe').innerHTML = '';
-            var modal = new bootstrap.Modal(document.getElementById('recipeModal'));
-            modal.show();
-        }
-
-        // Fetch food data from Edamam API
-        function fetchRecipeData() {
-            const query = document.getElementById('recipeSearch').value;
-            console.log("Recipe function called!")
-            if (query.length < 3) return; // Avoid too many requests for short queries
-
-            fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=f73b06f6&app_key=562df73d9c2324199c25a9b8088540ba&ingr=${query}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const searchResultsForRecipe = document.getElementById('searchResultsForRecipe');
-                    searchResultsForRecipe.innerHTML = ''; // Clear previous results
-                    const searchInput = document.getElementById('recipeSearch');
-                    const receipeDetailSection = document.getElementById('receipeDetailSection').innerHTML = "";
-
-                    // Edamam stores food items in the 'parsed' and 'hints' arrays
-                    const foodItems = [...data.parsed, ...data.hints.map(hint => hint.food)];
-                    const validFoodItems = foodItems.filter(item => item.nutrients && Object.keys(item.nutrients).length > 0);
-                    validFoodItems.forEach(item => {
-                        const li = document.createElement('li');
-                        li.classList.add('list-group-item');
-                        li.innerHTML = item.label || `${item.food.label}`;
-                        li.onclick = () =>{
-                            selectRecipeItem(item, li)
-                            searchResultsForRecipe.innerHTML = '';
-                        }; // Pass the selected item and the li element
-                        searchResultsForRecipe.appendChild(li);
-                    });
-                })
-                .catch(error => console.error('Error fetching food data:', error));
-        }
-
-
-        // Select food item and display its details directly beneath the clicked item
-        function selectRecipeItem(food, listItem) {
-            const receipeDetailSection = document.getElementById('receipeDetailSection');
-
-            receipeDetailSection.innerHTML = `
-                    <div class="food-card p-4 mb-4 border rounded">
-                            <!-- Food Label -->
-                            <h5 class="food-label-name mb-3 font-weight-bold" id="foodLabel">${food.label}</h5>
-                            
-                            <!-- Amount and Unit Row -->
-                            <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-                                <div class="col">
-                                    <label for="foodAmount" class="font-weight-bold">Amount:</label>
-                                    <input type="number" id="foodAmount" class="form-control" value="1" placeholder="Enter Amount">
-                                </div>
-                                <div class="col">
-                                    <label for="weighingUnit" class="font-weight-bold">Unit:</label>
-                                    <select id="weighingUnit" class="form-control">
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Filters Meal Type and Food Group -->
-                            <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-                                <div class="col">
-                                    <label for="MealType" class="font-weight-bold">Meal Type</label>
-                                    <select id="MealType" class="form-control filter-seclect-input" required>
-                                        <option selected="selected" disabled >Select Meal Type</option>
-                                    </select>
-                                </div>
-                                <div class="col">
-                                    <label for="FoodGroup" class="font-weight-bold">Food Group</label>
-                                    <select id="FoodGroup" class="form-control filter-seclect-input" required>
-                                        <option selected="selected" disabled >Select Food Group</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Ingredients -->
-                            <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-                                <div class="flex-fill">
-                                    <label for="Protein" class="font-weight-bold">Protien</label>
-                                    <select id="Protein" class="form-control filter-seclect-input" required>
-                                        <option selected="selected" disabled >By Protein</option>
-                                    </select>
-                                </div>
-                                <div class="flex-fill">
-                                    <label for="Veggie" class="font-weight-bold">Veggie</label>
-                                    <select id="Veggie" class="form-control filter-seclect-input" required>
-                                        <option selected="selected" disabled >By Veggie</option>
-                                    </select>
-                                </div>
-                                <div class="flex-fill">
-                                    <label for="Fruit" class="font-weight-bold">Fruit</label>
-                                    <select id="Fruit" class="form-control filter-seclect-input" required>
-                                        <option selected="selected" disabled >By Fruit</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Nutritional Info -->
-                            <div id="nutritionInfo" class="mt-4">
-                                <div class="nutrition-grid">
-                                    <div class="d-flex justify-content-between gap-3 mb-3">
-                                        <div class="nutrition-item">
-                                            <label>Calories</label>
-                                            <input type="text" id="calories" class="form-control" value="${food.nutrients.ENERC_KCAL || '0'}">
-                                        </div>
-                                        <div class="nutrition-item">
-                                            <label>Total Fat</label>
-                                            <input type="text" id="fat" class="form-control" value="${food.nutrients.FAT || '0g'}">
-                                        </div>
-                                        <div class="nutrition-item">
-                                            <label>Sat. Fat</label>
-                                            <input type="text" id="satFat" class="form-control" value="${food.nutrients.FASAT || '0g'}">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between gap-3 mb-3">
-                                        <div class="nutrition-item">
-                                            <label>Cholest.</label>
-                                            <input type="text" id="cholesterol" class="form-control" value="${food.nutrients.CHOLE || '0mg'}">
-                                        </div>
-                                        <div class="nutrition-item">
-                                            <label>Sodium</label>
-                                            <input type="text" id="sodium" class="form-control" value="${food.nutrients.NA || '0mg'}">
-                                        </div>
-                                        <div class="nutrition-item">
-                                            <label>Carb.</label>
-                                            <input type="text" id="carbs" class="form-control" value="${food.nutrients.CHOCDF || '0g'}">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between gap-3 mb-3">
-                                        <div class="nutrition-item">
-                                            <label>Fiber</label>
-                                            <input type="text" id="fiber" class="form-control" value="${food.nutrients.FIBTG || '0g'}">
-                                        </div>
-                                        <div class="nutrition-item">
-                                            <label>Sugars</label>
-                                            <input type="text" id="sugars" class="form-control" value="${food.nutrients.SUGAR || '0g'}">
-                                        </div>
-                                        <div class="nutrition-item">
-                                            <label>Protein</label>
-                                            <input type="text" id="protein" class="form-control" value="${food.nutrients.PROCNT || '0g'}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="choose-img-section">
-                                <div class="upload-container" id="uploadContainer" onclick="chooseFile()">
-                                   Upload Image
-                                </div>
-                                <div class="food-img-box position-relative">
-                                    <img id="foodImage" src="${food.image || 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png'}" />
-                                    <button id="removeImageBtn" class="remove-imf-btn position-absolute" style="top: 5px; right: 5px; display: ${food.image ? 'block' : 'none'};" onclick="removeImage()">X</button> 
-                                </div>
-                            </div>
-
-                            <!-- Add Recipe Button -->
-                            <div class='d-flex justify-content-end'>
-                                <button type="button" style="width: 160px;height: 40px;" class="btn btn-success btn-block mt-4" onclick="addRecipeToDatabase('${food.foodId}', '${food.label}', '${food.image || ''}')">Add Recipe</button>
-                            </div>
-                        </div>
-                `;
-
-            // Populate the weighingUnit dropdown dynamically
-            populateWeighingUnitsForRecipe(food);
-
-            fetchAndPopulateMealTypes();
-            fetchAndPopulateFoodGroup();
-            fetchAndPopulateVeggie();
-            fetchAndPopulateProtein();
-            fetchAndPopulateFruit();
-        }
-
-        // Populate weighing units dynamically
-        function populateWeighingUnitsForRecipe(food) {
-            const unitSelect = document.getElementById('weighingUnit');
-            unitSelect.innerHTML = ''; // Clear previous options
-
-            // Default to "grams" if no specific serving units are available
-            let units = ['g', 'oz', 'lb'];
-
-            if (food.servingUnit) {
-                units = [food.servingUnit, 'g', 'oz', 'lb'];
-            }
-
-            units.forEach(unit => {
-                const option = document.createElement('option');
-                option.value = unit;
-                option.text = unit.charAt(0).toUpperCase() + unit.slice(1);
-                unitSelect.appendChild(option);
-            });
-        }
-
-        // Add the selected food to the database
-        function addRecipeToDatabase(foodId, label, imageUrl) {
-
-            submitFile()
-            
-            if (foodImage.dataset.localFile) {
-                // If a local file was uploaded, prepare it to send to the backend
-                imageData = foodImage.src;  
-            } else {
-                // Use the default image if no file was uploaded
-                imageData = imageUrl 
-            }
-
-            // Validate dropdown selections
-            const requiredDropdowns = [
-                { id: 'MealType', name: 'Meal Type', defaultValue: 'Select Meal Type' },
-                { id: 'FoodGroup', name: 'Food Group', defaultValue: 'Select Food Group' },
-                { id: 'Veggie', name: 'By Veggie', defaultValue: 'By Veggie' },
-                { id: 'Protein', name: 'By Protein', defaultValue: 'By Protein' },
-                { id: 'Fruit', name: 'By Fruit', defaultValue: 'By Fruit' },
-            ];
-            for (const dropdown of requiredDropdowns) {
-                const element = document.getElementById(dropdown.id);
-                if (element && element.value === dropdown.defaultValue) {
-                    Swal.fire("Validation Error", `Please select a valid ${dropdown.name}.`, "error");
-                    return; // Stop submission if validation fails
-                }
-            }
-
-            var modal = bootstrap.Modal.getInstance(document.getElementById('recipeModal'));
-            const foodData = {
-                foodId: foodId,
-                label: label,
-                image: imageData,
-                amount: document.getElementById('foodAmount').value,
-                unit: document.getElementById('weighingUnit').value,
-                meal_type_id: document.getElementById('MealType').value,
-                food_group_id: document.getElementById('FoodGroup').value,
-                veggie_id: document.getElementById('Veggie').value,
-                protein_id: document.getElementById('Protein').value,
-                fruit_id: document.getElementById('Fruit').value,
-                calories: document.getElementById('calories').value,
-                totalFat: document.getElementById('fat').value,
-                satFat: document.getElementById('satFat').value,
-                cholesterol: document.getElementById('cholesterol').value,
-                sodium: document.getElementById('sodium').value,
-                carbs: document.getElementById('carbs').value,
-                fiber: document.getElementById('fiber').value,
-                sugars: document.getElementById('sugars').value,
-                protein: document.getElementById('protein').value,
-                user_id: <?php echo $user_id ?>
-            };
-
-            // Send food data to the server (you'll need to define the actual endpoint)
-            fetch('../functions/food_history/recipe-store.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(foodData),
-                })
-                .then(response =>{
-                    console.log("Response from server:", response); 
-                    response.json()
-                })
-                .then(data => {
-                    if (data.status == "success") {
-                        modal.hide();
-                        Swal.fire("Success", "Recipe added successfully!", "success")
-                            .then(() => location.reload())
-                    } else {
-                        swal("Error", "Failed to add recipe.", "error");
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-    </script>
-
-    <!-- Script to display the recipes on the page -->
-    <script>
-        const recipes = <?php echo $recipes_json; ?>;
-
-        function displayRecipes(recipes) {
-            const recipeContainer = document.querySelector(".d-flex.flex-wrap.mt-3.gap-3");
-            recipeContainer.innerHTML = "";
-
-            recipes.forEach(recipe => {
-                const card = document.createElement("div");
-                card.classList.add("meal-card-rec");
-                const recipeImage = recipe.image ? recipe.image : 'https://via.placeholder.com/150'
-
-                card.innerHTML = `
-                    <div class="custom-border rounded my-recipe-img-card-box">
-                        <img class="my-recipe-img-card" src="${recipeImage}" alt="${recipe.label}">
-                        <div class="meal-name">${recipe.label}</div>
-                        <div class="meal-info">
-                            ${recipe.calories} kcal<br>
-                            ${recipe.amount} ${recipe.unit}
-                        </div>
-                    </div>
-                    `;
-                recipeContainer.appendChild(card);
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            displayRecipes(recipes);
-        });
-    </script>
-
-        <!-- script for selecting image and removing -->
+    <!-- script for selecting image and removing -->
     <script>         
 
         let selectedFile = null; 
@@ -846,10 +551,15 @@ $recipes_json = json_encode($recipes);
                         });
                         return; 
                     }
+                    const label = document.getElementById('foodLabel').innerHTML; 
+                    let formattedLabel = label.replace(/\s+/g, '-');
+                    // Check if the length is more than 15 characters
+                    if (formattedLabel.length > 15) {
+                        formattedLabel = formattedLabel.substring(0, 15);  // Truncate to 15 characters
+                    }
 
                     const fileExtension = file.name.split('.').pop();
-                    const label = document.getElementById('foodLabel').innerHTML; 
-                    uniqueName = `${label}-${Date.now()}.${fileExtension}`;
+                    uniqueName = `${formattedLabel}-${Date.now()}.${fileExtension}`;
 
                     // Preview the image after file selection
                     const reader = new FileReader();
@@ -931,6 +641,347 @@ $recipes_json = json_encode($recipes);
             });
         }
 
+    </script>
+    
+    <!-- script to reset modal fields -->
+    <script>
+        const recipeModal = document.getElementById('recipeModal');
+        recipeModal.addEventListener('hide.bs.modal', function () {
+            console.log('Modal is closing');
+            resetModalFields();
+        });
+
+        function resetModalFields() {
+            document.getElementById('recipeSearch').value = ''; 
+            document.getElementById('searchResultsForRecipe').innerHTML = '';
+            document.getElementById('receipeDetailSection').innerHTML = '';
+        }
+
+    </script>
+
+    <!-- SCRIPT TO SEARCH AND ADD RECIPE -->
+    <script>
+        // Open modal with selected food type
+        function openRecipeModal(foodOption) {
+            document.getElementById('recipeSearch').value = '';
+            document.getElementById('searchResultsForRecipe').innerHTML = '';
+            var modal = new bootstrap.Modal(document.getElementById('recipeModal'));
+            modal.show();
+        }
+
+        // Fetch food data from Edamam API
+        function fetchRecipeData() {
+            const query = document.getElementById('recipeSearch').value;
+            console.log("Recipe function called!")
+            if (query.length < 3) return; // Avoid too many requests for short queries
+
+            fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=f73b06f6&app_key=562df73d9c2324199c25a9b8088540ba&ingr=${query}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const searchResultsForRecipe = document.getElementById('searchResultsForRecipe');
+                    searchResultsForRecipe.innerHTML = ''; // Clear previous results
+                    const searchInput = document.getElementById('recipeSearch');
+                    const receipeDetailSection = document.getElementById('receipeDetailSection').innerHTML = "";
+
+                    // Edamam stores food items in the 'parsed' and 'hints' arrays
+                    const foodItems = [...data.parsed, ...data.hints.map(hint => hint.food)];
+                    const validFoodItems = foodItems.filter(item => item.nutrients && Object.keys(item.nutrients).length > 0);
+                    validFoodItems.forEach(item => {
+                        const li = document.createElement('li');
+                        li.classList.add('list-group-item');
+                        li.innerHTML = item.label || `${item.food.label}`;
+                        li.onclick = () =>{
+                            selectRecipeItem(item, li)
+                            searchResultsForRecipe.innerHTML = '';
+                        }; // Pass the selected item and the li element
+                        searchResultsForRecipe.appendChild(li);
+                    });
+                })
+                .catch(error => console.error('Error fetching food data:', error));
+        }
+
+
+        // Select food item and display its details directly beneath the clicked item
+        function selectRecipeItem(food, listItem) {
+            const receipeDetailSection = document.getElementById('receipeDetailSection');
+
+            receipeDetailSection.innerHTML = `
+                <div class="food-card p-4 mb-4 border rounded">
+                        <!-- Food Label -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <h5 class="food-label-name mb-3 font-weight-bold text-truncate" id="foodLabel">${food.label}</h5>
+                            <h6 class="font-weight-bold mb-3 text-required">
+                                Fields marked with <span class="required-star">*</span> are required to add a recipe
+                            </h6>
+                        </div>
+
+                        
+                        <!-- Amount and Unit Row -->
+                        <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                            <div class="col">
+                                <label for="foodAmount" class="font-weight-bold">Amount:</label>
+                                <input type="number" id="foodAmount" class="form-control" value="1" placeholder="Enter Amount">
+                            </div>
+                            <div class="col">
+                                <label for="weighingUnit" class="font-weight-bold">Unit:</label>
+                                <select id="weighingUnit" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Filters Meal Type and Food Group -->
+                        <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                            <div class="col">
+                                <label for="MealType" class="font-weight-bold">Meal Type <span class="required-star">*</span></label>
+                                <select id="MealType" class="form-control filter-seclect-input" required>
+                                    <option selected="selected" disabled >Select Meal Type</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="FoodGroup" class="font-weight-bold">Food Group <span class="required-star">*</span></label>
+                                <select id="FoodGroup" class="form-control filter-seclect-input" required>
+                                    <option selected="selected" disabled >Select Food Group</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Ingredients -->
+                        <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                            <div class="flex-fill">
+                                <label for="Protein" class="font-weight-bold">Protien <span class="required-star">*</span></label>
+                                <select id="Protein" class="form-control filter-seclect-input" required>
+                                    <option selected="selected" disabled >By Protein</option>
+                                </select>
+                            </div>
+                            <div class="flex-fill">
+                                <label for="Veggie" class="font-weight-bold">Veggie <span class="required-star">*</span></label>
+                                <select id="Veggie" class="form-control filter-seclect-input" required>
+                                    <option selected="selected" disabled >By Veggie</option>
+                                </select>
+                            </div>
+                            <div class="flex-fill">
+                                <label for="Fruit" class="font-weight-bold">Fruit <span class="required-star">*</span></label>
+                                <select id="Fruit" class="form-control filter-seclect-input" required>
+                                    <option selected="selected" disabled >By Fruit</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Nutritional Info -->
+                        <div id="nutritionInfo" class="mt-4">
+                            <div class="nutrition-grid">
+                                <div class="d-flex justify-content-between gap-3 mb-3">
+                                    <div class="nutrition-item">
+                                        <label>Calories</label>
+                                        <input type="text" id="calories" class="form-control" value="${food.nutrients.ENERC_KCAL || '0'}">
+                                    </div>
+                                    <div class="nutrition-item">
+                                        <label>Total Fat</label>
+                                        <input type="text" id="fat" class="form-control" value="${food.nutrients.FAT || '0g'}">
+                                    </div>
+                                    <div class="nutrition-item">
+                                        <label>Sat. Fat</label>
+                                        <input type="text" id="satFat" class="form-control" value="${food.nutrients.FASAT || '0g'}">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between gap-3 mb-3">
+                                    <div class="nutrition-item">
+                                        <label>Cholest.</label>
+                                        <input type="text" id="cholesterol" class="form-control" value="${food.nutrients.CHOLE || '0mg'}">
+                                    </div>
+                                    <div class="nutrition-item">
+                                        <label>Sodium</label>
+                                        <input type="text" id="sodium" class="form-control" value="${food.nutrients.NA || '0mg'}">
+                                    </div>
+                                    <div class="nutrition-item">
+                                        <label>Carb.</label>
+                                        <input type="text" id="carbs" class="form-control" value="${food.nutrients.CHOCDF || '0g'}">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between gap-3 mb-3">
+                                    <div class="nutrition-item">
+                                        <label>Fiber</label>
+                                        <input type="text" id="fiber" class="form-control" value="${food.nutrients.FIBTG || '0g'}">
+                                    </div>
+                                    <div class="nutrition-item">
+                                        <label>Sugars</label>
+                                        <input type="text" id="sugars" class="form-control" value="${food.nutrients.SUGAR || '0g'}">
+                                    </div>
+                                    <div class="nutrition-item">
+                                        <label>Protein</label>
+                                        <input type="text" id="protein" class="form-control" value="${food.nutrients.PROCNT || '0g'}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="choose-img-section">
+                            <div class="upload-container" id="uploadContainer" onclick="chooseFile()">
+                                Upload Image
+                            </div>
+                            <div class="food-img-box position-relative">
+                                <img id="foodImage" src="${food.image || 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png'}" />
+                                <button id="removeImageBtn" class="remove-imf-btn position-absolute" style="top: 5px; right: 5px; display: ${food.image ? 'block' : 'none'};" onclick="removeImage()">X</button> 
+                            </div>
+                        </div>
+
+                        <!-- Add Recipe Button -->
+                        <div class='d-flex justify-content-end'>
+                            <button type="button" style="width: 160px;height: 40px;" class="btn btn-success btn-block mt-4" onclick="addRecipeToDatabase('${food.foodId}', '${food.label}', '${food.image || ''}')">Add Recipe</button>
+                        </div>
+                    </div>
+            `;
+
+            // Populate the weighingUnit dropdown dynamically
+            populateWeighingUnitsForRecipe(food);
+
+            fetchAndPopulateMealTypes();
+            fetchAndPopulateFoodGroup();
+            fetchAndPopulateVeggie();
+            fetchAndPopulateProtein();
+            fetchAndPopulateFruit();
+        }
+
+        // Populate weighing units dynamically
+        function populateWeighingUnitsForRecipe(food) {
+            const unitSelect = document.getElementById('weighingUnit');
+            unitSelect.innerHTML = ''; // Clear previous options
+
+            // Default to "grams" if no specific serving units are available
+            let units = ['g', 'oz', 'lb'];
+
+            if (food.servingUnit) {
+                units = [food.servingUnit, 'g', 'oz', 'lb'];
+            }
+
+            units.forEach(unit => {
+                const option = document.createElement('option');
+                option.value = unit;
+                option.text = unit.charAt(0).toUpperCase() + unit.slice(1);
+                unitSelect.appendChild(option);
+            });
+        }
+
+        // Add the selected food to the database
+        function addRecipeToDatabase(foodId, label, imageUrl) {
+            
+            if (uniqueName) {
+                // If a local file was uploaded, prepare it to send to the backend
+                imageData = uniqueName;  
+            } else {
+                // Use the default image if no file was uploaded
+                imageData = imageUrl 
+            }
+
+            // Validate dropdown selections
+            const requiredDropdowns = [
+                { id: 'MealType', name: 'Meal Type', defaultValue: 'Select Meal Type' },
+                { id: 'FoodGroup', name: 'Food Group', defaultValue: 'Select Food Group' },
+                { id: 'Veggie', name: 'By Veggie', defaultValue: 'By Veggie' },
+                { id: 'Protein', name: 'By Protein', defaultValue: 'By Protein' },
+                { id: 'Fruit', name: 'By Fruit', defaultValue: 'By Fruit' },
+            ];
+            for (const dropdown of requiredDropdowns) {
+                const element = document.getElementById(dropdown.id);
+                if (element && element.value === dropdown.defaultValue) {
+                    Swal.fire("Validation Error", `Please select a valid ${dropdown.name}.`, "error");
+                    return; // Stop submission if validation fails
+                }
+            }
+            
+            submitFile()
+
+            var modal = bootstrap.Modal.getInstance(document.getElementById('recipeModal'));
+            const foodData = {
+                foodId: foodId,
+                label: label,
+                image: imageData,
+                amount: document.getElementById('foodAmount').value,
+                unit: document.getElementById('weighingUnit').value,
+                meal_type_id: document.getElementById('MealType').value,
+                food_group_id: document.getElementById('FoodGroup').value,
+                veggie_id: document.getElementById('Veggie').value,
+                protein_id: document.getElementById('Protein').value,
+                fruit_id: document.getElementById('Fruit').value,
+                calories: document.getElementById('calories').value,
+                totalFat: document.getElementById('fat').value,
+                satFat: document.getElementById('satFat').value,
+                cholesterol: document.getElementById('cholesterol').value,
+                sodium: document.getElementById('sodium').value,
+                carbs: document.getElementById('carbs').value,
+                fiber: document.getElementById('fiber').value,
+                sugars: document.getElementById('sugars').value,
+                protein: document.getElementById('protein').value,
+                user_id: <?php echo $user_id ?>
+            };
+
+            // Send food data to the server (you'll need to define the actual endpoint)
+            fetch('../functions/food_history/recipe-store.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(foodData),
+                })
+                .then(response =>response.json())
+                .then(data => {
+                    if (data.status == "success") {
+                        modal.hide();
+                        Swal.fire("Success", "Recipe added successfully!", "success")
+                            .then(() => location.reload())
+                    } else {
+                        swal("Error", "Failed to add recipe.", "error");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+    <!-- Script to display the recipes on the page -->
+    <script>
+        const recipes = <?php echo $recipes_json; ?>;
+
+        function displayRecipes(recipes) {
+            const recipeContainer = document.querySelector(".d-flex.flex-wrap.mt-3.gap-3");
+            recipeContainer.innerHTML = "";
+
+            recipes.forEach(recipe => {
+                const card = document.createElement("div");
+                card.classList.add("meal-card-rec");
+                // const recipeImage = recipe.image ? recipe.image : 'https://via.placeholder.com/150'
+                const recipeImage = recipe.image && recipe.image.startsWith('https://www.') 
+                ? recipe.image 
+                : `../assets/images/recipe_images/uploads/${recipe.image}`;
+
+                card.innerHTML = `
+                    <div class="custom-border rounded my-recipe-img-card-box">
+                        <img class="my-recipe-img-card" src="${recipeImage}" alt="${recipe.label}">
+                        <div class="meal-name">${recipe.label}</div>
+                        <div class="meal-info">
+                            ${recipe.calories} kcal<br>
+                            ${recipe.amount} ${recipe.unit}
+                        </div>
+                    </div>
+                    `;
+                recipeContainer.appendChild(card);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            displayRecipes(recipes);
+        });
     </script>
 
 </body>

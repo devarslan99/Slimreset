@@ -41,7 +41,7 @@ if ($login_user_role == 'coach') {
     }
 }
 $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
-print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id);
+// print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id);
 ?>
 
 <style>
@@ -330,7 +330,6 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
         scrollbar-color: #946CFC #f9f9f9;
     }
 
-    /* Scrollbar styles for WebKit browsers (Chrome, Edge, Safari) */
     #notification-list::-webkit-scrollbar {
         width: 8px;
     }
@@ -353,6 +352,34 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
     }
 </style>
 
+<?php
+$currentPath = $_SERVER['REQUEST_URI'];
+// Admin section
+$showDashboard = strpos($currentPath, "dashboard/dashboard.php") !== false;
+$showAddUser = strpos($currentPath, "users/create.php") !== false;
+$showViewUser = strpos($currentPath, "users/view.php") !== false || strpos($currentPath, "users/edit.php") !== false;
+$showAssignCoach = strpos($currentPath, "coach/assign.php") !== false;
+$showViewCoach = strpos($currentPath, "coach/view.php") !== false || strpos($currentPath, "coach/edit.php") !== false;
+$showFoodCat = strpos($currentPath, "food_category/create.php") !== false;
+$showViewCat = strpos($currentPath, "food_category/view.php") !== false || strpos($currentPath, "food_category/edit.php") !== false;
+$showFoodRecom = strpos($currentPath, "food_recommendation/create.php") !== false;
+$showViewRecom = strpos($currentPath, "food_recommendation/view.php") !== false || strpos($currentPath, "food_recommendation/edit.php") !== false;
+
+// Coach section
+$showInviteClient = strpos($currentPath, "clients/invite_clients.php") !== false;
+$showMyClients = strpos($currentPath, "clients/view.php") !== false || strpos($currentPath, "clients/summary.php") !== false;
+$showMealType = strpos($currentPath, "clients/add-meal-type.php") !== false;
+$showViewMealType = strpos($currentPath, "clients/view-meal-type.php") !== false || strpos($currentPath, "clients/edit-meal-type.php") !== false;
+$showFoodGroup = strpos($currentPath, "clients/add-food-group.php") !== false;
+$showViewFoodGroup = strpos($currentPath, "clients/view-food-group.php") !== false || strpos($currentPath, "clients/edit-food-group.php") !== false;
+$showProtein = strpos($currentPath, "clients/add-protein.php") !== false;
+$showViewProtein = strpos($currentPath, "clients/view-protein.php") !== false || strpos($currentPath, "clients/edit-protein.php") !== false;
+$showVeggie = strpos($currentPath, "clients/add-veggie.php") !== false;
+$showViewVeggie = strpos($currentPath, "clients/view-veggie.php") !== false || strpos($currentPath, "clients/edit-veggie.php") !== false;
+$showFruit = strpos($currentPath, "clients/add-fruit.php") !== false;
+$showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || strpos($currentPath, "clients/edit-fruit.php") !== false;
+?>
+
 <div class="page-header row">
     <div class="header-logo-wrapper col-auto">
         <div class="logo-wrapper">
@@ -367,39 +394,39 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
             <div class="navbar-container">
                 <div class="scrollable-nav">
                     <ul class="d-flex align-items-center gap-4">
-                        <li><a class="bread-crum-Link" href="../dashboard/dashboard.php">Dashboard</a></li>
+                        <li><a class="bread-crum-Link <?php echo $showDashboard ? 'main-color fw-bold' : '' ?>" href="../dashboard/dashboard.php">Dashboard</a></li>
                         <?php
                         $role = $_SESSION['role'];
                         if ($role == "admin") {
                         ?>
-                            <li><a class="bread-crum-Link" href="../users/create.php">Add User</a></li>
-                            <li><a class="bread-crum-Link" href="../users/view.php">View Users</a></li>
-                            <li><a class="bread-crum-Link" href="../coach/assign.php">Assign Coach</a></li>
-                            <li><a class="bread-crum-Link" href="../coach/view.php">View Coach</a></li>
-                            <li><a class="bread-crum-Link" href="../food_category/create.php">Add Food Category</a></li>
-                            <li><a class="bread-crum-Link" href="../food_category/view.php">View Food Category</a></li>
-                            <li><a class="bread-crum-Link" href="../food_recommendation/create.php">Add Food Recommendation</a></li>
-                            <li><a class="bread-crum-Link" href="../food_recommendation/view.php">View Food Recommendation</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showAddUser ? 'main-color fw-bold' : '' ?>" href="../users/create.php">Add User</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showViewUser ? 'main-color fw-bold' : '' ?>" href="../users/view.php">View Users</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showAssignCoach ? 'main-color fw-bold' : '' ?>" href="../coach/assign.php">Assign Coach</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showViewCoach ? 'main-color fw-bold' : '' ?>" href="../coach/view.php">View Coach</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showFoodCat ? 'main-color fw-bold' : '' ?>" href="../food_category/create.php">Add Food Category</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showViewCat ? 'main-color fw-bold' : '' ?>" href="../food_category/view.php">View Food Category</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showFoodRecom ? 'main-color fw-bold' : '' ?>" href="../food_recommendation/create.php">Add Food Recommendation</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showViewRecom ? 'main-color fw-bold' : '' ?>" href="../food_recommendation/view.php">View Food Recommendation</a></li>
                             <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
                         <?php
                         } else if ($role == "client") {
                         ?>
-                            <li><a class="bread-crum-Link" href="../clients/summary.php?id=<?php echo $_SESSION['user_id'] ?>">My Profile</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showMyClients ? 'main-color fw-bold' : '' ?>" href="../clients/summary.php?id=<?php echo $_SESSION['user_id'] ?>">My Profile</a></li>
                         <?php
                         } else if ($role == "coach") {
                         ?>
-                            <li><a class="bread-crum-Link" href="../clients/invite_clients.php">Invite Clients</a></li>
-                            <li><a class="bread-crum-Link" href="../clients/view.php">My Clients</a></li>
-                            <li><a class="bread-crum-Link" href="../clients/add-meal-type.php">Add Meal</a></li>
-                            <li><a class="bread-crum-Link" href="../clients/view-meal-type.php">View Meal</a></li>
-                            <li><a class="bread-crum-Link" href="../clients/add-food-group.php">Add Food</a></li>
-                            <li><a class="bread-crum-Link" href="../clients/view-food-group.php">View Food</a></li>
-                            <li><a class="bread-crum-Link" href="../clients/add-protein.php">Add Protein</a></li>
-                            <li><a class="bread-crum-Link" href="../clients/view-protein.php">View Protein</a></li>
-                            <li><a class="bread-crum-Link" href="../clients/add-veggie.php">Add Veggie</a></li>
-                            <li><a class="bread-crum-Link" href="../clients/view-veggie.php">View Veggie</a></li>
-                            <li><a class="bread-crum-Link" href="../clients/add-fruit.php">Add Fruit</a></li>
-                            <li><a class="bread-crum-Link" href="../clients/view-fruit.php">View Fruit</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showInviteClient ? 'main-color fw-bold' : '' ?>" href="../clients/invite_clients.php">Invite Clients</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showMyClients ? 'main-color fw-bold' : '' ?>" href="../clients/view.php">My Clients</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showMealType ? 'main-color fw-bold' : '' ?>" href="../clients/add-meal-type.php">Add Meal</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showViewMealType ? 'main-color fw-bold' : '' ?>" href="../clients/view-meal-type.php">View Meal</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showFoodGroup ? 'main-color fw-bold' : '' ?>" href="../clients/add-food-group.php">Add Food</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showViewFoodGroup ? 'main-color fw-bold' : '' ?>" href="../clients/view-food-group.php">View Food</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showProtein ? 'main-color fw-bold' : '' ?>" href="../clients/add-protein.php">Add Protein</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showViewProtein? 'main-color fw-bold' : '' ?>" href="../clients/view-protein.php">View Protein</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showVeggie ? 'main-color fw-bold' : '' ?>" href="../clients/add-veggie.php">Add Veggie</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showViewVeggie ? 'main-color fw-bold' : '' ?>" href="../clients/view-veggie.php">View Veggie</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showFruit ? 'main-color fw-bold' : '' ?>" href="../clients/add-fruit.php">Add Fruit</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showViewFruit ? 'main-color fw-bold' : '' ?>" href="../clients/view-fruit.php">View Fruit</a></li>
                             <li><a class="bread-crum-Link" href="../functions/logout.php">Logout</a></li>
                         <?php
                         }
@@ -501,16 +528,20 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
                         <?php endif; ?>
                     <?php endif; ?>
 
-                    <li class="custom-notification-dropdown onhover-dropdown px-0 py-0 d-none">
-                        <div class="d-flex custom-notification align-items-center position-relative">
-                            <i class="fa fa-bell-o bell-font-size" aria-hidden="true"></i>
-                            <!-- Counter Badge -->
-                            <span id="notification-counter" class="notification-counter">0</span>
-                        </div>
-                        <ul class="custom-notification-list onhover-show-div" id="notification-list">
-                            <!-- Notifications will be dynamically inserted here via JS -->
-                        </ul>
-                    </li>
+
+                    <?php if (!$login_user_role === "admin") : ?>
+                        <li class="custom-notification-dropdown onhover-dropdown px-0 py-0 d-none">
+                            <div class="d-flex custom-notification align-items-center position-relative">
+                                <i class="fa fa-bell-o bell-font-size" aria-hidden="true"></i>
+                                <!-- Counter Badge -->
+                                <span id="notification-counter" class="notification-counter">0</span>
+                            </div>
+                            <ul class="custom-notification-list onhover-show-div" id="notification-list">
+                                <!-- Notifications will be dynamically inserted here via JS -->
+                            </ul>
+                        </li>
+
+                    <?php endif; ?>
 
                     <?php
                     if (isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id'])) {
@@ -531,7 +562,7 @@ print_r("Client id" . " " . $user_one_id . " " . "Coach id" . " " . $user_two_id
 
                     <li class="profile-nav onhover-dropdown px-0 py-0">
                         <div class="d-flex profile-media align-items-center">
-                            <a href="../dashboard/profile.php">
+                            <a href="../dashboard/dashboard.php">
                                 <img class="img-30" src="<?php echo $_SESSION['profile_image'] ?>" alt="">
                             </a>
                             <div class="flex-grow-1">

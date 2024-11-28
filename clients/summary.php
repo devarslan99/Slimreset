@@ -221,15 +221,14 @@
         }
     }
 
-    #edit-view-box 
-    {
-        display:none;
-        gap:10px;
-        font-weight:600;
+    #edit-view-box {
+        display: none;
+        gap: 10px;
+        font-weight: 600;
     }
-    #edit-view-box a
-    {
-        text-decoration:underline;
+
+    #edit-view-box a {
+        text-decoration: underline;
     }
 </style>
 
@@ -281,7 +280,7 @@ foreach ($weight_history as $index => $entry) {
     <div class="page-wrapper compact-wrapper" style="background: #ffffff !important;" id="pageWrapper">
         <?php include_once "../utils/navbar.php" ?>
         <div class="page-body-wrapper">
-        <?php include_once "../utils/sidebar.php" ?>
+            <?php include_once "../utils/sidebar.php" ?>
             <div class="page-body">
                 <!-- Container-fluid starts-->
                 <div class="container-fluid">
@@ -445,15 +444,18 @@ foreach ($weight_history as $index => $entry) {
 
                                                                             <!-- Recipe Column -->
                                                                             <div class="col-lg-3">
-                                                                                <div>
-                                                                                    <?php include_once '../functions/food-logs/recipies.php' ?>
-                                                                                </div>
+                                                                                <?php include '../functions/food-logs/recipies.php' ?>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="tab-pane fade" id="my-planner" role="tabpanel" aria-labelledby="my-planner-tab">
                                                                         <!-- My Planner Content -->
-                                                                        <?php include_once '../functions/food-logs/my-planner.php'  ?>
+                                                                        <div class="row">
+                                                                            <?php include_once '../functions/food-logs/my-planner.php'  ?>
+                                                                            <div class="col-lg-3">
+                                                                                <?php include '../functions/food-logs/recipies.php'  ?>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                     <div class="tab-pane fade" id="my-tracker" role="tabpanel" aria-labelledby="my-tracker-tab">
                                                                         <!-- My Tracker Content -->

@@ -471,7 +471,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 </style>
 
-<div class="row">
+
     <div class="col-lg-9">
         <div class="container-fluid">
             <div class="row align-items-center">
@@ -695,73 +695,8 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             </div>
         </div>
     </div>
-    <div class="col-lg-3">
-        <h1 class="text-center">Recipes</h1>
-        <!-- Dropdowns -->
-        <div class="my-3">
-            <div class="row g-2">
-                <div class="col-12 col-sm-6 col-md-4">
-                    <select class="custom-select w-100">
-                        <option selected>Select by protein</option>
-                        <option>Chicken</option>
-                        <option>Turkey</option>
-                        <option>Eggs</option>
-                    </select>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <select class="custom-select w-100">
-                        <option selected>Select by veggie</option>
-                        <option>Asparagus</option>
-                        <option>Broccoli</option>
-                        <option>Carrot</option>
-                    </select>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <select class="custom-select w-100">
-                        <option selected>Select by fruit</option>
-                        <option>Apples</option>
-                        <option>Bananas</option>
-                        <option>Grapes</option>
-                    </select>
-                </div>
-            </div>
-        </div>
 
-        <!-- Category Checkboxes -->
-        <div class="d-flex flex-wrap gap-3 recipe-checkboxes">
-            <div class="custom-checkbox">
-                <input type="checkbox" id="breakfast">
-                <label for="breakfast">Breakfast</label>
-            </div>
-            <div class="custom-checkbox">
-                <input type="checkbox" id="lunch">
-                <label for="lunch">Lunch/Dinner</label>
-            </div>
-            <div class="custom-checkbox">
-                <input type="checkbox" id="snacks">
-                <label for="snacks">Snacks</label>
-            </div>
-            <div class="custom-checkbox">
-                <input type="checkbox" id="beverages">
-                <label for="beverages">Beverages</label>
-            </div>
-            <div class="custom-checkbox">
-                <input type="checkbox" id="flavourings">
-                <label for="flavourings">Flavorings</label>
-            </div>
-            <div class="custom-checkbox">
-                <input type="checkbox" id="dessert">
-                <label for="dessert">Dessert</label>
-            </div>
-        </div>
-
-        <!-- Recipe Cards -->
-        <div class="d-flex flex-wrap mt-3 gap-2" id="meal-cards">
-            <!-- Recipe Card will came here dynamically from jQuery -->
-        </div>
-    </div>
-</div>
-
+    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/vfs_fonts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>

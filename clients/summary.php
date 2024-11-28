@@ -444,15 +444,18 @@ foreach ($weight_history as $index => $entry) {
 
                                                                             <!-- Recipe Column -->
                                                                             <div class="col-lg-3">
-                                                                                <div>
-                                                                                    <?php include_once '../functions/food-logs/recipies.php' ?>
-                                                                                </div>
+                                                                                <?php include '../functions/food-logs/recipies.php' ?>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="tab-pane fade" id="my-planner" role="tabpanel" aria-labelledby="my-planner-tab">
                                                                         <!-- My Planner Content -->
-                                                                        <?php include_once '../functions/food-logs/my-planner.php'  ?>
+                                                                        <div class="row">
+                                                                            <?php include_once '../functions/food-logs/my-planner.php'  ?>
+                                                                            <div class="col-lg-3">
+                                                                                <?php include '../functions/food-logs/recipies.php'  ?>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                     <div class="tab-pane fade" id="my-tracker" role="tabpanel" aria-labelledby="my-tracker-tab">
                                                                         <!-- My Tracker Content -->

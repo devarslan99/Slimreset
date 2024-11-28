@@ -46,6 +46,7 @@ if ($login_user_role == 'coach') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet">
     <style>
         .chat-box {
             max-height: 500px;
@@ -98,6 +99,13 @@ if ($login_user_role == 'coach') {
             text-align: end;
         }
 
+        .chat-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
         .chat-footer input {
             padding: 10px;
             border-radius: 15px;
@@ -106,12 +114,59 @@ if ($login_user_role == 'coach') {
 
         .send-button {
             border-radius: 15px;
-            padding: 11px;
+            padding: 14px;
             width: 100%;
+            background: grey;
+            color: #fff;
+            transition: .3s all ease-in-out;
+            cursor: not-allowed
+        }
+
+        .send-button:hover {
+            color: #fff;
+            background: #946CFC;
+        }
+
+        .send-button.disabled {
+            background: grey;
+            cursor: not-allowed;
+        }
+
+        .send-button.disabled:hover {
+            background: grey;
         }
 
         .assigned-person {
             color: #946CFC !important;
+        }
+
+        .input-container {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-control {
+            padding-right: 30px;
+            width: 100%;
+        }
+
+        #clip-icon {
+            position: absolute;
+            right: 20px;
+            cursor: pointer;
+            font-size: 25px;
+            color: #555;
+            transition: .3s all ease-in-out;
+        }
+
+        #clip-icon:hover {
+            color: #946CFC;
+        }
+
+        .col-auto {
+            flex: 0 0 auto;
         }
     </style>
 </head>
@@ -129,14 +184,31 @@ if ($login_user_role == 'coach') {
         <div id="chat-box" class="chat-box my-3"></div>
 
         <div class="chat-footer row g-2">
-            <div class="col">
-                <input type="text" id="message-input" class="form-control" placeholder="Type your message">
+            <div class="input-container">
+                <input type="text" id="message-input" class="form-control" placeholder="Type your message" oninput="handleInputChange()">
+                <i class="fa fa-paperclip" id="clip-icon" aria-hidden="true"></i>
             </div>
+
             <div class="col-auto" style="flex: 0 0 8rem;">
-                <button id="send-button" class="btn btn-primary send-button">Send</button>
+                <button id="send-button" class="btn send-button disabled">Send</button>
             </div>
         </div>
     </div>
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+    <script>
+        function handleInputChange() {
+            const messageInput = document.getElementById('message-input');
+            const sendButton = document.getElementById('send-button');
+
+            if (messageInput.value.trim() !== '') {
+                sendButton.classList.remove('disabled');
+                sendButton.style.cursor = 'pointer';
+            } else {
+                sendButton.classList.add('disabled');
+                sendButton.style.cursor = 'not-allowed';
+            }
+        }
+    </script>
 
 </body>
 

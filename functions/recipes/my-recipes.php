@@ -5,8 +5,8 @@ $user_id = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) :
 
 $recipes = [];
 if ($user_id) {
-    $stmt = mysqli_prepare($mysqli, "SELECT * FROM recipe_items WHERE user_id = ?");
-    mysqli_stmt_bind_param($stmt, "i", $user_id);
+    $stmt = mysqli_prepare($mysqli, "SELECT * FROM recipe_items ORDER BY id DESC");
+    // mysqli_stmt_bind_param($stmt, "i", $user_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $recipes = $result ? mysqli_fetch_all($result, MYSQLI_ASSOC) : [];
@@ -299,8 +299,8 @@ $recipes_json = json_encode($recipes);
             <h2 class="text-center flex-grow-1 mb-0">My Recipes</h2>
             <div class="d-flex justify-content-between align-items-center my-4">
                 <div class="custom-checkbox-my-recipes d-flex align-items-center">
-                    <input type="checkbox" id="lunch">
-                    <label for="lunch" class="mb-0">Lunch/Dinner</label>
+                    <input type="checkbox" id="lunchBox">
+                    <label for="lunchBox" class="mb-0">Lunch/Dinner</label>
                 </div>
                 <button class="btn btn-primary rounded-pill py-2" onclick="openRecipeModal('recipeModal')" style="background-color: #946CFC; border: none;">
                     Add Recipe
@@ -371,6 +371,16 @@ $recipes_json = json_encode($recipes);
 
     <!-- Script to get meal-types filter data -->
     <script>
+
+        function resetOtherFilters(exceptFilter) {
+            const filters = ['filter-meal-type', 'filter-food-group', 'filter-veggie', 'filter-protein', 'filter-fruit'];
+            filters.forEach(filter => {
+                if (filter !== exceptFilter) {
+                    document.getElementById(filter).selectedIndex = 0;
+                }
+            });
+        }
+
         function fetchAndPopulateFilterMealTypes() {
             const filterMealType = document.getElementById('filter-meal-type');
 
@@ -397,13 +407,28 @@ $recipes_json = json_encode($recipes);
         }
 
         function handleMealTypeChange(event) {
-            const selectedOption = event.target.selectedOptions[0];
-            const mealTypeId = selectedOption.value;
+            resetOtherFilters('filter-meal-type')
+            const filter_Meal_Type = document.getElementById('filter-meal-type');
+            const lunchCheckbox = document.getElementById('lunchBox');
+            const mealTypeId = filter_Meal_Type.value;
 
             if (mealTypeId) {
                 filterMealType('meal-type', mealTypeId);
+                lunchCheckbox.checked = false;  
             } else {
                 console.log('No valid meal type selected.');
+            }
+        }
+
+        function handleCheckboxChange(event) {
+            const filter_Meal_Type = document.getElementById('filter-meal-type');
+            const lunchCheckbox = document.getElementById('lunchBox');
+
+            if (lunchCheckbox.checked) {
+                filter_Meal_Type.selectedIndex = 0;
+                filterMealType('meal-type', '9'); 
+            } else {
+                console.log('Checkbox is unchecked.');
             }
         }
 
@@ -415,7 +440,6 @@ $recipes_json = json_encode($recipes);
                 data: { category: type, itemId: id },
                 success: function (response) {
                     displayRecipes(response.data)
-                    console.log('Meal Type Filter Response:', response.data);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error filtering meal type:', error);
@@ -424,11 +448,22 @@ $recipes_json = json_encode($recipes);
         }
 
         document.getElementById('filter-meal-type').addEventListener('change', handleMealTypeChange);
+        document.getElementById('lunchBox').addEventListener('change', handleCheckboxChange);
         fetchAndPopulateFilterMealTypes();
     </script>
 
     <!-- Script to get food-groups filter data -->
     <script>
+
+        function resetOtherFilters(exceptFilter) {
+            const filters = ['filter-meal-type', 'filter-food-group', 'filter-veggie', 'filter-protein', 'filter-fruit'];
+            filters.forEach(filter => {
+                if (filter !== exceptFilter) {
+                    document.getElementById(filter).selectedIndex = 0;
+                }
+            });
+        }
+
         function fetchAndPopulateFilterFoodGroup() {
             const filterFoodGroup = document.getElementById('filter-food-group');
 
@@ -455,13 +490,27 @@ $recipes_json = json_encode($recipes);
         }
 
         function handleFoodGroupChange(event) {
+            resetOtherFilters('filter-food-group')
             const selectedOption = event.target.selectedOptions[0];
+            const lunchCheckbox = document.getElementById('lunchBox');
             const foodGroupId = selectedOption.value;
 
             if (foodGroupId) {
                 filterFoodGroup('food-group', foodGroupId);
+                lunchCheckbox.checked = false;  
             } else {
                 console.log('No valid food group selected.');
+            }
+        }
+        
+        function handleCheckboxChange(event) {
+            const filter_food_group = document.getElementById('filter-food-group');
+            const lunchCheckbox = document.getElementById('lunchBox');
+
+            if (lunchCheckbox.checked) {
+                filter_food_group.selectedIndex = 0;
+            } else {
+                console.log('Checkbox is unchecked.');
             }
         }
 
@@ -473,7 +522,6 @@ $recipes_json = json_encode($recipes);
                 data: { category: type, itemId: id },
                 success: function (response) {
                     displayRecipes(response.data)
-                    console.log('Food Group Filter Response:', response);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error filtering food group:', error);
@@ -482,11 +530,22 @@ $recipes_json = json_encode($recipes);
         }
 
         document.getElementById('filter-food-group').addEventListener('change', handleFoodGroupChange);
+        document.getElementById('lunchBox').addEventListener('change', handleCheckboxChange);
         fetchAndPopulateFilterFoodGroup();
     </script>
 
     <!-- Script to get veggies filter data -->
     <script>
+
+        function resetOtherFilters(exceptFilter) {
+            const filters = ['filter-meal-type', 'filter-food-group', 'filter-veggie', 'filter-protein', 'filter-fruit'];
+            filters.forEach(filter => {
+                if (filter !== exceptFilter) {
+                    document.getElementById(filter).selectedIndex = 0;
+                }
+            });
+        }
+
         function fetchAndPopulateFilterVeggie() {
             const filterVeggie = document.getElementById('filter-veggie');
 
@@ -496,7 +555,7 @@ $recipes_json = json_encode($recipes);
                 dataType: 'json',
                 success: function (response) {
                     if (response.length > 0) {
-                        filterVeggie.innerHTML = '<option value="">Select Veggie</option>';
+                        filterVeggie.innerHTML = '<option value="">By Veggie</option>';
                         response.forEach(resp => {
                             filterVeggie.innerHTML += `
                                 <option value="${resp.id}">${resp.name}</option>
@@ -513,13 +572,27 @@ $recipes_json = json_encode($recipes);
         }
 
         function handleVeggieChange(event) {
+            resetOtherFilters('filter-veggie')
             const selectedOption = event.target.selectedOptions[0];
+            const lunchCheckbox = document.getElementById('lunchBox');
             const veggieId = selectedOption.value;
 
             if (veggieId) {
                 filterVeggie('veggie', veggieId);
+                lunchCheckbox.checked = false;
             } else {
                 console.log('No valid veggie selected.');
+            }
+        }
+
+        function handleCheckboxChange(event) {
+            const filter_veggie = document.getElementById('filter-veggie');
+            const lunchCheckbox = document.getElementById('lunchBox');
+
+            if (lunchCheckbox.checked) {
+                filter_veggie.selectedIndex = 0;
+            } else {
+                console.log('Checkbox is unchecked.');
             }
         }
 
@@ -531,7 +604,6 @@ $recipes_json = json_encode($recipes);
                 data: { category: type, itemId: id },
                 success: function (response) {
                     displayRecipes(response.data)
-                    console.log('Veggie Filter Response:', response);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error filtering veggie:', error);
@@ -540,11 +612,22 @@ $recipes_json = json_encode($recipes);
         }
 
         document.getElementById('filter-veggie').addEventListener('change', handleVeggieChange);
+        document.getElementById('lunchBox').addEventListener('change', handleVeggieChange);
         fetchAndPopulateFilterVeggie();
     </script>
 
-     <!-- Script to get protein filter data -->
-     <script>
+    <!-- Script to get protein filter data -->
+    <script>
+
+        function resetOtherFilters(exceptFilter) {
+            const filters = ['filter-meal-type', 'filter-food-group', 'filter-veggie', 'filter-protein', 'filter-fruit'];
+            filters.forEach(filter => {
+                if (filter !== exceptFilter) {
+                    document.getElementById(filter).selectedIndex = 0;
+                }
+            });
+        }
+
         function fetchAndPopulateFilterProtein() {
             const filterProtein = document.getElementById('filter-protein');
 
@@ -554,7 +637,7 @@ $recipes_json = json_encode($recipes);
                 dataType: 'json',
                 success: function (response) {
                     if (response.length > 0) {
-                        filterProtein.innerHTML = '<option value="">Select Protein</option>';
+                        filterProtein.innerHTML = '<option value="">By Protein</option>';
                         response.forEach(resp => {
                             filterProtein.innerHTML += `
                                 <option value="${resp.id}">${resp.name}</option>
@@ -571,13 +654,27 @@ $recipes_json = json_encode($recipes);
         }
 
         function handleProteinChange(event) {
+            resetOtherFilters('filter-protein')
             const selectedOption = event.target.selectedOptions[0];
+            const lunchCheckbox = document.getElementById('lunchBox');
             const proteinId = selectedOption.value;
 
             if (proteinId) {
                 filterProtein('protein', proteinId);
+                lunchCheckbox.checked = false;
             } else {
                 console.log('No valid protein selected.');
+            }
+        }
+
+        function handleCheckboxChange(event) {
+            const filter_protein = document.getElementById('filter-protein');
+            const lunchCheckbox = document.getElementById('lunchBox');
+
+            if (lunchCheckbox.checked) {
+                filter_veggie.selectedIndex = 0;
+            } else {
+                console.log('Checkbox is unchecked.');
             }
         }
 
@@ -589,7 +686,6 @@ $recipes_json = json_encode($recipes);
                 data: { category: type, itemId: id },
                 success: function (response) {
                     displayRecipes(response.data)
-                    console.log('Protein Filter Response:', response);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error filtering protein:', error);
@@ -598,11 +694,22 @@ $recipes_json = json_encode($recipes);
         }
 
         document.getElementById('filter-protein').addEventListener('change', handleProteinChange);
+        document.getElementById('lunchBox').addEventListener('change', handleProteinChange);
         fetchAndPopulateFilterProtein();
     </script>
 
-     <!-- Script to get fruit filter data-->
-     <script>
+    <!-- Script to get fruit filter data-->
+    <script>
+
+        function resetOtherFilters(exceptFilter) {
+            const filters = ['filter-meal-type', 'filter-food-group', 'filter-veggie', 'filter-protein', 'filter-fruit'];
+            filters.forEach(filter => {
+                if (filter !== exceptFilter) {
+                    document.getElementById(filter).selectedIndex = 0;
+                }
+            });
+        }
+
         function fetchAndPopulateFilterFruit() {
             const filterFruit = document.getElementById('filter-fruit');
 
@@ -612,7 +719,7 @@ $recipes_json = json_encode($recipes);
                 dataType: 'json',
                 success: function (response) {
                     if (response.length > 0) {
-                        filterFruit.innerHTML = '<option value="">Select Fruit</option>';
+                        filterFruit.innerHTML = '<option value="">By Fruit</option>';
                         response.forEach(resp => {
                             filterFruit.innerHTML += `
                                 <option value="${resp.id}">${resp.name}</option>
@@ -629,13 +736,27 @@ $recipes_json = json_encode($recipes);
         }
 
         function handleFruitChange(event) {
+            resetOtherFilters('filter-fruit')
             const selectedOption = event.target.selectedOptions[0];
+            const lunchCheckbox = document.getElementById('lunchBox');
             const fruitId = selectedOption.value;
 
             if (fruitId) {
                 filterFruit('fruit', fruitId);
+                lunchCheckbox.checked = false;
             } else {
                 console.log('No valid fruit selected.');
+            }
+        }
+
+        function handleCheckboxChange(event) {
+            const filter_fruit = document.getElementById('filter-fruit');
+            const lunchCheckbox = document.getElementById('lunchBox');
+
+            if (lunchCheckbox.checked) {
+                filter_veggie.selectedIndex = 0;
+            } else {
+                console.log('Checkbox is unchecked.');
             }
         }
 
@@ -647,7 +768,6 @@ $recipes_json = json_encode($recipes);
                 data: { category: type, itemId: id },
                 success: function (response) {
                     displayRecipes(response.data)
-                    console.log('Fruit Filter Response:', response);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error filtering fruit:', error);

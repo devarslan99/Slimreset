@@ -471,231 +471,287 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 </style>
 
-
-    <div class="col-lg-9">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col text-center mb-3 mb-sm-0">
-                    <h1 class="mb-0 fs-2 fs-md-1">Let's plan your meals</h1>
-                </div>
-
-                <div class="col-auto d-none d-sm-inline-flex">
-                    <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold cursor-pointer">
-                        <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
-                        Grocery List
-                    </span>
-                </div>
-
-                <div class="col-12 text-center d-sm-none">
-                    <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold">
-                        <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
-                        Grocery List
-                    </span>
-                </div>
-                <div class="main-color text-center my-3 d-flex justify-content-center align-items-center">
-                    <div id="calendar-icon"><i class="fa fa-calendar me-2 fw-bold fs-4"  style="cursor: pointer;"></i></div>
-                    <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
-                        <i class="fa fa-angle-left fw-bold fs-4"></i>
-                    </a>
-                    <h3 class="text-center mx-2 d-inline main-color">
-                        <?php echo date('M d, Y', strtotime($selected_date)); ?>
-                    </h3>
-                    <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $next_date; ?>">
-                        <i class="fa fa-angle-right fw-bold fs-4"></i>
-                    </a>
-
-                    <!-- Hidden input field for Flatpickr calendar -->
-
-                    <input type='text' id="datepicker" style="display: none; width: 0px; height: 0px; outline: none; border: none; display: block;">
-                </div>
-            </div>
-
-            <!-- pop up box For Recipe -->
-            <div class="popup-overlay" id="popup-overlay">
-                <div class="popup-content">
-                    <div class="close-popup" onclick="closePopup()">X</div>
-                    <div class="meal-detail">
-                        <div class="ingredients">
-                            <h2>veggie omelette</h2>
-                            <strong>ingredients</strong>
-                            <span>egg</span>
-                            <span>your choice of veg</span>
-                        </div>
-                        <div class="details">
-                            <div><strong>calories</strong> 120 kcal</div>
-                            <div><strong>protein</strong> 1.5 oz</div>
-                            <div><strong>prep</strong> 5 min</div>
-                            <div><strong>cook</strong> 20 min</div>
-                        </div>
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col text-center mb-3 mb-sm-0">
+                        <h1 class="mb-0 fs-2 fs-md-1">Let's plan your meals</h1>
                     </div>
-                    <div class="view-recipe">
-                        <span class="star">★</span>
-                        <a href="#" class="view-recipe-btn">view full recipe</a>
+
+                    <div class="col-auto d-none d-sm-inline-flex">
+                        <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold cursor-pointer">
+                            <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
+                            Grocery List
+                        </span>
+                    </div>
+
+                    <div class="col-12 text-center d-sm-none">
+                        <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold">
+                            <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
+                            Grocery List
+                        </span>
+                    </div>
+                    <div class="main-color text-center my-3 d-flex justify-content-center align-items-center">
+                        <div id="calendar-icon"><i class="fa fa-calendar me-2 fw-bold fs-4"  style="cursor: pointer;"></i></div>
+                        <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
+                            <i class="fa fa-angle-left fw-bold fs-4"></i>
+                        </a>
+                        <h3 class="text-center mx-2 d-inline main-color">
+                            <?php echo date('M d, Y', strtotime($selected_date)); ?>
+                        </h3>
+                        <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $next_date; ?>">
+                            <i class="fa fa-angle-right fw-bold fs-4"></i>
+                        </a>
+
+                        <!-- Hidden input field for Flatpickr calendar -->
+
+                        <input type='text' id="datepicker" style="display: none; width: 0px; height: 0px; outline: none; border: none; display: block;">
                     </div>
                 </div>
-            </div>
-            
-            <!-- Grocery List Popup Overlay -->
-            <div class="grocery-popup-overlay" id="grocery-popup-overlay">
-                <div class="grocery-popup-content">
-                    <div class="grocery-close-popup" onclick="closeGroceryPopup()">X</div>
-                    <!-- dynamically content will display here -->
-                    <div class="grocery-list-box">
-                        <h2 class="grocery-list-title">grocery list</h2>
+
+                <!-- pop up box For Recipe -->
+                <div class="popup-overlay" id="popup-overlay">
+                    <div class="popup-content">
+                        <div class="close-popup" onclick="closePopup()">X</div>
+                        <div class="meal-detail">
+                            <div class="ingredients">
+                                <h2>veggie omelette</h2>
+                                <strong>ingredients</strong>
+                                <span>egg</span>
+                                <span>your choice of veg</span>
+                            </div>
+                            <div class="details">
+                                <div><strong>calories</strong> 120 kcal</div>
+                                <div><strong>protein</strong> 1.5 oz</div>
+                                <div><strong>prep</strong> 5 min</div>
+                                <div><strong>cook</strong> 20 min</div>
+                            </div>
+                        </div>
+                        <div class="view-recipe">
+                            <span class="star">★</span>
+                            <a href="#" class="view-recipe-btn">view full recipe</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Grocery List Popup Overlay -->
+                <div class="grocery-popup-overlay" id="grocery-popup-overlay">
+                    <div class="grocery-popup-content">
+                        <div class="grocery-close-popup" onclick="closeGroceryPopup()">X</div>
+                        <!-- dynamically content will display here -->
+                        <div class="grocery-list-box">
+                            <h2 class="grocery-list-title">grocery list</h2>
+                            
+                            <div class="list-box">
+                                <span class="label-name">
+                                    Breakfast
+                                </span>
+                                
+                                <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
+                                    <h3 class="fw-bold mb-0">Cheese Pizza</h3>
+                                    <p class="text-muted mb-0">Nov 12</p>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Left Column with Calories and Total Fat -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="left">
+                                            <div class="d-flex justify-content-between">
+                                                <h5 class="fw-bold mb-1">Calories</h5>
+                                                <p class="mb-0">2.74g</p>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h5 class="fw-bold  mb-1">Total Fat</h5>
+                                                <p class="mb-0">0.74g</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Column with Carbohydrates and Protein -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="right ">
+                                            <div class="d-flex justify-content-between">
+                                                <h5 class="fw-bold mb-1">Carbohydrates</h5>
+                                                <p class="mb-0">15g</p>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h5 class="fw-bold mb-1">Protein</h5>
+                                                <p class="mb-0">8g</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="list-box">
+                                <span class="label-name" data-label="Breakfast">
+                                    Breakfast
+                                </span>
+                                
+                                <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
+                                    <h3 class="fw-bold mb-0">Cheese Pizza</h3>
+                                    <p class="text-muted mb-0">Nov 12</p>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Left Column with Calories and Total Fat -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="left">
+                                            <div class="d-flex justify-content-between">
+                                                <h5 class="fw-bold mb-1">Calories</h5>
+                                                <p class="mb-0">2.74g</p>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h5 class="fw-bold  mb-1">Total Fat</h5>
+                                                <p class="mb-0">0.74g</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Column with Carbohydrates and Protein -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="right ">
+                                            <div class="d-flex justify-content-between">
+                                                <h5 class="fw-bold mb-1">Carbohydrates</h5>
+                                                <p class="mb-0">15g</p>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h5 class="fw-bold mb-1">Protein</h5>
+                                                <p class="mb-0">8g</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                
+                        </div>
+                        <!-- PDF Icon -->
+                        <div class="grocery-pdf-icon">
+                            <i class="fa fa-file-pdf-o" id="mealListPdfBtn"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2nd Grocery List Popup Box -->
+                <div class="grocery-popup-overlay" id="grocery-popup-overlay-2">
+                    <div class="grocery-popup-content">
+                        <div class="grocery-close-popup" onclick="closeGroceryPopup2()">X</div>
                         
-                        <div class="list-box">
-                            <span class="label-name">
-                                Breakfast
-                            </span>
+                        <h2 class="grocery-list-title">Grocery List</h2>
+                        <!-- Grocery List Content -->
+                        <div class="grocery-list-box grocery-list-box-2">
                             
-                            <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
-                                <h3 class="fw-bold mb-0">Cheese Pizza</h3>
-                                <p class="text-muted mb-0">Nov 12</p>
-                            </div>
-
-                            <div class="row">
-                                <!-- Left Column with Calories and Total Fat -->
-                                <div class="col-md-6 mb-3">
-                                    <div class="left">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="fw-bold mb-1">Calories</h5>
-                                            <p class="mb-0">2.74g</p>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="fw-bold  mb-1">Total Fat</h5>
-                                            <p class="mb-0">0.74g</p>
-                                        </div>
+                            <!-- Columns for Aisles -->
+                            <div class="grocery-columns">
+                                <!-- Left Column -->
+                                <div class="grocery-column">
+                                    <div class="grocery-aisle">
+                                        <h3>Vegetable Aisle</h3>
+                                        <ul>
+                                            <li>
+                                                <input type="checkbox" checked>
+                                                <span>Eggs, <strong>3</strong></span>
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" checked>
+                                                <span>Chicken Breast, <strong>3</strong></span>
+                                            </li>
+                                        </ul>
                                     </div>
+                                    <!-- Repeat as needed -->
                                 </div>
-
-                                <!-- Right Column with Carbohydrates and Protein -->
-                                <div class="col-md-6 mb-3">
-                                    <div class="right ">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="fw-bold mb-1">Carbohydrates</h5>
-                                            <p class="mb-0">15g</p>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="fw-bold mb-1">Protein</h5>
-                                            <p class="mb-0">8g</p>
-                                        </div>
+                                
+                                <!-- Right Column -->
+                                <div class="grocery-column">
+                                    <div class="grocery-aisle">
+                                        <h3>Vegetable Aisle</h3>
+                                        <ul>
+                                            <li>
+                                                <input type="checkbox" checked>
+                                                <span>Eggs, <strong>3</strong></span>
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" checked>
+                                                <span>Chicken Breast, <strong>3</strong></span>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="list-box">
-                            <span class="label-name" data-label="Breakfast">
-                                Breakfast
-                            </span>
-                            
-                            <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
-                                <h3 class="fw-bold mb-0">Cheese Pizza</h3>
-                                <p class="text-muted mb-0">Nov 12</p>
-                            </div>
-
-                            <div class="row">
-                                <!-- Left Column with Calories and Total Fat -->
-                                <div class="col-md-6 mb-3">
-                                    <div class="left">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="fw-bold mb-1">Calories</h5>
-                                            <p class="mb-0">2.74g</p>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="fw-bold  mb-1">Total Fat</h5>
-                                            <p class="mb-0">0.74g</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Right Column with Carbohydrates and Protein -->
-                                <div class="col-md-6 mb-3">
-                                    <div class="right ">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="fw-bold mb-1">Carbohydrates</h5>
-                                            <p class="mb-0">15g</p>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="fw-bold mb-1">Protein</h5>
-                                            <p class="mb-0">8g</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- PDF Icon -->
+                        <div class="grocery-pdf-icon">
+                            <i class="fa fa-file-pdf-o" onclick="GroceryListPdf(mealDataArray)"></i>
                         </div>
-
-            
-                    </div>
-                    <!-- PDF Icon -->
-                    <div class="grocery-pdf-icon">
-                        <i class="fa fa-file-pdf-o" id="mealListPdfBtn"></i>
                     </div>
                 </div>
-            </div>
 
-            <!-- 2nd Grocery List Popup Box -->
-            <div class="grocery-popup-overlay" id="grocery-popup-overlay-2">
-                <div class="grocery-popup-content">
-                    <div class="grocery-close-popup" onclick="closeGroceryPopup2()">X</div>
-                    
-                    <h2 class="grocery-list-title">Grocery List</h2>
-                    <!-- Grocery List Content -->
-                    <div class="grocery-list-box grocery-list-box-2">
-                        
-                        <!-- Columns for Aisles -->
-                        <div class="grocery-columns">
-                            <!-- Left Column -->
-                            <div class="grocery-column">
-                                <div class="grocery-aisle">
-                                    <h3>Vegetable Aisle</h3>
-                                    <ul>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>Eggs, <strong>3</strong></span>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>Chicken Breast, <strong>3</strong></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- Repeat as needed -->
-                            </div>
-                            
-                            <!-- Right Column -->
-                            <div class="grocery-column">
-                                <div class="grocery-aisle">
-                                    <h3>Vegetable Aisle</h3>
-                                    <ul>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>Eggs, <strong>3</strong></span>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" checked>
-                                            <span>Chicken Breast, <strong>3</strong></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                <div class="container mt-4">
+                    <div class="row" id="empty-card-slots">
+                        <!-- The empty card slots will display dynamically from jQuery -->
                     </div>
-                    <!-- PDF Icon -->
-                    <div class="grocery-pdf-icon">
-                        <i class="fa fa-file-pdf-o" onclick="GroceryListPdf(mealDataArray)"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container mt-4">
-                <div class="row" id="empty-card-slots">
-                    <!-- The empty card slots will display dynamically from jQuery -->
                 </div>
             </div>
         </div>
-    </div>
+        <div class="col-lg-3">
+            <h1 class="text-center">Recipes</h1>
+            <!-- Dropdowns -->
+            <div class="my-3">
+                <div class="row g-2">
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <select class="custom-select w-100" id="my-planner-filter-protein">
+                          
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <select class="custom-select w-100" id="my-planner-filter-veggie">
+                            
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <select class="custom-select w-100" id="my-planner-filter-fruit">
+                            
+                        </select>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Category Checkboxes -->
+            <div class="d-flex flex-wrap gap-3 recipe-checkboxes">
+                <div class="custom-checkbox">
+                    <input type="checkbox" id="breakfast">
+                    <label for="breakfast">Breakfast</label>
+                </div>
+                <div class="custom-checkbox">
+                    <input type="checkbox" id="lunch">
+                    <label for="lunch">Lunch/Dinner</label>
+                </div>
+                <div class="custom-checkbox">
+                    <input type="checkbox" id="snacks">
+                    <label for="snacks">Snacks</label>
+                </div>
+                <div class="custom-checkbox">
+                    <input type="checkbox" id="beverages">
+                    <label for="beverages">Beverages</label>
+                </div>
+                <div class="custom-checkbox">
+                    <input type="checkbox" id="flavourings">
+                    <label for="flavourings">Flavorings</label>
+                </div>
+                <div class="custom-checkbox">
+                    <input type="checkbox" id="dessert">
+                    <label for="dessert">Dessert</label>
+                </div>
+            </div>
+
+            <!-- Recipe Cards -->
+            <div class="d-flex flex-wrap mt-3 gap-2" id="meal-cards">
+                <!-- Recipe Card will came here dynamically from jQuery -->
+            </div>
+        </div>
+    </div>
     
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/vfs_fonts.js"></script>
@@ -840,7 +896,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                 }
             }
         ];
-    
+        
+        // const meal_card = document.getElementById('meal-cards')
+
         // Append meal cards to #meal-cards
         $.each(mealData, function(index, meal) {
             const mealCard = `
@@ -1338,12 +1396,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                                         // Remove from dayMealData for the corresponding day and meal section
                                         if (dayMealData[dayId]) {
-                                            const mealIndex = dayMealData[dayId].findIndex(meal => meal.mealId === mealId);  // Use mealId to find the correct meal
+                                            const mealIndex = dayMealData[dayId].findIndex(meal => meal.mealId === mealId); 
 
                                             // If the meal is found, remove it
                                             if (mealIndex !== -1) {
-                                                dayMealData[dayId].splice(mealIndex, 1); // Remove the meal from the array
-                                                console.log(`Meal removed: ${mealId} from ${dayId}`);
+                                                dayMealData[dayId].splice(mealIndex, 1); 
                                             } else {
                                                 console.error(`Meal with ID ${mealId} not found in dayMealData for dayId: ${dayId}`);
                                             }
@@ -1855,4 +1912,215 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         });
     });
 
+</script>
+
+<!-- Script to get protein filter data -->
+<script>
+
+    function resetAllOtherFilters(exceptFilter) {
+        const filters = ['my-planner-filter-protein', 'my-planner-filter-veggie', 'my-planner-filter-fruit'];
+        filters.forEach(filter => {
+            if (filter !== exceptFilter) {
+                document.getElementById(filter).selectedIndex = 0;
+            }
+        });
+    }
+
+    function fetchAndPopulatePlannerFilterProtein() {
+        const my_planner_filter_protein = document.getElementById('my-planner-filter-protein');
+
+        $.ajax({
+            url: '../functions/recipes/protein/fetch-protein.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.length > 0) {
+                    my_planner_filter_protein.innerHTML = '<option value="">By Protein</option>';
+                    response.forEach(resp => {
+                        my_planner_filter_protein.innerHTML += `
+                            <option value="${resp.id}">${resp.name}</option>
+                        `;
+                    });
+                } else {
+                    console.error('No proteins found.');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching proteins:', error);
+            }
+        });
+    }
+
+    function handlePlannerProteinChange(event) {
+        resetAllOtherFilters('my-planner-filter-protein')
+        const selectedOption = event.target.selectedOptions[0];
+        // const lunchCheckbox = document.getElementById('lunchBox');
+        const proteinId = selectedOption.value;
+
+        if (proteinId) {
+            plannerFilterProtein('protein', proteinId);
+            // lunchCheckbox.checked = false;
+        } else {
+            console.log('No valid protein selected.');
+        }
+    }
+
+    function plannerFilterProtein(type, id) {
+        $.ajax({
+            url: '../functions/recipes/filter-recipes.php',
+            method: 'POST',
+            dataType: 'json',
+            data: { category: type, itemId: id },
+            success: function (response) {
+                // displayRecipes(response.data)
+            },
+            error: function (xhr, status, error) {
+                console.error('Error filtering protein:', error);
+            }
+        });
+    }
+
+    document.getElementById('my-planner-filter-protein').addEventListener('change', handlePlannerProteinChange);
+    fetchAndPopulatePlannerFilterProtein();
+</script>
+
+<!-- Script to get veggies filter data -->
+<script>
+
+    function resetAllOtherFilters(exceptFilter) {
+        const filters = ['my-planner-filter-protein', 'my-planner-filter-veggie', 'my-planner-filter-fruit'];
+        filters.forEach(filter => {
+            if (filter !== exceptFilter) {
+                document.getElementById(filter).selectedIndex = 0;
+            }
+        });
+    }
+
+    function fetchAndPopulateMyPlannerFilterVeggie() {
+        const my_planner_filter_veggie = document.getElementById('my-planner-filter-veggie');
+
+        $.ajax({
+            url: '../functions/recipes/veggie/fetch-veggie.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.length > 0) {
+                    my_planner_filter_veggie.innerHTML = '<option >By Veggie</option>';
+                    response.forEach(resp => {
+                        my_planner_filter_veggie.innerHTML += `
+                            <option value="${resp.id}">${resp.name}</option>
+                        `;
+                    });
+                } else {
+                    console.error('No veggies found.');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching veggies:', error);
+            }
+        });
+    }
+
+    function handlePlannerVeggieChange(event) {
+        resetAllOtherFilters('my-planner-filter-veggie')
+        const selectedOption = event.target.selectedOptions[0];
+        // const lunchCheckbox = document.getElementById('lunchBox');
+        const veggieId = selectedOption.value;
+
+        if (veggieId) {
+            myplannerFilterVeggie('veggie', veggieId);
+            // lunchCheckbox.checked = false;
+        } else {
+            console.log('No valid veggie selected.');
+        }
+    }
+
+    function myplannerFilterVeggie(type, id) {
+        $.ajax({
+            url: '../functions/recipes/filter-recipes.php',
+            method: 'POST',
+            dataType: 'json',
+            data: { category: type, itemId: id },
+            success: function (response) {
+                // displayRecipes(response.data)
+                console.log(response)
+            },
+            error: function (xhr, status, error) {
+                console.error('Error filtering veggie:', error);
+            }
+        });
+    }
+
+    document.getElementById('my-planner-filter-veggie').addEventListener('change', handlePlannerVeggieChange);
+    fetchAndPopulateMyPlannerFilterVeggie();
+</script>
+
+<!-- Script to get fruit filter data-->
+<script>
+
+    function resetAllOtherFilters(exceptFilter) {
+        const filters = ['my-planner-filter-protein', 'my-planner-filter-veggie', 'my-planner-filter-fruit'];
+        filters.forEach(filter => {
+            if (filter !== exceptFilter) {
+                document.getElementById(filter).selectedIndex = 0;
+            }
+        });
+    }
+
+    function fetchAndPopulatePLannerFilterFruit() {
+        const my_planner_filter_fruit = document.getElementById('my-planner-filter-fruit');
+
+        $.ajax({
+            url: '../functions/recipes/fruit/fetch-fruit.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.length > 0) {
+                    my_planner_filter_fruit.innerHTML = '<option value="">By Fruit</option>';
+                    response.forEach(resp => {
+                        my_planner_filter_fruit.innerHTML += `
+                            <option value="${resp.id}">${resp.name}</option>
+                        `;
+                    });
+                } else {
+                    console.error('No fruits found.');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching fruits:', error);
+            }
+        });
+    }
+
+    function handlePLannerFruitChange(event) {
+        resetAllOtherFilters('my-planner-filter-fruit')
+        const selectedOption = event.target.selectedOptions[0];
+        // const lunchCheckbox = document.getElementById('lunchBox');
+        const fruitId = selectedOption.value;
+
+        if (fruitId) {
+            plannerFilterFruit('fruit', fruitId);
+            // lunchCheckbox.checked = false;
+        } else {
+            console.log('No valid fruit selected.');
+        }
+    }
+
+    function plannerFilterFruit(type, id) {
+        $.ajax({
+            url: '../functions/recipes/filter-recipes.php',
+            method: 'POST',
+            dataType: 'json',
+            data: { category: type, itemId: id },
+            success: function (response) {
+                // displayRecipes(response.data)
+            },
+            error: function (xhr, status, error) {
+                console.error('Error filtering fruit:', error);
+            }
+        });
+    }
+
+    document.getElementById('my-planner-filter-fruit').addEventListener('change', handlePLannerFruitChange);
+    fetchAndPopulatePLannerFilterFruit();
 </script>

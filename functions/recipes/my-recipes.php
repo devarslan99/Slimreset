@@ -502,17 +502,6 @@ $recipes_json = json_encode($recipes);
                 console.log('No valid food group selected.');
             }
         }
-        
-        function handleCheckboxChange(event) {
-            const filter_food_group = document.getElementById('filter-food-group');
-            const lunchCheckbox = document.getElementById('lunchBox');
-
-            if (lunchCheckbox.checked) {
-                filter_food_group.selectedIndex = 0;
-            } else {
-                console.log('Checkbox is unchecked.');
-            }
-        }
 
         function filterFoodGroup(type, id) {
             $.ajax({
@@ -530,7 +519,6 @@ $recipes_json = json_encode($recipes);
         }
 
         document.getElementById('filter-food-group').addEventListener('change', handleFoodGroupChange);
-        document.getElementById('lunchBox').addEventListener('change', handleCheckboxChange);
         fetchAndPopulateFilterFoodGroup();
     </script>
 
@@ -585,17 +573,6 @@ $recipes_json = json_encode($recipes);
             }
         }
 
-        function handleCheckboxChange(event) {
-            const filter_veggie = document.getElementById('filter-veggie');
-            const lunchCheckbox = document.getElementById('lunchBox');
-
-            if (lunchCheckbox.checked) {
-                filter_veggie.selectedIndex = 0;
-            } else {
-                console.log('Checkbox is unchecked.');
-            }
-        }
-
         function filterVeggie(type, id) {
             $.ajax({
                 url: '../functions/recipes/filter-recipes.php',
@@ -612,7 +589,6 @@ $recipes_json = json_encode($recipes);
         }
 
         document.getElementById('filter-veggie').addEventListener('change', handleVeggieChange);
-        document.getElementById('lunchBox').addEventListener('change', handleVeggieChange);
         fetchAndPopulateFilterVeggie();
     </script>
 
@@ -667,17 +643,6 @@ $recipes_json = json_encode($recipes);
             }
         }
 
-        function handleCheckboxChange(event) {
-            const filter_protein = document.getElementById('filter-protein');
-            const lunchCheckbox = document.getElementById('lunchBox');
-
-            if (lunchCheckbox.checked) {
-                filter_veggie.selectedIndex = 0;
-            } else {
-                console.log('Checkbox is unchecked.');
-            }
-        }
-
         function filterProtein(type, id) {
             $.ajax({
                 url: '../functions/recipes/filter-recipes.php',
@@ -694,7 +659,6 @@ $recipes_json = json_encode($recipes);
         }
 
         document.getElementById('filter-protein').addEventListener('change', handleProteinChange);
-        document.getElementById('lunchBox').addEventListener('change', handleProteinChange);
         fetchAndPopulateFilterProtein();
     </script>
 
@@ -746,17 +710,6 @@ $recipes_json = json_encode($recipes);
                 lunchCheckbox.checked = false;
             } else {
                 console.log('No valid fruit selected.');
-            }
-        }
-
-        function handleCheckboxChange(event) {
-            const filter_fruit = document.getElementById('filter-fruit');
-            const lunchCheckbox = document.getElementById('lunchBox');
-
-            if (lunchCheckbox.checked) {
-                filter_veggie.selectedIndex = 0;
-            } else {
-                console.log('Checkbox is unchecked.');
             }
         }
 

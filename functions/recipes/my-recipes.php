@@ -1105,16 +1105,44 @@ $recipes_json = json_encode($recipes);
                     // Edamam stores food items in the 'parsed' and 'hints' arrays
                     const foodItems = [...data.parsed, ...data.hints.map(hint => hint.food)];
                     const validFoodItems = foodItems.filter(item => item.nutrients && Object.keys(item.nutrients).length > 0);
-                    validFoodItems.forEach(item => {
-                        const li = document.createElement('li');
-                        li.classList.add('list-group-item');
-                        li.innerHTML = item.label || `${item.food.label}`;
-                        li.onclick = () =>{
-                            selectRecipeItem(item, li)
-                            searchResultsForRecipe.innerHTML = '';
-                        }; // Pass the selected item and the li element
-                        searchResultsForRecipe.appendChild(li);
-                    });
+                    
+                    if (validFoodItems.length > 0) {
+                        validFoodItems.forEach(item => {
+                            const li = document.createElement('li');
+                            li.classList.add('list-group-item');
+                            li.innerHTML = item.label || `${item.food.label}`;
+                            li.onclick = () => {
+                                selectRecipeItem(item, li);
+                                searchResultsForRecipe.innerHTML = '';
+                            };
+                            searchResultsForRecipe.appendChild(li);
+                        });
+                    } else {
+                        const customRecipe = {
+                            heading: 'The recipe you add not found you can add your custom recipe',
+                            label: query,
+                            nutrients: {
+                                ENERC_KCAL: 0,
+                                FAT: "0",
+                                FASAT: "0",
+                                CHOLE: "0",
+                                NA: "0",
+                                CHOCDF: "0",
+                                FIBTG: "0",
+                                SUGAR: "0",
+                                PROCNT: "0"
+                            },
+                            image: null
+                        };
+
+                        // Add a heading to inform the user
+                        searchResultsForRecipe.innerHTML = `
+                            <h5 class="text-danger mb-3 px-5 text-center">
+                                The recipe you searched for was not found. You can add your custom recipe below.
+                            </h5>
+                        `;
+                        selectRecipeItem(customRecipe, null); // Show fields for custom recipe
+                    }
                 })
                 .catch(error => console.error('Error fetching food data:', error));
         }

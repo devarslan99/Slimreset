@@ -1391,6 +1391,13 @@ $recipes_json = json_encode($recipes);
         document.addEventListener("DOMContentLoaded", function() {
             displayRecipes(recipes);
         });
+        const lunchBox = document.getElementById('lunchBox')
+        lunchBox.addEventListener("change", function() {
+          if (lunchBox.checked == false )
+          {
+            displayRecipes(recipes);
+          }
+        });
     </script>
 
 </body>

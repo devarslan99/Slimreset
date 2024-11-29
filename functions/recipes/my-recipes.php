@@ -236,7 +236,7 @@ $recipes_json = json_encode($recipes);
             border: 2px solid #fff;
         }
 
-        .meal-name {
+        .meal-name-recipe {
             white-space: nowrap;          
             overflow: hidden;            
             text-overflow: ellipsis;  
@@ -298,9 +298,12 @@ $recipes_json = json_encode($recipes);
         <div class="">
             <h2 class="text-center flex-grow-1 mb-0">My Recipes</h2>
             <div class="d-flex justify-content-between align-items-center my-4">
-                <div class="custom-checkbox-my-recipes d-flex align-items-center">
-                    <input type="checkbox" id="lunchBox">
-                    <label for="lunchBox" class="mb-0">Lunch/Dinner</label>
+                <div class="d-flex align-items-center gap-5">
+                    <button id="resetFilters" class='btn btn-primary rounded-pill py-2'>View all</button>
+                    <div class="custom-checkbox-my-recipes d-flex align-items-center">
+                        <input type="checkbox" id="lunchBox">
+                        <label for="lunchBox" class="mb-0">Lunch/Dinner</label>
+                    </div>
                 </div>
                 <button class="btn btn-primary rounded-pill py-2" onclick="openRecipeModal('recipeModal')" style="background-color: #946CFC; border: none;">
                     Add Recipe
@@ -1358,7 +1361,7 @@ $recipes_json = json_encode($recipes);
                 card.innerHTML = `
                     <div class="custom-border rounded my-recipe-img-card-box">
                         <img class="my-recipe-img-card" src="${recipeImage}"  onerror="this.src='https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png';" alt="${recipe.label}">
-                        <div class="meal-name">${recipe.label}</div>
+                        <div class="meal-name-recipe">${recipe.label}</div>
                         <div class="meal-info">
                             ${recipe.calories} kcal<br>
                             ${recipe.amount} ${recipe.unit}
@@ -1374,11 +1377,18 @@ $recipes_json = json_encode($recipes);
         });
         const lunchBox = document.getElementById('lunchBox')
         lunchBox.addEventListener("change", function() {
-          if (lunchBox.checked == false )
-          {
-            displayRecipes(recipes);
-          }
+            if (lunchBox.checked == false )
+            {
+                displayRecipes(recipes);
+            }
         });
+        
+        const resetFilters = document.getElementById('resetFilters')
+        resetFilters.addEventListener("click", function() {
+                displayRecipes(recipes);
+                lunchBox.checked = false 
+        });
+
     </script>
 
 </body>

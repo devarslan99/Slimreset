@@ -302,7 +302,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     .meal-card img {
         width: 100%;
         border-radius: 5px;
-        height: 50px;
+        height: 65px;
         object-fit: cover;
     }
 
@@ -310,6 +310,14 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         font-weight: bold;
         color: #333;
         margin-top: 5px;
+        text-transform:capitalize;
+
+        white-space: nowrap;          
+        overflow: hidden;            
+        text-overflow: ellipsis;  
+        width: 100%;
+        max-width: 150px;  
+        padding:0 10px
     }
 
     .meal-name-sub {
@@ -317,10 +325,19 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         color: #333;
     }
 
+    .meal-info-container {
+        display: flex;
+        align-items: end;
+        justify-content: center;
+    }
+
     .meal-info {
+        display:flex;
+        align-items:center;
+        justify-content:center;
         font-size: 0.85rem;
         color: #666;
-        display: inline;
+        height:40%;
     }
 
     .plus-sign {
@@ -393,6 +410,15 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         transform: rotate(-90deg);
     }
 
+    .recipe-img-card {
+        object-fit:cover;
+    }
+
+    .meal-card-container {
+        overflow: hidden;
+        height:150px
+    }
+
     .custom-border {
         border: 1px solid #946CFC;
     }
@@ -430,6 +456,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     .meal-box {
         position: relative;
         transition: border 0.3s ease;
+        height:145px;
     }
 
     .meal-box:hover .meal-box-close-btn 
@@ -721,28 +748,28 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             <!-- Category Checkboxes -->
             <div class="d-flex flex-wrap gap-3 recipe-checkboxes">
                 <div class="custom-checkbox">
-                    <input type="checkbox" id="breakfast">
-                    <label for="breakfast">Breakfast</label>
+                    <input type="checkbox" id="breakfastCheckBox" onchange="handleMyPlannerCheckboxChange(event)">
+                    <label for="breakfastCheckBox">Breakfast</label>
                 </div>
                 <div class="custom-checkbox">
-                    <input type="checkbox" id="lunch">
-                    <label for="lunch">Lunch/Dinner</label>
+                    <input type="checkbox" id="lunchCheckBox" onchange="handleMyPlannerCheckboxChange(event)">
+                    <label for="lunchCheckBox">Lunch/Dinner</label>
                 </div>
                 <div class="custom-checkbox">
-                    <input type="checkbox" id="snacks">
-                    <label for="snacks">Snacks</label>
+                    <input type="checkbox" id="snacksCheckBox" onchange="handleMyPlannerCheckboxChange(event)">
+                    <label for="snacksCheckBox">Snacks</label>
                 </div>
                 <div class="custom-checkbox">
-                    <input type="checkbox" id="beverages">
-                    <label for="beverages">Beverages</label>
+                    <input type="checkbox" id="beveragesCheckBox" onchange="handleMyPlannerCheckboxChange(event)">
+                    <label for="beveragesCheckBox">Beverages</label>
                 </div>
                 <div class="custom-checkbox">
-                    <input type="checkbox" id="flavourings">
-                    <label for="flavourings">Flavorings</label>
+                    <input type="checkbox" id="flavouringsCheckBox" onchange="handleMyPlannerCheckboxChange(event)">
+                    <label for="flavouringsCheckBox">Flavorings</label>
                 </div>
                 <div class="custom-checkbox">
-                    <input type="checkbox" id="dessert">
-                    <label for="dessert">Dessert</label>
+                    <input type="checkbox" id="dessertCheckBox" onchange="handleMyPlannerCheckboxChange(event)">
+                    <label for="dessertCheckBox">Dessert</label>
                 </div>
             </div>
 
@@ -759,163 +786,113 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-<script>
-    $(document).ready(function() {
-        // Dummy details of meals for the right side (meal cards)
-        const mealData =  [
-            {
-                image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-                name: 'Veggie',
-                subName: 'Omelette',
-                mealInfo: {
-                    calories: '800 kcal',
-                    fats: '8g',
-                    carbs: '15g',
-                    size: '8 oz'
-                }
-            },
-            {
-                image: 'https://images.pexels.com/photos/248444/pexels-photo-248444.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-                name: 'Grilled',
-                subName: 'Chicken Salad',
-                mealInfo: {
-                    calories: '600 kcal',
-                    fats: '10g',
-                    carbs: '12g',
-                    size: '10 oz'
-                }
-            },
-            {
-                image: 'https://images.pexels.com/photos/8541404/pexels-photo-8541404.jpeg?auto=compress&cs=tinysrgb&w=600',
-                name: 'Berry',
-                subName: 'Bowl',
-                mealInfo: {
-                    calories: '350 kcal',
-                    fats: '5g',
-                    carbs: '40g',
-                    size: '6 oz'
-                }
-            },
-            {
-                image: 'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-                name: 'Avocado',
-                subName: 'Toast',
-                mealInfo: {
-                    calories: '450 kcal',
-                    fats: '12g',
-                    carbs: '22g',
-                    size: '5 oz'
-                }
-            },
-            {
-                image: 'https://images.pexels.com/photos/29389670/pexels-photo-29389670/free-photo-of-fresh-mixed-salad-in-takeaway-container.jpeg?auto=compress&cs=tinysrgb&w=600',
-                name: 'Caesar',
-                subName: 'Salad',
-                mealInfo: {
-                    calories: '400 kcal',
-                    fats: '12g',
-                    carbs: '14g',
-                    size: '8 oz'
-                }
-            },
-            {
-                image: 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-                name: 'Banana',
-                subName: 'Pancakes',
-                mealInfo: {
-                    calories: '450 kcal',
-                    fats: '7g',
-                    carbs: '50g',
-                    size: '6 oz'
-                }
-            },
-            {
-                image: 'https://images.pexels.com/photos/5642831/pexels-photo-5642831.jpeg?auto=compress&cs=tinysrgb&w=300&h=200',
-                name: 'Fruit',
-                subName: 'Parfait',
-                mealInfo: {
-                    calories: '350 kcal',
-                    fats: '5g',
-                    carbs: '45g',
-                    size: '5 oz'
-                }
-            },
-            {
-                image: 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                name: 'Pasta',
-                subName: 'Primavera',
-                mealInfo: {
-                    calories: '550 kcal',
-                    fats: '10g',
-                    carbs: '60g',
-                    size: '9 oz'
-                }
-            },
-            {
-                image: 'https://images.pexels.com/photos/8964280/pexels-photo-8964280.jpeg?auto=compress&cs=tinysrgb&w=600',
-                name: 'Grilled',
-                subName: 'Salmon',
-                mealInfo: {
-                    calories: '500 kcal',
-                    fats: '15g',
-                    carbs: '5g',
-                    size: '7 oz'
-                }
-            },
-            {
-                image: 'https://images.pexels.com/photos/29345893/pexels-photo-29345893/free-photo-of-freshly-baked-pizza-with-toppings-on-wooden-board.jpeg?auto=compress&cs=tinysrgb&w=600',
-                name: 'Margherita',
-                subName: 'Pizza',
-                mealInfo: {
-                    calories: '750 kcal',
-                    fats: '18g',
-                    carbs: '80g',
-                    size: '10 oz'
-                }
-            },
-            {
-                image: 'https://images.pexels.com/photos/27672709/pexels-photo-27672709/free-photo-of-salad-with-shrimps.jpeg?auto=compress&cs=tinysrgb&w=600',
-                name: 'Veggie',
-                subName: 'Bowl',
-                mealInfo: {
-                    calories: '300 kcal',
-                    fats: '10g',
-                    carbs: '35g',
-                    size: '6 oz'
-                }
-            },
-            {
-                image: 'https://images.pexels.com/photos/27195708/pexels-photo-27195708/free-photo-of-meal-with-vegetables-on-dark-plate.jpeg?auto=compress&cs=tinysrgb&w=600',
-                name: 'Quinoa',
-                subName: 'Salad',
-                mealInfo: {
-                    calories: '400 kcal',
-                    fats: '9g',
-                    carbs: '30g',
-                    size: '8 oz'
-                }
-            }
-        ];
-        
-        // const meal_card = document.getElementById('meal-cards')
+<?php
+    include_once "../database/db_connection.php";
 
-        // Append meal cards to #meal-cards
-        $.each(mealData, function(index, meal) {
+    $user_id = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
+
+    $recipes = [];
+    if ($user_id) {
+        $stmt = mysqli_prepare($mysqli, "SELECT * FROM recipe_items ORDER BY id DESC");
+        // mysqli_stmt_bind_param($stmt, "i", $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $recipes = $result ? mysqli_fetch_all($result, MYSQLI_ASSOC) : [];
+        mysqli_stmt_close($stmt);
+    }
+    $recipes_json = json_encode($recipes);
+?>
+
+<script>
+
+    // Function to display meal cards
+    let PlannerRecipes = <?php echo $recipes_json; ?>;
+    function displayMealCardRecipe(recipes) {
+
+        $.each(recipes, function (index, meal) {
+            
+            const meal_Image = meal.image && meal.image.startsWith('https://www.') 
+            ? meal.image 
+            : `../assets/images/recipe_images/uploads/${meal.image}`;
+
+            const calories = Math.round(meal.calories);
+            const protein = Math.round(meal.protein);
+            const carbs = Math.round(meal.carbs);
+
             const mealCard = `
-                <div class="meal-card-rec" data-meal-fats="${meal.mealInfo.fats}" data-meal-carbs="${meal.mealInfo.carbs}">
-                    <div class="custom-border rounded">
-                        <img class="recipe-img-card" src="${meal.image}" alt="${meal.name} ${meal.subName}">
-                        <div class="meal-name">${meal.name}</div>
-                        <div class="meal-name-sub">${meal.subName}</div>
-                        <div class="meal-info">${meal.mealInfo.calories}<br>${meal.mealInfo.size}</div>
+                <div class="meal-card-rec" data-meal-fats="${meal.satFat}" data-meal-carbs="${carbs}">
+                    <div class="custom-border rounded meal-card-container">
+                        <img class="recipe-img-card" src="${meal_Image}" onerror="this.src='https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png';" alt="${meal.label}">
+                        <div class="meal-name">  ${meal.label.split(' ').length > 1 ? meal.label.split(' ').slice(0, 2).join(' <br> ') : meal.label + '<br><br>'}</div>
+                        <div class="meal-name-sub"></div>
+                        <div class='meal-info-container'>
+                        <div class="meal-info">${calories} kcal<br>${protein} oz</div>
                         <span class="text-end star-margin">
                             <i class="fa fa-star"></i>
                         </span>
+                        </div>
                     </div>
                 </div>
             `;
             $('#meal-cards').append(mealCard);
         });
+    }
+
+    displayMealCardRecipe(PlannerRecipes); 
+
+</script>
+
+<script>
+    function PopulateingMealCardDataToDataBase () { 
+        const plannerMealFoodData = {
+            foodId: foodId,
+            label: label,
+            image: imageData,
+            amount: document.getElementById('foodAmount').value,
+            unit: document.getElementById('weighingUnit').value,
+            meal_type_id: document.getElementById('MealType').value,
+            food_group_id: document.getElementById('FoodGroup').value,
+            veggie_id: document.getElementById('Veggie').value,
+            protein_id: document.getElementById('Protein').value,
+            fruit_id: document.getElementById('Fruit').value,
+            calories: document.getElementById('calories').value,
+            totalFat: document.getElementById('fat').value,
+            satFat: document.getElementById('satFat').value,
+            cholesterol: document.getElementById('cholesterol').value,
+            sodium: document.getElementById('sodium').value,
+            carbs: document.getElementById('carbs').value,
+            fiber: document.getElementById('fiber').value,
+            sugars: document.getElementById('sugars').value,
+            protein: document.getElementById('protein').value,
+            user_id: <?php echo $user_id ?>
+        };
+
+        // Send Meal food data to the server
+        fetch('../functions/food_history/meal_planner.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(plannerMealFoodData),
+            })
+            .then(response =>response.json())
+            .then(data => {
+                if (data.status == "success") {
+                    modal.hide();
+                    Swal.fire("Success", "Recipe added successfully!", "success")
+                        .then(() => location.reload())
+                } else {
+                    swal("Error", "Failed to add recipe.", "error");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function() {
 
         // Function to generate days data with formatted date
         function getUrlDate() {
@@ -1322,8 +1299,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         targetMealCard.innerHTML = `
                             ${existingLabel ? existingLabel.outerHTML : ''} <!-- Keep existing label -->
                             <div class="custom-border rounded meal-box" 
-                                data-meal-name="${mealName}" 
-                                data-meal-subname="${mealSubName}" 
+                                data-meal-name="${mealName}"
                                 data-meal-calories="${mealInfo.calories}" 
                                 data-meal-size="${mealInfo.size}" 
                                 data-meal-carbs="${mealCarbs}" 
@@ -1331,7 +1307,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 onclick="showBox(this)" data-id="${mealId}">
                                 <img src="${imageSrc}" alt="${mealName}">
                                 <div class="meal-name">${mealName}</div>
-                                <div class="meal-name-sub">${mealSubName}</div>
                                 <div class="meal-info">${mealInfo.calories}<br>${mealInfo.size}</div> 
                                 <div class="meal-box-close-btn"><i class="fa fa-times"></i></div>
                             </div>
@@ -1914,6 +1889,62 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 </script>
 
+
+<!-- Script to get meal-types filter data -->
+<script>
+
+    function handleMyPlannerCheckboxChange(event) {
+        const filter_Meal_Type = document.getElementById('filter-meal-type');
+
+        // Map checkbox IDs to their respective values or actions
+        const checkboxMap = {
+            breakfastCheckBox: { index: 1, mealType: 'meal-type', id: '2' },
+            dessertCheckBox: { index: 2, mealType: 'meal-type', id: '4' },
+            lunchCheckBox: { index: 0, mealType: 'meal-type', id: '9' },
+            snacksCheckBox: { index: 3, mealType: 'meal-type', id: '22' },
+            flavoringsCheckBox: { index: 4, mealType: 'meal-type', id: '30' },
+            beveragesCheckBox: { index: 5, mealType: 'meal-type', id: '31' },
+        };
+
+        const checkboxId = event.target.id;
+        const checkboxData = checkboxMap[checkboxId];
+
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            if (checkbox.id !== checkboxId) {
+                checkbox.checked = false;  
+            }
+        });
+
+        if (checkboxData) {
+            const checkbox = document.getElementById(checkboxId);
+            if (checkbox.checked) {
+                filter_Meal_Type.selectedIndex = checkboxData.index;
+                plannerFilterMealType(checkboxData.mealType, checkboxData.id);
+            } else {
+                console.log(`${checkboxId} is unchecked.`);
+            }
+        }
+    }
+
+
+    function plannerFilterMealType(type, id) {
+        $.ajax({
+            url: '../functions/recipes/filter-recipes.php',
+            method: 'POST',
+            dataType: 'json',
+            data: { category: type, itemId: id },
+            success: function (response) {
+                $('#meal-cards').empty();
+                displayMealCardRecipe(response.data); 
+            },
+            error: function (xhr, status, error) {
+                console.error('Error filtering meal type:', error);
+            }
+        });
+    }
+
+</script>
+
 <!-- Script to get protein filter data -->
 <script>
 
@@ -1954,12 +1985,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     function handlePlannerProteinChange(event) {
         resetAllOtherFilters('my-planner-filter-protein')
         const selectedOption = event.target.selectedOptions[0];
-        // const lunchCheckbox = document.getElementById('lunchBox');
         const proteinId = selectedOption.value;
 
         if (proteinId) {
             plannerFilterProtein('protein', proteinId);
-            // lunchCheckbox.checked = false;
         } else {
             console.log('No valid protein selected.');
         }
@@ -1972,7 +2001,8 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             dataType: 'json',
             data: { category: type, itemId: id },
             success: function (response) {
-                // displayRecipes(response.data)
+                $('#meal-cards').empty();
+                displayMealCardRecipe(response.data); 
             },
             error: function (xhr, status, error) {
                 console.error('Error filtering protein:', error);
@@ -2024,12 +2054,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     function handlePlannerVeggieChange(event) {
         resetAllOtherFilters('my-planner-filter-veggie')
         const selectedOption = event.target.selectedOptions[0];
-        // const lunchCheckbox = document.getElementById('lunchBox');
         const veggieId = selectedOption.value;
 
         if (veggieId) {
             myplannerFilterVeggie('veggie', veggieId);
-            // lunchCheckbox.checked = false;
         } else {
             console.log('No valid veggie selected.');
         }
@@ -2042,8 +2070,8 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             dataType: 'json',
             data: { category: type, itemId: id },
             success: function (response) {
-                // displayRecipes(response.data)
-                console.log(response)
+                $('#meal-cards').empty();
+                displayMealCardRecipe(response.data); 
             },
             error: function (xhr, status, error) {
                 console.error('Error filtering veggie:', error);
@@ -2095,12 +2123,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     function handlePLannerFruitChange(event) {
         resetAllOtherFilters('my-planner-filter-fruit')
         const selectedOption = event.target.selectedOptions[0];
-        // const lunchCheckbox = document.getElementById('lunchBox');
         const fruitId = selectedOption.value;
 
         if (fruitId) {
             plannerFilterFruit('fruit', fruitId);
-            // lunchCheckbox.checked = false;
         } else {
             console.log('No valid fruit selected.');
         }
@@ -2113,7 +2139,8 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             dataType: 'json',
             data: { category: type, itemId: id },
             success: function (response) {
-                // displayRecipes(response.data)
+                $('#meal-cards').empty();
+                displayMealCardRecipe(response.data); 
             },
             error: function (xhr, status, error) {
                 console.error('Error filtering fruit:', error);

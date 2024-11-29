@@ -4,7 +4,7 @@ if (PHP_SAPI === 'cli') {
     // Running from command line (CLI), assume it's local development
     $servername = "localhost";
     $username = "root";
-    $password = "";
+    $password = "Arslan@321";
     $database = "slimreset";
 } else {
     // Running on a web server, check if it's localhost or live server
@@ -12,14 +12,14 @@ if (PHP_SAPI === 'cli') {
         // Local environment
         $servername = "localhost";
         $username = "root";
-        $password = "";
+        $password = "Arslan@321";
         $database = "slimreset";
     } else {
         // Live environment
         $servername = "localhost";
-        $username = "u154932197_slimreset";
-        $password = "Slimreset_321";
-        $database = "u154932197_slimreset";
+        $username = "root";
+        $password = "Arslan@321";
+        $database = "slimreset";
     }
 }
 

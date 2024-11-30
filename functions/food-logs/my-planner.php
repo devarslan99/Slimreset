@@ -823,67 +823,6 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     $meal_planner_json = json_encode($recipesplanner);
 ?>
 
-
-<script>
-    // Embed PHP JSON data into JavaScript
-    const savedMealCards = <?php echo $meal_planner_json ?: '[]'; ?>;
-
-    function repopulateMealSection () {
-        const slotContainer = document.getElementById('empty-card-slots')
-        console.log(slotContainer.children)
-    }
-    document.addEventListener("DOMContentLoaded", () => {
-        repopulateMealSection()
-        
-            // savedMealCards.forEach(meal => {
-            //     const mealSection = document.querySelector(`.meal-section[data-label="${meal.label}"]`); // Select the correct meal section by label
-            //     if (!mealSection) return;
-
-            //     const mealCard = document.createElement('div');
-            //     mealCard.classList.add('meal-card');
-            //     mealCard.innerHTML = `
-            //         <div class="custom-border rounded meal-box" 
-            //             data-meal-name="${meal.mealName}" 
-            //             data-meal-calories="${meal.mealInfo.calories}" 
-            //             data-meal-size="${meal.mealInfo.size}" 
-            //             data-meal-carbs="${meal.carbs}" 
-            //             data-meal-fats="${meal.fats}" 
-            //             onclick="showBox(this)" data-id="${meal.foodId}">
-            //             <img src="${meal.image}" alt="${meal.mealName}">
-            //             <div class="meal-name">${meal.mealName}</div>
-            //             <div class="meal-info">${meal.mealInfo.calories}<br>${meal.mealInfo.size}</div>
-            //             <div class="meal-box-close-btn"><i class="fa fa-times"></i></div>
-            //         </div>
-            //     `;
-
-            //     // Append the meal card to the appropriate section
-            //     mealSection.appendChild(mealCard);
-
-            //     // Add event listener to close button
-            //     const closeButton = mealCard.querySelector('.meal-box-close-btn');
-            //     closeButton.addEventListener('click', function(e) {
-            //         e.stopPropagation();
-            //         Swal.fire({
-            //             title: 'Are you sure?',
-            //             text: "Do you really want to remove this meal?",
-            //             icon: 'warning',
-            //             showCancelButton: true,
-            //             confirmButtonText: 'Yes, remove it!',
-            //             cancelButtonText: 'No, cancel',
-            //             reverseButtons: true
-            //         }).then((result) => {
-            //             if (result.isConfirmed) {
-            //                 mealCard.remove();
-            //                 // Handle removal from your arrays and database
-            //                 removeMealData(meal.foodId);
-            //             }
-            //         });
-            //     });
-            // });
-    });
-
-</script>
-
 <!-- Script of display meal-card and script of filtering all meal-cards -->
 <script>
 
@@ -1155,6 +1094,76 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
             // Initialize Sortable after all elements have been created
             initializeSortable();
+            
+
+            //  Repopulating meal-cards 
+            const savedMealCards = <?php echo $meal_planner_json ?: '[]'; ?>;
+            function repopulateMealSection(savedMealCards) {
+                savedMealCards.forEach(meal => {
+                    console.log(meal)
+                    const mealDate = meal.date; // e.g., 'Dec 6'
+                    const mealLabel = meal.label; // 'Breakfast', 'Lunch', etc.
+
+                    // Find the correct day column based on the meal date
+                    const dayColumn = document.querySelector(`.day-column .date-text[data-date="${mealDate}"]`);
+                    
+                    if (!dayColumn) return; // Skip if the day column is not found
+
+                    // Find the corresponding meal section within the day column using the label (e.g., 'Breakfast', 'Lunch', etc.)
+                    const mealSection = dayColumn.closest('.day-column').querySelector(`.meal-section[data-label="${mealLabel}"]`);
+                    
+                    if (!mealSection) return; // Skip if the correct meal section is not found
+
+                    // Check if the meal section already contains a meal card
+                    const existingCards = mealSection.querySelectorAll('.meal-card');
+                    
+                        // If there's already a meal card, replace the existing layout with the new card
+                        const existingCard = existingCards[0]; // Assuming only one card should be in the section
+                        existingCard.innerHTML = `
+                            <div class="custom-border rounded meal-box" 
+                                data-meal-name="${meal.mealName}" 
+                                data-meal-calories="${Math.round(meal.calories)}" 
+                                data-meal-size="${Math.round(meal.protein)}" 
+                                data-meal-carbs="${Math.round(meal.carbs)}" 
+                                data-meal-fats="${Math.round(meal.fats)}" 
+                                onclick="showBox(this)" data-id="${meal.foodId}">
+                                <img src="${meal.image}" alt="${meal.mealName}">
+                                <div class="meal-name">${meal.mealName}</div>
+                                <div class="meal-info">${Math.round(meal.calories)} kcal<br>${Math.round(meal.protein)} oz</div>
+                                <div class="meal-box-close-btn"><i class="fa fa-times"></i></div>
+                            </div>
+                        `;
+                    
+
+                    // Add event listener to the close button inside the meal card
+                    const closeButton = mealSection.querySelector('.meal-box-close-btn');
+                    closeButton.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "Do you really want to remove this meal?",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes, remove it!',
+                            cancelButtonText: 'No, cancel',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                const mealCardToRemove = closeButton.closest('.meal-card');
+                    if (mealCardToRemove) {
+                        mealCardToRemove.remove();
+                    }
+                                // Handle removal from your arrays and database
+                                // removeMealData(meal.foodId);
+                            }
+                        });
+                    });
+                });
+            }
+
+            repopulateMealSection(savedMealCards);
+
+
     });
 
     let mealDataArray = [];

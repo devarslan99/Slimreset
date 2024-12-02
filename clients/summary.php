@@ -450,12 +450,7 @@ foreach ($weight_history as $index => $entry) {
                                                                     </div>
                                                                     <div class="tab-pane fade" id="my-planner" role="tabpanel" aria-labelledby="my-planner-tab">
                                                                         <!-- My Planner Content -->
-                                                                        <div class="row">
-                                                                            <?php include_once '../functions/food-logs/my-planner.php'  ?>
-                                                                            <div class="col-lg-3">
-                                                                                <?php include '../functions/food-logs/recipies.php'  ?>
-                                                                            </div>
-                                                                        </div>
+                                                                        <?php include_once '../functions/food-logs/my-planner.php'  ?>
                                                                     </div>
                                                                     <div class="tab-pane fade" id="my-tracker" role="tabpanel" aria-labelledby="my-tracker-tab">
                                                                         <!-- My Tracker Content -->

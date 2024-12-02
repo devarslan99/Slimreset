@@ -1107,6 +1107,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                     // Find the correct day column based on the meal date
                     const dayColumn = document.querySelector(`.day-column .date-text[data-date="${mealDate}"]`);
+                    const dayId = dayColumn.innerHTML;
 
                     if (!dayColumn) return;
 
@@ -1194,6 +1195,66 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             }
                         });
                     });
+
+                    // if (dayId) {
+
+                    //     console.log(dayId)
+                    //     // Push meal data into the specific day array
+                    //     if (dayMealData[dayId]) {
+                    //         dayMealData[dayId].push({ ...savedMealCards , mealId });
+                    //     } else {
+                    //         console.error(`Invalid dayId: ${dayId}`);
+                    //     }
+
+                    //     // Ensure `dayNutritionTotals` is initialized for this dayId
+                    //     if (!dayNutritionTotals[dayId]) {
+                    //         dayNutritionTotals[dayId] = { kcal: 0, oz: 0 };
+                    //     }
+
+                    //     // Add the meal's kcal and oz to the day's totals
+                    //     if (savedMealCards) {
+                    //         dayNutritionTotals[dayId].kcal += parseFloat(meal.calories || 0);
+                    //         dayNutritionTotals[dayId].oz += parseFloat(meal.size || 0);
+                    //     }
+
+                    //     // Update the display of kcal and oz in the day column
+                    //     // const calInfoElement = document.querySelector('.cal-info');
+                    //     // if (calInfoElement) {
+                    //     //     calInfoElement.innerHTML = `${dayNutritionTotals[dayId].kcal} kcal<br>${dayNutritionTotals[dayId].oz} oz`;
+                    //     // }
+
+
+                    //     }
+                    //     // Handle the cart icon visibility
+                    //     const addToCartIcon = document.querySelector('.AddToCart');
+                    //     // Check if there is meal data for this dayId
+                    //     if (dayMealData[dayId] && dayMealData[dayId].length > 0) {
+                    //     // Meal data exists, make sure the cart icon is visible and clickable
+                    //     const cartIcon = addToCartIcon.querySelector('i');
+                    //     if (cartIcon) {
+                    //         cartIcon.style.display = 'block';
+                    //         cartIcon.style.color = 'black';
+                    //         cartIcon.classList.add('black-icon');
+                    //         cartIcon.removeEventListener('click', closeGroceryPopup);
+                    //         cartIcon.addEventListener('click', function() {
+                    //         populateGroceryList(dayMealData[dayId]);
+                    //         showGroceryPopup();
+                    //         selectedId = dayId
+                    //     });
+                    //     }
+                    //     } else {
+                    //     // No meal data exists, disable or hide the cart icon
+                    //     const cartIcon = addToCartIcon.querySelector('i');
+                    //     if (cartIcon) {
+                    //         cartIcon.style.display = 'none';
+                    //         cartIcon.style.color = '';
+                    //         cartIcon.classList.remove('black-icon');
+                    //         cartIcon.removeEventListener('click', function() {
+                    //             populateGroceryList(dayMealData[dayId]);
+                    //             showGroceryPopup();
+                    //         }); 
+                    //     }
+                    // }
                 });
             }
 
@@ -1203,7 +1264,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     });
 
     let mealDataArray = [];
-    // Function to populate all meat-card data into grocery list
+    // Function to Populate all Meal Card Data into Grocery List
     function populateAllGroceryList(mealDataArray) {
         const groceryListBox = document.querySelector('.grocery-list-box-2');
         groceryListBox.innerHTML = ''; 
@@ -1682,7 +1743,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         return mealInfo;
     }
 
-    // function to show the recipe POP-UP
+    // Function TO Show Recipe POP-UP
     function showBox(mealElement) {
         const mealName = mealElement.getAttribute('data-meal-name');
         const mealSubName = mealElement.getAttribute('data-meal-subname');
@@ -1712,12 +1773,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         `;
     }
 
-
-    // Function to close the popup
+    // Function to Close Recipe POP-UP
     function closePopup() {
             document.getElementById('popup-overlay').style.display = 'none';
     }
-
+    // Hiding Recipe POP UP 
     document.addEventListener('DOMContentLoaded', function() {
         const popupOverlay = document.getElementById('popup-overlay');
         if (popupOverlay) {
@@ -1731,7 +1791,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 
 
-    // Function to show the grocery popup
+    // Function to show and Hide Meal-Card Grocery List box
     function showGroceryPopup() {
         document.getElementById('grocery-popup-overlay').style.display = 'flex';
         }
@@ -1748,7 +1808,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     });
 
 
-    // 2nd Function to show the grocery popup
+    // Function to Show and Hide All Grocery List Pop UP Box
     function showGroceryPopup2() {
          document.getElementById('grocery-popup-overlay-2').style.display = 'flex';
         }
@@ -1765,13 +1825,14 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             }
     });
 
+
+     // Event to run the function of Meal Card PDF 
     const mealListPdfBtn = document.getElementById('mealListPdfBtn');
     mealListPdfBtn.addEventListener('click', function() {
         mealListPDF()
     });
 
-
-    // function to download meal list as a PDF  
+    // Function TO Generate PDF of Meal-Card ---> 
     function mealListPDF() {
         const pdfContent = [];
         const meals = dayMealData[selectedId];
@@ -1883,7 +1944,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
 
-    //2nd function to download grocery list as a PDF 
+    //Function TO Generate PDF of All Grocery List --->
     function GroceryListPdf(mealDataArray) {
             const groupedMeals = mealDataArray.reduce((acc, meal) => {
                 if (!acc[meal.day]) {

@@ -303,39 +303,6 @@ class ChatServer implements MessageComponentInterface
         $redis->rpush('email_alert_queue', json_encode($jobData));
     }
 
-    private function sendEmailNotification($email_address, $message, $sender_first_name)
-
-    {
-        $mail = new PHPMailer(true);
-        try {
-            // Server settings
-            $mail->isSMTP();
-            $mail->Host = 'smtp.titan.email';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'support@carepartnershc.com';
-            $mail->Password = 'Care_Partners_123';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
-
-            // Recipients
-            $mail->setFrom('support@carepartnershc.com', 'EXAKEY');
-            $mail->addAddress($email_address);
-
-            // Email content
-            $mail->isHTML(true);
-            $mail->Subject = 'New Message Notification';
-            $mail->Body = "You have received a new message from <strong>" . htmlspecialchars($sender_first_name) . "</strong>:<br><br>" . htmlspecialchars($message);
-            $mail->AltBody = "You have received a new message from " . $sender_first_name . ": " . $message;
-
-            $mail->send();
-            return true;
-        } catch (Exception $e) {
-            echo "<script>console.log('Mailer Error: {$mail->ErrorInfo}');</script>";
-            return false;
-        }
-    }
-
-
     public function onClose(ConnectionInterface $conn)
     {
         $this->clients->detach($conn);

@@ -923,7 +923,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             .then(response =>response.json())
             .then(data => {
                 if (data.status == "success") {
-                    modal.hide();
+                    // modal.hide();
                     Swal.fire("Success", "Recipe added successfully!", "success")
                         .then(() => location.reload())
                 } else {
@@ -1100,45 +1100,48 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             const savedMealCards = <?php echo $meal_planner_json ?: '[]'; ?>;
             function repopulateMealSection(savedMealCards) {
                 savedMealCards.forEach(meal => {
-                    console.log(meal)
-                    const mealDate = meal.date; // e.g., 'Dec 6'
-                    const mealLabel = meal.label; // 'Breakfast', 'Lunch', etc.
+                    const mealId = meal.id;
+
+                    const mealDate = meal.date;
+                    const mealLabel = meal.label;
 
                     // Find the correct day column based on the meal date
                     const dayColumn = document.querySelector(`.day-column .date-text[data-date="${mealDate}"]`);
-                    
-                    if (!dayColumn) return; // Skip if the day column is not found
+
+                    if (!dayColumn) return;
 
                     // Find the corresponding meal section within the day column using the label (e.g., 'Breakfast', 'Lunch', etc.)
                     const mealSection = dayColumn.closest('.day-column').querySelector(`.meal-section[data-label="${mealLabel}"]`);
                     
-                    if (!mealSection) return; // Skip if the correct meal section is not found
+                    if (!mealSection) return;
 
                     // Check if the meal section already contains a meal card
                     const existingCards = mealSection.querySelectorAll('.meal-card');
                     
-                        // If there's already a meal card, replace the existing layout with the new card
-                        const existingCard = existingCards[0]; // Assuming only one card should be in the section
-                        existingCard.innerHTML = `
-                            <div class="custom-border rounded meal-box" 
-                                data-meal-name="${meal.mealName}" 
-                                data-meal-calories="${Math.round(meal.calories)}" 
-                                data-meal-size="${Math.round(meal.protein)}" 
-                                data-meal-carbs="${Math.round(meal.carbs)}" 
-                                data-meal-fats="${Math.round(meal.fats)}" 
-                                onclick="showBox(this)" data-id="${meal.foodId}">
-                                <img src="${meal.image}" alt="${meal.mealName}">
-                                <div class="meal-name">${meal.mealName}</div>
-                                <div class="meal-info">${Math.round(meal.calories)} kcal<br>${Math.round(meal.protein)} oz</div>
-                                <div class="meal-box-close-btn"><i class="fa fa-times"></i></div>
-                            </div>
-                        `;
-                    
+                    // If there's already a meal card, replace the existing layout with the new card
+                    const existingCard = existingCards[0];
+                    existingCard.innerHTML = `
+                        <div class="custom-border rounded meal-box" 
+                            data-meal-name="${meal.mealName}" 
+                            data-meal-calories="${Math.round(meal.calories)}" 
+                            data-meal-size="${Math.round(meal.protein)}" 
+                            data-meal-carbs="${Math.round(meal.carbs)}" 
+                            data-meal-fats="${Math.round(meal.fats)}" 
+                            onclick="showBox(this)" data-id="${meal.foodId}">
+                            <img src="${meal.image}" alt="${meal.mealName}">
+                            <div class="meal-name">${meal.mealName}</div>
+                            <div class="meal-info">${Math.round(meal.calories)} kcal<br>${Math.round(meal.protein)} oz</div>
+                            <div class="meal-box-close-btn"><i class="fa fa-times"></i></div>
+                        </div>
+                    `;
 
+                    
                     // Add event listener to the close button inside the meal card
                     const closeButton = mealSection.querySelector('.meal-box-close-btn');
-                    closeButton.addEventListener('click', function(e) {
+                    closeButton.addEventListener('click', function (e) {
                         e.stopPropagation();
+
+                        // Confirmation dialog with SweetAlert
                         Swal.fire({
                             title: 'Are you sure?',
                             text: "Do you really want to remove this meal?",
@@ -1150,11 +1153,44 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 const mealCardToRemove = closeButton.closest('.meal-card');
-                    if (mealCardToRemove) {
-                        mealCardToRemove.remove();
-                    }
-                                // Handle removal from your arrays and database
-                                // removeMealData(meal.foodId);
+                                const mealBoxToRemove = closeButton.closest('.meal-box');
+                                const mealId = meal.id
+
+                                if (mealId) {
+                                    // Send a request to the server to remove the meal
+                                    fetch('../functions/food_history/delete_meal.php', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ mealId })
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.status === "success") {
+                                            // Remove the meal box from the UI
+                                            mealBoxToRemove.remove();
+
+                                            // Check if the parent meal card has no remaining meal-boxes
+                                            const remainingMealBoxes = mealCardToRemove.querySelectorAll('.meal-box');
+                                            if (remainingMealBoxes.length === 0) {
+                                                // Add empty slot
+                                                const addMoreDiv = document.createElement('div');
+                                                addMoreDiv.classList.add('add-more');
+                                                addMoreDiv.innerHTML = '<div class="plus-sign">+</div>';
+                                                mealCardToRemove.appendChild(addMoreDiv);
+                                            }
+                                        } else {
+                                            Swal.fire('Error', data.message, 'error');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error removing meal:', error);
+                                        Swal.fire('Error', 'An error occurred while removing the meal', 'error');
+                                    });
+                                } else {
+                                    Swal.fire('Error', 'Meal ID is missing. Cannot remove meal.', 'error');
+                                }
                             }
                         });
                     });
@@ -1367,7 +1403,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             existingMealBox.style.cursor = 'not-allowed';
                             existingMealBox.style.border = '2px solid red';
                             existingMealBox.classList.add('shake-effect'); 
-                            evt.item.remove(); // Remove the dragged item to prevent adding duplicate
+                            evt.item.remove();
                             setTimeout(() => {
                                 existingMealBox.style.border = '';
                                 existingMealBox.classList.remove('shake-effect');
@@ -1412,7 +1448,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             
                             // Populate the .meal-card with structured content, retaining the label
                             targetMealCard.innerHTML = `
-                                ${existingLabel ? existingLabel.outerHTML : ''} <!-- Keep existing label -->
+                                ${existingLabel ? existingLabel.outerHTML : ''}
                                 <div class="custom-border rounded meal-box" 
                                     data-meal-name="${mealName}"
                                     data-meal-calories="${mealInfo.calories}" 
@@ -1423,7 +1459,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                     <img src="${imageSrc}" alt="${mealName}">
                                     <div class="meal-name">${mealName}</div>
                                     <div class="meal-info">${mealInfo.calories}<br>${mealInfo.size}</div> 
-                                    <div class="meal-box-close-btn"><i class="fa fa-times"></i></div>
+                                    <div class="meal-box-close-btn" id="removeMealsFromServerBtn"><i class="fa fa-times"></i></div>
                                 </div>
                             `;
 
@@ -1444,89 +1480,87 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                         reverseButtons: true
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                        const mealCard = mealBox.closest('.meal-card');
-                                        if (mealCard) {
-                                        // Remove the meal-box inside the meal-card
-                                        mealBox.remove();
-                                        
-                                        const mealId = mealBox ? mealBox.getAttribute('data-id') : null;
-                                        // Get the day and meal section to properly identify which day and meal type the card belongs to
-                                        const dayColumn = mealCard.closest('.day-column');
-                                        const mealSection = mealCard.closest('.meal-section');
+                                            const mealCard = mealBox.closest('.meal-card');
+                                            if (mealCard) {
+                                                // Remove the meal-box inside the meal-card
+                                                mealBox.remove();
 
-                                        if (dayColumn && mealSection) {
-                                            const dayId = dayColumn.querySelector('.day-header').textContent.trim().toLowerCase().replace(' ', '');
-                                            const mealLabel = mealSection.getAttribute('data-label'); // Get the meal label (Breakfast, Lunch, etc.)
+                                                const mealId = mealBox ? mealBox.getAttribute('data-id') : null;
+                                                // Get the day and meal section to properly identify which day and meal type the card belongs to
+                                                const dayColumn = mealCard.closest('.day-column');
+                                                const mealSection = mealCard.closest('.meal-section');
 
-                                            // Remove the corresponding meal data from the arrays
-                                            const mealName = mealBox.getAttribute('data-meal-name');
-                                            
-                                            // Remove from mealDataArray
-                                            const mealIndex = mealDataArray.findIndex(meal => meal.mealName === mealName);
-                                            if (mealIndex !== -1) {
-                                                mealDataArray.splice(mealIndex, 1); // Remove from mealDataArray
-                                            }
+                                                if (dayColumn && mealSection) {
+                                                    const dayId = dayColumn.querySelector('.day-header').textContent.trim().toLowerCase().replace(' ', '');
+                                                    const mealLabel = mealSection.getAttribute('data-label'); 
 
-                                            // Update kcal and oz in dayNutritionTotals for the specific dayId
-                                            if (mealData && mealData.mealInfo) {
-                                                const kcalToRemove = parseFloat(mealData.mealInfo.calories || 0);
-                                                const ozToRemove = parseFloat(mealData.mealInfo.size || 0);
-
-                                                if (dayNutritionTotals[dayId]) {
-                                                    dayNutritionTotals[dayId].kcal -= kcalToRemove;
-                                                    dayNutritionTotals[dayId].oz -= ozToRemove;
-                                                }
-                                            }
-
-                                            // Update the display of kcal and oz in the day column after meal removal
-                                            const calInfoElement = dayColumn.querySelector('.cal-info');
-                                            if (calInfoElement) {
-                                                calInfoElement.innerHTML = `${dayNutritionTotals[dayId].kcal} kcal<br>${dayNutritionTotals[dayId].oz} oz`;
-                                            }
-
-                                            // Remove from dayMealData for the corresponding day and meal section
-                                            if (dayMealData[dayId]) {
-                                                const mealIndex = dayMealData[dayId].findIndex(meal => meal.mealId === mealId); 
-
-                                                // If the meal is found, remove it
-                                                if (mealIndex !== -1) {
-                                                    dayMealData[dayId].splice(mealIndex, 1); 
-                                                } else {
-                                                    console.error(`Meal with ID ${mealId} not found in dayMealData for dayId: ${dayId}`);
-                                                }
-                                            } 
-                                            
-                                            const remainingMealCards = mealSection.querySelectorAll('.meal-box');
-                                            if (dayMealData[dayId] && dayMealData[dayId].length === 0) {
-                                                // Reset the icon's color and remove the event listener
-                                                const addToCartIcon = dayColumn.querySelector('.AddToCart');
-                                                if (addToCartIcon) {
-                                                    const cartIcon = addToCartIcon.querySelector('i');
-                                                    if (cartIcon) {
-                                                        cartIcon.style.color = '';  // Reset color
-                                                        cartIcon.classList.remove('black-icon');  // Remove the black-icon class
-                                                        // Remove the click event listener if needed
-                                                        cartIcon.addEventListener('click', closeGroceryPopup);
+                                                    // Remove the corresponding meal data from the arrays
+                                                    const mealName = mealBox.getAttribute('data-meal-name');
+                                                    
+                                                    // Remove from mealDataArray
+                                                    const mealIndex = mealDataArray.findIndex(meal => meal.mealName === mealName);
+                                                    if (mealIndex !== -1) {
+                                                        mealDataArray.splice(mealIndex, 1); 
                                                     }
+
+                                                    // Update kcal and oz in dayNutritionTotals for the specific dayId
+                                                    if (mealData && mealData.mealInfo) {
+                                                        const kcalToRemove = parseFloat(mealData.mealInfo.calories || 0);
+                                                        const ozToRemove = parseFloat(mealData.mealInfo.size || 0);
+
+                                                        if (dayNutritionTotals[dayId]) {
+                                                            dayNutritionTotals[dayId].kcal -= kcalToRemove;
+                                                            dayNutritionTotals[dayId].oz -= ozToRemove;
+                                                        }
+                                                    }
+
+                                                    // Update the display of kcal and oz in the day column after meal removal
+                                                    const calInfoElement = dayColumn.querySelector('.cal-info');
+                                                    if (calInfoElement) {
+                                                        calInfoElement.innerHTML = `${dayNutritionTotals[dayId].kcal} kcal<br>${dayNutritionTotals[dayId].oz} oz`;
+                                                    }
+
+                                                    // Remove from dayMealData for the corresponding day and meal section
+                                                    if (dayMealData[dayId]) {
+                                                        const mealIndex = dayMealData[dayId].findIndex(meal => meal.mealId === mealId); 
+
+                                                        // If the meal is found, remove it
+                                                        if (mealIndex !== -1) {
+                                                            dayMealData[dayId].splice(mealIndex, 1); 
+                                                        } else {
+                                                            console.error(`Meal with ID ${mealId} not found in dayMealData for dayId: ${dayId}`);
+                                                        }
+                                                    } 
+                                                    
+                                                    const remainingMealCards = mealSection.querySelectorAll('.meal-box');
+                                                    if (dayMealData[dayId] && dayMealData[dayId].length === 0) {
+                                                        // Reset the icon's color and remove the event listener
+                                                        const addToCartIcon = dayColumn.querySelector('.AddToCart');
+                                                        if (addToCartIcon) {
+                                                            const cartIcon = addToCartIcon.querySelector('i');
+                                                            if (cartIcon) {
+                                                                cartIcon.style.color = '';
+                                                                cartIcon.classList.remove('black-icon'); 
+                                                                // Remove the click event listener if needed
+                                                                cartIcon.addEventListener('click', closeGroceryPopup);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // Update section (meal-card) if needed
+                                                    if (mealCard.children.length === 0) {
+                                                        // If the meal-card is now empty, you may want to add back the empty slot or display a message.
+                                                        const addMoreDiv = document.createElement('div');
+                                                        addMoreDiv.classList.add('add-more');
+                                                        addMoreDiv.innerHTML = '<div class="plus-sign">+</div>';
+                                                        mealCard.appendChild(addMoreDiv);
+                                                    }
+
+                                                    populateAllGroceryList(mealDataArray);
+                                                    populateGroceryList(dayMealData[dayId]);
                                                 }
                                             }
-
-                                            // Update section (meal-card) if needed
-                                            if (mealCard.children.length === 0) {
-                                                // If the meal-card is now empty, you may want to add back the empty slot or display a message.
-                                                const addMoreDiv = document.createElement('div');
-                                                addMoreDiv.classList.add('add-more');
-                                                addMoreDiv.innerHTML = '<div class="plus-sign">+</div>';
-                                                mealCard.appendChild(addMoreDiv);
-                                            }
-
-                                            populateAllGroceryList(mealDataArray);
-                                            populateGroceryList(dayMealData[dayId]);
-                                        }
-                                        }
-                                        } else if (result.dismiss === Swal.DismissReason.cancel) {
-                                            Swal.fire('Cancelled', 'Your meal data is safe', 'error');
-                                        }
+                                        } 
                                     });
                                 }
                             });
@@ -1606,10 +1640,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             // Meal data exists, make sure the cart icon is visible and clickable
                             const cartIcon = addToCartIcon.querySelector('i');
                             if (cartIcon) {
-                                cartIcon.style.display = 'block'; // Make sure icon is visible
-                                cartIcon.style.color = 'black';  // Set color to black
-                                cartIcon.classList.add('black-icon');  // Ensure 'black-icon' class is added
-                                cartIcon.removeEventListener('click', closeGroceryPopup); // Remove any previous event listener
+                                cartIcon.style.display = 'block';
+                                cartIcon.style.color = 'black';
+                                cartIcon.classList.add('black-icon');
+                                cartIcon.removeEventListener('click', closeGroceryPopup);
                                 cartIcon.addEventListener('click', function() {
                                     populateGroceryList(dayMealData[dayId]);
                                     showGroceryPopup();
@@ -1620,13 +1654,13 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 // No meal data exists, disable or hide the cart icon
                                 const cartIcon = addToCartIcon.querySelector('i');
                                 if (cartIcon) {
-                                    cartIcon.style.display = 'none';  // Hide the cart icon
-                                    cartIcon.style.color = '';        // Remove the color styling
-                                    cartIcon.classList.remove('black-icon');  // Remove the black-icon class
+                                    cartIcon.style.display = 'none';
+                                    cartIcon.style.color = '';
+                                    cartIcon.classList.remove('black-icon');
                                     cartIcon.removeEventListener('click', function() {
                                         populateGroceryList(dayMealData[dayId]);
                                         showGroceryPopup();
-                                    });  // Ensure event listener is removed
+                                    }); 
                                 }
                         }
                 }

@@ -53,3 +53,5 @@ function sendOtpEmail($email, $message, $sender_name)
         echo "Failed to send email: {$mail->ErrorInfo}\n";
     }
 }
+
+// Developer => github => itssaqlain06

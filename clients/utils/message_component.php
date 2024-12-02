@@ -47,6 +47,7 @@ if ($login_user_role == 'coach') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+
     <style>
         .chat-box {
             max-height: 500px;
@@ -168,6 +169,29 @@ if ($login_user_role == 'coach') {
         .col-auto {
             flex: 0 0 auto;
         }
+
+        .text-green {
+            color: green !important;
+        }
+
+        .filepond--credits {
+            display: none !important;
+        }
+
+        .modal-title {
+            color: #946CFC;
+        }
+
+        .upload-btn {
+            color: white;
+            background: gray !important;
+            transition: .3s all ease-in-out;
+        }
+
+        .upload-btn:hover {
+            background: #946CFC !important;
+            color: white;
+        }
     </style>
 </head>
 
@@ -186,7 +210,7 @@ if ($login_user_role == 'coach') {
         <div class="chat-footer row g-2">
             <div class="input-container">
                 <input type="text" id="message-input" class="form-control" placeholder="Type your message" oninput="handleInputChange()">
-                <i class="fa fa-paperclip" id="clip-icon" aria-hidden="true"></i>
+                <i class="fa fa-paperclip d-none" id="clip-icon" aria-hidden="true"></i>
             </div>
 
             <div class="col-auto" style="flex: 0 0 8rem;">
@@ -204,12 +228,13 @@ if ($login_user_role == 'coach') {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- FilePond Container -->
+                    <p class="text-danger mb-3">You can upload up to <strong>5 images</strong> only.</p>
                     <input type="file" id="filepond-input" class="filepond" name="filepond" />
+                    <div id="file-upload-error" class="text-danger mt-2" style="display: none;"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="upload-button">Upload</button>
+                    <button type="button" class="btn upload-btn" id="upload-button" disabled>Upload</button>
                 </div>
             </div>
         </div>
@@ -219,71 +244,79 @@ if ($login_user_role == 'coach') {
     <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
 
+    <!-- Script to select and display images -->
     <script>
-        // Register FilePond plugins
-        FilePond.registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
-
-        // Show modal when the paperclip icon is clicked
         document.getElementById('clip-icon').addEventListener('click', () => {
             const modal = new bootstrap.Modal(document.getElementById('fileUploadModal'));
             modal.show();
         });
 
-        // Add a title to notify users about the file limit
-        document.querySelector('.modal-body').insertAdjacentHTML(
-            'afterbegin',
-            '<p class="text-muted mb-3">You can upload up to <strong>5 images</strong> only. Selecting more than 5 images is not allowed.</p>'
-        );
+        FilePond.registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
 
-        // Configure FilePond
         const fileInput = document.getElementById('filepond-input');
+        const errorContainer = document.getElementById('file-upload-error');
+
         const pond = FilePond.create(fileInput, {
             allowMultiple: true,
             maxFiles: 5,
             maxFileSize: '5MB',
             acceptedFileTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'],
 
-            onaddfile: (error, file) => {
-                if (error) {
-                    console.error('FilePond error:', error.main);
-                    return;
-                }
-                console.log('File added:', file);
-            },
-
-            onupdatefiles: (fileItems) => {
-                // Enforce the 5-file limit strictly
-                if (fileItems.length > 5) {
-                    // Remove extra files automatically
-                    while (fileItems.length > 5) {
-                        pond.removeFile(fileItems[fileItems.length - 1].id);
-                    }
-                    // Show FilePond error style for exceeding the file limit
-                    pond.setOptions({
-                        labelFileProcessingError: 'You can only upload up to 5 files.',
-                    });
-                    // Trigger the error styling
-                    fileItems.forEach((item) => {
-                        item.setMetadata('customError', 'File limit exceeded.');
-                        item.fire('error', {
-                            error: 'You can only upload up to 5 files.'
-                        });
-                    });
-                }
-            },
-
-            labelIdle: 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>',
+            labelIdle: 'Drag & Drop your files or <span class="filepond--label-action text-green">Browse</span>',
+            labelMaxFilesExceeded: 'You can only upload up to 5 files.',
             labelFileProcessingError: 'Error uploading file.',
             labelFileTypeNotAllowed: 'File type not allowed. Please upload JPEG, PNG, or WebP images.',
             labelMaxFileSizeExceeded: 'File is too large. Maximum file size is 5MB.',
+
+            onupdatefiles: (fileItems) => {
+                if (fileItems.length > 5) {
+                    errorContainer.textContent = 'You cannot upload more than 5 files.';
+                    errorContainer.style.display = 'block';
+
+                    fileItems.slice(5).forEach((excessFile) => {
+                        pond.removeFile(excessFile.id);
+                    });
+                } else {
+                    errorContainer.style.display = 'none';
+                }
+                toggleUploadButton();
+            },
+
+            onaddfile: (error) => {
+                if (error) {
+                    errorContainer.textContent = error.main || 'An error occurred.';
+                    errorContainer.style.display = 'block';
+                }
+                toggleUploadButton();
+            },
+            onremovefile: () => {
+                toggleUploadButton();
+            },
         });
 
-        // Clear the FilePond input after the modal is closed
         document.getElementById('fileUploadModal').addEventListener('hidden.bs.modal', () => {
             pond.removeFiles();
+            errorContainer.style.display = 'none';
+            toggleUploadButton();
         });
-    </script>
 
+        function toggleUploadButton() {
+            const sendButton = document.getElementById('upload-button');
+            const isFileValid = pond.getFiles().length > 0 && errorContainer.style.display === 'none';
+
+            if (isFileValid) {
+                sendButton.disabled = false;
+                sendButton.classList.remove('disabled');
+                sendButton.style.backgroundColor = '#946CFC';
+                sendButton.style.cursor = 'pointer';
+            } else {
+                sendButton.disabled = true;
+                sendButton.classList.add('disabled');
+                sendButton.style.backgroundColor = 'gray';
+                sendButton.style.cursor = 'not-allowed';
+            }
+        }
+    </script>
 
     <!-- Script to display send button as disable -->
     <script>
@@ -300,9 +333,6 @@ if ($login_user_role == 'coach') {
             }
         }
     </script>
-
-
-
 </body>
 
 </html>

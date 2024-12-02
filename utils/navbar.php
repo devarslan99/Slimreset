@@ -422,7 +422,7 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
                             <li><a class="bread-crum-Link <?php echo $showFoodGroup ? 'main-color fw-bold' : '' ?>" href="../clients/add-food-group.php">Add Food</a></li>
                             <li><a class="bread-crum-Link <?php echo $showViewFoodGroup ? 'main-color fw-bold' : '' ?>" href="../clients/view-food-group.php">View Food</a></li>
                             <li><a class="bread-crum-Link <?php echo $showProtein ? 'main-color fw-bold' : '' ?>" href="../clients/add-protein.php">Add Protein</a></li>
-                            <li><a class="bread-crum-Link <?php echo $showViewProtein? 'main-color fw-bold' : '' ?>" href="../clients/view-protein.php">View Protein</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showViewProtein ? 'main-color fw-bold' : '' ?>" href="../clients/view-protein.php">View Protein</a></li>
                             <li><a class="bread-crum-Link <?php echo $showVeggie ? 'main-color fw-bold' : '' ?>" href="../clients/add-veggie.php">Add Veggie</a></li>
                             <li><a class="bread-crum-Link <?php echo $showViewVeggie ? 'main-color fw-bold' : '' ?>" href="../clients/view-veggie.php">View Veggie</a></li>
                             <li><a class="bread-crum-Link <?php echo $showFruit ? 'main-color fw-bold' : '' ?>" href="../clients/add-fruit.php">Add Fruit</a></li>
@@ -529,7 +529,7 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
                     <?php endif; ?>
 
 
-                    <?php if (!$login_user_role === "admin") : ?>
+                    <?php if ($login_user_role === "coach" || $login_user_role === "client") : ?>
                         <li class="custom-notification-dropdown onhover-dropdown px-0 py-0 d-none">
                             <div class="d-flex custom-notification align-items-center position-relative">
                                 <i class="fa fa-bell-o bell-font-size" aria-hidden="true"></i>

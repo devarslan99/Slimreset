@@ -255,6 +255,36 @@
 
     function sendMessage() {
         let messageInput = document.getElementById('message-input').value;
+
+        // const uploadedFiles = pond.getFiles();
+        // console.log("Uploaded files:", uploadedFiles)
+
+        // const imagePaths = uploadedFiles.map(file => {
+        //     let filename = file.filename;
+        //     let extension = filename.split('.').pop();
+        //     let sanitizedFilename = filename.replace(/\s+/g, '-');
+        //     let uniqueName = sanitizedFilename + Date.now() + '.' + extension;
+
+        //     return uniqueName;
+        // });
+
+
+        // if (messageInput.trim() !== '' || imagePaths.length > 0) {
+        //     let messageData = {
+        //         from_user_id: userOneId,
+        //         to_user_id: userTwoId,
+        //         message: messageInput,
+        //         image: imagePaths,
+        //         sent_at: new Date().toISOString()
+        //     };
+        //     ws.send(JSON.stringify(messageData));
+
+        //     let chatBox = document.getElementById('chat-box');
+        //     chatBox.scrollTop = chatBox.scrollHeight;
+
+        //     document.getElementById('message-input').value = '';
+        // }
+
         if (messageInput.trim() !== '') {
             let messageData = {
                 from_user_id: userOneId,
@@ -277,6 +307,9 @@
 
     if (currentUrl.includes("summary.php")) {
         document.getElementById('send-button').onclick = function() {
+            sendMessage();
+        };
+        document.getElementById('upload-button').onclick = function() {
             sendMessage();
         };
     }
@@ -337,7 +370,6 @@
         });
     }
 
-    // Check if the current URL is summary.php; if not, remove activeTab
     if (!currentUrl.includes('summary.php')) {
         localStorage.removeItem('activeTab');
     }

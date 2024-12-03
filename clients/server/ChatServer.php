@@ -1,10 +1,14 @@
 <?php
 
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
+include_once __DIR__ . '/../../database/db_connection.php';
+
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
-require dirname(__DIR__, 2) . '/vendor/autoload.php';
-include_once __DIR__ . '/../../database/db_connection.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 
 class ChatServer implements MessageComponentInterface
 {
@@ -246,7 +250,57 @@ class ChatServer implements MessageComponentInterface
     {
         $stmt = $this->mysqli->prepare("INSERT INTO messages (chat_id, sender_id, receiver_id, message) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("iiis", $chat_id, $sender_id, $receiver_id, $message);
+        if ($stmt->execute()) {
+            // Get receiver's email
+            $receiver_email = $this->getUserEmailById($receiver_id);
+            $sender_first_name = $this->getUserFirstNameById($sender_id);
+
+            if ($receiver_email && $sender_first_name) {
+                // Queue the OTP email in Redis
+                $this->queueEmailNotification($receiver_email, $message, $sender_first_name);
+            }
+        } else {
+            echo "<script>console.log('Failed to insert message into database.');</script>";
+        }
+    }
+
+    private function getUserEmailById($user_id)
+    {
+        $stmt = $this->mysqli->prepare("SELECT email FROM users WHERE id = ?");
+        $stmt->bind_param("i", $user_id);
         $stmt->execute();
+        $stmt->bind_result($email);
+        $stmt->fetch();
+        $stmt->close();
+
+        return $email ?? null;
+    }
+
+    private function getUserFirstNameById($user_id)
+    {
+        $stmt = $this->mysqli->prepare("SELECT first_name FROM users WHERE id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($first_name);
+        $stmt->fetch();
+        $stmt->close();
+
+        return $first_name ?? null;
+    }
+
+    private function queueEmailNotification($email, $message, $sender_name)
+    {
+        $redis = new Predis\Client();
+
+        // Prepare the job data
+        $jobData = [
+            'email' => $email,
+            'message' => $message,
+            'sender_name' => $sender_name
+        ];
+
+        // Push the job into the Redis queue
+        $redis->rpush('email_alert_queue', json_encode($jobData));
     }
 
     public function onClose(ConnectionInterface $conn)

@@ -10,7 +10,7 @@
 
 
 <script>
-    let ws = new WebSocket('ws://43.204.147.254:8080?from_user_id=' + <?php echo $user_one_id; ?> + '&to_user_id=' + <?php echo $user_two_id; ?>);
+    let ws = new WebSocket('ws://localhost:8080?from_user_id=' + <?php echo $user_one_id; ?> + '&to_user_id=' + <?php echo $user_two_id; ?>);
 
     let userOneId = <?php echo $user_one_id; ?>;
     let userTwoId = <?php echo $user_two_id; ?>;

@@ -46,7 +46,8 @@ if ($login_user_role == 'coach') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+
     <style>
         .chat-box {
             max-height: 500px;
@@ -168,6 +169,29 @@ if ($login_user_role == 'coach') {
         .col-auto {
             flex: 0 0 auto;
         }
+
+        .text-green {
+            color: green !important;
+        }
+
+        .filepond--credits {
+            display: none !important;
+        }
+
+        .modal-title {
+            color: #946CFC;
+        }
+
+        .upload-btn {
+            color: white;
+            background: gray !important;
+            transition: .3s all ease-in-out;
+        }
+
+        .upload-btn:hover {
+            background: #946CFC !important;
+            color: white;
+        }
     </style>
 </head>
 
@@ -186,7 +210,7 @@ if ($login_user_role == 'coach') {
         <div class="chat-footer row g-2">
             <div class="input-container">
                 <input type="text" id="message-input" class="form-control" placeholder="Type your message" oninput="handleInputChange()">
-                <i class="fa fa-paperclip" id="clip-icon" aria-hidden="true"></i>
+                <i class="fa fa-paperclip d-none" id="clip-icon" aria-hidden="true"></i>
             </div>
 
             <div class="col-auto" style="flex: 0 0 8rem;">
@@ -194,7 +218,107 @@ if ($login_user_role == 'coach') {
             </div>
         </div>
     </div>
-    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+
+    <!-- File Upload Modal -->
+    <div class="modal fade" id="fileUploadModal" tabindex="-1" aria-labelledby="fileUploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fileUploadModalLabel">Upload Files</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger mb-3">You can upload up to <strong>5 images</strong> only.</p>
+                    <input type="file" id="filepond-input" class="filepond" name="filepond" />
+                    <div id="file-upload-error" class="text-danger mt-2" style="display: none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn upload-btn" id="upload-button" disabled>Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+
+    <!-- Script to select and display images -->
+    <script>
+        document.getElementById('clip-icon').addEventListener('click', () => {
+            const modal = new bootstrap.Modal(document.getElementById('fileUploadModal'));
+            modal.show();
+        });
+
+        FilePond.registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
+
+        const fileInput = document.getElementById('filepond-input');
+        const errorContainer = document.getElementById('file-upload-error');
+
+        const pond = FilePond.create(fileInput, {
+            allowMultiple: true,
+            maxFiles: 5,
+            maxFileSize: '5MB',
+            acceptedFileTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'],
+
+            labelIdle: 'Drag & Drop your files or <span class="filepond--label-action text-green">Browse</span>',
+            labelMaxFilesExceeded: 'You can only upload up to 5 files.',
+            labelFileProcessingError: 'Error uploading file.',
+            labelFileTypeNotAllowed: 'File type not allowed. Please upload JPEG, PNG, or WebP images.',
+            labelMaxFileSizeExceeded: 'File is too large. Maximum file size is 5MB.',
+
+            onupdatefiles: (fileItems) => {
+                if (fileItems.length > 5) {
+                    errorContainer.textContent = 'You cannot upload more than 5 files.';
+                    errorContainer.style.display = 'block';
+
+                    fileItems.slice(5).forEach((excessFile) => {
+                        pond.removeFile(excessFile.id);
+                    });
+                } else {
+                    errorContainer.style.display = 'none';
+                }
+                toggleUploadButton();
+            },
+
+            onaddfile: (error) => {
+                if (error) {
+                    errorContainer.textContent = error.main || 'An error occurred.';
+                    errorContainer.style.display = 'block';
+                }
+                toggleUploadButton();
+            },
+            onremovefile: () => {
+                toggleUploadButton();
+            },
+        });
+
+        document.getElementById('fileUploadModal').addEventListener('hidden.bs.modal', () => {
+            pond.removeFiles();
+            errorContainer.style.display = 'none';
+            toggleUploadButton();
+        });
+
+        function toggleUploadButton() {
+            const sendButton = document.getElementById('upload-button');
+            const isFileValid = pond.getFiles().length > 0 && errorContainer.style.display === 'none';
+
+            if (isFileValid) {
+                sendButton.disabled = false;
+                sendButton.classList.remove('disabled');
+                sendButton.style.backgroundColor = '#946CFC';
+                sendButton.style.cursor = 'pointer';
+            } else {
+                sendButton.disabled = true;
+                sendButton.classList.add('disabled');
+                sendButton.style.backgroundColor = 'gray';
+                sendButton.style.cursor = 'not-allowed';
+            }
+        }
+    </script>
+
+    <!-- Script to display send button as disable -->
     <script>
         function handleInputChange() {
             const messageInput = document.getElementById('message-input');
@@ -209,7 +333,6 @@ if ($login_user_role == 'coach') {
             }
         }
     </script>
-
 </body>
 
 </html>

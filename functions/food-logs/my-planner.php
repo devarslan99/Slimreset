@@ -836,9 +836,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             ? meal.image 
             : `../assets/images/recipe_images/uploads/${meal.image}`;
 
-            const calories = Math.round(meal.calories);
-            const protein = Math.round(meal.protein);
-            const carbs = Math.round(meal.carbs);
+            const calories = meal.calories > 0 ? Math.round(meal.calories) : meal.calories ;
+            const protein = meal.protein > 0 ? Math.round(meal.protein) : meal.protein ;
+            const carbs = meal.carbs > 0 ? Math.round(meal.carbs) : meal.carbs ;
 
             const mealCard = `
                 <div
@@ -982,7 +982,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         <div class="day-header">day ${dayData.day}</div>
                         <div class="day-Name fs-2" data-day="${dayData.dayAbbreviation}">${dayData.dayAbbreviation}</div>
                         <div class="date-text" data-date="${dayData.date}">${dayData.date}</div>
-                        <div class="cal-info">${kcal}kcal<br>${oz} oz</div>
+                        <div class="cal-info" data-day-id="day${dayData.day}">${kcal}kcal<br>${oz} oz</div>
                         <div class="AddToCart"><i class="fa fa-shopping-cart" id="cartIcon"></i></div>
                     </div>
                     <div class="meal-section" id="day${dayData.day}-breakfast" data-label="Breakfast">
@@ -1101,13 +1101,20 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             function repopulateMealSection(savedMealCards) {
                 savedMealCards.forEach(meal => {
                     const mealId = meal.id;
-
                     const mealDate = meal.date;
                     const mealLabel = meal.label;
 
+                    let dayId = null; 
+
                     // Find the correct day column based on the meal date
                     const dayColumn = document.querySelector(`.day-column .date-text[data-date="${mealDate}"]`);
-                    const dayId = dayColumn.innerHTML;
+
+                    if (dayColumn) {
+                        const dayHeader = dayColumn.closest('.day-column').querySelector('.day-header');
+                        dayId = dayHeader ? dayHeader.textContent.toLowerCase().replace(" ", "") : null;
+                    } else {
+                        console.log("No matching day column found for the specified date.");
+                    }
 
                     if (!dayColumn) return;
 
@@ -1131,7 +1138,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             onclick="showBox(this)" data-id="${meal.foodId}">
                             <img src="${meal.image}" alt="${meal.mealName}">
                             <div class="meal-name">${meal.mealName}</div>
-                            <div class="meal-info">${Math.round(meal.calories)} kcal<br>${Math.round(meal.protein)} oz</div>
+                            <div class="meal-info">${meal.calories > 0 ? Math.round(meal.calories) : meal.calories} kcal<br>${meal.protein > 0 ? Math.round(meal.protein) : meal.protein} oz</div>
                             <div class="meal-box-close-btn"><i class="fa fa-times"></i></div>
                         </div>
                     `;
@@ -1181,6 +1188,28 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                                 addMoreDiv.innerHTML = '<div class="plus-sign">+</div>';
                                                 mealCardToRemove.appendChild(addMoreDiv);
                                             }
+
+                                            // Update kcal and oz in dayNutritionTotals for the specific dayId
+                                            if (meal) {
+                                                const kcalToRemove = parseFloat(Math.round(meal.calories) || 0);
+                                                const ozToRemove = parseFloat(Math.round(meal.protein) || 0);
+
+                                                if (dayNutritionTotals[dayId]) {
+                                                    dayNutritionTotals[dayId].kcal -= kcalToRemove;
+                                                    dayNutritionTotals[dayId].oz -= ozToRemove;
+                                                }
+                                            }
+
+                                            // Update the display of kcal and oz in the day column after meal removal
+                                            const calInfoElement = document.querySelector(`.cal-info[data-day-id="${dayId}"]`);
+                                            if (calInfoElement) {
+                                                calInfoElement.innerHTML = `${dayNutritionTotals[dayId].kcal} kcal<br>${dayNutritionTotals[dayId].oz} oz`;
+                                            }
+
+
+                                            // Populating Updated data of meal-cards into Grocery List Box
+                                            mealDataArray = mealDataArray.filter(meal => meal.id !== mealId)
+                                            populateAllGroceryList(mealDataArray); 
                                         } else {
                                             Swal.fire('Error', data.message, 'error');
                                         }
@@ -1196,65 +1225,66 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         });
                     });
 
-                    // if (dayId) {
+                    if (dayId) {
 
-                    //     console.log(dayId)
-                    //     // Push meal data into the specific day array
-                    //     if (dayMealData[dayId]) {
-                    //         dayMealData[dayId].push({ ...savedMealCards , mealId });
-                    //     } else {
-                    //         console.error(`Invalid dayId: ${dayId}`);
-                    //     }
+                        // Push meal data into the specific day array
+                        if (dayMealData[dayId]) {
+                            dayMealData[dayId].push({ ...meal , dayId });
+                        } else {
+                            console.error(`Invalid dayId: ${dayId}`);
+                        }
 
-                    //     // Ensure `dayNutritionTotals` is initialized for this dayId
-                    //     if (!dayNutritionTotals[dayId]) {
-                    //         dayNutritionTotals[dayId] = { kcal: 0, oz: 0 };
-                    //     }
+                        // Ensure `dayNutritionTotals` is initialized for this dayId
+                        if (!dayNutritionTotals[dayId]) {
+                            dayNutritionTotals[dayId] = { kcal: 0, oz: 0 };
+                        }
 
-                    //     // Add the meal's kcal and oz to the day's totals
-                    //     if (savedMealCards) {
-                    //         dayNutritionTotals[dayId].kcal += parseFloat(meal.calories || 0);
-                    //         dayNutritionTotals[dayId].oz += parseFloat(meal.size || 0);
-                    //     }
+                        // Add the meal's kcal and oz to the day's totals
+                        if (meal) {
+                            dayNutritionTotals[dayId].kcal += parseFloat(meal.calories > 0 ? Math.round(meal.calories) : meal.calories);
+                            dayNutritionTotals[dayId].oz += parseFloat(meal.protein > 0 ? Math.round(meal.protein) : meal.protein);
+                        }
 
-                    //     // Update the display of kcal and oz in the day column
-                    //     // const calInfoElement = document.querySelector('.cal-info');
-                    //     // if (calInfoElement) {
-                    //     //     calInfoElement.innerHTML = `${dayNutritionTotals[dayId].kcal} kcal<br>${dayNutritionTotals[dayId].oz} oz`;
-                    //     // }
+                        // Update the display of kcal and oz in the day column
+                        const calInfoElement = document.querySelector(`.cal-info[data-day-id="${dayId}"]`);
+                        if (calInfoElement) {
+                            calInfoElement.innerHTML = `${dayNutritionTotals[dayId].kcal} kcal<br>${dayNutritionTotals[dayId].oz} oz`;
+                        }
+                    }
 
-
-                    //     }
-                    //     // Handle the cart icon visibility
-                    //     const addToCartIcon = document.querySelector('.AddToCart');
-                    //     // Check if there is meal data for this dayId
-                    //     if (dayMealData[dayId] && dayMealData[dayId].length > 0) {
-                    //     // Meal data exists, make sure the cart icon is visible and clickable
-                    //     const cartIcon = addToCartIcon.querySelector('i');
-                    //     if (cartIcon) {
-                    //         cartIcon.style.display = 'block';
-                    //         cartIcon.style.color = 'black';
-                    //         cartIcon.classList.add('black-icon');
-                    //         cartIcon.removeEventListener('click', closeGroceryPopup);
-                    //         cartIcon.addEventListener('click', function() {
-                    //         populateGroceryList(dayMealData[dayId]);
-                    //         showGroceryPopup();
-                    //         selectedId = dayId
-                    //     });
-                    //     }
-                    //     } else {
-                    //     // No meal data exists, disable or hide the cart icon
-                    //     const cartIcon = addToCartIcon.querySelector('i');
-                    //     if (cartIcon) {
-                    //         cartIcon.style.display = 'none';
-                    //         cartIcon.style.color = '';
-                    //         cartIcon.classList.remove('black-icon');
-                    //         cartIcon.removeEventListener('click', function() {
-                    //             populateGroceryList(dayMealData[dayId]);
-                    //             showGroceryPopup();
-                    //         }); 
-                    //     }
-                    // }
+                         // Handle the cart icon visibility
+                         const addToCartIcon = document.querySelector('.AddToCart');
+                        // Check if there is meal data for this dayId
+                        if (dayMealData[dayId] && dayMealData[dayId].length > 0) {
+                        // Meal data exists, make sure the cart icon is visible and clickable
+                        const cartIcon = addToCartIcon.querySelector('i');
+                        if (cartIcon) {
+                            cartIcon.style.display = 'block';
+                            cartIcon.style.color = 'black';
+                            cartIcon.classList.add('black-icon');
+                            // cartIcon.removeEventListener('click', closeGroceryPopup);
+                            cartIcon.addEventListener('click', function() {
+                            populateGroceryList(dayMealData[dayId]);
+                            showGroceryPopup();
+                            selectedId = dayId
+                        });
+                        }
+                        } else {
+                        // No meal data exists, disable or hide the cart icon
+                        const cartIcon = addToCartIcon.querySelector('i');
+                        if (cartIcon) {
+                                cartIcon.style.display = 'none';
+                                cartIcon.style.color = '';
+                                cartIcon.classList.remove('black-icon');
+                                cartIcon.removeEventListener('click', function() {
+                                    populateGroceryList(dayMealData[dayId]);
+                                    showGroceryPopup();
+                                }); 
+                            }
+                        }
+                       
+                        mealDataArray.push(meal);
+                        populateAllGroceryList(mealDataArray);
                 });
             }
 
@@ -1265,16 +1295,16 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
     let mealDataArray = [];
     // Function to Populate all Meal Card Data into Grocery List
-    function populateAllGroceryList(mealDataArray) {
+    function populateAllGroceryList(savedMealCards) {
         const groceryListBox = document.querySelector('.grocery-list-box-2');
         groceryListBox.innerHTML = ''; 
 
         // Check if mealDataArray has data
-        if (mealDataArray.length === 0) {
+        if (savedMealCards.length === 0) {
             // Remove event listener if no data is available
             const groceryListBtn = document.querySelector('.grocery-list');
             groceryListBtn.removeEventListener('click', showGroceryPopup2);
-            return; // Exit the function if mealDataArray is empty
+            return; 
         }
 
         const fullDayNames = {
@@ -1288,7 +1318,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         };
             
         // Group meals by day
-        const groupedMeals = mealDataArray.reduce((acc, meal) => {
+        const groupedMeals = savedMealCards.reduce((acc, meal) => {
             if (!acc[meal.day]) {
                 acc[meal.day] = [];
             }
@@ -1314,7 +1344,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     <div class="list-box">
                         <span class="label-name">${meal.label}</span> <!-- Dynamic label -->
                         <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
-                            <h3 class="fw-bold mb-0">${meal.mealName} ${meal.mealSubName}</h3>
+                            <h3 class="fw-bold mb-0">${meal.mealName}</h3>
                             <p class="text-muted mb-0"></p>
                         </div>
                         <div class="row">
@@ -1323,11 +1353,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 <div class="left">
                                     <div class="d-flex justify-content-between">
                                         <h5 class="fw-bold mb-1">Calories</h5>
-                                        <p class="mb-0">${meal.mealInfo.calories || 'N/A'}</p>
+                                        <p class="mb-0">${Math.round(meal.calories) || 'N/A'}</p>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <h5 class="fw-bold mb-1">Total Fat</h5>
-                                        <p class="mb-0">${meal.mealInfo.fats || 'N/A'}</p>
+                                        <p class="mb-0">${meal.satFat || 'N/A'}</p>
                                     </div>
                                 </div>
                             </div>
@@ -1336,11 +1366,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                 <div class="right">
                                     <div class="d-flex justify-content-between">
                                         <h5 class="fw-bold mb-1">Carbohydrates</h5>
-                                        <p class="mb-0">${meal.mealInfo.carbs || 'N/A'}</p>
+                                        <p class="mb-0">${Math.round(meal.carbs) || 'N/A'}</p>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <h5 class="fw-bold mb-1">Protein</h5>
-                                        <p class="mb-0">${meal.mealInfo.size || 'N/A'}</p>
+                                        <p class="mb-0">${Math.round(meal.protein) || 'N/A'}</p>
                                     </div>
                                 </div>
                             </div>
@@ -1370,6 +1400,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         day6: [],
         day7: []
     };
+
     let selectedId = null;
 
     const dayNutritionTotals = {};
@@ -1377,7 +1408,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     // // Function to populate specific meal card data the grocery list
     function populateGroceryList(dayMealData) {
         const groceryListBox = document.querySelector('.grocery-list-box');
-        groceryListBox.innerHTML = ''; // Clear previous content
+        groceryListBox.innerHTML = ''; 
 
         // Flag to check if day and date have been displayed
         let isDayDateDisplayed = false;
@@ -1395,18 +1426,18 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     }
                     <span class="label-name">${meal.label}</span>
                     <div class="recipe-name-date d-flex justify-content-between align-items-center mb-2">
-                        <h3 class="fw-bold mb-0">${meal.mealName} ${meal.mealSubName}</h3>
+                        <h3 class="fw-bold mb-0">${meal.mealName}</h3>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <div class="left">
                                 <div class="d-flex justify-content-between">
                                     <h5 class="fw-bold mb-1">Calories</h5>
-                                    <p class="mb-0">${meal.mealInfo.calories || 'N/A'}</p>
+                                    <p class="mb-0">${meal.calories > 0 ? Math.round(meal.calories) + ' Kcal' : meal.calories + ' Kcal' || 'N/A'}</p>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <h5 class="fw-bold mb-1">Total Fat</h5>
-                                    <p class="mb-0">${meal.mealInfo.fats || 'N/A'}</p>
+                                    <p class="mb-0">${meal.satFat > 0 ? Math.round(meal.satFat) : meal.satFat || 'N/A'}</p>
                                 </div>
                             </div>
                         </div>
@@ -1414,11 +1445,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             <div class="right">
                                 <div class="d-flex justify-content-between">
                                     <h5 class="fw-bold mb-1">Carbohydrates</h5>
-                                    <p class="mb-0">${meal.mealInfo.carbs || 'N/A'}</p>
+                                    <p class="mb-0">${meal.carbs > 0 ? Math.round(meal.carbs) : meal.carbs || 'N/A'}</p>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <h5 class="fw-bold mb-1">Protein</h5>
-                                    <p class="mb-0">${meal.mealInfo.size || 'N/A'}</p>
+                                    <p class="mb-0">${meal.protein > 0 ? Math.round(meal.protein) : meal.protein || 'N/A'}</p>
                                 </div>
                             </div>
                         </div>
@@ -1663,8 +1694,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             date,
                             day
                         };
-                        mealDataArray.push(mealData);
-                        populateAllGroceryList(mealDataArray);
+
                         PopulateingMealCardDataToDataBase(mealData)
                         if (dayId) {
 
@@ -1886,20 +1916,20 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                         body: [
                             [
                                 { text: 'Calories', style: 'infoLabel' },
-                                { text: `${meal.mealInfo.calories || 'N/A'}`, style: 'infoValue' },
+                                { text: `${meal.calories > 0 ? Math.round(meal.calories) + ' Kcal' : meal.calories + ' Kcal' || 'N/A'}`, style: 'infoValue' },
                                 { text: 'Carbohydrates', style: 'infoLabel' },
-                                { text: `${meal.mealInfo.carbs || 'N/A'}`, style: 'infoValue' }
+                                { text: `${meal.carbs > 0 ? Math.round(meal.carbs) : meal.carbs || 'N/A'}`, style: 'infoValue' }
                             ],
                             [
                                 { text: 'Total Fat', style: 'infoLabel' },
-                                { text: `${meal.mealInfo.fats || 'N/A'}`, style: 'infoValue' },
+                                { text: `${meal.satFat > 0 ? Math.round(meal.satFat) : meal.satFat || 'N/A'}`, style: 'infoValue' },
                                 { text: 'Protein', style: 'infoLabel' },
-                                { text: `${meal.mealInfo.size || 'N/A'}`, style: 'infoValue' }
+                                { text: `${meal.protein > 0 ? Math.round(meal.protein) : meal.protein || 'N/A'}`, style: 'infoValue' }
                             ]
                         ]
                     },
                     layout: 'noBorders',
-                    margin: [0, 5, 0, 15] // Add space between meals
+                    margin: [0, 5, 0, 15]
                 }
             );
         });
@@ -2006,22 +2036,22 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             meals.forEach(meal => {
                 pdfContent.push(
                     { text: meal.label, style: 'mealLabel' },
-                    { text: `${meal.mealName} ${meal.mealSubName}`, style: 'mealTitle' },
+                    { text: `${meal.mealName}`, style: 'mealTitle' },
                     {
                         table: {
                             widths: ['30%', '30%', '30%', '30%'],
                             body: [
                                 [
                                     { text: 'Calories', style: 'infoLabel' },
-                                    { text: `${meal.mealInfo.calories || 'N/A'}`, style: 'infoValue' },
+                                    { text: `${Math.round(meal.calories) || 'N/A'}`, style: 'infoValue' },
                                     { text: 'Carbohydrates', style: 'infoLabel' },
-                                    { text: `${meal.mealInfo.carbs || 'N/A'}`, style: 'infoValue' }
+                                    { text: `${Math.round(meal.carbs) || 'N/A'}`, style: 'infoValue' }
                                 ],
                                 [
                                     { text: 'Total Fat', style: 'infoLabel' },
-                                    { text: `${meal.mealInfo.fats || 'N/A'}`, style: 'infoValue' },
+                                    { text: `${meal.satFat || 'N/A'}`, style: 'infoValue' },
                                     { text: 'Protein', style: 'infoLabel' },
-                                    { text: `${meal.mealInfo.size || 'N/A'}`, style: 'infoValue' }
+                                    { text: `${Math.round(meal.protein) || 'N/A'}`, style: 'infoValue' }
                                 ]
                             ]
                         },

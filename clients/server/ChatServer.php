@@ -167,15 +167,15 @@ class ChatServer implements MessageComponentInterface
     private function getPreviousMessages($user_one_id, $user_two_id)
     {
         $query = "
-                    SELECT 
-                m.id AS message_id,
-                m.message,
-                m.sent_at,
-                m.is_read,
-                u_sender.id AS sender_id,
-                u_receiver.id AS receiver_id,
-                CONCAT(u_sender.first_name, ' ', u_sender.last_name) AS sender_name,
-                u_sender.profile_image AS sender_profile_image
+            SELECT 
+            m.id AS message_id,
+            m.message,
+            m.sent_at,
+            m.is_read,
+            u_sender.id AS sender_id,
+            u_receiver.id AS receiver_id,
+            CONCAT(u_sender.first_name, ' ', u_sender.last_name) AS sender_name,
+            u_sender.profile_image AS sender_profile_image
             FROM 
                 messages m
             JOIN 
@@ -290,18 +290,33 @@ class ChatServer implements MessageComponentInterface
 
     private function queueEmailNotification($email, $message, $sender_name)
     {
-        $redis = new Predis\Client();
-
-        // Prepare the job data
-        $jobData = [
-            'email' => $email,
-            'message' => $message,
-            'sender_name' => $sender_name
-        ];
-
-        // Push the job into the Redis queue
-        $redis->rpush('email_alert_queue', json_encode($jobData));
+        try {
+            $redis = new Predis\Client();
+    
+            $jobData = [
+                'email' => $email,
+                'message' => $message,
+                'sender_name' => $sender_name
+            ];
+    
+            $redis->rpush('email_alert_queue', json_encode($jobData));
+    
+            $response = [
+                'status' => 'success',
+                'message' => 'Email job added to the Redis queue successfully.'
+            ];
+    
+            echo json_encode($response);
+        } catch (\Exception $e) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Failed to queue email notification: ' . $e->getMessage()
+            ];
+    
+            echo json_encode($response);
+        }
     }
+    
 
     public function onClose(ConnectionInterface $conn)
     {

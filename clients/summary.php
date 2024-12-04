@@ -556,10 +556,14 @@ foreach ($weight_history as $index => $entry) {
                     if (tabId === 'my-plan') {
                         // Activate "Choose Food" tab
                         const chooseFoodTabLink = document.querySelector('#choose-food-tab');
+                        const myPlannerTabLink = document.querySelector('#my-planner-tab'); 
+                        const myTrackerTabLink = document.querySelector('#my-tracker-tab'); 
                         const chooseFoodTabContent = document.querySelector('#choose-food');
 
                         if (chooseFoodTabLink && chooseFoodTabContent) {
                             chooseFoodTabLink.classList.add('active');
+                            myPlannerTabLink.classList.remove('active');
+                            myTrackerTabLink.classList.remove('active');
                             chooseFoodTabContent.classList.add('active', 'show');
 
                             // Save "choose-food" to local storage
@@ -586,7 +590,7 @@ foreach ($weight_history as $index => $entry) {
 
                     // Add active class to the clicked link
                     this.classList.add("active");
-                    this.querySelector("h6").style.color = "#fff"; // Set active text color
+                    this.querySelector("h6").style.color = "#000"; // Set active text color
 
                     // Hide all tab content
                     const tabContents = document.querySelectorAll("#my-plan .tab-pane");

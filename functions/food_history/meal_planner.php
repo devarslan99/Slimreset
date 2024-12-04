@@ -11,7 +11,9 @@ $stmt->bind_param("sssssssssssssssssssssss", $data['foodId'], $data['label'], $d
 
 // Execute the statement
 if ($stmt->execute()) {
-    echo json_encode(["status" => "success", "message" => "Recipe item stored successfully."]);
+    $insertedId = $stmt->insert_id;
+
+    echo json_encode(["status" => "success", "message" => "Recipe item stored successfully.", "id" => $insertedId]);
 } else {
     echo json_encode(["status" => "error", "message" => "Error storing recipe item: " . $stmt->error]);
 }

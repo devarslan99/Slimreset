@@ -911,36 +911,38 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
 <!-- script to sending meal card data to data base on drop of meal -->
 <script>
-let serverMealId = null;
+    let serverMealId = [];
 
-function PopulateingMealCardDataToDataBase(mealData) {
-    // Send Meal food data to the server
-    return fetch('../functions/food_history/meal_planner.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(mealData),
-    })
-    .then(response => response.json())
-    .then(data => {
-        
-        serverMealId = data.id;
+    function PopulateingMealCardDataToDataBase(mealData) {
+        // Send Meal food data to the server
+        return fetch('../functions/food_history/meal_planner.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(mealData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            
+            // serverMealId.push({ [data.mealBoxId]: data.id });
+            serverMealId[data.mealBoxId] = data.id;
+            console.log(serverMealId)
 
-        if (data.status === "success") {
-            // Swal.fire("Success", "Meal added successfully!", "success")
-                // .then(() => location.reload());
-        } else {
-            Swal.fire("Error", "Failed to add recipe.", "error");
-        }
+            if (data.status === "success") {
+                // Swal.fire("Success", "Meal added successfully!", "success")
+                    // .then(() => location.reload());
+            } else {
+                Swal.fire("Error", "Failed to add recipe.", "error");
+            }
 
-        return data; 
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        throw error; 
-    });
-}
+            return data; 
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            throw error; 
+        });
+    }
 </script>
 
 <script>
@@ -1552,7 +1554,7 @@ function PopulateingMealCardDataToDataBase(mealData) {
                         const dayTextElement = dayColumn ? dayColumn.querySelector('.day-Name') : null;
                         const day = dayTextElement ? dayTextElement.getAttribute('data-day') : '';
                         // meal-box id
-                        const mealId = `meal-${new Date().getTime()}`;
+                        const mealBoxId = `meal-${new Date().getTime()}`;
                         // Find the existing empty .meal-card in the target section
                         const targetMealCard = evt.to.querySelector('.meal-card');
                         if (targetMealCard) {
@@ -1568,7 +1570,7 @@ function PopulateingMealCardDataToDataBase(mealData) {
                                     data-meal-size="${mealInfo.size}" 
                                     data-meal-carbs="${mealCarbs}" 
                                     data-meal-fats="${mealFats}" 
-                                    onclick="showBox(this)" data-id="${mealId}">
+                                    onclick="showBox(this)" data-id="${mealBoxId}">
                                     <img src="${imageSrc}" alt="${mealName}">
                                     <div class="meal-name">${mealName}</div>
                                     <div class="meal-info">${mealInfo.calories}<br>${mealInfo.size}</div> 
@@ -1594,10 +1596,12 @@ function PopulateingMealCardDataToDataBase(mealData) {
                                     }).then((result) => {
                                         if (result.isConfirmed) {
                                             const mealCard = mealBox.closest('.meal-card');
+                                            const mealBoxId = mealBox.getAttribute('data-id');
                                             if (mealCard) {
                                                 // Fetch meal ID before proceeding
                                                 waitForMealData().then(() => {
-                                                    const mealId = serverMealId; // Obtained from waitForMealData
+                                                    const mealId = serverMealId[mealBoxId];
+                                                    console.log(mealId)
 
                                                     if (!mealId) {
                                                         console.error("Meal ID not found!", mealId);
@@ -1654,15 +1658,17 @@ function PopulateingMealCardDataToDataBase(mealData) {
                                                                         calInfoElement.innerHTML = `${dayNutritionTotals[dayId].kcal} kcal<br>${dayNutritionTotals[dayId].oz} oz`;
                                                                     }
 
+                                                                    const mealBoxId = mealBox.getAttribute('data-id');
                                                                     // Remove from dayMealData for the corresponding day and meal section
                                                                     if (dayMealData[dayId]) {
-                                                                        const mealIndex = dayMealData[dayId].findIndex(meal => meal.mealId === mealId);
+                                                                        const mealIndex = dayMealData[dayId].findIndex(meal => meal.mealBoxId === mealBoxId);
 
                                                                         // If the meal is found, remove it
+                                                                        console.log(mealIndex)
                                                                         if (mealIndex !== -1) {
                                                                             dayMealData[dayId].splice(mealIndex, 1);
                                                                         } else {
-                                                                            console.error(`Meal with ID ${mealId} not found in dayMealData for dayId: ${dayId}`);
+                                                                            console.error(`Meal with ID ${mealBoxId} not found in dayMealData for dayId: ${dayId}`);
                                                                         }
                                                                     }
 
@@ -1692,6 +1698,7 @@ function PopulateingMealCardDataToDataBase(mealData) {
 
                                                                     populateAllGroceryList(mealDataArray);
                                                                     populateGroceryList(dayMealData[dayId]);
+
                                                                 }
                                                             } else {
                                                                 console.error(`Failed to remove meal with ID ${mealId} from server.`);
@@ -1745,24 +1752,27 @@ function PopulateingMealCardDataToDataBase(mealData) {
                             },
                             label: sectionLabel,
                             date,
-                            day
+                            day,
+                            mealBoxId
                         };
 
-                        var dataMealId;
+                        mealDataArray.push(mealData)
+                        populateAllGroceryList(mealDataArray);
+
                         async function waitForMealData() {
                             if (!serverMealId) {
                                 // console.log("Waiting for meal data...");
                                 await PopulateingMealCardDataToDataBase(mealData);
                             }
                             // console.log("Now global meal data is available:", serverMealId);
-                            dataMealId = serverMealId
                         }
-                        waitForMealData()
+                        PopulateingMealCardDataToDataBase(mealData);
+
                         if (dayId) {
 
                             // Push meal data into the specific day array
                             if (dayMealData[dayId]) {
-                                dayMealData[dayId].push({ ...mealData , mealId });
+                                dayMealData[dayId].push({ ...mealData , mealBoxId });
                             } else {
                                 console.error(`Invalid dayId: ${dayId}`);
                             }

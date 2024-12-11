@@ -4,8 +4,69 @@
             border-left: 5px solid #ddd;
         }
     }
-</style>
 
+        /* Style the modal and close button */
+
+        .modal .fade {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .modal-header .close {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            opacity: 1;
+            border: none;
+            background: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .modal-header .close:hover {
+            color: #ff3d3d;
+        }
+
+        /* Center the modal */
+        .modal-dialog-centered {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Responsive form styling */
+        .modal-body form {
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 10px;
+            }
+        }
+</style>
+    <!--Recipe Modal -->
+    <div class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Add Recipe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="recipeSearch" class="form-control" placeholder="Search for recipes..." oninput="fetchRecipeData()">
+                    <!-- Display search results -->
+                    <ul class="list-group mt-3 bg-red" id="searchResultsForRecipe"></ul>
+
+                    <div class="recipe-detail-section" id="receipeDetailSection">
+                       <!-- dynamically data of selected resipe or food will be display here  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 <div class="row ">
     <div class="container">
         <div class="row">
@@ -157,6 +218,15 @@
                                             </td>
                                             <td><?php echo formatValue($row['sugars']); ?>
                                             </td>
+                                            <td>
+                                                <button 
+                                                    class="btn btn-primary edit-btn" 
+                                                    data-id="<?php echo $row['id']; ?>"
+                                                    onclick="openModal()"
+                                                    >
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
+                                            </td>
                                         </tr>
                             <?php
                                         $serial_number++;
@@ -174,7 +244,7 @@
                                     <div class="card-body">
                                         <div class="table-responsive theme-scrollbar">
                                             <div id="basic-1_wrapper" class="dataTables_wrapper no-footer">
-                                                <table class="display dataTable no-footer" id="basic-1" role="grid">
+                                                <table class="display dataTable no-footer" id="basic-breakfast" role="grid">
                                                     <thead>
                                                         <th>#</th>
                                                         <th>Food Name</th>
@@ -185,6 +255,7 @@
                                                         <th>Fat</th>
                                                         <th>Carbs</th>
                                                         <th>Sugar</th>
+                                                        <th>Action</th>
                                                     </thead>
                                                     <tbody>
                                                         <?php displayFoodItems('breakfast', $selected_date); ?>
@@ -204,7 +275,7 @@
                                     <div class="card-body">
                                         <div class="table-responsive theme-scrollbar">
                                             <div id="basic-1_wrapper" class="dataTables_wrapper no-footer">
-                                                <table class="display dataTable no-footer" id="basic-1" role="grid">
+                                                <table class="display dataTable no-footer" id="basic-lunch" role="grid">
                                                     <thead>
                                                         <th>#</th>
                                                         <th>Food Name</th>
@@ -215,6 +286,7 @@
                                                         <th>Fat</th>
                                                         <th>Carbs</th>
                                                         <th>Sugar</th>
+                                                        <th>Action</th>
                                                     </thead>
                                                     <tbody>
                                                         <?php displayFoodItems('lunch', $selected_date); ?>
@@ -234,7 +306,7 @@
                                     <div class="card-body">
                                         <div class="table-responsive theme-scrollbar">
                                             <div id="basic-1_wrapper" class="dataTables_wrapper no-footer">
-                                                <table class="display dataTable no-footer" id="basic-1" role="grid">
+                                                <table class="display dataTable no-footer" id="basic-dinner" role="grid">
                                                     <thead>
                                                         <th>#</th>
                                                         <th>Food Name</th>
@@ -245,6 +317,7 @@
                                                         <th>Fat</th>
                                                         <th>Carbs</th>
                                                         <th>Sugar</th>
+                                                        <th>Action</th>
                                                     </thead>
                                                     <tbody>
                                                         <?php displayFoodItems('dinner', $selected_date); ?>
@@ -264,7 +337,7 @@
                                     <div class="card-body">
                                         <div class="table-responsive theme-scrollbar">
                                             <div id="basic-1_wrapper" class="dataTables_wrapper no-footer">
-                                                <table class="display dataTable no-footer" id="basic-1" role="grid">
+                                                <table class="display dataTable no-footer" id="basic-snack" role="grid">
                                                     <thead>
                                                         <th>#</th>
                                                         <th>Food Name</th>
@@ -274,6 +347,7 @@
                                                         <th>Fat</th>
                                                         <th>Carbs</th>
                                                         <th>Sugar</th>
+                                                        <th>Action</th>
                                                     </thead>
                                                     <tbody>
                                                         <?php displayFoodItems('snacks', $selected_date); ?>
@@ -419,4 +493,32 @@
             $("#datepicker-2").focus(); // Focus to trigger the Flatpickr calendar
         });
     });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.edit-btn').on('click', function() {
+            var id = $(this).data('id');
+            
+            console.log(id)
+        // modal.show();
+
+
+        });
+    });
+</script>
+
+
+
+<!-- SCRIPT TO SEARCH AND ADD FOOD -->
+<script>
+    // Open modal with selected food type
+    // function openModal(foodOption) {
+    //     document.getElementById('modalTitle').innerText = "Add " + foodOption;
+    //     document.getElementById('foodSearch').value = ''; // Clear search input
+    //     document.getElementById('searchResults').innerHTML = ''; // Clear previous results
+    //     var modal = new bootstrap.Modal(document.getElementById('foodModal'));
+    //     document.getElementById('food_type').value = foodOption; // Clear search input
+    // }
+
 </script>

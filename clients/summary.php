@@ -308,7 +308,7 @@ foreach ($weight_history as $index => $entry) {
                                                             <div class="horizontal-wizard">
                                                                 <div class="stroke-icon-wizard"></div>
                                                                 <div class="horizontal-wizard-content">
-                                                                    <h6>My Progress</h6>
+                                                                    <h6>my Progress</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -316,7 +316,7 @@ foreach ($weight_history as $index => $entry) {
                                                             <div class="horizontal-wizard">
                                                                 <div class="stroke-icon-wizard"></div>
                                                                 <div class="horizontal-wizard-content">
-                                                                    <h6>My Plan</h6>
+                                                                    <h6>my Plan</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -367,7 +367,7 @@ foreach ($weight_history as $index => $entry) {
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">1</h1>
                                                                                 <div>
-                                                                                    <h6 class="responsive-font">Choose Food</h6>
+                                                                                    <h6 class="responsive-font">choose Food</h6>
                                                                                 </div>
                                                                             </div>
                                                                         </a>
@@ -377,7 +377,7 @@ foreach ($weight_history as $index => $entry) {
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">2</h1>
                                                                                 <div>
-                                                                                    <h6 class="responsive-font">My Planner</h6>
+                                                                                    <h6 class="responsive-font">my Planner</h6>
                                                                                 </div>
                                                                             </div>
                                                                         </a>
@@ -387,7 +387,7 @@ foreach ($weight_history as $index => $entry) {
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">3</h1>
                                                                                 <div>
-                                                                                    <h6 class="responsive-font">My Tracker</h6>
+                                                                                    <h6 class="responsive-font">my Tracker</h6>
                                                                                 </div>
                                                                             </div>
                                                                         </a>
@@ -401,14 +401,13 @@ foreach ($weight_history as $index => $entry) {
                                                                                 <h1 class="text-center">Choose Your Food Preferences</h1>
                                                                                 <div class="phase-main-box d-flex justify-content-between align-items-center px-5">
                                                                                     <div class="d-flex justify-content-center align-items-center my-4">
-                                                                                        <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
                                                                                             <label class="form-label me-2 fs-6 responsive-font">View all</label>
                                                                                             <div class="form-check form-switch">
                                                                                                 <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
                                                                                                 <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
                                                                                             </div>
-                                                                                        <?php endif; ?>
                                                                                     </div>
+                                                                                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
                                                                                     <select class="phase-dropdown" onchange="selectPhase(this)">
                                                                                         <option value="" disabled selected>Select Phase</option>
                                                                                         <option value="1">Phase 1</option>
@@ -425,6 +424,8 @@ foreach ($weight_history as $index => $entry) {
                                                                                         <span class="line">|</span>
                                                                                         <button class="btn tab-button" data-phase="4">Phase 4</button>
                                                                                     </div>
+                                                                                    <?php endif; ?>
+
                                                                                     <div id="edit-view-box">
                                                                                         <a href="#">edit</a>
                                                                                         <p>view as client</p>

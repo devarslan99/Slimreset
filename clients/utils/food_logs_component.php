@@ -46,26 +46,6 @@
         }
     }
 </style>
-<!--Recipe Modal -->
-<div class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalUpdateTitle">Add Recipe</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <input type="text" id="recipeSearch" class="form-control" placeholder="Search for recipes..." oninput="fetchRecipeData()">
-                <!-- Display search results -->
-                <ul class="list-group mt-3 bg-red" id="searchResultsForRecipe"></ul>
-
-                <div class="recipe-detail-section" id="receipeDetailSection">
-                    <!-- dynamically data of selected resipe or food will be display here  -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="row ">
     <div class="container">
@@ -77,6 +57,7 @@
                 <div class="row">
                     <?php
                     $user_id = $_GET['id'];
+                    $login_user_role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                     $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
                     $prev_date = date('Y-m-d', strtotime($selected_date . ' -1 day'));
@@ -120,30 +101,51 @@
                                 'unit' => 'cups',
                                 'color' => 'green'
                             ],
-                            [
-                                'label' => 'BM',
+                        ];
+                        
+                        if ($login_user_role === "client") {
+                            $metrics[] = [
+                                'label' => 'bowel </br> Movements ',
+                                'total' => $total_bowel_movement,
+                                'max' => null,
+                                'unit' => '',  
+                                'color' => '', 
+                            ];
+                        } else {
+                            $metrics[] = [
+                                'label' => 'bowel </br> Movements </br> ',
                                 'total' => $total_bowel_movement,
                                 'max' => 2,
                                 'unit' => 'bm',
                                 'color' => 'green'
-                            ]
-                        ];
+                            ];
+                        }
+                        
 
                         foreach ($metrics as $metric) {
                             $remaining = $metric['max'] - $metric['total'];
                     ?>
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                                <div class="d-flex flex-column align-items-center justify-content-center p-1" style="min-width: 170px; border-radius: 20px; border: 1px solid #946CFC; text-align: center;">
+                                <div class="d-flex flex-column align-items-center justify-content-center p-1" style="min-width: 170px; height:100%; border-radius: 20px; border: 1px solid #946CFC; text-align: center;">
                                     <span style="font-size: 20px; display: block;"><?php echo $metric['label']; ?></span>
-                                    <h1 class="my-2" style="font-weight: 800;color:#000;">
-                                        <?php echo $metric['total'] . ' ' . $metric['unit']; ?>
+                                    <h1 class="my-2" style="font-weight: 800; color:#000;">
+                                        <?php
+                                        if ($metric['label'] === 'bowel </br> Movements ') {
+                                            echo $metric['total'] . ' bm';
+                                        } else {
+                                            echo $metric['total'] . ' ' . $metric['unit']; 
+                                        }
+                                        ?>
                                     </h1>
-                                    <span class="my-2" style="font-size: 20px; display: block;">of <span style="font-weight: bold;color:#000"><?php echo $metric['max']; ?></span> <?php echo $metric['unit']; ?></span>
-                                    <span style="font-size: 20px; font-weight: 500; color: <?php echo $metric['color']; ?>; display: block;">
-                                        <span style="font-weight:800;"> <?php echo $remaining . ' ' . $metric['unit'] . ' left'; ?> </span>
-                                    </span>
+                                    <?php if (isset($metric['max'])): ?>
+                                        <span class="my-2" style="font-size: 20px; display: block;">of <span style="font-weight: bold;color:#000"><?php echo $metric['max']; ?></span> <?php echo $metric['unit']; ?></span>
+                                        <span style="font-size: 20px; font-weight: 500; color: <?php echo $metric['color']; ?>; display: block;">
+                                            <span style="font-weight:800;"> <?php echo ($metric['max'] - $metric['total']) . ' ' . $metric['unit'] . ' left'; ?> </span>
+                                        </span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
+
                     <?php
                         }
                     } else {
@@ -214,10 +216,6 @@
                                             </td>
                                             <td><?php echo formatValue($row['totalFat']); ?>
                                             </td>
-                                            <td><?php echo formatValue($row['carbs']); ?>
-                                            </td>
-                                            <td><?php echo formatValue($row['sugars']); ?>
-                                            </td>
                                             <td>
                                                 <button class="btn btn-primary edit-btn" onclick="openFoodUpdateModal('<?php echo $mealType ?>','<?php echo $row['label']; ?>', '<?php echo $row['id']; ?>')">
                                                     <i class="fa fa-pencil"></i>
@@ -235,7 +233,7 @@
 
                             <!-- Display Breakfast -->
                             <div class="col-md-12">
-                                <h2 style="color: #946cfc;">Breakfast</h2>
+                                <h2 style="color: #946cfc;">breakfast</h2>
                                 <hr />
                                 <div class="card bg-shadow-none">
                                     <div class="card-body">
@@ -250,8 +248,6 @@
                                                         <th>Calories</th>
                                                         <th>Protein</th>
                                                         <th>Fat</th>
-                                                        <th>Carbs</th>
-                                                        <th>Sugar</th>
                                                         <th>Action</th>
                                                     </thead>
                                                     <tbody>
@@ -281,8 +277,6 @@
                                                         <th>Calories</th>
                                                         <th>Protein</th>
                                                         <th>Fat</th>
-                                                        <th>Carbs</th>
-                                                        <th>Sugar</th>
                                                         <th>Action</th>
                                                     </thead>
                                                     <tbody>
@@ -312,8 +306,6 @@
                                                         <th>Calories</th>
                                                         <th>Protien</th>
                                                         <th>Fat</th>
-                                                        <th>Carbs</th>
-                                                        <th>Sugar</th>
                                                         <th>Action</th>
                                                     </thead>
                                                     <tbody>
@@ -342,8 +334,6 @@
                                                         <th>Calories</th>
                                                         <th>Protein</th>
                                                         <th>Fat</th>
-                                                        <th>Carbs</th>
-                                                        <th>Sugar</th>
                                                         <th>Action</th>
                                                     </thead>
                                                     <tbody>
@@ -362,8 +352,7 @@
             <!-- Weight tracker -->
             <div class="col-xl-4 lg-border-left-my-tracker">
                 <div class="row">
-                    <h2 class="text-center mb-3">
-                        Weight Tracker</h2>
+                    <h2 class="text-center mb-3">Weight Tracker</h2>
                     <div class="row mt-2">
                         <div class="card bg-shadow-none">
                             <div class="card-body">
@@ -408,18 +397,11 @@
                                     <table style="width:100%;margin-top:20px;">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">
-                                                    Days
-                                                </th>
-                                                <th class="text-center">
-                                                    Weight
-                                                </th>
-                                                <th class="text-center">
-                                                    Loss</th>
-                                                <th class="text-center">
-                                                    Protein</th>
-                                                <th class="text-center">
-                                                    Calories</th>
+                                                <th class="text-center">Days</th>
+                                                <th class="text-center">Weight</th>
+                                                <th class="text-center">Loss</th>
+                                                <th class="text-center">Protein</th>
+                                                <th class="text-center">Calories</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -442,15 +424,28 @@
                                                 $display_date = "<a href='?id=" . $_GET['id'] . "&date={$date}'>{$day_of_month}<br/>{$day_name}</a>";
 
                                                 $logged_weight = isset($logged_weights[$date]) ? $logged_weights[$date] : '-';
-                                                $loss = $index > 0 && isset($logged_weights[$last_5_days[$index - 1]]) ?
-                                                    round($logged_weights[$last_5_days[$index - 1]] - ($logged_weights[$date] ?? 0), 2) : '-';
+                                                $loss = $index > 0 && isset($logged_weights[$last_5_days[$index - 1]]) ? round($logged_weights[$last_5_days[$index - 1]] - ($logged_weights[$date] ?? 0), 2) : '-';
+
+                                                // Determine the arrow icon for loss or gain
+                                                $arrow = '';
+                                                if ($loss !== '-') {
+                                                    // If weight is lost: Green Down Arrow
+                                                    if ($loss > 0) {
+                                                        $arrow = "<span style='color: green;'>↓</span>";
+                                                    }
+                                                    // If weight is gained or no loss: Red Up Arrow
+                                                    elseif ($loss <= 0) {
+                                                        $arrow = "<span style='color: red;'>↑</span>";
+                                                    }
+                                                }
+
                                                 $protein = isset($protein_data[$date]) ? $protein_data[$date] : '-';
                                                 $calories = $calories_sum[$date] ?? '-';
 
                                                 echo "<tr class='text-center' style='border-bottom:1px solid #000'>";
                                                 echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$display_date}</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$logged_weight}</p></td>";
-                                                echo "<td class='text-center'><p style='font-size:22px'>{$loss}</p></td>";
+                                                echo "<td class='text-center'><p style='font-size:22px'>{$loss} {$arrow}</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($protein ?? 0), 2, '.', '') . "</p></td>";
                                                 echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($calories ?? 0), 2, '.', '') . "</p></td>";
                                                 echo "</tr>";

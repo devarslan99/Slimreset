@@ -63,6 +63,33 @@
                     $prev_date = date('Y-m-d', strtotime($selected_date . ' -1 day'));
                     $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
+                    // Get the past 3 days' total for calories and water
+                    $sql_last_3_days = "
+                    SELECT 
+                        SUM(calories) AS total_calories,
+                        SUM(water) AS total_water
+                    FROM (
+                        SELECT 
+                            (SELECT SUM(calories) FROM food_items WHERE user_id = $user_id AND DATE(created_at) BETWEEN DATE_SUB('$selected_date', INTERVAL 2 DAY) AND '$selected_date') AS calories,
+                            (SELECT SUM(water) FROM water_records WHERE user_id = $user_id AND DATE(created_at ) BETWEEN DATE_SUB('$selected_date', INTERVAL 2 DAY) AND '$selected_date') AS water
+                    ) AS last_3_days_data";
+
+                    $result_last_3_days = mysqli_query($mysqli, $sql_last_3_days);
+
+                    $row_last_3_days = mysqli_fetch_assoc($result_last_3_days);
+
+                    // Get the totals for the last 3 days
+                    $last_3_days_calories = isset($row_last_3_days['total_calories']) ? (int) $row_last_3_days['total_calories'] : 0;
+                    $last_3_days_water = isset($row_last_3_days['total_water']) ? (int) $row_last_3_days['total_water'] : 0;
+
+                    // Thresholds for metrics
+                    $calories_min_threshold = 600;
+                    $water_min_threshold = 30;
+
+                    // Determine colors based on thresholds
+                    $calories_color = $last_3_days_calories < $calories_min_threshold ? 'red' : 'green';
+                    $water_color = $last_3_days_water < $water_min_threshold ? 'red' : 'green';
+
                     // Prepare and execute the SQL query
                     $sql = "SELECT (SELECT SUM(calories) FROM food_items WHERE user_id = $user_id AND DATE(created_at) = '$selected_date') AS total_calories,
                     (SELECT SUM(protein) FROM food_items WHERE user_id = $user_id AND DATE(created_at) = '$selected_date') AS total_protein,
@@ -85,7 +112,7 @@
                                 'total' => $total_calories,
                                 'max' => 800,
                                 'unit' => 'Kal',
-                                'color' => 'red'
+                                'color' => $calories_color
                             ],
                             [
                                 'label' => 'Protein',
@@ -99,7 +126,7 @@
                                 'total' => $total_water,
                                 'max' => 12,
                                 'unit' => 'cups',
-                                'color' => 'green'
+                                'color' => $water_color
                             ],
                         ];
                         
@@ -113,7 +140,7 @@
                             ];
                         } else {
                             $metrics[] = [
-                                'label' => 'bowel </br> Movements </br> ',
+                                'label' => 'bowel Movements ',
                                 'total' => $total_bowel_movement,
                                 'max' => 2,
                                 'unit' => 'bm',

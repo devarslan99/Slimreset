@@ -411,7 +411,7 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
                         <?php
                         } else if ($role == "client") {
                         ?>
-                            <li><a class="bread-crum-Link <?php echo $showMyClients ? 'main-color fw-bold' : '' ?>" href="../clients/summary.php?id=<?php echo $_SESSION['user_id'] ?>">My Profile</a></li>
+                            <li><a class="bread-crum-Link <?php echo $showMyClients ? 'main-color fw-bold' : '' ?>" href="../clients/summary.php?id=<?php echo $_SESSION['user_id'] ?>">my Profile</a></li>
                         <?php
                         } else if ($role == "coach") {
                         ?>

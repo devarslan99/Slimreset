@@ -251,10 +251,23 @@ while ($row = $result_protein->fetch_assoc()) {
                                             $protein = isset($protein_data[$date]) ? $protein_data[$date] : '-';
                                             $calories = $calories_sum[$date] ?? '-';
 
+                                            // Determine the arrow icon for loss or gain
+                                            $arrow = '';
+                                            if ($loss !== '-') {
+                                                // If weight is lost: Green Down Arrow
+                                                if ($loss > 0) {
+                                                    $arrow = "<span style='color: green;'>↓</span>";
+                                                }
+                                                // If weight is gained or no loss: Red Up Arrow
+                                                elseif ($loss <= 0) {
+                                                    $arrow = "<span style='color: red;'>↑</span>";
+                                                }
+                                            }
+
                                             echo "<tr class='text-center' style='border-bottom:1px solid #000'>";
                                             echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$display_date}</p></td>";
                                             echo "<td class='text-center'><p style='font-size:18px;padding-bottom:10px;padding-top:10px;'>{$logged_weight}</p></td>";
-                                            echo "<td class='text-center'><p style='font-size:22px'>{$loss}</p></td>";
+                                            echo "<td class='text-center'><p style='font-size:22px'>{$loss} {$arrow}</p></td>";
                                             echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($protein ?? 0), 2, '.', '') . "</p></td>";
                                             echo "<td class='text-center'><p style='font-size:22px;'>" . number_format((float) ($calories ?? 0), 2, '.', '') . "</p></td>";
                                             echo "</tr>";

@@ -359,7 +359,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
     .breakfast-label {
-        background-color: blue;
+        background-color: #946cfc;
         color: white;
         font-weight: bold;
         font-size: 0.8rem;
@@ -372,7 +372,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
     .lunch-label {
-        background-color: blue;
+        background-color: #946cfc;
         color: white;
         font-weight: bold;
         font-size: 0.8rem;
@@ -385,7 +385,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
     .dinner-label {
-        background-color: blue;
+        background-color: #946cfc;
         color: white;
         font-weight: bold;
         font-size: 0.8rem;
@@ -398,7 +398,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     }
 
     .snack-label {
-        background-color: blue;
+        background-color: #946cfc;
         color: white;
         font-weight: bold;
         font-size: 0.8rem;
@@ -481,20 +481,11 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         display: flex;
         justify-content: center;
         align-items: center;
-        background: #9d87f5;
+        background: red;
         color: #fff;
         border:2px solid #f2f2f2;
         display:none;
-    }
-
-    .meal-box-close-btn .fa-times
-    {
-        font-size: 12px;
-        color:#fff;
-    }
-    .meal-box-close-btn .fa-times:hover
-    {
-        color:#fff;
+        cursor: pointer;
     }
 
     .reset-filter-btn {
@@ -505,25 +496,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     <div class="row">
         <div class="col-lg-9">
             <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col text-center mb-3 mb-sm-0">
-                        <h1 class="mb-0 fs-2 fs-md-1">Let's plan your meals</h1>
-                    </div>
-
-                    <div class="col-auto d-none d-sm-inline-flex">
-                        <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold cursor-pointer">
-                            <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
-                            Grocery List
-                        </span>
-                    </div>
-
-                    <div class="col-12 text-center d-sm-none">
-                        <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold">
-                            <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
-                            Grocery List
-                        </span>
-                    </div>
-                    <div class="main-color text-center my-3 d-flex justify-content-center align-items-center">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                    
+                    <div class="main-color text-center my-3 d-flex justify-content-center align-items-center flex-wrap">
                         <div id="calendar-icon"><i class="fa fa-calendar me-2 fw-bold fs-4"  style="cursor: pointer;"></i></div>
                         <a href="?id=<?php echo $_GET['id'] ?>&date=<?php echo $prev_date; ?>">
                             <i class="fa fa-angle-left fw-bold fs-4"></i>
@@ -539,6 +514,25 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
 
                         <input type='text' id="datepicker" style="display: none; width: 0px; height: 0px; outline: none; border: none; display: block;">
                     </div>
+
+                    <div class="col text-center mb-3 mb-sm-0">
+                        <h1 class="mb-0 fs-2 fs-md-1">let's plan your meals</h1>
+                    </div>
+
+                    <div class="col-auto d-none d-sm-inline-flex">
+                        <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold cursor-pointer">
+                            <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
+                            Grocery List
+                        </span>
+                    </div>
+
+                    <div class="col-12 text-center d-sm-none">
+                        <span class="grocery-list rounded-2 d-inline-flex align-items-center fs-6 fw-bold">
+                            <i class="fa fa-shopping-cart me-2 fs-5 fw-bold"></i>
+                            Grocery List
+                        </span>
+                    </div>
+                    
                 </div>
 
                 <!-- pop up box For Recipe -->
@@ -1148,7 +1142,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             <img src="${meal.image}" alt="${meal.mealName}">
                             <div class="meal-name">${meal.mealName}</div>
                             <div class="meal-info">${meal.calories > 0 ? Math.round(meal.calories) : meal.calories} kcal<br>${meal.protein > 0 ? Math.round(meal.protein) : meal.protein} oz</div>
-                            <div class="meal-box-close-btn"><i class="fa fa-times"></i></div>
+                            <div class="meal-box-close-btn"><i class="fa fa-trash" aria-hidden="true"></i></div>
                         </div>
                     `;
 
@@ -1574,7 +1568,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                     <img src="${imageSrc}" alt="${mealName}">
                                     <div class="meal-name">${mealName}</div>
                                     <div class="meal-info">${mealInfo.calories}<br>${mealInfo.size}</div> 
-                                    <div class="meal-box-close-btn" id="removeMealsFromServerBtn"><i class="fa fa-times"></i></div>
+                                    <div class="meal-box-close-btn" id="removeMealsFromServerBtn"><i class="fa fa-trash" aria-hidden="true"></i></div>
                                 </div>
                             `;
 
@@ -1861,7 +1855,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
         
         mealDetail.innerHTML = `
             <div class="ingredients">
-                <h2>${mealName} ${mealSubName}</h2>
+                <h2>${mealName}</h2>
                 <strong>ingredients</strong>
                 <span>egg</span>
                 <span>your choice of veg</span>

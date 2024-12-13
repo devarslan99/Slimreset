@@ -189,7 +189,7 @@
                 <input class="form-check-input" type="checkbox" id="protein3">
                 <label class="form-check-label" id="dislike-label" for="protein3">Eggs</label>
                 <span class="dis-like-icon" data-tooltip="We recommend you to avoid this food.">
-                <i class="fa fa-times" style="color: #fff; font-size: 14px;"></i>
+                    <i class="fa fa-thumbs-down"></i>
                 </span>
             </div>
             <div class="mt-3">

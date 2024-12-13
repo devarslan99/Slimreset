@@ -260,7 +260,7 @@
 
                             <!-- Display Breakfast -->
                             <div class="col-md-12">
-                                <h2 style="color: #946cfc;">breakfast</h2>
+                                <h2 style="color: #946cfc;">breakFast</h2>
                                 <hr />
                                 <div class="card bg-shadow-none">
                                     <div class="card-body">
@@ -270,7 +270,7 @@
                                                     <thead>
                                                         <th>#</th>
                                                         <th>Food Name</th>
-                                                        <th>Food Quantity
+                                                        <th>food Quantity
                                                         </th>
                                                         <th>Calories</th>
                                                         <th>Protein</th>
@@ -299,7 +299,7 @@
                                                     <thead>
                                                         <th>#</th>
                                                         <th>Food Name</th>
-                                                        <th>Food Quantity
+                                                        <th>food Quantity
                                                         </th>
                                                         <th>Calories</th>
                                                         <th>Protein</th>
@@ -328,7 +328,7 @@
                                                     <thead>
                                                         <th>#</th>
                                                         <th>Food Name</th>
-                                                        <th>Food Quantity
+                                                        <th>food Quantity
                                                         </th>
                                                         <th>Calories</th>
                                                         <th>Protien</th>
@@ -357,7 +357,7 @@
                                                     <thead>
                                                         <th>#</th>
                                                         <th>Food Name</th>
-                                                        <th>Food Quantity </th>
+                                                        <th>food Quantity </th>
                                                         <th>Calories</th>
                                                         <th>Protein</th>
                                                         <th>Fat</th>

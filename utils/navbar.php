@@ -352,6 +352,137 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
     }
 </style>
 
+<style>
+        /* Adjusting modal width */
+        #exampleModal .modal-dialog {
+            max-width: 800px !important;
+        }
+
+        /* Making modal rounded more */
+        .modal-content {
+            border-radius: 15px;
+        }
+
+        /* Ensure buttons stay within modal and align */
+        .btn-group {
+            display: flex;
+            justify-content: space-evenly;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+        .btn-group .btn {
+            flex: 1 1 30%;
+            color: #946CFC;
+            border: 1px solid #946CFC;
+            font-weight: bold;
+            border-radius: 10px !important;
+        }
+
+        .btn-group .btn.active {
+            background-color: #946CFC;
+            color: white;
+        }
+
+        /* Hide all content except the active one */
+        .content-item {
+            display: none;
+        }
+
+        .content-item.active {
+            display: block;
+        }
+
+        .track-now-btn .fa-plus {
+            border: 2px solid #fff;
+            border-radius: 50%;
+            font-size: 16px;
+            height: 24px;
+            width: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- Track Modal Meal CSS --- */
+
+        .meal-container {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .heading {
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        .btn-tracking,
+        .btn-meal,
+        .btn-yes,
+        .btn-no {
+            background-color: #e5d9ff;
+            color: #946CFC;
+            border: 1px solid #946CFC;
+            border-radius: 20px;
+            padding: 8px 15px;
+            margin: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-tracking.active,
+        .btn-meal.active {
+            background-color: #946CFC;
+            color: white;
+        }
+
+        select {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #946CFC;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            color: #946CFC;
+            font-size: 14px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        select:focus {
+            border-color: #946CFC;
+            outline: none;
+            box-shadow: 0 0 5px rgba(107, 76, 219, 0.5);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .additional button {
+            width: 80px;
+            margin: 10px 5px;
+        }
+
+        .meal-details p {
+            margin: 0;
+        }
+        .meal-details .box , .portionBox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 300px;
+        }
+
+
+    </style>
+
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+
 <?php
 $currentPath = $_SERVER['REQUEST_URI'];
 // Admin section
@@ -379,6 +510,92 @@ $showViewVeggie = strpos($currentPath, "clients/view-veggie.php") !== false || s
 $showFruit = strpos($currentPath, "clients/add-fruit.php") !== false;
 $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || strpos($currentPath, "clients/edit-fruit.php") !== false;
 ?>
+
+<!-- Track now modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog track-now-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">track Now</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Buttons for each section -->
+                <div class="btn-group" role="group" aria-label="Tabs buttons">
+                    <button type="button" class="btn active" id="weight-btn">weight</button>
+                    <button type="button" class="btn" id="meds-btn">meds</button>
+                    <button type="button" class="btn" id="meals-btn">meals</button>
+                    <button type="button" class="btn" id="water-btn">water</button>
+                    <button type="button" class="btn" id="poop-btn">poop</button>
+                    <button type="button" class="btn" id="activity-btn">activity</button>
+                    <button type="button" class="btn" id="sleep-btn">sleep</button>
+                </div>
+
+                <!-- Content for each section -->
+                <div id="content">
+                    <div id="weight" class="content-item active">Content for Weight</div>
+                    <div id="meds" class="content-item">Content for Meds</div>
+
+                    <!-- Meals Tab section for Track Now modal -->
+                    <div id="meals" class="content-item">
+                        <div class="meal-container">
+                            <p class="heading">i’m tracking</p>
+                            <div class="tracking">
+                                <button class="btn-tracking">Today</button>
+                                <button class="btn-tracking">Another Day</button>
+                            </div>
+
+                            <div class="meal-type hidden">
+                                <p class="heading">what are you tracking?</p>
+                                <button class="btn-meal" data-meal="breakfast">breakfast</button>
+                                <button class="btn-meal" data-meal="lunch">lunch</button>
+                                <button class="btn-meal" data-meal="dinner">dinner</button>
+                                <button class="btn-meal" data-meal="snack">snack</button>
+                            </div>
+
+                            <p class="heading hidden">great, what did you eat?</p>
+                            <div class="meal-details hidden">
+                                <div class="box">
+                                    <p>I had</p>
+                                    <select class="meal-tags-dropdown">
+                                        <option value="" disabled selected>Select a food option</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <p class="heading hidden">what was your portion?</p>
+                            <div class="portion hidden">
+                                <div class="portionBox">
+                                    <p>I had</p>
+                                    <select class="portion-dropdown">
+                                        <option value="" disabled selected>Select portion type</option>
+                                        <option value="grams">grams</option>
+                                        <option value="ounces">ounces</option>
+                                        <option value="servings">servings</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <p class="heading hidden">anything else?</p>
+                            <div class="additional hidden">
+                                <button class="btn-yes">Yes</button>
+                                <button class="btn-no">No</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="water" class="content-item">Content for Water</div>
+                    <div id="poop" class="content-item">Content for Poop</div>
+                    <div id="activity" class="content-item">Content for Activity</div>
+                    <div id="sleep" class="content-item">Content for Sleep</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #946CFC !important; border:none !important;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="page-header row">
     <div class="header-logo-wrapper col-auto">
@@ -455,10 +672,13 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
             </div>
 
 
-            <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
+            <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto" style="width:auto">
                 <ul class="nav-menus gap-4">
-                    <li class="cart-nav onhover-dropdown bg-none" style="background: none !important;"></li>
-                    <li class="cart-nav onhover-dropdown bg-none" style="background: none !important;"></li>
+                    <button class="btn btn-primary rounded-pill px-3 py-2 d-flex align-items-center justify-content-center gap-1 track-now-btn"  data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color:#68529f; border: none;width:auto;">
+                        <i class="fa fa-plus"></i> track now
+                    </button>
+                    <!-- <li class="cart-nav onhover-dropdown bg-none" style="background: none !important;"></li>
+                    <li class="cart-nav onhover-dropdown bg-none" style="background: none !important;"></li> -->
 
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'client') : ?>
                         <li class="menu new-entry-bg-none ">
@@ -1164,4 +1384,161 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
         e.preventDefault();
         scrollableNav.scrollLeft += e.deltaY;
     });
+</script>
+
+<!-- script for track noe modal -->
+<script>
+    // Event listeners for the buttons to show corresponding content
+    document.getElementById("weight-btn").addEventListener("click", function() {
+        changeTab("weight");
+    });
+    document.getElementById("meds-btn").addEventListener("click", function() {
+        changeTab("meds");
+    });
+    document.getElementById("meals-btn").addEventListener("click", function() {
+        changeTab("meals");
+    });
+    document.getElementById("water-btn").addEventListener("click", function() {
+        changeTab("water");
+    });
+    document.getElementById("poop-btn").addEventListener("click", function() {
+        changeTab("poop");
+    });
+    document.getElementById("activity-btn").addEventListener("click", function() {
+        changeTab("activity");
+    });
+    document.getElementById("sleep-btn").addEventListener("click", function() {
+        changeTab("sleep");
+    });
+
+    function changeTab(tabId) {
+        // Hide all content
+        let contentItems = document.querySelectorAll('.content-item');
+        contentItems.forEach(item => item.classList.remove('active'));
+
+        // Show the selected content
+        document.getElementById(tabId).classList.add('active');
+
+        // Remove active class from all buttons
+        let buttons = document.querySelectorAll('.btn-group .btn');
+        buttons.forEach(button => button.classList.remove('active'));
+
+        // Add active class to the clicked button
+        document.getElementById(tabId + "-btn").classList.add('active');
+    }
+</script>
+
+<!-- script for meals tab inside track now modal -->
+<script>
+    const trackingButtons = document.querySelectorAll('.btn-tracking');
+    const mealType = document.querySelector('.meal-type');
+    const mealDetails = document.querySelector('.meal-details');
+    const additionalSection = document.querySelector('.additional');
+    const portionSection = document.querySelector('.portion');
+    const headings = document.querySelectorAll('.heading');
+
+    const mealButtons = document.querySelectorAll('.btn-meal');
+    const mealTagsDropdown = document.querySelector('.meal-tags-dropdown');
+    const portionDropdown = document.querySelector('.portion-dropdown');
+    const yesButton = document.querySelector('.btn-yes');
+    const noButton = document.querySelector('.btn-no');
+
+    // Food options for different meals
+    const mealOptions = {
+        breakfast: ['Egg White', 'Chicken Wing', 'Chicken Breast', 'Custom Plate'],
+        lunch: ['Grilled Fish', 'Caesar Salad', 'Roast Beef', 'Custom Plate'],
+        dinner: ['Steak', 'Mashed Potatoes', 'Vegetable Stir Fry', 'Custom Plate'],
+        snack: ['Apple', 'Protein Bar', 'Trail Mix', 'Custom Plate'],
+    };
+
+    // Tracking button click handler
+    trackingButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            trackingButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            if (button.textContent === 'Today') {
+                mealType.classList.remove('hidden');
+                headings[1].classList.remove('hidden');
+            } else {
+                // If "Another Day" is clicked, hide all sections
+                mealType.classList.add('hidden');
+                mealDetails.classList.add('hidden');
+                additionalSection.classList.add('hidden');
+                portionSection.classList.add('hidden');
+                headings[1].classList.add('hidden');
+                headings[2].classList.add('hidden');
+                headings[3].classList.add('hidden');
+                headings[4].classList.add('hidden');
+            }
+        });
+    });
+
+    // Meal button click handler
+    mealButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            mealButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const mealType = button.dataset.meal;
+            populateMealTagsDropdown(mealType);
+            mealDetails.classList.remove('hidden');
+            headings[2].classList.remove('hidden');
+            portionSection.classList.add('hidden');
+            additionalSection.classList.add('hidden');
+            headings[3].classList.add('hidden');
+            headings[4].classList.add('hidden');
+        });
+    });
+
+    // Populate meal-tags dropdown dynamically
+    function populateMealTagsDropdown(mealType) {
+        mealTagsDropdown.innerHTML = `<option value="" disabled selected>select ${mealType}</option>`;
+        mealOptions[mealType].forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option;
+            optionElement.textContent = option;
+            mealTagsDropdown.appendChild(optionElement);
+        });
+
+        mealTagsDropdown.addEventListener('change', () => {
+            portionSection.classList.remove('hidden');
+            headings[3].classList.remove('hidden');
+        });
+    }
+
+    // Portion dropdown selection
+    portionDropdown.addEventListener('change', () => {
+        additionalSection.classList.remove('hidden');
+        headings[4].classList.remove('hidden');
+    });
+
+    
+
+    // Yes/No button handlers
+    yesButton.addEventListener('click', () => {
+        Swal.fire({
+            title: 'Add another meal entry?',
+            text: 'Do you want to add another meal entry now?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes!',
+            cancelButtonText: 'No, thanks!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload(); // Reload the page if confirmed
+            }
+        });
+    });
+
+    noButton.addEventListener('click', () => {
+        Swal.fire({
+            title: 'Meal tracking complete!',
+            text: 'You have completed the meal tracking for now.',
+            icon: 'success',
+            confirmButtonText: 'Okay',
+        });
+    });
+
+
 </script>

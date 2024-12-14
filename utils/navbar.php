@@ -354,7 +354,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 
 <style>
         /* Adjusting modal width */
-        #exampleModal .modal-dialog {
+        #trackModal .modal-dialog {
             max-width: 800px !important;
         }
 
@@ -366,16 +366,21 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         /* Ensure buttons stay within modal and align */
         .btn-group {
             display: flex;
-            justify-content: space-evenly;
+            flex-wrap: wrap;
+            justify-content: center;
             margin-bottom: 15px;
             gap: 10px;
         }
         .btn-group .btn {
-            flex: 1 1 30%;
+            flex: 0 0 auto;
             color: #946CFC;
             border: 1px solid #946CFC;
             font-weight: bold;
             border-radius: 10px !important;
+            padding: 8px 20px; 
+            text-align: center;
+            white-space: nowrap;
+            transition: all 0.3s ease;
         }
 
         .btn-group .btn.active {
@@ -512,11 +517,11 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
 ?>
 
 <!-- Track now modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="trackModal" tabindex="-1" aria-labelledby="trackModalLabel" aria-hidden="true">
     <div class="modal-dialog track-now-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">track Now</h5>
+                <h5 class="modal-title" id="trackModalLabel">track Now</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -674,7 +679,7 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
 
             <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto" style="width:auto">
                 <ul class="nav-menus gap-4">
-                    <button class="btn btn-primary rounded-pill px-3 py-2 d-flex align-items-center justify-content-center gap-1 track-now-btn"  data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color:#68529f; border: none;width:auto;">
+                    <button class="btn btn-primary rounded-pill px-3 py-2 d-flex align-items-center justify-content-center gap-1 track-now-btn"  data-bs-toggle="modal" data-bs-target="#trackModal" style="background-color:#68529f; border: none;width:140px;">
                         <i class="fa fa-plus"></i> track now
                     </button>
                     <!-- <li class="cart-nav onhover-dropdown bg-none" style="background: none !important;"></li>

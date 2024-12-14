@@ -230,6 +230,110 @@
     #edit-view-box a {
         text-decoration: underline;
     }
+
+    /* Sidebar Navigation */
+    .sidebar-nav {
+        flex-direction: column; 
+        width: 200px;
+        height: 100vh; 
+        background-color: #936CFB; 
+        padding: 15px; 
+        position: fixed;
+        top: 0;
+        left: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        z-index: 1000; 
+        gap: 40PX;
+    }
+
+    .sidebar-nav .nav-link {
+        display: block; 
+        width: calc(100% - 30px);
+        box-sizing: border-box;
+        padding: 10px 15px;
+        border-radius: 5px; 
+        margin-bottom: 5px; 
+        color: #fff; 
+        transition: background-color 0.3s, color 0.3s;
+        text-align: center;
+    }
+
+    .sidebar-nav .nav-link.active {
+        color: #fff !important;
+        font-weight: bold;
+        background-color: #5d42a5 !important;
+    }
+
+    .sidebar-nav .nav-link:hover {
+        background-color: #5d42a5; 
+        color: #fff;
+    }
+
+    /* Adjust content to the right of the sidebar */
+    .page-body-wrapper {
+        margin-left: 200px;
+    }
+
+    /* For smaller screens */@media (max-width: 768px) {
+        .sidebar-nav {
+            position: fixed;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .sidebar-nav.active {
+            transform: translateX(0);
+        }
+
+        .page-body-wrapper {
+            margin-left: 0;
+        }
+
+        .sidebar-overlay {
+            display: block; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999; 
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+ 
+    /* General styling for the toggle button */
+    .sidebar-toggle-btn {
+        background-color: #5d42a5;
+        color: #fff; 
+        border: none; 
+        border-radius: 5px; 
+        font-size: 1.5rem;
+        cursor: pointer; 
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+        transition: background-color 0.3s, transform 0.2s ease-in-out;
+        margin-bottom: 20px;
+        margin-left: 20px;
+    }
+
+    /* Hover effect */
+    .sidebar-toggle-btn:hover {
+        background-color: #936CFB; /* Lighter background on hover */
+    }
+
+
+
 </style>
 
 <?php
@@ -276,6 +380,8 @@ foreach ($weight_history as $index => $entry) {
 ?>
 
 <body>
+<div class="sidebar-overlay"></div>
+
     <?php include_once "../utils/loader.php" ?>
     <div class="page-wrapper compact-wrapper" style="background: #ffffff !important;" id="pageWrapper">
         <?php include_once "../utils/navbar.php" ?>
@@ -295,55 +401,32 @@ foreach ($weight_history as $index => $entry) {
                                         <div class="horizontal-wizard-wrapper">
                                             <div class="row g-3">
                                                 <div class="col-12 main-horizontal-header">
-                                                    <div class="nav nav-pills horizontal-options" id="horizontal-wizard-tab" role="tablist" aria-orientation="vertical">
+                                                    <button class="sidebar-toggle-btn d-md-none" aria-expanded="false" aria-controls="horizontal-wizard-tab">☰ Tabs Menu</button>
+
+                                                    <div class="nav nav-pills sidebar-nav" id="horizontal-wizard-tab" role="tablist" aria-orientation="vertical">
+                                                        <div class="logo-wrapper">
+                                                            <a href="../dashboard/dashboard.php">
+                                                                <img class="img-fluid for-light" src="../assets/images/logo/logo.png" alt="" />
+                                                                <img class="img-fluid for-dark" src="../assets/images/logo/logo_light.png" alt="" />
+                                                            </a>
+                                                        </div>
                                                         <a class="nav-link active" id="wizard-info-tab" data-bs-toggle="pill" href="#wizard-info" role="tab" aria-controls="wizard-info" aria-selected="true">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>Profile</h6>
-                                                                </div>
-                                                            </div>
+                                                            Profile
                                                         </a>
                                                         <a class="nav-link" id="wizard-weight-tracker-tab" data-bs-toggle="pill" href="#wizard-weight-tracker" role="tab" aria-controls="wizard-weight-tracker" aria-selected="false">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>my Progress</h6>
-                                                                </div>
-                                                            </div>
+                                                            My Progress
                                                         </a>
-                                                        <a class="nav-link" id="my-plan-tab" data-bs-toggle="pill" href="#my-plan" role="tab" aria-controls="my-plan" aria-selected="false" tabindex="-1">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>my Plan</h6>
-                                                                </div>
-                                                            </div>
+                                                        <a class="nav-link" id="my-plan-tab" data-bs-toggle="pill" href="#my-plan" role="tab" aria-controls="my-plan" aria-selected="false">
+                                                            My Plan
                                                         </a>
-                                                        <a class="nav-link" id="recipes-tab" data-bs-toggle="pill" href="#recipes" role="tab" aria-controls="recipes" aria-selected="false" tabindex="-1">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>Recipes</h6>
-                                                                </div>
-                                                            </div>
+                                                        <a class="nav-link" id="recipes-tab" data-bs-toggle="pill" href="#recipes" role="tab" aria-controls="recipes" aria-selected="false">
+                                                            Recipes
                                                         </a>
-
-                                                        <a class="nav-link" id="inquiry-wizard-tab" data-bs-toggle="pill" href="#inquiry-wizard" role="tab" aria-controls="inquiry-wizard" aria-selected="false" tabindex="-1">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>Coaching</h6>
-                                                                </div>
-                                                            </div>
+                                                        <a class="nav-link" id="inquiry-wizard-tab" data-bs-toggle="pill" href="#inquiry-wizard" role="tab" aria-controls="inquiry-wizard" aria-selected="false">
+                                                            Coaching
                                                         </a>
-                                                        <a class="nav-link" id="successful-wizard-tab" data-bs-toggle="pill" href="#successful-wizard" role="tab" aria-controls="successful-wizard" aria-selected="false" tabindex="-1">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>Messages</h6>
-                                                                </div>
-                                                            </div>
+                                                        <a class="nav-link" id="successful-wizard-tab" data-bs-toggle="pill" href="#successful-wizard" role="tab" aria-controls="successful-wizard" aria-selected="false">
+                                                            Messages
                                                         </a>
                                                     </div>
                                                 </div>
@@ -706,6 +789,45 @@ foreach ($weight_history as $index => $entry) {
             });
         });
     </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const sidebar = document.querySelector(".sidebar-nav");
+    const toggleBtn = document.querySelector(".sidebar-toggle-btn");
+    const overlay = document.querySelector(".sidebar-overlay");
+    const sidebarLinks = document.querySelectorAll(".sidebar-nav .nav-link");
+
+    // Show sidebar on toggle button click
+    toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
+        overlay.classList.toggle("active");
+
+        toggleBtn.setAttribute(
+            "aria-expanded",
+            sidebar.classList.contains("active").toString()
+        );
+    });
+
+    // Hide sidebar when clicking on the overlay
+    overlay.addEventListener("click", () => {
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+    });
+
+    // Hide sidebar when a tab is clicked
+    sidebarLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            if (window.innerWidth <= 768) { // Only for smaller screens
+                sidebar.classList.remove("active");
+                overlay.classList.remove("active");
+            }
+        });
+    });
+});
+
+</script>
+
+
 </body>
 
 </html>

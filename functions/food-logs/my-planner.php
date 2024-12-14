@@ -491,6 +491,62 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
     .reset-filter-btn {
         padding:2px 10px ;
     }
+
+    .MealCardViewBtn,
+    .MealCardEditBtn {
+        position: absolute;
+        width: 75px;
+        padding: 1px 0;
+        background-color: #946CFC;
+        color: #fff;
+        cursor: pointer;
+        border: 2px solid #fff;
+        border-radius: 50px;
+        top: 5px;
+        left: 20px;
+        font-weight: 800;
+        z-index: 999;
+        display: none;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.1s ease-in-out;
+    }
+
+    .MealCardViewBtn:hover {
+        background-color: #6b4ce6;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .MealCardEditBtn {
+        background-color: #fff;
+        color: #6b4ce6;
+        top: 35px;
+        border: 2px solid #6b4ce6;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.1s ease-in-out; 
+    }
+
+    .MealCardEditBtn:hover {
+        background-color: #946CFC;
+        color: #fff;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2)
+    }
+
+    /* Display buttons on hover */
+    .meal-box:hover .MealCardViewBtn,
+    .meal-box:hover .MealCardEditBtn {
+        display: block;
+        opacity: 1; 
+        transform: translateY(0); 
+        transition-delay: 0.1s;
+    }
+
+    /* Add slight delay for each button individually */
+    .meal-box:hover .MealCardEditBtn {
+        transition-delay: 0.2s;
+    }
+
 </style>
 
     <div class="row">
@@ -1115,10 +1171,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                     if (dayColumn) {
                         const dayHeader = dayColumn.closest('.day-column').querySelector('.day-header');
                         dayId = dayHeader ? dayHeader.textContent.toLowerCase().replace(" ", "") : null;
-                    } else {
-                        console.log("No matching day column found for the specified date.");
                     }
-
                     if (!dayColumn) return;
 
                     // Find the corresponding meal section within the day column using the label (e.g., 'Breakfast', 'Lunch', etc.)
@@ -1137,8 +1190,10 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                             data-meal-calories="${Math.round(meal.calories)}" 
                             data-meal-size="${Math.round(meal.protein)}" 
                             data-meal-carbs="${Math.round(meal.carbs)}" 
-                            data-meal-fats="${Math.round(meal.fats)}" 
-                            onclick="showBox(this)" data-id="${meal.foodId}">
+                            data-meal-fats="${meal.totalFat}" 
+                            data-id="${meal.foodId}">
+                            <span class="MealCardViewBtn" onclick="showBox(this.parentElement)"> view </span>
+                            <span class="MealCardEditBtn"> edit </span>
                             <img src="${meal.image}" alt="${meal.mealName}">
                             <div class="meal-name">${meal.mealName}</div>
                             <div class="meal-info">${meal.calories > 0 ? Math.round(meal.calories) : meal.calories} kcal<br>${meal.protein > 0 ? Math.round(meal.protein) : meal.protein} oz</div>
@@ -1564,7 +1619,9 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
                                     data-meal-size="${mealInfo.size}" 
                                     data-meal-carbs="${mealCarbs}" 
                                     data-meal-fats="${mealFats}" 
-                                    onclick="showBox(this)" data-id="${mealBoxId}">
+                                    data-id="${mealBoxId}">
+                                    <span class="MealCardViewBtn" onclick="showBox(this.parentElement)"> view </span>
+                                    <span class="MealCardEditBtn"> edit </span>
                                     <img src="${imageSrc}" alt="${mealName}">
                                     <div class="meal-name">${mealName}</div>
                                     <div class="meal-info">${mealInfo.calories}<br>${mealInfo.size}</div> 

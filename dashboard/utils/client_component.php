@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
 <div class="row">
     <div class="col-md-8">
         <div class="row" style="margin-top:20px;">
@@ -176,18 +178,24 @@
     </div>
     <div class="col-md-4">
         <div class="row">
-            <div class="main-color text-center my-3">
-                <i class="fa fa-calendar me-2 fw-bold fs-4"></i>
+            <div class="main-color text-center my-3" style="position: relative;">
+                <!-- Calendar Icon -->
+                <i class="fa fa-calendar me-2 fw-bold fs-4" id="client_calendar-icon" style="cursor: pointer;"></i>
+                <!-- Previous Date Link -->
                 <a href="?date=<?php echo $prev_date; ?>">
                     <i class="fa fa-angle-left fw-bold fs-4"></i>
                 </a>
+                <!-- Selected Date -->
                 <h3 class="text-center mx-2 d-inline main-color">
                     <?php echo date('M d, Y', strtotime($selected_date)); ?>
                 </h3>
-                <input type="hidden" value="<?php echo $selected_date; ?>" id="selected_date">
+                <input type="hidden" value="<?php echo $selected_date; ?>" id="client_selected_date">
+                <!-- Next Date Link -->
                 <a href="?date=<?php echo $next_date; ?>">
                     <i class="fa fa-angle-right fw-bold fs-4"></i>
                 </a>
+                <!-- Flatpickr Calendar -->
+                <input type="text" id="flatpickr_input" style="display: none;">
             </div>
         </div>
         <div class="row mt-2">
@@ -244,3 +252,30 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const calendarIcon = document.getElementById("client_calendar-icon");
+    const flatpickrInput = document.getElementById("flatpickr_input");
+
+    // Initialize Flatpickr
+    const fp = flatpickr(flatpickrInput, {
+        dateFormat: "Y-m-d",
+        defaultDate: document.getElementById("client_selected_date").value,
+        onChange: function (selectedDates, dateStr) {
+            // Redirect to the new date when selected
+            if (dateStr) {
+                window.location.href = `?date=${dateStr}`;
+            }
+        },
+    });
+
+    // Show Flatpickr when clicking on the calendar icon
+    calendarIcon.addEventListener("click", function () {
+        flatpickrInput.click(); // Trigger Flatpickr
+    });
+});
+
+</script>

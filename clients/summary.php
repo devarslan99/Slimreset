@@ -189,37 +189,70 @@
 </style>
 
 <style>
-    /* Hide dropdown on large screens */
-    .phase-dropdown {
-        display: none;
-        width: 150px;
-        padding: 8px;
-        font-size: 16px;
-    }
+/* Client Plan Section */
+.client-plan-wrapper {
+    position: relative;
+    padding: 10px;
+    margin: 10px 0;
+}
 
-    /* Display dropdown only on small screens */
-    @media (max-width: 768px) {
-        .phase-dropdown {
-            display: block;
-        }
+.client-plan-title {
+    font-size: 1.2rem;
+    color: #000;
+}
 
-        /* Hide regular tabs on small screens */
-        .phase-tab {
-            display: none;
-        }
-    }
+/* Three Dots Icon */
+.three-dots-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #000;
+    transition: color 0.3s ease;
+}
 
-    @media (max-width: 600px) {
-        .phase-main-box {
-            flex-direction: column;
-            margin-bottom: 20px;
-            width: 100%;
-        }
+.three-dots-icon:hover {
+    color: #936CFB;
+}
 
-        .phase-dropdown {
-            width: 100%;
-        }
-    }
+/* Phase Popup */
+.phase-popup {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    background: linear-gradient(135deg, #9a50ff, #6f30ff);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.new-label {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.phase-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 8px 0;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.phase-btn:hover {
+    background: #fff;
+    color: #6f30ff;
+    border-radius: 5px;
+}
+
 
     #edit-view-box {
         display: none;
@@ -230,6 +263,114 @@
     #edit-view-box a {
         text-decoration: underline;
     }
+
+    /* Sidebar Navigation */
+    .sidebar-nav {
+        flex-direction: column; 
+        width: 200px;
+        height: 100vh; 
+        background-color: #936CFB; 
+        padding: 15px; 
+        position: fixed;
+        top: 0;
+        left: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        z-index: 1000; 
+        gap: 40PX;
+    }
+
+    .sidebar-nav .nav-link {
+        display: block; 
+        width: calc(100% - 30px);
+        box-sizing: border-box;
+        padding: 10px 15px;
+        border-radius: 5px; 
+        margin-bottom: 5px; 
+        color: #fff; 
+        transition: background-color 0.3s, color 0.3s;
+        text-align: center;
+    }
+
+    .sidebar-nav .nav-link.active {
+        color: #fff !important;
+        font-weight: bold;
+        background-color: #5d42a5 !important;
+    }
+
+    .sidebar-nav .nav-link:hover {
+        background-color: #5d42a5; 
+        color: #fff;
+    }
+
+    /* Adjust content to the right of the sidebar */
+    .page-body-wrapper {
+        margin-left: 200px;
+    }
+
+    .page-body {
+        margin-top: 51px !important;
+    }
+
+    /* For smaller screens */@media (max-width: 768px) {
+        .sidebar-nav {
+            position: fixed;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .sidebar-nav.active {
+            transform: translateX(0);
+        }
+
+        .page-body-wrapper {
+            margin-left: 0;
+        }
+
+        .sidebar-overlay {
+            display: block; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999; 
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+ 
+    /* General styling for the toggle button */
+    .sidebar-toggle-btn {
+        background-color: #5d42a5;
+        color: #fff; 
+        border: none; 
+        border-radius: 5px; 
+        font-size: 1.5rem;
+        cursor: pointer; 
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+        transition: background-color 0.3s, transform 0.2s ease-in-out;
+        margin-bottom: 20px;
+        margin-left: 20px;
+    }
+
+    /* Hover effect */
+    .sidebar-toggle-btn:hover {
+        background-color: #936CFB; /* Lighter background on hover */
+    }
+
+
+
 </style>
 
 <?php
@@ -276,6 +417,8 @@ foreach ($weight_history as $index => $entry) {
 ?>
 
 <body>
+<div class="sidebar-overlay"></div>
+
     <?php include_once "../utils/loader.php" ?>
     <div class="page-wrapper compact-wrapper" style="background: #ffffff !important;" id="pageWrapper">
         <?php include_once "../utils/navbar.php" ?>
@@ -295,55 +438,32 @@ foreach ($weight_history as $index => $entry) {
                                         <div class="horizontal-wizard-wrapper">
                                             <div class="row g-3">
                                                 <div class="col-12 main-horizontal-header">
-                                                    <div class="nav nav-pills horizontal-options" id="horizontal-wizard-tab" role="tablist" aria-orientation="vertical">
+                                                    <button class="sidebar-toggle-btn d-md-none" aria-expanded="false" aria-controls="horizontal-wizard-tab">☰ Tabs Menu</button>
+
+                                                    <div class="nav nav-pills sidebar-nav" id="horizontal-wizard-tab" role="tablist" aria-orientation="vertical">
+                                                        <div class="logo-wrapper">
+                                                            <a href="../dashboard/dashboard.php">
+                                                                <img class="img-fluid for-light" src="../assets/images/logo/logo.png" alt="" />
+                                                                <img class="img-fluid for-dark" src="../assets/images/logo/logo_light.png" alt="" />
+                                                            </a>
+                                                        </div>
                                                         <a class="nav-link active" id="wizard-info-tab" data-bs-toggle="pill" href="#wizard-info" role="tab" aria-controls="wizard-info" aria-selected="true">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>Profile</h6>
-                                                                </div>
-                                                            </div>
+                                                            Profile
                                                         </a>
                                                         <a class="nav-link" id="wizard-weight-tracker-tab" data-bs-toggle="pill" href="#wizard-weight-tracker" role="tab" aria-controls="wizard-weight-tracker" aria-selected="false">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>My Progress</h6>
-                                                                </div>
-                                                            </div>
+                                                            My Progress
                                                         </a>
-                                                        <a class="nav-link" id="my-plan-tab" data-bs-toggle="pill" href="#my-plan" role="tab" aria-controls="my-plan" aria-selected="false" tabindex="-1">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>My Plan</h6>
-                                                                </div>
-                                                            </div>
+                                                        <a class="nav-link" id="my-plan-tab" data-bs-toggle="pill" href="#my-plan" role="tab" aria-controls="my-plan" aria-selected="false">
+                                                            My Plan
                                                         </a>
-                                                        <a class="nav-link" id="recipes-tab" data-bs-toggle="pill" href="#recipes" role="tab" aria-controls="recipes" aria-selected="false" tabindex="-1">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>Recipes</h6>
-                                                                </div>
-                                                            </div>
+                                                        <a class="nav-link" id="recipes-tab" data-bs-toggle="pill" href="#recipes" role="tab" aria-controls="recipes" aria-selected="false">
+                                                            Recipes
                                                         </a>
-
-                                                        <a class="nav-link" id="inquiry-wizard-tab" data-bs-toggle="pill" href="#inquiry-wizard" role="tab" aria-controls="inquiry-wizard" aria-selected="false" tabindex="-1">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>Coaching</h6>
-                                                                </div>
-                                                            </div>
+                                                        <a class="nav-link" id="inquiry-wizard-tab" data-bs-toggle="pill" href="#inquiry-wizard" role="tab" aria-controls="inquiry-wizard" aria-selected="false">
+                                                            Coaching
                                                         </a>
-                                                        <a class="nav-link" id="successful-wizard-tab" data-bs-toggle="pill" href="#successful-wizard" role="tab" aria-controls="successful-wizard" aria-selected="false" tabindex="-1">
-                                                            <div class="horizontal-wizard">
-                                                                <div class="stroke-icon-wizard"></div>
-                                                                <div class="horizontal-wizard-content">
-                                                                    <h6>Messages</h6>
-                                                                </div>
-                                                            </div>
+                                                        <a class="nav-link" id="successful-wizard-tab" data-bs-toggle="pill" href="#successful-wizard" role="tab" aria-controls="successful-wizard" aria-selected="false">
+                                                            Messages
                                                         </a>
                                                     </div>
                                                 </div>
@@ -367,7 +487,7 @@ foreach ($weight_history as $index => $entry) {
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">1</h1>
                                                                                 <div>
-                                                                                    <h6 class="responsive-font">Choose Food</h6>
+                                                                                    <h6 class="responsive-font">choose Food</h6>
                                                                                 </div>
                                                                             </div>
                                                                         </a>
@@ -377,7 +497,7 @@ foreach ($weight_history as $index => $entry) {
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">2</h1>
                                                                                 <div>
-                                                                                    <h6 class="responsive-font">My Planner</h6>
+                                                                                    <h6 class="responsive-font">my Planner</h6>
                                                                                 </div>
                                                                             </div>
                                                                         </a>
@@ -387,7 +507,7 @@ foreach ($weight_history as $index => $entry) {
                                                                             <div style="display:flex;align-items:center;gap:10px;">
                                                                                 <h1 class="fs-1 fw-bolder">3</h1>
                                                                                 <div>
-                                                                                    <h6 class="responsive-font">My Tracker</h6>
+                                                                                    <h6 class="responsive-font">my Tracker</h6>
                                                                                 </div>
                                                                             </div>
                                                                         </a>
@@ -401,30 +521,31 @@ foreach ($weight_history as $index => $entry) {
                                                                                 <h1 class="text-center">Choose Your Food Preferences</h1>
                                                                                 <div class="phase-main-box d-flex justify-content-between align-items-center px-5">
                                                                                     <div class="d-flex justify-content-center align-items-center my-4">
-                                                                                        <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
                                                                                             <label class="form-label me-2 fs-6 responsive-font">View all</label>
                                                                                             <div class="form-check form-switch">
                                                                                                 <input class="form-check-input custom-switch" type="checkbox" id="preferenceSwitch" role="switch">
                                                                                                 <label class="form-label ms-2 fs-6 fw-medium responsive-font">Gut guided</label>
                                                                                             </div>
-                                                                                        <?php endif; ?>
                                                                                     </div>
-                                                                                    <select class="phase-dropdown" onchange="selectPhase(this)">
-                                                                                        <option value="" disabled selected>Select Phase</option>
-                                                                                        <option value="1">Phase 1</option>
-                                                                                        <option value="2">Phase 2</option>
-                                                                                        <option value="3">Phase 3</option>
-                                                                                        <option value="4">Phase 4</option>
-                                                                                    </select>
+                                                                                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
+                                                                                   
                                                                                     <div class=" align-items-center phase-tab" id="phaseTabs">
-                                                                                        <button class="btn tab-button active" data-phase="1">Phase 1</button>
-                                                                                        <span class="line">|</span>
-                                                                                        <button class="btn tab-button" data-phase="2">Phase 2</button>
-                                                                                        <span class="line">|</span>
-                                                                                        <button class="btn tab-button" data-phase="3">Phase 3</button>
-                                                                                        <span class="line">|</span>
-                                                                                        <button class="btn tab-button" data-phase="4">Phase 4</button>
+                                                                                    <div class="client-plan-wrapper d-flex align-items-center justify-content-between">
+                                                                                        <span class="client-plan-title fw-bold fs-5">client plan</span>
+                                                                                        <div class="three-dots-wrapper">
+                                                                                         <i class="fa fa-ellipsis-h three-dots-icon" onclick="toggleDropdown()"></i>
+                                                                                            <div class="phase-popup" id="phasePopup">
+                                                                                                <span class="new-label">new</span>
+                                                                                                <button class="phase-btn" onclick="selectPhase(1)">Phase 1</button>
+                                                                                                <button class="phase-btn" onclick="selectPhase(2)">Phase 2</button>
+                                                                                                <button class="phase-btn" onclick="selectPhase(3)">Phase 3</button>
+                                                                                                <button class="phase-btn" onclick="selectPhase(4)">Phase 4</button>
+                                                                                            </div>
+                                                                                        </div>
                                                                                     </div>
+                                                                                    </div>
+                                                                                    <?php endif; ?>
+
                                                                                     <div id="edit-view-box">
                                                                                         <a href="#">edit</a>
                                                                                         <p>view as client</p>
@@ -556,10 +677,14 @@ foreach ($weight_history as $index => $entry) {
                     if (tabId === 'my-plan') {
                         // Activate "Choose Food" tab
                         const chooseFoodTabLink = document.querySelector('#choose-food-tab');
+                        const myPlannerTabLink = document.querySelector('#my-planner-tab'); 
+                        const myTrackerTabLink = document.querySelector('#my-tracker-tab'); 
                         const chooseFoodTabContent = document.querySelector('#choose-food');
 
                         if (chooseFoodTabLink && chooseFoodTabContent) {
                             chooseFoodTabLink.classList.add('active');
+                            myPlannerTabLink.classList.remove('active');
+                            myTrackerTabLink.classList.remove('active');
                             chooseFoodTabContent.classList.add('active', 'show');
 
                             // Save "choose-food" to local storage
@@ -586,7 +711,7 @@ foreach ($weight_history as $index => $entry) {
 
                     // Add active class to the clicked link
                     this.classList.add("active");
-                    this.querySelector("h6").style.color = "#fff"; // Set active text color
+                    this.querySelector("h6").style.color = "#000"; // Set active text color
 
                     // Hide all tab content
                     const tabContents = document.querySelectorAll("#my-plan .tab-pane");
@@ -652,55 +777,81 @@ foreach ($weight_history as $index => $entry) {
 
     <!-- script to handle phase tabs content to load in container for both medium and large sceen devices-->
     <script>
-        function loadContentForPhase(phase) {
-            // Determine the file to load based on the phase
-            const filePath = phase === "1" ?
-                '../functions/food-logs/view_all_food.php' :
-                `../functions/food-logs/view_all_food_phase_${phase}.php`;
+     // Toggle dropdown popup
+function toggleDropdown() {
+    const popup = document.getElementById('phasePopup');
+    popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
+}
 
-            // Load content for the selected phase
-            fetch(filePath)
-                .then(response => response.text())
-                .then(data => {
-                    // Display the phase data in the single container
-                    document.getElementById('viewAllSection').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading content:', error));
-        }
+// Close the popup if the user clicks outside
+window.addEventListener('click', function(event) {
+    const popup = document.getElementById('phasePopup');
+    const icon = document.querySelector('.three-dots-icon');
 
-        function selectPhase(dropdown) {
-            const selectedPhase = dropdown.value;
+    // Check if the click is outside the popup and the three-dot icon
+    if (popup.style.display === 'flex' && !popup.contains(event.target) && !icon.contains(event.target)) {
+        popup.style.display = 'none';
+    }
+});
 
-            // Clear 'active' class from all tab buttons
-            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+// Load content for selected phase
+function selectPhase(phase) {
+    const popup = document.getElementById('phasePopup');
+    popup.style.display = 'none'; // Hide popup
 
-            // Add 'active' class to the corresponding tab button (for visual sync on large screens)
-            const correspondingTab = document.querySelector(`.tab-button[data-phase="${selectedPhase}"]`);
-            if (correspondingTab) {
-                correspondingTab.classList.add('active');
-            }
+    // Existing functionality to load phase content
+    const filePath = phase === 1 ? '../functions/food-logs/view_all_food.php' :
+        `../functions/food-logs/view_all_food_phase_${phase}.php`;
 
-            // Load the content for the selected phase
-            loadContentForPhase(selectedPhase);
-        }
+    fetch(filePath)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('viewAllSection').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading content:', error));
+}
 
-        // Attach click event listeners to tab buttons for larger screens
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove 'active' class from all buttons
-                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
 
-                // Add 'active' class to the clicked button
-                button.classList.add('active');
+    </script>
 
-                // Get the phase number
-                const phase = button.getAttribute('data-phase');
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const sidebar = document.querySelector(".sidebar-nav");
+        const toggleBtn = document.querySelector(".sidebar-toggle-btn");
+        const overlay = document.querySelector(".sidebar-overlay");
+        const sidebarLinks = document.querySelectorAll(".sidebar-nav .nav-link");
 
-                // Load content for the selected phase
-                loadContentForPhase(phase);
+        // Show sidebar on toggle button click
+        toggleBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("active");
+            overlay.classList.toggle("active");
+
+            toggleBtn.setAttribute(
+                "aria-expanded",
+                sidebar.classList.contains("active").toString()
+            );
+        });
+
+        // Hide sidebar when clicking on the overlay
+        overlay.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+        });
+
+        // Hide sidebar when a tab is clicked
+        sidebarLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                if (window.innerWidth <= 768) { // Only for smaller screens
+                    sidebar.classList.remove("active");
+                    overlay.classList.remove("active");
+                }
             });
         });
+    });
+
     </script>
+
+
 </body>
 
 </html>

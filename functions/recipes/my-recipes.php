@@ -282,13 +282,120 @@ $recipes_json = json_encode($recipes);
             color:red;
         }
 
+        .form-label {
+            color: #223c50;
+            font-weight: 700;
+        }
+
         @media (max-width: 768px) {
             .food-label-name,
             .text-required {
-                flex-basis: 100%; /* Make each heading take full width on small screens */
+                flex-basis: 100%; 
                 max-width: 100%;
             }
         }
+
+        .ingredientsSection .filter-select {
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 650px) {
+            .ingredientsSection {
+                flex-direction: column;
+                align-items: center;
+            }
+            .filter-select {
+                width: 100%;
+            }
+        }
+
+
+
+
+        /* Recipe Card Styling */
+        .recipe-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #eaeaea;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 200px; /* Adjust based on your layout */
+            padding: 10px;
+            position: relative;
+            font-family: Arial, sans-serif;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .recipe-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Recipe Image */
+        .recipe-card-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Recipe Body */
+        .recipe-card-body {
+            text-align: left;
+            padding: 10px 5px;
+            width: 100%;
+        }
+
+        .recipe-title-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .recipe-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+        }
+
+        .recipe-title-options {
+            cursor: pointer;
+            flex-shrink: 0;
+            background-color: #e8e5e5;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 50%;
+        }
+
+
+        .recipe-calories {
+            font-size: 12px;
+            color: #777;
+            margin: 3px 0;
+        }
+
+        /* Macros Section */
+        .recipe-macros {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+
+        .macro {
+            font-size: 12px;
+            font-weight: bold;
+            color: #555;
+        }
+        
     </style>
 </head>
 
@@ -310,42 +417,57 @@ $recipes_json = json_encode($recipes);
                 </button>
             </div>
         </div>
-        <div class="row mb-4">
+        <div class="row mb-4" style="text-align: center;">
+            <!-- Meal Type Dropdown -->
             <div class="col-md-3 filter-select">
                 <label class="form-label">Meal Type</label>
                 <select class="form-select" id="filter-meal-type">
                     <option>Select Meal Type</option>
                 </select>
             </div>
+
+            <!-- Food Group Dropdown -->
             <div class="col-md-3 filter-select">
                 <label class="form-label">Food Group</label>
                 <select class="form-select" id="filter-food-group">
                     <option>Select Food Group</option>
                 </select>
             </div>
-            <div class="col-md-2 filter-select">
-                <label class="form-label">Ingredient</label>
-                <select class="form-select" id="filter-protein">
-                    <option>By Protein</option>
-                </select>
-            </div>
-            <div class="col-md-2 filter-select">
-                <label class="form-label">&nbsp;</label>
-                <select class="form-select" id="filter-veggie">
-                    <option>By Veggie</option>
-                </select>
-            </div>
-            <div class="col-md-2 filter-select">
-                <label class="form-label">&nbsp;</label>
-                <select class="form-select" id="filter-fruit">
-                    <option>By Fruit</option>
-                </select>
+
+            <!-- Ingredients Label and Dropdowns -->
+            <div class="col-md-6">
+                <label class="form-label">Ingredients</label>
+                <div class="d-flex justify-content-around ingredientsSection">
+                    <!-- Protein Dropdown -->
+                    <div class="filter-select flex-fill mx-1">
+                        <select class="form-select" id="filter-protein">
+                            <option>By Protein</option>
+                        </select>
+                    </div>
+
+                    <!-- Veggie Dropdown -->
+                    <div class="filter-select flex-fill mx-1">
+                        <select class="form-select" id="filter-veggie">
+                            <option>By Veggie</option>
+                        </select>
+                    </div>
+
+                    <!-- Fruit Dropdown -->
+                    <div class="filter-select flex-fill mx-1">
+                        <select class="form-select" id="filter-fruit">
+                            <option>By Fruit</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <hr>
+
+
         <!-- Recipe Card -->
         <div class="row">
-            <div class="d-flex flex-wrap mt-3 gap-3">
+            <div class="d-flex justify-content-evenly flex-wrap mt-3 gap-3" style="gap:5px !important;">
                 <!-- Recipes will be dynamically injected here -->
             </div>
         </div>
@@ -1359,14 +1481,27 @@ $recipes_json = json_encode($recipes);
                 : `../assets/images/recipe_images/uploads/${recipe.image}`;
 
                 card.innerHTML = `
-                    <div class="custom-border rounded my-recipe-img-card-box">
-                        <img class="my-recipe-img-card" src="${recipeImage}"  onerror="this.src='https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png';" alt="${recipe.label}">
-                        <div class="meal-name-recipe">${recipe.label}</div>
-                        <div class="meal-info">
-                            ${recipe.calories} kcal<br>
-                            ${recipe.amount} ${recipe.unit}
+                   <div class="custom-border rounded recipe-card">
+                        <img 
+                            class="recipe-card-img" 
+                            src="${recipeImage}"  
+                            onerror="this.src='https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png';" 
+                            alt="${recipe.label}"
+                        >
+                        <div class="recipe-card-body">
+                            <div class="recipe-title-wrapper">
+                                <h5 class="recipe-title">${recipe.label}</h5>
+                                <i class="fa fa-ellipsis-v recipe-title-options" aria-hidden="true"></i>
+                            </div>
+                            <p class="recipe-calories">Calories: ${Math.round(recipe.calories)} kcal</p>
+                            <div class="recipe-macros">
+                               <span class="macro">F ${recipe.totalFat > 0 ? (String(recipe.totalFat).includes('g') ? recipe.totalFat : Math.round(recipe.totalFat) + 'g') : recipe.totalFat}</span>
+                                <span class="macro">P ${recipe.protein > 0 ? (String(recipe.protein).includes('g') ? recipe.protein : Math.round(recipe.protein) + 'g') : recipe.protein}</span>
+                                <span class="macro">C ${recipe.carbs > 0 ? (String(recipe.carbs).includes('g') ? recipe.carbs : Math.round(recipe.carbs) + 'g') : recipe.carbs}</span>
+                            </div>
                         </div>
                     </div>
+
                     `;
                 recipeContainer.appendChild(card);
             });

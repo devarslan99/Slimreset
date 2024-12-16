@@ -198,6 +198,7 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         white-space: nowrap;
         flex-grow: 1;
         padding: 0 10px;
+        padding-left: 30px;
         scrollbar-width: none;
         -ms-overflow-style: none;
     }

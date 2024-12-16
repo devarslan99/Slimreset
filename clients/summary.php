@@ -189,37 +189,70 @@
 </style>
 
 <style>
-    /* Hide dropdown on large screens */
-    .phase-dropdown {
-        display: none;
-        width: 150px;
-        padding: 8px;
-        font-size: 16px;
-    }
+/* Client Plan Section */
+.client-plan-wrapper {
+    position: relative;
+    padding: 10px;
+    margin: 10px 0;
+}
 
-    /* Display dropdown only on small screens */
-    @media (max-width: 768px) {
-        .phase-dropdown {
-            display: block;
-        }
+.client-plan-title {
+    font-size: 1.2rem;
+    color: #000;
+}
 
-        /* Hide regular tabs on small screens */
-        .phase-tab {
-            display: none;
-        }
-    }
+/* Three Dots Icon */
+.three-dots-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #000;
+    transition: color 0.3s ease;
+}
 
-    @media (max-width: 600px) {
-        .phase-main-box {
-            flex-direction: column;
-            margin-bottom: 20px;
-            width: 100%;
-        }
+.three-dots-icon:hover {
+    color: #936CFB;
+}
 
-        .phase-dropdown {
-            width: 100%;
-        }
-    }
+/* Phase Popup */
+.phase-popup {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    background: linear-gradient(135deg, #9a50ff, #6f30ff);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.new-label {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.phase-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 8px 0;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.phase-btn:hover {
+    background: #fff;
+    color: #6f30ff;
+    border-radius: 5px;
+}
+
 
     #edit-view-box {
         display: none;
@@ -273,6 +306,10 @@
     /* Adjust content to the right of the sidebar */
     .page-body-wrapper {
         margin-left: 200px;
+    }
+
+    .page-body {
+        margin-top: 51px !important;
     }
 
     /* For smaller screens */@media (max-width: 768px) {
@@ -491,21 +528,21 @@ foreach ($weight_history as $index => $entry) {
                                                                                             </div>
                                                                                     </div>
                                                                                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
-                                                                                    <select class="phase-dropdown" onchange="selectPhase(this)">
-                                                                                        <option value="" disabled selected>Select Phase</option>
-                                                                                        <option value="1">Phase 1</option>
-                                                                                        <option value="2">Phase 2</option>
-                                                                                        <option value="3">Phase 3</option>
-                                                                                        <option value="4">Phase 4</option>
-                                                                                    </select>
+                                                                                   
                                                                                     <div class=" align-items-center phase-tab" id="phaseTabs">
-                                                                                        <button class="btn tab-button active" data-phase="1">Phase 1</button>
-                                                                                        <span class="line">|</span>
-                                                                                        <button class="btn tab-button" data-phase="2">Phase 2</button>
-                                                                                        <span class="line">|</span>
-                                                                                        <button class="btn tab-button" data-phase="3">Phase 3</button>
-                                                                                        <span class="line">|</span>
-                                                                                        <button class="btn tab-button" data-phase="4">Phase 4</button>
+                                                                                    <div class="client-plan-wrapper d-flex align-items-center justify-content-between">
+                                                                                        <span class="client-plan-title fw-bold fs-5">client plan</span>
+                                                                                        <div class="three-dots-wrapper">
+                                                                                         <i class="fa fa-ellipsis-h three-dots-icon" onclick="toggleDropdown()"></i>
+                                                                                            <div class="phase-popup" id="phasePopup">
+                                                                                                <span class="new-label">new</span>
+                                                                                                <button class="phase-btn" onclick="selectPhase(1)">Phase 1</button>
+                                                                                                <button class="phase-btn" onclick="selectPhase(2)">Phase 2</button>
+                                                                                                <button class="phase-btn" onclick="selectPhase(3)">Phase 3</button>
+                                                                                                <button class="phase-btn" onclick="selectPhase(4)">Phase 4</button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
                                                                                     </div>
                                                                                     <?php endif; ?>
 
@@ -740,92 +777,79 @@ foreach ($weight_history as $index => $entry) {
 
     <!-- script to handle phase tabs content to load in container for both medium and large sceen devices-->
     <script>
-        function loadContentForPhase(phase) {
-            // Determine the file to load based on the phase
-            const filePath = phase === "1" ?
-                '../functions/food-logs/view_all_food.php' :
-                `../functions/food-logs/view_all_food_phase_${phase}.php`;
+     // Toggle dropdown popup
+function toggleDropdown() {
+    const popup = document.getElementById('phasePopup');
+    popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
+}
 
-            // Load content for the selected phase
-            fetch(filePath)
-                .then(response => response.text())
-                .then(data => {
-                    // Display the phase data in the single container
-                    document.getElementById('viewAllSection').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading content:', error));
-        }
+// Close the popup if the user clicks outside
+window.addEventListener('click', function(event) {
+    const popup = document.getElementById('phasePopup');
+    const icon = document.querySelector('.three-dots-icon');
 
-        function selectPhase(dropdown) {
-            const selectedPhase = dropdown.value;
-
-            // Clear 'active' class from all tab buttons
-            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-
-            // Add 'active' class to the corresponding tab button (for visual sync on large screens)
-            const correspondingTab = document.querySelector(`.tab-button[data-phase="${selectedPhase}"]`);
-            if (correspondingTab) {
-                correspondingTab.classList.add('active');
-            }
-
-            // Load the content for the selected phase
-            loadContentForPhase(selectedPhase);
-        }
-
-        // Attach click event listeners to tab buttons for larger screens
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove 'active' class from all buttons
-                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-
-                // Add 'active' class to the clicked button
-                button.classList.add('active');
-
-                // Get the phase number
-                const phase = button.getAttribute('data-phase');
-
-                // Load content for the selected phase
-                loadContentForPhase(phase);
-            });
-        });
-    </script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const sidebar = document.querySelector(".sidebar-nav");
-    const toggleBtn = document.querySelector(".sidebar-toggle-btn");
-    const overlay = document.querySelector(".sidebar-overlay");
-    const sidebarLinks = document.querySelectorAll(".sidebar-nav .nav-link");
-
-    // Show sidebar on toggle button click
-    toggleBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("active");
-        overlay.classList.toggle("active");
-
-        toggleBtn.setAttribute(
-            "aria-expanded",
-            sidebar.classList.contains("active").toString()
-        );
-    });
-
-    // Hide sidebar when clicking on the overlay
-    overlay.addEventListener("click", () => {
-        sidebar.classList.remove("active");
-        overlay.classList.remove("active");
-    });
-
-    // Hide sidebar when a tab is clicked
-    sidebarLinks.forEach(link => {
-        link.addEventListener("click", () => {
-            if (window.innerWidth <= 768) { // Only for smaller screens
-                sidebar.classList.remove("active");
-                overlay.classList.remove("active");
-            }
-        });
-    });
+    // Check if the click is outside the popup and the three-dot icon
+    if (popup.style.display === 'flex' && !popup.contains(event.target) && !icon.contains(event.target)) {
+        popup.style.display = 'none';
+    }
 });
 
-</script>
+// Load content for selected phase
+function selectPhase(phase) {
+    const popup = document.getElementById('phasePopup');
+    popup.style.display = 'none'; // Hide popup
+
+    // Existing functionality to load phase content
+    const filePath = phase === 1 ? '../functions/food-logs/view_all_food.php' :
+        `../functions/food-logs/view_all_food_phase_${phase}.php`;
+
+    fetch(filePath)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('viewAllSection').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading content:', error));
+}
+
+
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const sidebar = document.querySelector(".sidebar-nav");
+        const toggleBtn = document.querySelector(".sidebar-toggle-btn");
+        const overlay = document.querySelector(".sidebar-overlay");
+        const sidebarLinks = document.querySelectorAll(".sidebar-nav .nav-link");
+
+        // Show sidebar on toggle button click
+        toggleBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("active");
+            overlay.classList.toggle("active");
+
+            toggleBtn.setAttribute(
+                "aria-expanded",
+                sidebar.classList.contains("active").toString()
+            );
+        });
+
+        // Hide sidebar when clicking on the overlay
+        overlay.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+        });
+
+        // Hide sidebar when a tab is clicked
+        sidebarLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                if (window.innerWidth <= 768) { // Only for smaller screens
+                    sidebar.classList.remove("active");
+                    overlay.classList.remove("active");
+                }
+            });
+        });
+    });
+
+    </script>
 
 
 </body>

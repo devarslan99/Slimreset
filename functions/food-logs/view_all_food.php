@@ -163,12 +163,21 @@
 
 </style>
 
+<?php
+
+// Assuming the role is stored in session
+$role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
+?>
+
 <div class="container-fluid">
     <div class="d-flex flex-wrap justify-content-between gap-2">
         <!-- Protein Category -->
         <div class="category-section flex-fill mb-4 view-all-checkboxes">
             <h3 class="mb-3">Protein</h3>
             <div class="form-check border-bottom-row my-2">
+                <?php if ($role === 'client') : ?>
+                    <h4 class="d-block select-margin mb-3">poultry</h4>
+                <?php endif; ?>
                 <label class="d-block text-secondary select-margin">Select</label>
                 <div class="d-relative">
                     <input class="form-check-input" type="checkbox" id="protein1">
@@ -194,6 +203,9 @@
             </div>
             <div class="mt-3">
                 <div class="form-check border-bottom-row my-2">
+                    <?php if ($role === 'client') : ?>
+                        <h4 class="d-block select-margin mb-3">sea food</h4>
+                    <?php endif; ?>
                     <label class="d-block text-secondary select-margin">Select</label>
                     <input class="form-check-input" type="checkbox" id="protein1">
                     <label class="form-check-label" for="protein1">Chicken</label>
@@ -228,6 +240,9 @@
         <div class="category-section flex-fill mb-4 view-all-checkboxes">
             <h3 class="mb-3">Veggies</h3>
             <div class="form-check border-bottom-row my-2">
+                <?php if ($role === 'client') : ?>
+                    <h4 class="d-block select-margin mb-3">daily</h4>
+                <?php endif; ?>
                 <label class="d-block text-secondary select-margin">Select</label>
                 <input class="form-check-input" type="checkbox" id="veggie1">
                 <label class="form-check-label" for="veggie1">Asparagus</label>
@@ -242,6 +257,9 @@
             </div>
             <div class="mt-3">
                 <div class="form-check border-bottom-row my-2">
+                    <?php if ($role === 'client') : ?>
+                        <h4 class="d-block select-margin mb-3">rotate</h4>
+                    <?php endif; ?>
                     <label class="d-block text-secondary select-margin">Select</label>
                     <input class="form-check-input" type="checkbox" id="veggie1">
                     <label class="form-check-label" for="veggie1">Asparagus</label>

@@ -467,7 +467,7 @@ $recipes_json = json_encode($recipes);
 
         <!-- Recipe Card -->
         <div class="row">
-            <div class="d-flex flex-wrap mt-3 gap-3">
+            <div class="d-flex justify-content-evenly flex-wrap mt-3 gap-3" style="gap:5px !important;">
                 <!-- Recipes will be dynamically injected here -->
             </div>
         </div>

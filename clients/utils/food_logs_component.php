@@ -45,6 +45,64 @@
             padding: 10px;
         }
     }
+    
+    .activity-status-container {
+        min-height: 170px;
+    }
+    
+    .activity-red-status {
+        position: relative;
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        display: block;
+        background: #ffdddd;
+        height: 35px;
+        border-radius: 51px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 10px;
+        margin-top: 30px;
+    }
+
+    .activity-red-status i {
+        position: absolute;
+        background-color: #ff3b3b;
+        color: #fff;
+        width: 20px;
+        height: 20px;
+        top: -15px;
+        left: 40%;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 20px;
+    }
+
+    .activity-meal-status {
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        background: #ffdddd;
+        height: 40px;
+        border-radius: 51px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        padding: 5px 15px;
+    }
+
+    .activity-meal-status i {
+        background-color: #ff3b3b;
+        color: #fff;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 30px;
+    }
+
 </style>
 
 <div class="row ">
@@ -152,7 +210,7 @@
                         foreach ($metrics as $metric) {
                             $remaining = $metric['max'] - $metric['total'];
                     ?>
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 activity-status-container">
                                 <div class="d-flex flex-column align-items-center justify-content-center p-1" style="min-width: 170px; height:100%; border-radius: 20px; border: 1px solid #946CFC; text-align: center;">
                                     <span style="font-size: 20px; display: block;"><?php echo $metric['label']; ?></span>
                                     <h1 class="my-2" style="font-weight: 800; color:#000;">
@@ -180,6 +238,19 @@
                     }
 
                     ?>
+                    <?php if ($login_user_role === "client"): ?>
+                        <!-- Activity Box (Dummy Content) -->
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3  activity-status-container">
+                            <div class="d-flex flex-column align-items-center justify-content-center p-1" style="min-width: 170px; height: 100%; border-radius: 20px; border: 1px solid #946CFC; text-align: center;">
+                                <span style="font-size: 20px; display: block;">activity</span>
+                                <span class="activity-red-status">
+                                    <i class="fa fa-exclamation"></i>
+                                    Avoid for this phase
+                                </span>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
                 </div>
                 <div class="col-md-12 mt-3 ">
                     <div class="row">
@@ -260,7 +331,13 @@
 
                             <!-- Display Breakfast -->
                             <div class="col-md-12">
-                                <h2 style="color: #946cfc;">breakFast</h2>
+                                <div class="d-flex gap-2 align-items-center ">
+                                    <h2 style="color: #946cfc;">breakFast</h2>
+                                    <span class="activity-meal-status">
+                                        <i class="fa fa-times"></i>
+                                        you’ve eaten unapproved foods that could cause a stall.
+                                    </span>
+                                </div>
                                 <hr />
                                 <div class="card bg-shadow-none">
                                     <div class="card-body">
@@ -269,13 +346,13 @@
                                                 <table class="display dataTable no-footer" id="basic-breakfast" role="grid">
                                                     <thead>
                                                         <th>#</th>
-                                                        <th>Food Name</th>
-                                                        <th>food Quantity
+                                                        <th>food name</th>
+                                                        <th>food quantity
                                                         </th>
-                                                        <th>Calories</th>
-                                                        <th>Protein</th>
-                                                        <th>Fat</th>
-                                                        <th>Action</th>
+                                                        <th>calories</th>
+                                                        <th>protein</th>
+                                                        <th>fat</th>
+                                                        <th>action</th>
                                                     </thead>
                                                     <tbody>
                                                         <?php displayFoodItems('breakfast', $selected_date); ?>
@@ -289,7 +366,7 @@
 
                             <!-- Display Lunch -->
                             <div class="col-md-12">
-                                <h2 style="color:#946cfc;">Lunch</h2>
+                                <h2 style="color:#946cfc;">lunch</h2>
                                 <hr />
                                 <div class="card bg-shadow-none">
                                     <div class="card-body">
@@ -298,13 +375,13 @@
                                                 <table class="display dataTable no-footer" id="basic-lunch" role="grid">
                                                     <thead>
                                                         <th>#</th>
-                                                        <th>Food Name</th>
-                                                        <th>food Quantity
+                                                        <th>food name</th>
+                                                        <th>food quantity
                                                         </th>
-                                                        <th>Calories</th>
-                                                        <th>Protein</th>
-                                                        <th>Fat</th>
-                                                        <th>Action</th>
+                                                        <th>calories</th>
+                                                        <th>protein</th>
+                                                        <th>fat</th>
+                                                        <th>action</th>
                                                     </thead>
                                                     <tbody>
                                                         <?php displayFoodItems('lunch', $selected_date); ?>
@@ -318,7 +395,7 @@
 
                             <!-- Display Dinner -->
                             <div class="col-md-12">
-                                <h2 style="color:#946cfc;">Dinner</h2>
+                                <h2 style="color:#946cfc;">dinner</h2>
                                 <hr />
                                 <div class="card bg-shadow-none">
                                     <div class="card-body">
@@ -327,13 +404,13 @@
                                                 <table class="display dataTable no-footer" id="basic-dinner" role="grid">
                                                     <thead>
                                                         <th>#</th>
-                                                        <th>Food Name</th>
-                                                        <th>food Quantity
+                                                        <th>food name</th>
+                                                        <th>food quantity
                                                         </th>
-                                                        <th>Calories</th>
-                                                        <th>Protien</th>
-                                                        <th>Fat</th>
-                                                        <th>Action</th>
+                                                        <th>calories</th>
+                                                        <th>protien</th>
+                                                        <th>fat</th>
+                                                        <th>action</th>
                                                     </thead>
                                                     <tbody>
                                                         <?php displayFoodItems('dinner', $selected_date); ?>
@@ -347,7 +424,7 @@
 
                             <!-- Display Snacks -->
                             <div class="col-md-12">
-                                <h2 style="color:#946cfc;">Snacks</h2>
+                                <h2 style="color:#946cfc;">snacks</h2>
                                 <hr />
                                 <div class="card bg-shadow-none">
                                     <div class="card-body">
@@ -356,12 +433,12 @@
                                                 <table class="display dataTable no-footer" id="basic-snack" role="grid">
                                                     <thead>
                                                         <th>#</th>
-                                                        <th>Food Name</th>
-                                                        <th>food Quantity </th>
-                                                        <th>Calories</th>
-                                                        <th>Protein</th>
-                                                        <th>Fat</th>
-                                                        <th>Action</th>
+                                                        <th>food Name</th>
+                                                        <th>food quantity </th>
+                                                        <th>calories</th>
+                                                        <th>protein</th>
+                                                        <th>fat</th>
+                                                        <th>action</th>
                                                     </thead>
                                                     <tbody>
                                                         <?php displayFoodItems('snacks', $selected_date); ?>
@@ -372,6 +449,48 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <?php if ($login_user_role === "client"): ?>
+                            <!-- Exercise Table -->
+                            <div class="col-md-12">
+                                <h2 style="color: #946cfc;">exercise</h2>
+                                <hr />
+                                <div class="card bg-shadow-none">
+                                    <div class="card-body">
+                                        <div class="table-responsive theme-scrollbar">
+                                            <div id="basic-exercise_wrapper" class="dataTables_wrapper no-footer">
+                                                <table class="display dataTable no-footer" id="basic-exercise" role="grid">
+                                                    <thead>
+                                                        <th>#</th>
+                                                        <th>activity</th>
+                                                        <th>calories</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Biking</td>
+                                                            <td>450 Kal</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>2</td>
+                                                            <td>Running</td>
+                                                            <td>300 Kal</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>3</td>
+                                                            <td>Yoga</td>
+                                                            <td>150 Kal</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+
+
                         </div>
                     </div>
                 </div>
@@ -379,7 +498,7 @@
             <!-- Weight tracker -->
             <div class="col-xl-4 lg-border-left-my-tracker">
                 <div class="row">
-                    <h2 class="text-center mb-3">Weight Tracker</h2>
+                    <h2 class="text-center mb-3">weight Tracker</h2>
                     <div class="row mt-2">
                         <div class="card bg-shadow-none">
                             <div class="card-body">

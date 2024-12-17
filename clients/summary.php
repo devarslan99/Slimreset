@@ -189,69 +189,77 @@
 </style>
 
 <style>
-/* Client Plan Section */
-.client-plan-wrapper {
-    position: relative;
-    padding: 10px;
-    margin: 10px 0;
-}
+    /* Client Plan Section */
+    .client-plan-wrapper {
+        position: relative;
+        padding: 10px;
+        margin: 10px 0;
+    }
 
-.client-plan-title {
-    font-size: 1.2rem;
-    color: #000;
-}
+    .client-plan-title {
+        font-size: 1.2rem;
+        color: #000;
+    }
 
-/* Three Dots Icon */
-.three-dots-icon {
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #000;
-    transition: color 0.3s ease;
-}
+    /* Three Dots Icon */
+    .three-dots-icon {
+        font-size: 18px;
+        cursor: pointer;
+        color: #000;
+        transition: color 0.3s ease;
+        border: 2px solid;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.three-dots-icon:hover {
-    color: #936CFB;
-}
+    .three-dots-icon:hover {
+        color: #936CFB;
+    }
 
-/* Phase Popup */
-.phase-popup {
-    position: absolute;
-    top: 35px;
-    right: 0;
-    background: linear-gradient(135deg, #9a50ff, #6f30ff);
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    display: none;
-    flex-direction: column;
-    z-index: 1000;
-}
+    /* Phase Popup */
+    .phase-popup {
+        position: absolute;
+        top: 35px;
+        right: 0;
+        background: linear-gradient(135deg, #9a50ff, #6f30ff);
+        border-radius: 10px;
+        padding: 15px;
+        width: 140px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        display: none;
+        flex-direction: column;
+        z-index: 1000;
+    }
 
-.new-label {
-    color: #fff;
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: center;
-}
+    .new-label {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-align: center;
+    }
 
-.phase-btn {
-    background: transparent;
-    border: none;
-    color: #fff;
-    padding: 8px 0;
-    font-size: 1rem;
-    cursor: pointer;
-    text-align: center;
-    font-weight: bold;
-    transition: background 0.3s ease, color 0.3s ease;
-}
+    .phase-btn {
+        background: transparent;
+        border: none;
+        color: #fff;
+        padding: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        text-align: center;
+        font-weight: bold;
+        transition: background 0.3s ease, color 0.3s ease;
+    }
 
-.phase-btn:hover {
-    background: #fff;
-    color: #6f30ff;
-    border-radius: 5px;
-}
+    .phase-btn:hover {
+        background: #fff;
+        color: #6f30ff;
+        border-radius: 5px;
+    }
 
 
     #edit-view-box {
@@ -477,7 +485,12 @@ foreach ($weight_history as $index => $entry) {
                                                             <?php include_once "../clients/utils/profile_component.php" ?>
                                                         </div>
                                                         <div class="tab-pane fade" id="wizard-weight-tracker" role="tabpanel" aria-labelledby="wizard-weight-tracker-tab">
-                                                            <?php include_once '../functions/food-logs/my-progress.php' ?>
+                                                            <?php 
+                                                            if (isset($_SESSION['role']) && $_SESSION['role'] === 'client') : ?>
+                                                                <?php include_once '../functions/food-logs/client_my_progress/my-progress.php'; ?>
+                                                            <?php else : ?>
+                                                                <?php include_once '../functions/food-logs/my-progress.php'; ?>
+                                                            <?php endif; ?>
                                                         </div>
                                                         <div class="tab-pane fade" id="my-plan" role="tabpanel" aria-labelledby="my-plan-tab">
                                                             <div class="container-fluid">
@@ -530,19 +543,18 @@ foreach ($weight_history as $index => $entry) {
                                                                                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'client') : ?>
                                                                                    
                                                                                     <div class=" align-items-center phase-tab" id="phaseTabs">
-                                                                                    <div class="client-plan-wrapper d-flex align-items-center justify-content-between">
-                                                                                        <span class="client-plan-title fw-bold fs-5">client plan</span>
-                                                                                        <div class="three-dots-wrapper">
-                                                                                         <i class="fa fa-ellipsis-h three-dots-icon" onclick="toggleDropdown()"></i>
-                                                                                            <div class="phase-popup" id="phasePopup">
-                                                                                                <span class="new-label">new</span>
-                                                                                                <button class="phase-btn" onclick="selectPhase(1)">Phase 1</button>
-                                                                                                <button class="phase-btn" onclick="selectPhase(2)">Phase 2</button>
-                                                                                                <button class="phase-btn" onclick="selectPhase(3)">Phase 3</button>
-                                                                                                <button class="phase-btn" onclick="selectPhase(4)">Phase 4</button>
+                                                                                        <div class="client-plan-wrapper d-flex align-items-center justify-content-between">
+                                                                                            <label class="form-label me-2 fs-6 responsive-font">client plan</label>
+                                                                                            <div class="three-dots-wrapper">
+                                                                                            <i class="fa fa-ellipsis-h three-dots-icon" onclick="toggleDropdown()"></i>
+                                                                                                <div class="phase-popup" id="phasePopup">
+                                                                                                    <button class="phase-btn" onclick="selectPhase(1)">Phase 1</button>
+                                                                                                    <button class="phase-btn" onclick="selectPhase(2)">Phase 2</button>
+                                                                                                    <button class="phase-btn" onclick="selectPhase(3)">Phase 3</button>
+                                                                                                    <button class="phase-btn" onclick="selectPhase(4)">Phase 4</button>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                    </div>
                                                                                     </div>
                                                                                     <?php endif; ?>
 
@@ -777,39 +789,38 @@ foreach ($weight_history as $index => $entry) {
 
     <!-- script to handle phase tabs content to load in container for both medium and large sceen devices-->
     <script>
-     // Toggle dropdown popup
-function toggleDropdown() {
-    const popup = document.getElementById('phasePopup');
-    popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
-}
+        function toggleDropdown() {
+            const popup = document.getElementById('phasePopup');
+            popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
+        }
 
-// Close the popup if the user clicks outside
-window.addEventListener('click', function(event) {
-    const popup = document.getElementById('phasePopup');
-    const icon = document.querySelector('.three-dots-icon');
+        // Close the popup if the user clicks outside
+        window.addEventListener('click', function(event) {
+            const popup = document.getElementById('phasePopup');
+            const icon = document.querySelector('.three-dots-icon');
 
-    // Check if the click is outside the popup and the three-dot icon
-    if (popup.style.display === 'flex' && !popup.contains(event.target) && !icon.contains(event.target)) {
-        popup.style.display = 'none';
-    }
-});
+            // Check if the click is outside the popup and the three-dot icon
+            if (popup.style.display === 'flex' && !popup.contains(event.target) && !icon.contains(event.target)) {
+                popup.style.display = 'none';
+            }
+        });
 
-// Load content for selected phase
-function selectPhase(phase) {
-    const popup = document.getElementById('phasePopup');
-    popup.style.display = 'none'; // Hide popup
+        // Load content for selected phase
+        function selectPhase(phase) {
+            const popup = document.getElementById('phasePopup');
+            popup.style.display = 'none'; // Hide popup
 
-    // Existing functionality to load phase content
-    const filePath = phase === 1 ? '../functions/food-logs/view_all_food.php' :
-        `../functions/food-logs/view_all_food_phase_${phase}.php`;
+            // Existing functionality to load phase content
+            const filePath = phase === 1 ? '../functions/food-logs/view_all_food.php' :
+                `../functions/food-logs/view_all_food_phase_${phase}.php`;
 
-    fetch(filePath)
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('viewAllSection').innerHTML = data;
-        })
-        .catch(error => console.error('Error loading content:', error));
-}
+            fetch(filePath)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('viewAllSection').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading content:', error));
+        }
 
 
     </script>
@@ -841,7 +852,7 @@ function selectPhase(phase) {
         // Hide sidebar when a tab is clicked
         sidebarLinks.forEach(link => {
             link.addEventListener("click", () => {
-                if (window.innerWidth <= 768) { // Only for smaller screens
+                if (window.innerWidth <= 768) {
                     sidebar.classList.remove("active");
                     overlay.classList.remove("active");
                 }

@@ -107,7 +107,8 @@
         border-radius: 20px;
         border: 1px solid #ccc;
         background-color: #f9fafb;
-
+        overflow: hidden;
+        overflow-x: auto;
     }
 
     .custom-nutrition-table .table {

@@ -1,24 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Southwest Shrimp Salad</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
     <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background-color: #ffffff;
-            color: #333;
-        }
-
         /* Main Wrapper */
         .recipe_wrapper {
             width: 90%;
@@ -113,7 +93,7 @@
         }
 
         /* Table */
-        table {
+        .ingredientsTable {
             width: 100%;
             margin: auto;
             border-collapse: collapse;
@@ -122,11 +102,12 @@
             overflow: hidden;
         }
 
-        thead {
+        .ingredientsTable thead {
             background-color: #fff;
         }
 
-        th, td {
+        .ingredientsTable th, 
+        .ingredientsTable td {
             padding: 16px;
             text-align: center;
             border-bottom: 2px solid #a36cf9;
@@ -137,7 +118,7 @@
             font-weight: bold;
         }
 
-        tr:hover {
+        .ingredientsTable tr:hover {
             background-color: #f9f9f9;
         }
 
@@ -157,7 +138,8 @@
                 align-items: center;
             }
 
-            table th, table td {
+            .ingredientsTable th, 
+            .ingredientsTable td {
                 font-size: 12px;
                 padding: 8px;
             }
@@ -233,7 +215,7 @@
     <div class="recipe_wrapper">
         <!-- Header Section -->
         <div class="recipe_header">
-            <img src="assets/img/salad.jpg" alt="Southwest Shrimp Salad" class="recipe_image">
+            <img src="https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Southwest Shrimp Salad" class="recipe_image">
             <div class="recipe_details">
                 <h1 class="recipe_title">southwest shrimp salad</h1>
                 <ul class="recipe_links">
@@ -256,9 +238,9 @@
             <span class="recipe_tab" data-target="nutrition">nutrient profile</span>
         </div>
 
-        <!-- Tab Content Sections -->
+        <!-- Ingredients Tab Content Sections -->
         <div id="ingredients" class="tab_content active">
-            <table>
+            <table class="ingredientsTable">
                 <thead>
                     <tr>
                         <th>ingredients</th>
@@ -294,6 +276,7 @@
             </table>
         </div>
 
+        <!-- Step By step Tab Content Section -->
         <div id="steps" class="tab_content">
             <p>1. Heat a pan and cook shrimp for 3-5 minutes.<br>
             2. Add mixed greens, tomatoes, and cooked shrimp to a bowl.<br>
@@ -301,12 +284,9 @@
             4. Serve and enjoy!</p>
         </div>
 
+        <!-- Nutrition Profile Tab Content Section -->
         <div id="nutrition" class="tab_content">
-            <p>Calories: 142 kcal<br>
-            Protein: 22g<br>
-            Fat: 3.43g<br>
-            Carbs: 1.6g<br>
-            Sugar: 0g</p>
+           <?php include 'nutrition_component.php' ?>
         </div>
     </div>
 

@@ -484,6 +484,9 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
             width: 300px;
         }
 
+        .modal-footer {
+            margin-top: 60px;
+        }
 
     </style>
 

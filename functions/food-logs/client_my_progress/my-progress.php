@@ -102,42 +102,45 @@ while ($row = $result_protein->fetch_assoc()) {
 ?>
 
 <style>
-    .stat-item {
-        font-size: 1rem;
-        line-height: 1.2;
+    .custom-tabs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+        width: 100%;
     }
 
-    .vertical-line {
-        width: 1px;
-        height: 50px;
+    .custom-tabs .custom-tab-item {
+        list-style: none;
+        margin-right: 10px;
+    }
+
+    .custom-tabs .custom-tab-button {
         background-color: transparent;
-        border-right: 3px dashed #ccc;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        color: #333;
+        text-transform: lowercase;
+        transition: all 0.3s ease;
     }
 
-    .border-lines
-    {
-        border-left:3px dotted #000;
-        border-right:3px dotted #000;
+    .custom-tabs .custom-tab-button:hover {
+        color: #936CFB;
     }
 
-    .nav-link:hover {
-        color: #946cfc;
+    .custom-tabs .custom-tab-button.active {
+        color: #936CFB;
+        border-bottom: 2px solid #936CFB;
     }
 
-    .nav-pills .nav-link.active {
-        color: #946cfc;
+    .custom-tab-content {
+        display: none;
+        border-radius: 5px;
     }
 
-
-    @media (min-width: 992px) {
-
-        /* lg breakpoint */
-        .lg-border-left {
-            border-left: 5px solid #ddd;
-        }
+    .custom-tab-content.active {
+        display: block;
     }
 </style>
 
@@ -145,69 +148,44 @@ while ($row = $result_protein->fetch_assoc()) {
     <div class="row">
         <!-- Left Side Tabs -->
         <div class="col-lg-8">
-            <h2 class="fw-bold text-center mb-4">my progress</h2>
+            <h2 class="fw-bold text-center mb-4">My Progress</h2>
             <div class="d-flex flex-column">
-                <div class="" style="width:100%;margin-bottom:30px;">
-                    <!-- Vertical Tabs -->
-                    <ul class="nav nav-pills align-items-center justify-content-center" id="progress-tabs" role="tablist" aria-orientation="vertical">
-                        <li class="nav-item mb-2" role="presentation">
-                            <button class="nav-link active fw-bold" id="weight-loss-tab" 
-                                    data-bs-toggle="pill" data-bs-target="#weight-loss" type="button" role="tab"
-                                    aria-controls="weight-loss" aria-selected="true">
-                                weight loss
-                            </button>
-                        </li>
-                        <li class="nav-item mb-2" role="presentation">
-                            <button class="nav-link fw-bold" id="intolerances-tab" 
-                                    data-bs-toggle="pill" data-bs-target="#intolerances" type="button" role="tab"
-                                    aria-controls="intolerances" aria-selected="false">
-                                intolerances
-                            </button>
-                        </li>
-                        <li class="nav-item mb-2" role="presentation">
-                            <button class="nav-link fw-bold" id="nutrients-tab" 
-                                    data-bs-toggle="pill" data-bs-target="#nutrients" type="button" role="tab"
-                                    aria-controls="nutrients" aria-selected="false">
-                                nutrient deficiencies
-                            </button>
-                        </li>
-                        <li class="nav-item mb-2" role="presentation">
-                            <button class="nav-link fw-bold" id="toxins-tab" 
-                                    data-bs-toggle="pill" data-bs-target="#toxins" type="button" role="tab"
-                                    aria-controls="toxins" aria-selected="false">
-                                toxins
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+                <!-- Custom Tabs -->
+                <ul class="custom-tabs" id="myProgressTabs">
+                    <li class="custom-tab-item">
+                        <button class="custom-tab-button active" data-target="my_progress_weight_loss">Weight Loss</button>
+                    </li>
+                    <li class="custom-tab-item">
+                        <button class="custom-tab-button" data-target="my_progress_intolerances">Intolerances</button>
+                    </li>
+                    <li class="custom-tab-item">
+                        <button class="custom-tab-button" data-target="my_progress_nutrients">Nutrient Deficiencies</button>
+                    </li>
+                    <li class="custom-tab-item">
+                        <button class="custom-tab-button" data-target="my_progress_toxins">Toxins</button>
+                    </li>
+                </ul>
 
-                <!-- Tab Content -->
+                <!-- Custom Tab Content -->
                 <div class="col-md-9" style="width:100%;">
-                    <div class="tab-content" id="progress-tabs-content">
-                        <!-- Weight Loss Content -->
-                        <div class="tab-pane fade show active" id="weight-loss" role="tabpanel" aria-labelledby="weight-loss-tab">
-                            <!-- Chart -->
-                            <div class="row">
-                                <div id="chartContainer" style="height: 515px !important;">
-                                    <canvas id="weightChart" style="height: 100%;"></canvas>
-                                </div>
+                    <div id="my_progress_weight_loss" class="custom-tab-content active">
+                        <div class="row">
+                            <div id="chartContainer" style="height: 515px !important;">
+                                <canvas id="weightChart" style="height: 100%;"></canvas>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Intolerances Content -->
-                        <div class="tab-pane fade" id="intolerances" role="tabpanel" aria-labelledby="intolerances-tab">
-                            <?php include 'intolerances.php'; ?>
-                        </div>
+                    <div id="my_progress_intolerances" class="custom-tab-content">
+                        <?php include 'intolerances.php'; ?>
+                    </div>
 
-                        <!-- Nutrient Deficiencies Content -->
-                        <div class="tab-pane fade" id="nutrients" role="tabpanel" aria-labelledby="nutrients-tab">
-                            soon
-                        </div>
+                    <div id="my_progress_nutrients" class="custom-tab-content">
+                        <p>Nutrient deficiencies content coming soon...</p>
+                    </div>
 
-                        <!-- Toxins Content -->
-                        <div class="tab-pane fade" id="toxins" role="tabpanel" aria-labelledby="toxins-tab">
-                            soon
-                        </div>
+                    <div id="my_progress_toxins" class="custom-tab-content">
+                        <p>Toxins content coming soon...</p>
                     </div>
                 </div>
             </div>
@@ -425,38 +403,21 @@ while ($row = $result_protein->fetch_assoc()) {
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Get the tabs and content elements
-        const tabs = document.querySelectorAll('#progress-tabs button[data-bs-toggle="pill"]');
-        const progressTabsContent = document.getElementById('progress-tabs-content');
+        const tabButtons = document.querySelectorAll('.custom-tab-button');
+        const tabContents = document.querySelectorAll('.custom-tab-content');
 
-        // Check local storage for the active tab ID
-        const activeTabId = localStorage.getItem('progressTab');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const targetId = this.dataset.target;
 
-        if (activeTabId) {
-            // Remove "active" class from all tabs and tab panes
-            tabs.forEach(tab => tab.classList.remove('active'));
-            progressTabsContent.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
-            
-            // Add "active" class to the saved tab and its corresponding content
-            const activeTab = document.querySelector(`#${activeTabId}`);
-            if (activeTab) {
-                activeTab.classList.add('active');
-                activeTab.click(); // Trigger the click event to display the tab
-            }
-        } else {
-            // Default to weight-loss tab if no active tab is saved in localStorage
-            const defaultTab = document.querySelector('#weight-loss-tab');
-            defaultTab.classList.add('active');
-            document.querySelector('#weight-loss').classList.add('show', 'active');
-        }
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
 
-        // Save the clicked tab ID to local storage
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function () {
-                const tabId = this.getAttribute('id');
-                localStorage.setItem('progressTab', tabId);
+                // Add active class to the clicked button and corresponding content
+                this.classList.add('active');
+                document.getElementById(targetId).classList.add('active');
             });
         });
     });
-
 </script>

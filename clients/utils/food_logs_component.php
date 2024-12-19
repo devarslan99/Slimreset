@@ -333,10 +333,12 @@
                             <div class="col-md-12">
                                 <div class="d-flex gap-2 align-items-center ">
                                     <h2 style="color: #946cfc;">breakFast</h2>
-                                    <span class="activity-meal-status">
-                                        <i class="fa fa-times"></i>
-                                        you’ve eaten unapproved foods that could cause a stall.
-                                    </span>
+                                    <?php if ($login_user_role === "client"): ?>
+                                        <span class="activity-meal-status">
+                                            <i class="fa fa-times"></i>
+                                            you’ve eaten unapproved foods that could cause a stall.
+                                        </span>
+                                    <?php endif; ?>
                                 </div>
                                 <hr />
                                 <div class="card bg-shadow-none">

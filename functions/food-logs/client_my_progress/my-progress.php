@@ -105,6 +105,7 @@ while ($row = $result_protein->fetch_assoc()) {
     .custom-tabs {
         display: flex;
         justify-content: center;
+        align-items: center;
         margin-bottom: 30px;
         width: 100%;
     }
@@ -117,7 +118,6 @@ while ($row = $result_protein->fetch_assoc()) {
     .custom-tabs .custom-tab-button {
         background-color: transparent;
         border: none;
-        padding: 10px 20px;
         cursor: pointer;
         font-weight: bold;
         color: #333;
@@ -141,6 +141,15 @@ while ($row = $result_protein->fetch_assoc()) {
 
     .custom-tab-content.active {
         display: block;
+    }
+
+    @media (max-width: 530px) { 
+        .custom-tabs {
+            flex-direction: column;
+        }
+        .custom-tab-button {
+            margin-bottom: 20px;
+        }
     }
 </style>
 

@@ -448,7 +448,6 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         }
 
         select {
-            width: 80%;
             padding: 10px;
             border: 1px solid #946CFC;
             border-radius: 5px;

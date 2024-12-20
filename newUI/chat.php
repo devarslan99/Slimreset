@@ -309,12 +309,32 @@
 
 <!-- script to load selected user chat section or chat -->
 <script>
-    // Instantly set the scroll to the last message without visible scrolling
-    function showLastMessageDirectly() {
+    // Show/Hide Scroll to Bottom Button
+    function toggleScrollToBottom() {
+        const chatMessages = document.getElementById('chatMessages');
+        const scrollToBottomBtn = document.getElementById('scrollToBottom');
+
+        // Show the button only when scrolled away from the bottom
+        if (chatMessages.scrollHeight - chatMessages.scrollTop > chatMessages.clientHeight + 100) {
+            scrollToBottomBtn.classList.add('visible');
+        } else {
+            scrollToBottomBtn.classList.remove('visible');
+        }
+    }
+
+    // Scroll to the last message instantly
+    function scrollToLastMessageInstant() {
         const chatMessages = document.getElementById('chatMessages');
         if (chatMessages) {
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
+    }
+
+    // Function to handle chat section reset
+    function resetChatSection() {
+        const scrollToBottomBtn = document.getElementById('scrollToBottom');
+        scrollToBottomBtn.classList.remove('visible'); // Hide the scroll button
+        scrollToLastMessageInstant(); // Instantly scroll to the bottom
     }
 
     // Function to restore state on page load
@@ -326,7 +346,7 @@
             document.getElementById('userList').classList.remove('active');
             document.getElementById('chatSection').classList.add('active');
             loadChatMessages(selectedUser);
-            setTimeout(showLastMessageDirectly, 0); 
+            setTimeout(resetChatSection, 0); // Reset chat section and scroll
         } else {
             document.getElementById('userList').classList.add('active');
             document.getElementById('chatSection').classList.remove('active');
@@ -340,139 +360,13 @@
         document.getElementById('userList').classList.remove('active');
         document.getElementById('chatSection').classList.add('active');
         loadChatMessages(userId);
-        setTimeout(showLastMessageDirectly, 0)
+        setTimeout(resetChatSection, 0); // Reset chat section and scroll
     }
 
-    // Mock function to load chat messages
+    // Function to load chat messages dynamically
     function loadChatMessages(userId) {
         const messages = {
             user1: `
-                <div class="chat-message user-message">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
-                    <div class="message-content">
-                        <h6>Sonia Thibault <small>6 Nov 2024</small></h6>
-                        <p>Hi, how are you doing?</p>
-                    </div>
-                </div>
-                <div class="chat-message coach-message">
-                    <img src="coach.png" alt="Coach Image">
-                    <div class="message-content">
-                        <h6>My SlimCoach <small>6 Nov 2024</small></h6>
-                        <p>I’m doing great! How can I help you?</p>
-                    </div>
-                </div>
-                <div class="chat-message user-message">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
-                    <div class="message-content">
-                        <h6>Sonia Thibault <small>6 Nov 2024</small></h6>
-                        <p>Hi, how are you doing?</p>
-                    </div>
-                </div>
-                <div class="chat-message coach-message">
-                    <img src="coach.png" alt="Coach Image">
-                    <div class="message-content">
-                        <h6>My SlimCoach <small>6 Nov 2024</small></h6>
-                        <p>I’m doing great! How can I help you?</p>
-                    </div>
-                </div>
-                <div class="chat-message user-message">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
-                    <div class="message-content">
-                        <h6>Sonia Thibault <small>6 Nov 2024</small></h6>
-                        <p>Hi, how are you doing?</p>
-                    </div>
-                </div>
-                <div class="chat-message coach-message">
-                    <img src="coach.png" alt="Coach Image">
-                    <div class="message-content">
-                        <h6>My SlimCoach <small>6 Nov 2024</small></h6>
-                        <p>I’m doing great! How can I help you?</p>
-                    </div>
-                </div>
-                <div class="chat-message user-message">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
-                    <div class="message-content">
-                        <h6>Sonia Thibault <small>6 Nov 2024</small></h6>
-                        <p>Hi, how are you doing?</p>
-                    </div>
-                </div>
-                <div class="chat-message coach-message">
-                    <img src="coach.png" alt="Coach Image">
-                    <div class="message-content">
-                        <h6>My SlimCoach <small>6 Nov 2024</small></h6>
-                        <p>I’m doing great! How can I help you?</p>
-                    </div>
-                </div>
-                <div class="chat-message user-message">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
-                    <div class="message-content">
-                        <h6>Sonia Thibault <small>6 Nov 2024</small></h6>
-                        <p>Hi, how are you doing?</p>
-                    </div>
-                </div>
-                <div class="chat-message coach-message">
-                    <img src="coach.png" alt="Coach Image">
-                    <div class="message-content">
-                        <h6>My SlimCoach <small>6 Nov 2024</small></h6>
-                        <p>I’m doing great! How can I help you?</p>
-                    </div>
-                </div>
-                <div class="chat-message user-message">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
-                    <div class="message-content">
-                        <h6>Sonia Thibault <small>6 Nov 2024</small></h6>
-                        <p>Hi, how are you doing?</p>
-                    </div>
-                </div>
-                <div class="chat-message coach-message">
-                    <img src="coach.png" alt="Coach Image">
-                    <div class="message-content">
-                        <h6>My SlimCoach <small>6 Nov 2024</small></h6>
-                        <p>I’m doing great! How can I help you?</p>
-                    </div>
-                </div>
-                <div class="chat-message user-message">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
-                    <div class="message-content">
-                        <h6>Sonia Thibault <small>6 Nov 2024</small></h6>
-                        <p>Hi, how are you doing?</p>
-                    </div>
-                </div>
-                <div class="chat-message coach-message">
-                    <img src="coach.png" alt="Coach Image">
-                    <div class="message-content">
-                        <h6>My SlimCoach <small>6 Nov 2024</small></h6>
-                        <p>I’m doing great! How can I help you?</p>
-                    </div>
-                </div>
-                <div class="chat-message user-message">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
-                    <div class="message-content">
-                        <h6>Sonia Thibault <small>6 Nov 2024</small></h6>
-                        <p>Hi, how are you doing?</p>
-                    </div>
-                </div>
-                <div class="chat-message coach-message">
-                    <img src="coach.png" alt="Coach Image">
-                    <div class="message-content">
-                        <h6>My SlimCoach <small>6 Nov 2024</small></h6>
-                        <p>I’m doing great! How can I help you?</p>
-                    </div>
-                </div>
-                <div class="chat-message user-message">
-                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
-                    <div class="message-content">
-                        <h6>Sonia Thibault <small>6 Nov 2024</small></h6>
-                        <p>Hi, how are you doing?</p>
-                    </div>
-                </div>
-                <div class="chat-message coach-message">
-                    <img src="coach.png" alt="Coach Image">
-                    <div class="message-content">
-                        <h6>My SlimCoach <small>6 Nov 2024</small></h6>
-                        <p>I’m doing great! How can I help you?</p>
-                    </div>
-                </div>
                 <div class="chat-message user-message">
                     <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
                     <div class="message-content">
@@ -506,19 +400,52 @@
             `
         };
 
-        // Set the innerHTML of chat messages
-        document.getElementById('chatMessages').innerHTML = messages[userId] || '<p>No messages yet.</p>';
+        const chatMessages = document.getElementById('chatMessages');
+        chatMessages.innerHTML = messages[userId] || '<p>No messages yet.</p>';
     }
+
+    // Add scroll event listener to chat messages
+    document.getElementById('chatMessages').addEventListener('scroll', toggleScrollToBottom);
 
     // Restore state when the page loads
     document.addEventListener('DOMContentLoaded', restoreState);
+
+    // Append new message on form submission
+    document.getElementById('messageForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const newMessage = messageInput.value.trim();
+
+        if (newMessage) {
+            const formattedDate = new Date().toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+
+            const newMessageHTML = `
+                <div class="chat-message user-message">
+                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
+                    <div class="message-content">
+                        <h6>You <small>${formattedDate}</small></h6>
+                        <p>${newMessage}</p>
+                    </div>
+                </div>
+            `;
+            chatMessages.insertAdjacentHTML('beforeend', newMessageHTML);
+            messageInput.value = '';
+            resetChatSection(); 
+        }
+    });
 </script>
+
 
 
 
 <!-- script to scroll to bottom with arrow -->
 <script>
-    // Show/Hide Scroll to Bottom Button
     function toggleScrollToBottom() {
         const chatMessages = document.getElementById('chatMessages');
         const scrollToBottomBtn = document.getElementById('scrollToBottom');
@@ -546,46 +473,5 @@
     document.addEventListener('DOMContentLoaded', () => {
         scrollToLastMessage();
     });
-
-</script>
-
-<script>
-// Format the current date as "6 Nov 2024"
-function formatDate() {
-    const options = { day: 'numeric', month: 'short', year: 'numeric' };
-    return new Date().toLocaleDateString('en-US', options);
-}
-
-// Append new message and scroll to the bottom
-document.getElementById('messageForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const chatMessages = document.getElementById('chatMessages');
-    const messageInput = document.getElementById('messageInput');
-    const newMessage = messageInput.value.trim();
-
-    if (newMessage) {
-        // Get the formatted date
-        const formattedDate = formatDate();
-
-        // Append new message
-        const newMessageHTML = `
-            <div class="chat-message user-message">
-                <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
-                <div class="message-content">
-                    <h6>You <small>${formattedDate}</small></h6>
-                    <p>${newMessage}</p>
-                </div>
-            </div>
-        `;
-        chatMessages.insertAdjacentHTML('beforeend', newMessageHTML);
-
-        // Clear input field
-        messageInput.value = '';
-
-        // Instantly scroll to the latest message
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-});
 
 </script>

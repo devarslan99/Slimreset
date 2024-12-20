@@ -1,159 +1,153 @@
-    <style>
-        /* Main Wrapper */
-        .recipe_wrapper {
-            width: 90%;
-            margin: 20px auto;
-            max-width: 1200px;
-        }
+<style>
+    /* Main Wrapper */
+    .recipe_wrapper {
+        width: 90%;
+        margin: 20px auto;
+        max-width: 1200px;
+    }
 
-        /* Header Section */
+    /* Header Section */
+    .recipe_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .recipe_image {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .recipe_details {
+        display: flex;
+        gap: 20px;
+    }
+
+    .recipe_title {
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: lowercase;
+        width: 120px;
+    }
+
+    .recipe_links {
+        list-style-type: none;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #999;
+        padding-left: 0;
+    }
+
+    .recipe_links li {
+        margin-bottom: 5px;
+    }
+
+    /* Nutrition Info */
+    .recipe_nutrition {
+        text-align: right;
+    }
+
+    .nutrition_info {
+        font-size: 14px;
+    }
+
+    .highlight_c {
+        color: #946cfc;
+        font-weight: bold;
+    }
+
+    .highlight_p {
+        color: #946cfc;
+        font-weight: bold;
+    }
+
+    /* Tabs */
+    .recipe_nav {
+        display: flex;
+        flex: wrap;
+        justify-content: space-evenly;
+        margin: 30px 0;
+        padding-bottom: 10px;
+    }
+
+    .recipe_tab {
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        text-transform: lowercase;
+        margin-bottom: 10px;
+    }
+
+    .recipe_tab.active {
+        color: #946cfc;
+    }
+
+    /* Content Sections */
+    .tab_content {
+        display: none;
+    }
+
+    .tab_content.active {
+        display: block;
+    }
+
+    /* Table */
+    #ingredients { 
+        overflow-x: auto;
+    }
+    .ingredientsTable {
+        width: 100%;
+        margin: auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        border-radius: 8px;
+    }
+
+    .ingredientsTable thead {
+        background-color: #fff;
+    }
+
+    .ingredientsTable th, 
+    .ingredientsTable td {
+        padding: 16px;
+        text-align: center;
+        border-bottom: 2px solid #946cfc;
+    }
+
+    th {
+        text-transform: lowercase;
+        font-weight: bold;
+    }
+
+    .ingredientsTable tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 450px) {
         .recipe_header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 20px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .recipe_image {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .recipe_details {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .recipe_title {
-            font-size: 24px;
-            font-weight: bold;
-            text-transform: lowercase;
-        }
-
-        .recipe_links {
-            list-style-type: none;
-            margin-top: 10px;
-            font-size: 14px;
-            color: #999;
-        }
-
-        .recipe_links li {
-            margin-bottom: 5px;
-        }
-
-        /* Nutrition Info */
         .recipe_nutrition {
-            text-align: right;
+            text-align: center;
         }
 
-        .nutrition_info {
-            font-size: 14px;
-        }
-
-        .highlight_c {
-            color: #a055ff;
-            font-weight: bold;
-        }
-
-        .highlight_p {
-            color: #8888ff;
-            font-weight: bold;
-        }
-
-        /* Tabs */
         .recipe_nav {
-            display: flex;
-            justify-content: space-around;
-            margin: 30px 0;
-            padding-bottom: 10px;
-        }
-
-        .recipe_tab {
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: lowercase;
-        }
-
-        .recipe_tab.active {
-            color: #a055ff;
-            border-bottom: 2px solid #a055ff;
-        }
-
-        /* Content Sections */
-        .tab_content {
-            display: none;
-        }
-
-        .tab_content.active {
-            display: block;
-        }
-
-        /* Table */
-        .ingredientsTable {
-            width: 100%;
-            margin: auto;
-            border-collapse: collapse;
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .ingredientsTable thead {
-            background-color: #fff;
+            flex-direction: column;
+            align-items: center;
         }
 
         .ingredientsTable th, 
         .ingredientsTable td {
-            padding: 16px;
-            text-align: center;
-            border-bottom: 2px solid #a36cf9;
+            font-size: 12px;
+            padding: 8px;
         }
-
-        th {
-            text-transform: lowercase;
-            font-weight: bold;
-        }
-
-        .ingredientsTable tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .recipe_header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .recipe_nutrition {
-                text-align: center;
-            }
-
-            .recipe_nav {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .ingredientsTable th, 
-            .ingredientsTable td {
-                font-size: 12px;
-                padding: 8px;
-            }
-        }
-
-    .client-plan-wrapper {
-        position: relative;
-        padding: 10px;
-        margin: 10px 0;
-    }
-
-    .client-plan-title {
-        font-size: 1.2rem;
-        color: #000;
     }
 
     /* Three Dots Icon */
@@ -173,22 +167,20 @@
     }
 
     .action-three-dots-icon:hover {
-        color: #936CFB;
+        color: #946cfc;
     }
 
     /* Phase Popup */
     .action-popup {
         position: absolute;
-        top: 35px;
-        right: 0;
+        right: 90;
         background: linear-gradient(135deg, #9a50ff, #6f30ff);
         border-radius: 10px;
         padding: 15px;
-        width: 140px;
+        width: 100px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         display: none;
         flex-direction: column;
-        z-index: 1000;
     }
 
     .action-btn {
@@ -205,7 +197,7 @@
 
     .action-btn:hover {
         background: #fff;
-        color: #6f30ff;
+        color: #946cfc;
         border-radius: 5px;
     }
 
@@ -215,14 +207,16 @@
     <div class="recipe_wrapper">
         <!-- Header Section -->
         <div class="recipe_header">
-            <img src="https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Southwest Shrimp Salad" class="recipe_image">
             <div class="recipe_details">
-                <h1 class="recipe_title">southwest shrimp salad</h1>
-                <ul class="recipe_links">
-                    <li>+ recipe book</li>
-                    <li>+ modify + save</li>
-                    <li>+ grocery list</li>
-                </ul>
+                <img src="https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Southwest Shrimp Salad" class="recipe_image">
+                <div>
+                    <h1 class="recipe_title">southwest shrimp salad</h1>
+                    <ul class="recipe_links">
+                        <li>+ recipe book</li>
+                        <li>+ modify + save</li>
+                        <li>+ grocery list</li>
+                    </ul>
+                </div>
             </div>
             <div class="recipe_nutrition">
                 <p class="nutrition_info">per <b>1 serving</b><br>/ 3.5 oz of protein</p>
@@ -264,7 +258,7 @@
                                     <div class="three-dots-wrapper">
                                         <i class="fa fa-ellipsis-h action-three-dots-icon" onclick="actionToggleDropdown()"></i>
                                         <div class="action-popup" id="actionPopUp">
-                                            <button class="action-btn">edit</button>
+                                            <button class="action-btn" id="editBtn">edit</button>
                                             <button class="action-btn">swap</button>
                                             <button class="action-btn">delete</button>
                                         </div>
@@ -290,10 +284,21 @@
         </div>
     </div>
 
+    <!-- scripit for tabs and Sections  -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const tabs = document.querySelectorAll('.recipe_tab');
             const tabContents = document.querySelectorAll('.tab_content');
+
+            // Check localStorage for the saved tab
+            const activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                document.querySelector(`.recipe_tab[data-target="${activeTab}"]`).classList.add('active');
+                document.getElementById(activeTab).classList.add('active');
+            }
 
             tabs.forEach(tab => {
                 tab.addEventListener('click', function () {
@@ -304,6 +309,9 @@
 
                     this.classList.add('active');
                     document.getElementById(target).classList.add('active');
+
+                    // Save the active tab to localStorage
+                    localStorage.setItem('activeTab', target);
                 });
             });
         });
@@ -312,20 +320,32 @@
 </html>
 
 
+<!-- script for toggle action button -->
 <script>
     function actionToggleDropdown() {
-            const actionPopUp = document.getElementById('actionPopUp');
-            actionPopUp.style.display = actionPopUp.style.display === 'flex' ? 'none' : 'flex';
+        const actionPopUp = document.getElementById('actionPopUp');
+        actionPopUp.style.display = actionPopUp.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // Close the actionPopUp if the user clicks outside
+    window.addEventListener('click', function (event) {
+        const actionPopUp = document.getElementById('actionPopUp');
+        const icon = document.querySelector('.action-three-dots-icon'); // Correct class selector
+
+        if (
+            actionPopUp.style.display === 'flex' && 
+            !actionPopUp.contains(event.target) && 
+            !icon.contains(event.target)
+        ) {
+            actionPopUp.style.display = 'none';
         }
+    });
 
-        // Close the actionPopUp if the user clicks outside
-        window.addEventListener('click', function(event) {
+    // Close the popup when an action is clicked
+    document.querySelectorAll('.action-btn').forEach(button => {
+        button.addEventListener('click', function () {
             const actionPopUp = document.getElementById('actionPopUp');
-            const icon = document.querySelector('.three-dots-icon');
-
-            // Check if the click is outside the actionPopUp and the three-dot icon
-            if (actionPopUp.style.display === 'flex' && !actionPopUp.contains(event.target) && !icon.contains(event.target)) {
-                actionPopUp.style.display = 'none';
-            }
+            actionPopUp.style.display = 'none';
         });
+    });
 </script>

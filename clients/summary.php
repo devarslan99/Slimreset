@@ -261,6 +261,12 @@
         border-radius: 5px;
     }
 
+    .phase-btn.active {
+        background: #fff;
+        color: #6f30ff;
+        border-radius: 5px;
+    }
+
 
     #edit-view-box {
         display: none;
@@ -376,8 +382,6 @@
     .sidebar-toggle-btn:hover {
         background-color: #936CFB; /* Lighter background on hover */
     }
-
-
 
 </style>
 
@@ -548,10 +552,10 @@ foreach ($weight_history as $index => $entry) {
                                                                                             <div class="three-dots-wrapper">
                                                                                             <i class="fa fa-ellipsis-h three-dots-icon" onclick="toggleDropdown()"></i>
                                                                                                 <div class="phase-popup" id="phasePopup">
-                                                                                                    <button class="phase-btn" onclick="selectPhase(1)">Phase 1</button>
-                                                                                                    <button class="phase-btn" onclick="selectPhase(2)">Phase 2</button>
-                                                                                                    <button class="phase-btn" onclick="selectPhase(3)">Phase 3</button>
-                                                                                                    <button class="phase-btn" onclick="selectPhase(4)">Phase 4</button>
+                                                                                                    <button class="phase-btn active" onclick="selectPhase(this,1)">Phase 1</button>
+                                                                                                    <button class="phase-btn" onclick="selectPhase(this,2)">Phase 2</button>
+                                                                                                    <button class="phase-btn" onclick="selectPhase(this,3)">Phase 3</button>
+                                                                                                    <button class="phase-btn" onclick="selectPhase(this,4)">Phase 4</button>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -806,9 +810,13 @@ foreach ($weight_history as $index => $entry) {
         });
 
         // Load content for selected phase
-        function selectPhase(phase) {
+        function selectPhase(elem,phase) {
             const popup = document.getElementById('phasePopup');
             popup.style.display = 'none'; // Hide popup
+
+                const buttons = document.querySelectorAll('.phase-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                elem.classList.add('active');
 
             // Existing functionality to load phase content
             const filePath = phase === 1 ? '../functions/food-logs/view_all_food.php' :

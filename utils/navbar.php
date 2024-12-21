@@ -354,138 +354,211 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
 </style>
 
 <style>
-        /* Adjusting modal width */
-        #trackModal .modal-dialog {
-            max-width: 800px !important;
-        }
+    /* Adjusting modal width */
+    #trackModal .modal-dialog {
+        max-width: 800px !important;
+    }
 
-        /* Making modal rounded more */
-        .modal-content {
-            border-radius: 15px;
-        }
+    /* Making modal rounded more */
+    .modal-content {
+        border-radius: 15px;
+    }
 
-        /* Ensure buttons stay within modal and align */
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 15px;
-            gap: 10px;
-        }
-        .btn-group .btn {
-            flex: 0 0 auto;
-            color: #946CFC;
-            border: 1px solid #946CFC;
-            font-weight: bold;
-            border-radius: 10px !important;
-            padding: 8px 20px; 
-            text-align: center;
-            white-space: nowrap;
-            transition: all 0.3s ease;
-        }
+    /* Ensure buttons stay within modal and align */
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 15px;
+        gap: 10px;
+    }
+    .btn-group .btn {
+        flex: 0 0 auto;
+        color: #946CFC;
+        border: 1px solid #946CFC;
+        font-weight: bold;
+        border-radius: 10px !important;
+        padding: 8px 20px; 
+        text-align: center;
+        white-space: nowrap;
+        transition: all 0.3s ease;
+    }
 
-        .btn-group .btn.active {
-            background-color: #946CFC;
-            color: white;
-        }
+    .btn-group .btn.active {
+        background-color: #946CFC;
+        color: white;
+    }
 
-        /* Hide all content except the active one */
-        .content-item {
-            display: none;
-        }
+    /* Hide all content except the active one */
+    .content-item {
+        display: none;
+    }
 
-        .content-item.active {
-            display: block;
-        }
+    .content-item.active {
+        display: block;
+    }
 
-        .track-now-btn .fa-plus {
-            border: 2px solid #fff;
-            border-radius: 50%;
-            font-size: 16px;
-            height: 24px;
-            width: 24px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .track-now-btn .fa-plus {
+        border: 2px solid #fff;
+        border-radius: 50%;
+        font-size: 16px;
+        height: 24px;
+        width: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-        /* --- Track Modal Meal CSS --- */
+    /* --- Track Modal Meal CSS --- */
 
-        .meal-container {
-            font-family: Arial, sans-serif;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 500px;
-            margin: 20px auto;
-        }
+    .meal-container {
+        font-family: Arial, sans-serif;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 500px;
+        margin: 20px auto;
+    }
 
-        .heading {
-            font-size: 16px;
-            font-weight: bold;
-            color: #555;
-            margin-top: 20px;
-        }
+    .heading {
+        font-size: 16px;
+        font-weight: bold;
+        color: #555;
+        margin-top: 20px;
+    }
 
-        .btn-tracking,
-        .btn-meal,
-        .btn-yes,
-        .btn-no {
-            background-color: #e5d9ff;
-            color: #946CFC;
-            border: 1px solid #946CFC;
-            border-radius: 20px;
-            padding: 8px 15px;
-            margin: 5px;
-            font-size: 14px;
-            cursor: pointer;
-        }
+    .btn-tracking,
+    .btn-meal,
+    .btn-yes,
+    .btn-no {
+        background-color: #e5d9ff;
+        color: #946CFC;
+        border: 1px solid #946CFC;
+        border-radius: 20px;
+        padding: 8px 15px;
+        margin: 5px;
+        font-size: 14px;
+        cursor: pointer;
+    }
 
-        .btn-tracking.active,
-        .btn-meal.active {
-            background-color: #946CFC;
-            color: white;
-        }
+    .btn-tracking.active,
+    .btn-meal.active {
+        background-color: #946CFC;
+        color: white;
+    }
 
-        select {
-            padding: 10px;
-            border: 1px solid #946CFC;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            color: #946CFC;
-            font-size: 14px;
-            margin: 10px 0;
-            cursor: pointer;
-        }
+    select {
+        padding: 10px;
+        border: 1px solid #946CFC;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        color: #946CFC;
+        font-size: 14px;
+        margin: 10px 0;
+        cursor: pointer;
+    }
 
-        select:focus {
-            border-color: #946CFC;
-            outline: none;
-            box-shadow: 0 0 5px rgba(107, 76, 219, 0.5);
-        }
+    select:focus {
+        border-color: #946CFC;
+        outline: none;
+        box-shadow: 0 0 5px rgba(107, 76, 219, 0.5);
+    }
 
-        .hidden {
-            display: none;
-        }
+    .hidden {
+        display: none;
+    }
 
-        .additional button {
-            width: 80px;
-            margin: 10px 5px;
-        }
+    .additional button {
+        width: 80px;
+        margin: 10px 5px;
+    }
 
-        .meal-details p {
-            margin: 0;
-        }
-        .meal-details .box , .portionBox {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 300px;
-        }
+    .meal-details p {
+        margin: 0;
+    }
+    .meal-details .box , .portionBox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 300px;
+    }
 
-        .modal-footer {
-            margin-top: 60px;
+    .weight-container {
+        max-width: 600px;
+        margin: 50px auto;
+    }
+
+    .weight-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-size: 22px;
+        font-weight: 400;
+        color: #000000;
+    }
+
+    .input-number {
+        font-size: 48px;
+        font-weight: 600;
+        border: none;
+        text-align: center;
+        outline: none;
+        width: 100px;
+        border-bottom: 4px solid #946cfc;
+        color: #000000;
+    }
+
+    .dropdown-toggle {
+        background-color: #e9e9ff;
+        color: #6c63ff;
+        border: none;
+        font-size: 18px;
+        padding: 5px 15px;
+        font-weight: 500;
+        border-radius: 8px;
+    }
+
+    .dropdown-menu {
+        border-radius: 8px;
+        transform-origin: top;
+        min-width: auto;
+        width: 100px;
+    }
+
+    .dropdown-menu .dropdown-item {
+        font-size: 16px;
+        border-radius: 10px;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        color: #fff;
+        background-color: #946CFC;
+    }
+
+    .dropdown-toggle:focus {
+        box-shadow: none;
+    }
+
+    .tip {
+        font-size: 14px;
+        color: #888;
+        margin-top: 30px;
+    }
+
+    .tip strong {
+        color: #6c63ff;
+    }
+
+    .dropdown .dropdown-toggle:after {
+        top: 60%;
+    }
+
+    @media (max-width: 600px) {
+        .weight-row {
+            flex-direction: column;
         }
+    }
 
     </style>
 
@@ -541,10 +614,34 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
 
                 <!-- Content for each section -->
                 <div id="content">
-                    <div id="weight" class="content-item active">Content for Weight</div>
+                    <!-- Weight Tab content section -->
+                    <div id="weight" class="content-item active">
+                        <div class="weight-container">
+                            <div class="weight-row">
+                                <span style="font-weight: bold;">my weight this morning is</span>
+                                <div class="dropdown">
+                                    <input type="number" class="input-number" value="110" vid="weight-input" />
+                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        lbs
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="#" onclick="setUnit('lbs')">lbs</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="setUnit('kgs')">kgs</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span style=" font-size: 3em; color: #946cfc; font-weight: 600; margin-right: 30px;">tip</span>
+                                <p class="tip">
+                                    please weigh yourself, first thing in the morning. Naked on the scale, and after a bowel movement if possible for the most honest weight.
+                                </p>
+                            </div>
+                        </div>    
+                    </div>
+                    
                     <div id="meds" class="content-item">Content for Meds</div>
 
-                    <!-- Meals Tab section for Track Now modal -->
+                    <!-- Meals Tab content section -->
                     <div id="meals" class="content-item">
                         <div class="meal-container">
                             <p class="heading">i’m tracking</p>
@@ -1549,4 +1646,11 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
     });
 
 
+</script>
+
+<script>
+  // Function to change dropdown text
+  function setUnit(unit) {
+    document.getElementById('dropdownMenuButton').innerText = unit;
+  }
 </script>

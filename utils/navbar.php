@@ -483,12 +483,14 @@ $selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         width: 300px;
     }
 
-    .weight-container {
+    .weight-container ,
+    .water-container {
         max-width: 600px;
         margin: 50px auto;
     }
 
-    .weight-row {
+    .weight-row ,
+    .water-row {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -689,7 +691,29 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
                         </div>
                     </div>
 
-                    <div id="water" class="content-item">Content for Water</div>
+                    <div id="water" class="content-item">
+                        <div class="water-container">
+                            <div class="water-row">
+                                <span style="font-weight: bold;">I had</span>
+                                <div class="dropdown">
+                                    <input type="number" class="input-number" value="3" vid="weight-input" />
+                                    <button class="btn dropdown-toggle" type="button" id="waterDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        cups
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="waterDropdownMenuButton">
+                                        <li><a class="dropdown-item" href="#" onclick="setWaterUnit('cups')">cups</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="setWaterUnit('ml')">ml</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span style=" font-size: 3em; color: #946cfc; font-weight: 700; margin-right: 30px;">tip</span>
+                                <p class="tip">
+                                    Remember, your water goal is between 8-10 cups off water.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     <div id="poop" class="content-item">Content for Poop</div>
                     <div id="activity" class="content-item">Content for Activity</div>
                     <div id="sleep" class="content-item">Content for Sleep</div>
@@ -1652,5 +1676,8 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
   // Function to change dropdown text
   function setUnit(unit) {
     document.getElementById('dropdownMenuButton').innerText = unit;
+  }
+  function setWaterUnit(value) {
+    document.getElementById('waterDropdownMenuButton').innerText = value;
   }
 </script>

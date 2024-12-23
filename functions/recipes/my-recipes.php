@@ -323,9 +323,8 @@ $recipes_json = json_encode($recipes);
             background: #fff;
             border: 1px solid #eaeaea;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            width: 200px; /* Adjust based on your layout */
+            width: 200px; 
             padding: 10px;
             position: relative;
             font-family: Arial, sans-serif;
@@ -368,7 +367,7 @@ $recipes_json = json_encode($recipes);
         .recipe-title-options {
             cursor: pointer;
             flex-shrink: 0;
-            background-color: #e8e5e5;
+            background-color:#f2f2f2;
             width: 20px;
             height: 20px;
             text-align: center;
@@ -392,7 +391,6 @@ $recipes_json = json_encode($recipes);
 
         .macro {
             font-size: 12px;
-            font-weight: bold;
             color: #555;
         }
         

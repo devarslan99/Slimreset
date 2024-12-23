@@ -99,7 +99,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         } elseif ($lbs_day < 0.5 && $row['created_at'] && strtotime($row['created_at']) >= strtotime('-2 days')) {
             $new_count++;
         } else {
-            $progress = "<h3 style='color:grey;'>No Progress</h3>"; // Optional: Handle cases with no progress
+            $progress = "<h3 style='color:grey;'>No Progress</h3>";
         }
     }
 }
@@ -265,7 +265,7 @@ if ($result && mysqli_num_rows($result) > 0) {
             border-bottom: none;
         }
         
-    </style>
+</style>
 
     <!-- Header Stats for Coaching -->
     <div id="coachingHeaderComponent" style="display:none;">
@@ -413,79 +413,6 @@ if ($result && mysqli_num_rows($result) > 0) {
                                     $bm_result = mysqli_query($mysqli, $bm_sql);
                                     $avg_bm = mysqli_fetch_assoc($bm_result)['avg_bm'] ?? 0;
 
-                                    if ($avg_bm > 1) {
-                                        $bm_icon = '../assets/images/check.png';
-                                    } else {
-                                        $bm_icon = '../assets/images/warning_red.png';
-                                    }
-
-                                    $w_sql = "SELECT AVG(water) as avg_w FROM water_records WHERE user_id = $user_id AND created_at >= NOW() - INTERVAL 4 DAY";
-                                    $w_result = mysqli_query($mysqli, $w_sql);
-                                    $avg_w = mysqli_fetch_assoc($w_result)['avg_w'] ?? 0;
-
-                                    if ($avg_w >= 9) {
-                                        $w_icon = '../assets/images/check.png';
-                                    } elseif ($avg_w >= 5 && $avg_w <= 8) {
-                                        $w_icon = '../assets/images/warning_yellow.png';
-                                    } else {
-                                        $w_icon = '../assets/images/warning_red.png';
-                                    }
-
-                                    $c_sql = "SELECT AVG(calories) as avg_c FROM food_items WHERE user_id = $user_id AND created_at >= NOW() - INTERVAL 4 DAY";
-                                    $c_result = mysqli_query($mysqli, $c_sql);
-                                    $avg_c = mysqli_fetch_assoc($c_result)['avg_c'] ?? 0;
-
-                                    if ($avg_c >= 700) {
-                                        $c_icon = '../assets/images/check.png';
-                                    } elseif ($avg_c >= 500 && $avg_c < 700) {
-                                        $c_icon = '../assets/images/warning_yellow.png';
-                                    } else {
-                                        $c_icon = '../assets/images/warning_red.png';
-                                    }
-
-
-                                    $t_sql = "SELECT course_time,created_at FROM medical_intake WHERE user_id = '$user_id'";
-                                    $t_result = mysqli_query($mysqli, $t_sql);
-                                    if ($t_result && mysqli_num_rows($t_result) > 0) {
-                                        $row_time = mysqli_fetch_assoc($t_result);
-                                        $course_time = $row_time['course_time']; // This will be either 30 or 60
-                                        $created_at = $row_time['created_at']; // This should be a timestamp in 'Y-m-d H:i:s' format
-
-                                        // Convert created_at to a DateTime object
-                                        $created_at_date = new DateTime($created_at);
-
-                                        // Add the course time to the created date
-                                        $expiration_date = $created_at_date->modify("+$course_time days");
-
-                                        // Get the current date
-                                        $current_date = new DateTime();
-
-                                        // Calculate the difference between the current date and the expiration date
-                                        $remaining_time = $current_date->diff($expiration_date);
-
-                                        // Determine the remaining days
-                                        if ($remaining_time->invert == 1) {
-                                            $finalized_date = "Course Expired" . $remaining_time->days . " days ago.";
-                                        } else {
-                                            $finalized_date = $remaining_time->days . " Days Left.";
-                                        }
-                                    } else {
-                                        echo "No records found.";
-                                    }
-
-
-
-                                    $fl_sql = "SELECT COUNT(*) as total_entries FROM food_items WHERE user_id = $user_id AND created_at >= NOW() - INTERVAL 4 DAY";
-                                    $fl_result = mysqli_query($mysqli, $fl_sql);
-                                    $avg_fl = mysqli_fetch_assoc($fl_result)['total_entries'] ?? 0;
-
-                                    if ($avg_fl >= 4) {
-                                        $fl_icon = '../assets/images/check.png';
-                                    } elseif ($avg_fl < 4 && $avg_fl > 2) {
-                                        $fl_icon = '../assets/images/warning_yellow.png';
-                                    } else {
-                                        $fl_icon = '../assets/images/warning_red.png';
-                                    }
 
                                     $p_sql = "SELECT protein FROM food_items WHERE user_id = $user_id AND created_at >= NOW() - INTERVAL 4 DAY";
                                     $p_result = mysqli_query($mysqli, $p_sql);
@@ -493,40 +420,6 @@ if ($result && mysqli_num_rows($result) > 0) {
                                     // Initialize total protein in ounces and count of entries
                                     $total_protein_oz = 0;
                                     $entry_count = 0;
-
-                                    // Process each row to convert protein values to ounces
-                                    while ($row_protein = mysqli_fetch_assoc($p_result)) {
-                                        $protein_value = $row_protein['protein'];
-
-                                        // Extract the numeric value and the unit (g or oz)
-                                        preg_match('/(\d+)(g|oz)/i', $protein_value, $matches);
-                                        if (count($matches) === 3) {
-                                            $amount = (float) $matches[1]; // The numeric part
-                                            $unit = strtolower($matches[2]); // The unit (g or oz)
-
-                                            // Convert grams to ounces if necessary
-                                            if ($unit === 'g') {
-                                                $amount_in_oz = $amount * 0.0353; // 1g = 0.0353oz
-                                            } else {
-                                                $amount_in_oz = $amount; // Already in oz
-                                            }
-
-                                            // Add the converted amount to the total
-                                            $total_protein_oz += $amount_in_oz;
-                                            $entry_count++;
-                                        }
-                                    }
-
-                                    // Calculate the average protein in ounces
-                                    $avg_p = ($entry_count > 0) ? $total_protein_oz / $entry_count : 0;
-                                    if ($avg_p >= 9) {
-                                        $p_icon = '../assets/images/check.png';
-                                    } elseif ($avg_p >= 7 && $avg_p < 9) {
-                                        $p_icon = '../assets/images/warning_yellow.png';
-                                    } else {
-                                        $p_icon = '../assets/images/warning_red.png';
-                                    }
-
 
                                     // Updating icons or text color as a indicator   
                                     $c_sql = "SELECT AVG(calories) as avg_calories FROM food_items WHERE user_id = $user_id AND created_at >= NOW() - INTERVAL 3 DAY";
@@ -848,5 +741,12 @@ if ($result && mysqli_num_rows($result) > 0) {
             // Default behavior: show all rows and no active button
             filterButtons.forEach(btn => btn.classList.remove('active'));
             filterTable('all');
+
+            const resetBtn = document.querySelector('.filterTxt')
+            resetBtn.addEventListener('click',()=>{
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                filterTable('all');
+                resetBtn.style.cursor = 'pointer'
+            })
         });
     </script>

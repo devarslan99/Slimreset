@@ -6,6 +6,7 @@
     <title>Responsive Chat UI</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <style>
         .header {
             background-color: #946cfc;
@@ -23,6 +24,41 @@
             cursor: pointer;
         }
 
+        .searchBox {
+            width: 100%;
+            height: 50px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .searchBox div {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            height: 35px;
+            background-color: #ebe4ff;
+            border: 1px solid #7a55e0;
+            border-radius: 6px;
+        }
+
+        .searchBox div i {
+            position: absolute;
+            left: 10px;
+            color: #946cfc;
+        }
+
+        .searchBox div input {
+            position: relative;
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            padding-left: 40px;
+        }
+
         .user-list {
             height: 100vh;
             overflow-y: auto;
@@ -37,6 +73,10 @@
             padding: 15px;
             border-bottom: 1px solid #eee;
             cursor: pointer;
+        }
+
+        .user-item:hover {
+            background-color: #ebe4ff;
         }
 
         .user-item img {
@@ -130,30 +170,83 @@
             color: #fff;
         }
 
-            /* Custom Scrollbar Styles */
-        #chatMessages {
-            scrollbar-width: thin; 
-            scrollbar-color: #946cfc #f1f1f1; 
+        .addBtn {
+            position: relative;
+            margin-right: 5px;
+            font-size: 1.6em;
+            width: 35px;
+            height: 38px;
+            border-radius: 4px;
+            text-align: center;
+            line-height: 38px;
+            color: #777;
         }
 
-        /* Chrome, Edge, Safari */
-        #chatMessages::-webkit-scrollbar {
-            width: 8px; 
+        .addBtn:hover {
+            color: #946cfc;
+            cursor: pointer;
         }
 
-        #chatMessages::-webkit-scrollbar-track {
-            background: #f1f1f1; 
+        .addPopUpBox {
+            scale: 0;
+            position: absolute;
+            bottom: 65px;
+            right: 70px;
+            background: #ebe4ff;
+            /* width: 110px; */
+            height: 120px;
+            border: 1px solid #946cfc;
+            border-radius: 15px;
+            padding: 10px;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        #chatMessages::-webkit-scrollbar-thumb {
-            background-color: #946cfc; 
-            border-radius: 10px; 
-            border: 2px solid #f1f1f1; 
+        .addPopUpBox.active {
+            scale: 1;
+            transition: all 0.3s;
         }
 
-        #chatMessages::-webkit-scrollbar-thumb:hover {
+        .addPopUpBox div {
+            padding: 6px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .addPopUpBox div:hover {
+            background-color: #baabe2;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Custom Scrollbar Styles */
+        #chatMessages, #messageInput {
+        scrollbar-width: thin;
+        scrollbar-color: #946cfc #f1f1f1;
+        }
+
+        #chatMessages::-webkit-scrollbar , #messageInput::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #chatMessages::-webkit-scrollbar-track , #messageInput::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        #chatMessages::-webkit-scrollbar-thumb , #messageInput::-webkit-scrollbar-thumb {
+            background-color: #946cfc;
+            border-radius: 10px;
+            border: 2px solid #f1f1f1;
+        }
+
+        #chatMessages::-webkit-scrollbar-thumb:hover , #messageInpu::-webkit-scrollbar-thumb:hover {
             background-color: #7a55e0;
         }
+
         /* Scroll to Bottom Button */
         .scroll-to-bottom {
             position: fixed;
@@ -186,6 +279,10 @@
 
         .scroll-to-bottom {
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .SMS-Box {
+            overflow-wrap: break-word;
         }
 
 
@@ -228,6 +325,7 @@
             }
         }
     </style>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <div class="container-fluid h-100">
@@ -237,6 +335,12 @@
                 <div class="header">
                     <span>Chats</span>  
                     <span>SlimReset</span>
+                </div>
+                <div class="searchBox">
+                    <div>
+                        <i class="fa fa-search"></i>
+                        <input type="text" placeholder="search">
+                    </div>
                 </div>
                 <div class="user-item" onclick="selectUser('Sonia Thibault', 'user1')">
                     <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
@@ -267,15 +371,26 @@
                         <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
                         <div class="message-content">
                             <h6>Gamar Jama <small>6 Nov 2024</small></h6>
-                            <p>Is it ok to stop taking the shots while I have a flu and fever?</p>
+                            <p class="SMS-Box">Is it ok to stop taking the shots while I have a flu and fever?</p>
                         </div>
                     </div>
                     <div class="chat-message coach-message">
                         <img src="coach.png" alt="Coach Image">
                         <div class="message-content">
                             <h6>My SlimCoach <small>6 Nov 2024</small></h6>
-                            <p>Morning Gamar, yes eat the best you can based on protocol but get better first ❤️🙏</p>
+                            <p class="SMS-Box">Morning Gamar, yes eat the best you can based on protocol but get better first ❤️🙏</p>
                         </div>
+                    </div>
+                </div>
+
+                <div class="addPopUpBox" id="addPopUpBox">
+                    <div onclick="ChooseFile('document')">
+                        <img src="docs.svg" alt="Document">
+                        <span>Document</span>
+                    </div>
+                    <div onclick="ChooseFile()">
+                        <img src="img.svg" alt="Image & Videos">
+                        <span>Photos & Videos</span>
                     </div>
                 </div>
 
@@ -283,8 +398,9 @@
                     <i class="fa fa-arrow-down"></i>
                 </div>
 
-                <form id="messageForm" class="d-flex align-items-center">
-                    <input type="text" id="messageInput" class="form-control mr-2" placeholder="Type a message..." required>
+                <form id="messageForm" class="d-flex align-items-end">
+                    <textarea id="messageInput" class="form-control mr-2" placeholder="Type a message..." required rows="1" style="resize: none; overflow-y: auto;"></textarea>
+                    <span id="addToggleBtn" class="addBtn"><i class="fa fa-paperclip"></i></span>
                     <button type="submit" class="btn chatBtn"><i class="fa fa-paper-plane"></i></button>
                 </form>
             </div>
@@ -293,6 +409,8 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@latest/dist/emoji-button.min.js"></script>
+
     <script>
         function selectUser(userName, userId) {
             $('#userList').removeClass('active');
@@ -410,6 +528,21 @@
     // Restore state when the page loads
     document.addEventListener('DOMContentLoaded', restoreState);
 
+    document.getElementById('messageInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            document.getElementById('messageForm').dispatchEvent(new Event('submit'));
+        }
+    });
+
+    document.getElementById('messageInput').addEventListener('input', function () {
+        this.style.height = 'auto';
+        const minHeight = 40;
+        const maxHeight = 150;
+        const newHeight = Math.min(Math.max(this.scrollHeight, minHeight), maxHeight);
+        this.style.height = newHeight + 'px';
+    });
+
     // Append new message on form submission
     document.getElementById('messageForm').addEventListener('submit', function (e) {
         e.preventDefault();
@@ -430,7 +563,7 @@
                     <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" alt="User Image">
                     <div class="message-content">
                         <h6>You <small>${formattedDate}</small></h6>
-                        <p>${newMessage}</p>
+                        <p class='SMS-Box'>${newMessage}</p>
                     </div>
                 </div>
             `;
@@ -440,8 +573,6 @@
         }
     });
 </script>
-
-
 
 
 <!-- script to scroll to bottom with arrow -->
@@ -475,3 +606,29 @@
     });
 
 </script>
+
+
+<!-- scrip to show pop up of add image  -->
+ <script>
+    const addToggleBtn =document.getElementById('addToggleBtn');
+    const popUpBox =document.getElementById('addPopUpBox');
+    const innerButton =document.querySelectorAll('.addPopUpBox div');
+
+    addToggleBtn.addEventListener('click' , (e) => {
+        e.stopImmediatePropagation()
+        popUpBox.classList.toggle('active');
+    })
+
+    innerButton.forEach(i => {
+        i.addEventListener('click', ()=> {
+            popUpBox.classList.remove('active');
+        })
+    })
+
+    // Close the popup if user clicks outside of it
+    window.addEventListener('click', (event) => {
+        if (event.target !== addToggleBtn) {
+            popUpBox.classList.remove('active');
+        }
+    });
+ </script>

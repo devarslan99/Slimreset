@@ -605,13 +605,13 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
             <div class="modal-body">
                 <!-- Buttons for each section -->
                 <div class="btn-group" role="group" aria-label="Tabs buttons">
-                    <button type="button" class="btn active" id="weight-btn">weight</button>
-                    <button type="button" class="btn" id="meds-btn">meds</button>
-                    <button type="button" class="btn" id="meals-btn">meals</button>
-                    <button type="button" class="btn" id="water-btn">water</button>
-                    <button type="button" class="btn" id="poop-btn">poop</button>
-                    <button type="button" class="btn" id="activity-btn">activity</button>
-                    <button type="button" class="btn" id="sleep-btn">sleep</button>
+                    <button type="button" class="btn active" id="weight-btn" onclick='(changeTab("weight"))'>weight</button>
+                    <button type="button" class="btn" id="meds-btn" onclick='(changeTab("meds"))'>meds</button>
+                    <button type="button" class="btn" id="meals-btn" onclick='(changeTab("meals"))'>meals</button>
+                    <button type="button" class="btn" id="water-btn" onclick='(changeTab("water"))'>water</button>
+                    <button type="button" class="btn" id="poop-btn" onclick='(changeTab("poop"))'>poop</button>
+                    <button type="button" class="btn" id="activity-btn" onclick='(changeTab("activity"))'>activity</button>
+                    <button type="button" class="btn" id="sleep-btn" onclick='(changeTab("sleep"))'>sleep</button>
                 </div>
 
                 <!-- Content for each section -->
@@ -1517,29 +1517,6 @@ $showViewFruit = strpos($currentPath, "clients/view-fruit.php") !== false || str
 
 <!-- script for track noe modal -->
 <script>
-    // Event listeners for the buttons to show corresponding content
-    document.getElementById("weight-btn").addEventListener("click", function() {
-        changeTab("weight");
-    });
-    document.getElementById("meds-btn").addEventListener("click", function() {
-        changeTab("meds");
-    });
-    document.getElementById("meals-btn").addEventListener("click", function() {
-        changeTab("meals");
-    });
-    document.getElementById("water-btn").addEventListener("click", function() {
-        changeTab("water");
-    });
-    document.getElementById("poop-btn").addEventListener("click", function() {
-        changeTab("poop");
-    });
-    document.getElementById("activity-btn").addEventListener("click", function() {
-        changeTab("activity");
-    });
-    document.getElementById("sleep-btn").addEventListener("click", function() {
-        changeTab("sleep");
-    });
-
     function changeTab(tabId) {
         // Hide all content
         let contentItems = document.querySelectorAll('.content-item');

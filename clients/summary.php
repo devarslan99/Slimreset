@@ -604,6 +604,7 @@ foreach ($weight_history as $index => $entry) {
                                                         <!-- Coaching Tab Content -->
                                                         <div class="tab-pane fade" id="inquiry-wizard" role="tabpanel">
                                                             <!-- Inquiry Content -->
+                                                            <?php include_once '../functions/coach/coach-corner.php' ?>
                                                         </div>
 
                                                         <!-- Messages Tab Content -->

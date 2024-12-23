@@ -330,7 +330,7 @@
     // Close the actionPopUp if the user clicks outside
     window.addEventListener('click', function (event) {
         const actionPopUp = document.getElementById('actionPopUp');
-        const icon = document.querySelector('.action-three-dots-icon'); // Correct class selector
+        const icon = document.querySelector('.action-three-dots-icon');
 
         if (
             actionPopUp.style.display === 'flex' && 

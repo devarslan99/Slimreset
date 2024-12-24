@@ -284,14 +284,14 @@
         width: 200px;
         height: 100vh; 
         background-color: #936CFB; 
-        padding: 15px; 
+        padding: 7px; 
         position: fixed;
         top: 0;
         left: 0;
         overflow-y: auto;
         overflow-x: hidden;
         z-index: 1000; 
-        gap: 40PX;
+        gap: 30PX;
     }
 
     .sidebar-nav .nav-link {
@@ -460,22 +460,25 @@ foreach ($weight_history as $index => $entry) {
                                                             </a>
                                                         </div>
                                                         <a class="nav-link active" id="wizard-info-tab" data-bs-toggle="pill" href="#wizard-info" role="tab" aria-controls="wizard-info" aria-selected="true">
-                                                            Profile
+                                                           my profile
                                                         </a>
                                                         <a class="nav-link" id="wizard-weight-tracker-tab" data-bs-toggle="pill" href="#wizard-weight-tracker" role="tab" aria-controls="wizard-weight-tracker" aria-selected="false">
-                                                            My Progress
+                                                            my progress
                                                         </a>
                                                         <a class="nav-link" id="my-plan-tab" data-bs-toggle="pill" href="#my-plan" role="tab" aria-controls="my-plan" aria-selected="false">
-                                                            My Plan
+                                                            my plan
                                                         </a>
                                                         <a class="nav-link" id="recipes-tab" data-bs-toggle="pill" href="#recipes" role="tab" aria-controls="recipes" aria-selected="false">
-                                                            Recipes
+                                                            recipes
+                                                        </a>
+                                                        <a class="nav-link" id="sideBar-nutrient-profile-tab" data-bs-toggle="pill" href="#sideBar-nutrient-profile" role="tab" aria-controls="sideBar-nutrient-profile" aria-selected="false">
+                                                            nutrient profile
                                                         </a>
                                                         <a class="nav-link" id="inquiry-wizard-tab" data-bs-toggle="pill" href="#inquiry-wizard" role="tab" aria-controls="inquiry-wizard" aria-selected="false">
-                                                            Coaching
+                                                            coaching
                                                         </a>
                                                         <a class="nav-link" id="successful-wizard-tab" data-bs-toggle="pill" href="#successful-wizard" role="tab" aria-controls="successful-wizard" aria-selected="false">
-                                                            Messages
+                                                            messages
                                                         </a>
                                                     </div>
                                                 </div>
@@ -599,6 +602,12 @@ foreach ($weight_history as $index => $entry) {
                                                         <div class="tab-pane fade" id="recipes" role="tabpanel" aria-labelledby="recipes-tab">
                                                             <!-- Recipes Content -->
                                                             <?php include_once '../functions/recipes/my-recipes.php' ?>
+                                                        </div>
+
+                                                        <!-- nutrient profile Tab Content -->
+                                                        <div class="tab-pane fade" id="sideBar-nutrient-profile" role="tabpanel">
+                                                            <!-- Inquiry Content -->
+                                                            <?php include_once '../functions/nutrient-profile/nutrient-profile.php' ?>
                                                         </div>
 
                                                         <!-- Coaching Tab Content -->
@@ -813,7 +822,7 @@ foreach ($weight_history as $index => $entry) {
         // Load content for selected phase
         function selectPhase(elem,phase) {
             const popup = document.getElementById('phasePopup');
-            popup.style.display = 'none'; // Hide popup
+            popup.style.display = 'none';
 
                 const buttons = document.querySelectorAll('.phase-btn');
                 buttons.forEach(btn => btn.classList.remove('active'));

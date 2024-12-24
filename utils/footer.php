@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright 2024 © Slim Reset. </p>
+                <span class="f-w-600" style="text-align:center; width:100%;">Copyright 2024 © Slim Reset. </span>
             </div>
         </div>
     </div>

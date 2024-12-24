@@ -195,7 +195,7 @@
                     <i class="fa fa-angle-right fw-bold fs-4"></i>
                 </a>
                 <!-- Flatpickr Calendar -->
-                <input type="text" id="flatpickr_input" style="display: none;">
+                <input type="text" id="flatpickr_input" style="width:0px;height:0px;border:0px;">
             </div>
         </div>
         <div class="row mt-2">
@@ -265,7 +265,7 @@
         dateFormat: "Y-m-d",
         defaultDate: document.getElementById("client_selected_date").value,
         onChange: function (selectedDates, dateStr) {
-            // Redirect to the new date when selected
+            // Redirect to the new date when selected   
             if (dateStr) {
                 window.location.href = `?date=${dateStr}`;
             }

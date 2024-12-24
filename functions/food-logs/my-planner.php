@@ -803,7 +803,7 @@ $next_date = date('Y-m-d', strtotime($selected_date . ' +1 day'));
             </div>
 
             <!-- Category Checkboxes -->
-            <div class="d-flex flex-wrap gap-3 recipe-checkboxes">
+            <div class="d-flex justify-content-between flex-wrap gap-3 recipe-checkboxes">
                 <div class="custom-checkbox">
                     <input type="checkbox" id="breakfastCheckBox" onchange="handleMyPlannerCheckboxChange(event)">
                     <label for="breakfastCheckBox">Breakfast</label>

@@ -44,6 +44,7 @@
     .custom-checkbox {
         position: relative;
         display: flex;
+        min-width: 120px;
     }
 
     .custom-checkbox input[type="checkbox"] {
@@ -83,7 +84,12 @@
     }
 </style>
 
-<h1 class="text-center">Recipes</h1>
+<div class="d-flex justify-content-between align-items-center gap-2">
+    <h1 class="text-center">Recipes</h1>
+    <button id="resetRecipesFilter" class="btn btn-primary rounded-pill py-2">
+        View all
+    </button>
+</div>
 
 <!-- Dropdowns -->
 <div class="my-3">
@@ -108,7 +114,7 @@
 
 
 <!-- Category Checkboxes -->
-<div class="d-flex flex-wrap gap-3 recipe-checkboxes">
+<div class="d-flex justify-content-between flex-wrap gap-3 recipe-checkboxes">
     <div class="custom-checkbox">
         <input type="checkbox" id="recipeBreakfastCheckBox" onchange="updateMealTypeFilterCheckbox(event)">
         <label for="recipeBreakfastCheckBox">Breakfast</label>
@@ -183,7 +189,6 @@
         let recipe_card_container = document.getElementById('recipe-card-container')
 
         recipesItems.forEach(recipe => {
-            // console.log(recipe)
 
             const recipe_Image = recipe.image && recipe.image.startsWith('https://www.') 
             ? recipe.image 
@@ -216,6 +221,28 @@
     document.addEventListener("DOMContentLoaded", function() {
         renderFilteredMealCards(recipesItems)
     });
+
+    document.getElementById('resetRecipesFilter').addEventListener('click',()=>{
+        clearMealCards()
+        renderFilteredMealCards(recipesItems)
+
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+
+        const dropdowns = [
+            'food-filter-protein',
+            'food-filter-veggie',
+            'food-filter-fruit',
+        ];
+        dropdowns.forEach(dropdownId => {
+            const dropdown = document.getElementById(dropdownId);
+            if (dropdown) {
+                dropdown.selectedIndex = 0;
+            }
+        });
+
+    })
 </script>
 
 

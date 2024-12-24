@@ -1,11 +1,9 @@
 <style>
-    /* Main Wrapper */
     .recipe_wrapper {
-        width: 90%;
-        margin: 20px auto;
-        max-width: 1200px;
+        width: 100%;
+        min-height: 100vh;
+        padding: 20px 40px;
     }
-
     /* Header Section */
     .recipe_header {
         display: flex;
@@ -66,15 +64,16 @@
     }
 
     /* Tabs */
-    .recipe_nav {
+
+    .recipe-tabs-navigation{
         display: flex;
-        flex: wrap;
-        justify-content: space-evenly;
-        margin: 30px 0;
-        padding-bottom: 10px;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 20px;
     }
 
-    .recipe_tab {
+    .recipe-tab-item {
         font-size: 18px;
         font-weight: bold;
         cursor: pointer;
@@ -82,21 +81,23 @@
         margin-bottom: 10px;
     }
 
-    .recipe_tab.active {
+    .recipe-tab-item.recipe-tab-selected {
         color: #946cfc;
     }
 
-    /* Content Sections */
-    .tab_content {
+    /* Tab Content */
+    .recipe-tab-content-section {
         display: none;
     }
 
-    .tab_content.active {
+    .recipe-tab-content-section.recipe-tab-content-visible {
         display: block;
     }
 
+    /* ----------->>> */
+
     /* Table */
-    #ingredients { 
+    #recipe-tab-ingredients { 
         overflow-x: auto;
     }
     .ingredientsTable {
@@ -138,7 +139,7 @@
             text-align: center;
         }
 
-        .recipe_nav {
+        .recipe-tabs-navigation {
             flex-direction: column;
             align-items: center;
         }
@@ -173,7 +174,7 @@
     /* Phase Popup */
     .action-popup {
         position: absolute;
-        right: 90;
+        right: 25px;
         background: linear-gradient(135deg, #9a50ff, #6f30ff);
         border-radius: 10px;
         padding: 15px;
@@ -181,6 +182,7 @@
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         display: none;
         flex-direction: column;
+        z-index: 999;
     }
 
     .action-btn {
@@ -226,14 +228,14 @@
         </div>
 
         <!-- Navigation Tabs -->
-        <div class="recipe_nav">
-            <span class="recipe_tab active" data-target="ingredients">ingredients</span>
-            <span class="recipe_tab" data-target="steps">step by step</span>
-            <span class="recipe_tab" data-target="nutrition">nutrient profile</span>
+        <div class="recipe-tabs-navigation">
+            <span class="recipe-tab-item recipe-tab-selected" data-target="recipe-tab-ingredients">Ingredients</span>
+            <span class="recipe-tab-item" data-target="recipe-tab-steps">Step by Step</span>
+            <span class="recipe-tab-item" data-target="recipe-tab-nutrition">Nutrition Profile</span>
         </div>
 
         <!-- Ingredients Tab Content Sections -->
-        <div id="ingredients" class="tab_content active">
+        <div  id="recipe-tab-ingredients" class="recipe-tab-content-section recipe-tab-content-visible">
             <table class="ingredientsTable">
                 <thead>
                     <tr>
@@ -253,7 +255,7 @@
                         <td>3.43g</td>
                         <td>1.6g</td>
                         <td>
-                            <div style="display:flex;justify-content:space-between;">
+                            <div style="display:flex;gap:10px;justify-content:space-between;align-items:center;">
                                 <span>0g</span>
                                     <div class="three-dots-wrapper">
                                         <i class="fa fa-ellipsis-h action-three-dots-icon" onclick="actionToggleDropdown()"></i>
@@ -271,7 +273,7 @@
         </div>
 
         <!-- Step By step Tab Content Section -->
-        <div id="steps" class="tab_content">
+        <div id="recipe-tab-steps" class="recipe-tab-content-section">
             <p>1. Heat a pan and cook shrimp for 3-5 minutes.<br>
             2. Add mixed greens, tomatoes, and cooked shrimp to a bowl.<br>
             3. Toss with your favorite dressing.<br>
@@ -279,7 +281,7 @@
         </div>
 
         <!-- Nutrition Profile Tab Content Section -->
-        <div id="nutrition" class="tab_content">
+        <div id="recipe-tab-nutrition" class="recipe-tab-content-section">
            <?php include 'nutrition_component.php' ?>
         </div>
     </div>
@@ -287,31 +289,39 @@
     <!-- scripit for tabs and Sections  -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const tabs = document.querySelectorAll('.recipe_tab');
-            const tabContents = document.querySelectorAll('.tab_content');
+            const tabs = document.querySelectorAll('.recipe-tab-item');
+            const tabContents = document.querySelectorAll('.recipe-tab-content-section');
 
-            // Check localStorage for the saved tab
-            const activeTab = localStorage.getItem('activeTab');
-            if (activeTab) {
-                tabs.forEach(t => t.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
+            // Check localStorage for the saved tab or default to the first tab
+            const savedTab = localStorage.getItem('selectedRecipeTab') || 'recipe-tab-ingredients';
 
-                document.querySelector(`.recipe_tab[data-target="${activeTab}"]`).classList.add('active');
-                document.getElementById(activeTab).classList.add('active');
-            }
+            // Initialize tabs based on saved state or default
+            tabs.forEach(tab => {
+                const target = tab.getAttribute('data-target');
+                if (target === savedTab) {
+                    tab.classList.add('recipe-tab-selected');
+                    document.getElementById(target).classList.add('recipe-tab-content-visible');
+                } else {
+                    tab.classList.remove('recipe-tab-selected');
+                    document.getElementById(target).classList.remove('recipe-tab-content-visible');
+                }
+            });
 
+            // Tab click event listener
             tabs.forEach(tab => {
                 tab.addEventListener('click', function () {
                     const target = this.getAttribute('data-target');
 
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.remove('active'));
+                    // Reset all tabs and contents
+                    tabs.forEach(t => t.classList.remove('recipe-tab-selected'));
+                    tabContents.forEach(content => content.classList.remove('recipe-tab-content-visible'));
 
-                    this.classList.add('active');
-                    document.getElementById(target).classList.add('active');
+                    // Activate clicked tab and corresponding content
+                    this.classList.add('recipe-tab-selected');
+                    document.getElementById(target).classList.add('recipe-tab-content-visible');
 
-                    // Save the active tab to localStorage
-                    localStorage.setItem('activeTab', target);
+                    // Save the selected tab to localStorage
+                    localStorage.setItem('selectedRecipeTab', target);
                 });
             });
         });
@@ -320,32 +330,32 @@
 </html>
 
 
-<!-- script for toggle action button -->
-<script>
-    function actionToggleDropdown() {
-        const actionPopUp = document.getElementById('actionPopUp');
-        actionPopUp.style.display = actionPopUp.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    // Close the actionPopUp if the user clicks outside
-    window.addEventListener('click', function (event) {
-        const actionPopUp = document.getElementById('actionPopUp');
-        const icon = document.querySelector('.action-three-dots-icon');
-
-        if (
-            actionPopUp.style.display === 'flex' && 
-            !actionPopUp.contains(event.target) && 
-            !icon.contains(event.target)
-        ) {
-            actionPopUp.style.display = 'none';
-        }
-    });
-
-    // Close the popup when an action is clicked
-    document.querySelectorAll('.action-btn').forEach(button => {
-        button.addEventListener('click', function () {
+    <!-- script for toggle action button -->
+    <script>
+        function actionToggleDropdown() {
             const actionPopUp = document.getElementById('actionPopUp');
-            actionPopUp.style.display = 'none';
+            actionPopUp.style.display = actionPopUp.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Close the actionPopUp if the user clicks outside
+        window.addEventListener('click', function (event) {
+            const actionPopUp = document.getElementById('actionPopUp');
+            const icon = document.querySelector('.action-three-dots-icon');
+
+            if (
+                actionPopUp.style.display === 'flex' && 
+                !actionPopUp.contains(event.target) && 
+                !icon.contains(event.target)
+            ) {
+                actionPopUp.style.display = 'none';
+            }
         });
-    });
-</script>
+
+        // Close the popup when an action is clicked
+        document.querySelectorAll('.action-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const actionPopUp = document.getElementById('actionPopUp');
+                actionPopUp.style.display = 'none';
+            });
+        });
+    </script>

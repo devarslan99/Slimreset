@@ -210,7 +210,7 @@
         <!-- Header Section -->
         <div class="recipe_header">
             <div class="recipe_details">
-                <img src="https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Southwest Shrimp Salad" class="recipe_image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaXV-1y_aynSCsUXIOl4UsD-TatbUGLMiw6w&s" alt="Southwest Shrimp Salad" class="recipe_image">
                 <div>
                     <h1 class="recipe_title">southwest shrimp salad</h1>
                     <ul class="recipe_links">
